@@ -1,4 +1,5 @@
 import {Center, Container, Image, Stack, Text} from "@chakra-ui/react";
+import {ExternalLinkIcon} from "@chakra-ui/icons";
 
 export default function About() {
     return (
@@ -15,6 +16,13 @@ export default function About() {
                 <Stack spacing={{base: 0}} mt={{base: 100}} ml={{base: 10}}>
                     <span>KVK - 87650770</span>
                     <span>BTW - NL004463884B92</span>
+                </Stack>
+                <Stack spacing={{base: 0}} mt={{base: 5}} ml={{base: 10}}>
+                    <span>
+                        <a href='https://www.linkedin.com/in/d16de/'>
+                            <ExternalLinkIcon mr={{base: 2}}/>linkedIn
+                        </a>
+                    </span>
                 </Stack>
             </Container>
         </>
