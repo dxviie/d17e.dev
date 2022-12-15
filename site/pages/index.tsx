@@ -6,9 +6,9 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>d17e.dev - Code. Art. Ideas.</title>
-        <meta name="description" content="d17e.dev - Code. Art. Ideas." />
-        <link rel="icon" href="/favicon.ico" />
+        <title>d17e.dev - code. art. ideas.</title>
+        <meta name="description" content="d17e.dev - code. art. ideas." />
+        <link rel="icon" href="/d17e-favicon.ico" />
       </Head>
 
       <main>
