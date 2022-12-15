@@ -12,7 +12,7 @@ export default function About() {
                 </Text>
                 <Box mt={'2rem'} textAlign={'center'} maxWidth={'20rem'}>
                     <Text fontSize={'lg'}>
-                        I used to build other people's dreams.<br/>Now I build my own.*
+                        I used to build other people&apos;s dreams.<br/>Now I build my own.*
                         <br/><br/>
                         I'm excited! Are you?<br/> <Link href={'https://tally.so/r/npePpB'} color={'teal.500'} target={'_self'}>Drop your email</Link> and stay tuned.
                     </Text>
