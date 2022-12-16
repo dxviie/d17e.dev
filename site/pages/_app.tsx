@@ -4,10 +4,14 @@ import {ChakraProvider, Flex, Spacer} from '@chakra-ui/react'
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import Footer from "../components/structure/Footer";
+import {RecoilRoot} from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
+        // application wrappers
+        <RecoilRoot>
         <ChakraProvider>
+
             {/* headers */}
             <Head>
                 <title>d17e.dev - code. art. ideas.</title>
@@ -24,7 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             {/* analytics, scripts,... */}
             <Analytics />
+
         </ChakraProvider>
+        </RecoilRoot>
     );
 }
 
