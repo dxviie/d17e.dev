@@ -23,8 +23,8 @@ export default function About() {
                     </Text>
                 </Box>
                 <Spacer />
-                <HStack width={'100%'} bg={'black'} color={'white'} padding={'1rem'} mt={'2rem'}>
-                    <Flex direction={'column'} fontSize={'sm'}>
+                <HStack width={'100%'} bg={'black'} color={'white'} padding={'1rem'} mt={'2rem'} fontSize={'sm'}>
+                    <Flex direction={'column'}>
                         <Text>
                             made with <HeartIcon color={'orangered'} ml={'.2rem'} mr={'.2rem'}/> by David Vandenbogaerde
                         </Text>
