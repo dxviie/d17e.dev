@@ -1,6 +1,7 @@
 import {Box, Flex, HStack, Image, Link, Spacer, Text} from "@chakra-ui/react";
 import {HeartIcon} from "./HeartIcon";
 import {LinkedInIcon} from "./LinkedInIcon";
+import {GitHubIcon} from "./GitHubIcon";
 
 export default function About() {
     return (
@@ -28,7 +29,8 @@ export default function About() {
                             made with <HeartIcon color={'orangered'} ml={'.2rem'} mr={'.2rem'}/> by David Vandenbogaerde
                         </Text>
                         <Box alignContent={'center'} justifyContent={'center'}>
-                            <LinkedInIcon /> <Link href={'https://www.linkedin.com/in/d16de/'} target={'_blank'}>d16de</Link>
+                            <LinkedInIcon /> <Link href={'https://www.linkedin.com/in/d16de/'} target={'_blank'}>d16de</Link> -
+                            <GitHubIcon ml={'.3rem'}/> <Link href={'https://github.com/dxviie'} target={'_blank'}>dxviie</Link>
                         </Box>
                     </Flex>
 
