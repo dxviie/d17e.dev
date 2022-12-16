@@ -1,13 +1,10 @@
-import {Box, Flex, HStack, Image, Link, Spacer, Text} from "@chakra-ui/react";
-import {HeartIcon} from "./HeartIcon";
-import {LinkedInIcon} from "./LinkedInIcon";
-import {GitHubIcon} from "./GitHubIcon";
+import {Box, Flex, Image, Link, Text} from "@chakra-ui/react";
 
 export default function About() {
     return (
         <>
-            <Flex direction={'column'} align={'center'} minH={'100vh'}>
-                <Image mt={'2rem'} width={'80vw'} maxWidth={'30rem'} src={'d17e.dev-logo.svg'} alt={'d17e.dev logo'}></Image>
+            <Image mt={'2rem'} width={'80vw'} maxWidth={'30rem'} src={'d17e.dev-logo.svg'} alt={'d17e.dev logo'}></Image>
+            <Flex direction={'column'} align={'center'}>
                 <Text fontSize={'xx-large'} borderBottomWidth={'1px'} borderBottomColor={'black'}>
                     code. art. ideas.
                 </Text>
@@ -22,26 +19,7 @@ export default function About() {
                         difference, please do <Link href={'https://tally.so/r/mDqALj'} color={'teal.500'} target={'_self'}>get in touch</Link>.
                     </Text>
                 </Box>
-                <Spacer />
-                <HStack width={'100%'} bg={'black'} color={'white'} padding={'1rem'} mt={'2rem'} fontSize={'sm'}>
-                    <Flex direction={'column'}>
-                        <Text>
-                            made with <HeartIcon color={'orangered'} ml={'.2rem'} mr={'.2rem'}/> by David Vandenbogaerde
-                        </Text>
-                        <Box alignContent={'center'} justifyContent={'center'}>
-                            <LinkedInIcon /> <Link href={'https://www.linkedin.com/in/d16de/'} target={'_blank'}>d16de</Link> -
-                            <GitHubIcon ml={'.3rem'}/> <Link href={'https://github.com/dxviie'} target={'_blank'}>dxviie</Link>
-                        </Box>
-                    </Flex>
-
-                    <Spacer />
-                    <Flex direction={'column'}>
-                        <span>KVK - 87650770</span>
-                        <span>BTW - NL004463884B92</span>
-                    </Flex>
-                </HStack>
             </Flex>
         </>
-
     );
 }

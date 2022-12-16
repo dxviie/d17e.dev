@@ -1,15 +1,31 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import {ChakraProvider, Flex, Spacer} from '@chakra-ui/react'
 import { Analytics } from "@vercel/analytics/react";
+import Head from "next/head";
+import Footer from "../components/structure/Footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-      <ChakraProvider>
-        <Component {...pageProps} />
-        <Analytics />
-      </ChakraProvider>
-  );
+    return (
+        <ChakraProvider>
+            {/* headers */}
+            <Head>
+                <title>d17e.dev - code. art. ideas.</title>
+                <meta name="description" content="d17e.dev - code. art. ideas." />
+                <link rel="icon" href="/d17e-favicon.ico" />
+            </Head>
+
+            {/* content */}
+            <Flex direction={'column'} align={'center'} minH={'100vh'}>
+                <Component {...pageProps} />
+                <Spacer />
+                <Footer />
+            </Flex>
+
+            {/* analytics, scripts,... */}
+            <Analytics />
+        </ChakraProvider>
+    );
 }
 
 export default MyApp
