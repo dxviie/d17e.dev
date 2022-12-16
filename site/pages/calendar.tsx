@@ -1,9 +1,15 @@
 import type { NextPage } from 'next'
+import CalendarControls from "../components/CalendarControls";
+import CalendarCanvas from "../components/CalendarCanvas";
+import {Flex} from "@chakra-ui/react";
 
 const Calendar: NextPage = () => {
     return (
         <main>
-            so much empty...
+            <Flex>
+                <CalendarControls />
+                <CalendarCanvas />
+            </Flex>
         </main>
     )
 }
