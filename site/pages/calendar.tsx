@@ -6,7 +6,7 @@ import {Flex} from "@chakra-ui/react";
 const Calendar: NextPage = () => {
     return (
         <main>
-            <Flex>
+            <Flex direction={'column'}>
                 <CalendarControls />
                 <CalendarCanvas />
             </Flex>
