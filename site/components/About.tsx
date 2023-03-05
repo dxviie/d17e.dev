@@ -12,11 +12,11 @@ export default function About() {
                     <Text fontSize={'lg'}>
                         I used to build other people&apos;s dreams.<br/>Now I build my own.*
                         <br/><br/>
-                        I&apos;m excited! Are you?<br/> <Link href={'https://tally.so/r/npePpB'} color={'teal.500'} target={'_self'}>Drop your email</Link> and stay tuned.
+                        I&apos;m excited! Are you?<br/> <Link href={'https://tally.so/r/npePpB'} color={'teal.500'} target={'_self'} className={'umami--click--mailing-form'}>Drop your email</Link> and stay tuned.
                     </Text>
                     <Text mt={'3rem'} mb={'2rem'} fontSize={'sm'}>
                         *I still build stuff for others some of my time so if you have a project where you think I can make a
-                        difference, please do <Link href={'https://tally.so/r/mDqALj'} color={'teal.500'} target={'_self'}>get in touch</Link>.
+                        difference, please do <Link href={'https://tally.so/r/mDqALj'} color={'teal.500'} target={'_self'} className={'umami--click--contact-form'}>get in touch</Link>.
                     </Text>
                 </Box>
             </Flex>
