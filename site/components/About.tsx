@@ -1,4 +1,6 @@
 import {Box, Flex, Image, Link, Text} from "@chakra-ui/react";
+import { GetStaticProps } from 'next';
+import {ArticleApi} from "../api/client";
 
 export default function About() {
     return (
@@ -23,3 +25,22 @@ export default function About() {
         </>
     );
 }
+
+
+
+export const getStaticProps: GetStaticProps = async () => {
+    // Fetch data from an API or database
+    const data = await fetch('https://example.com/api/data').then(res => res.json());
+
+    const articleApi = new ArticleApi();
+    const articles = articleApi.getArticles({
+
+    });
+
+    console.log(articles);
+
+    // Return the data as props
+    return {
+        props: { data }
+    };
+};
