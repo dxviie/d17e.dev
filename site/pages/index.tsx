@@ -1,7 +1,7 @@
 import type {GetStaticProps, NextPage} from 'next'
 import About from "../components/About";
 import Script from "next/script"
-import {getAllArticles} from "../services/ContentApi";
+import {getAllArticles, getArticleById} from "../services/ContentApi";
 
 const Home: NextPage = () => {
 
@@ -20,6 +20,8 @@ export const getStaticProps: GetStaticProps = async () => {
     const data = await getAllArticles();
     console.log(data);
 
+    const articleDTO = await getArticleById("1");
+    console.log("aarrrt", articleDTO);
     // Return the data as props
     return {
         props: { data }

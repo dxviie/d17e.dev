@@ -1,27 +1,37 @@
 import {ArticleDTO, AuthorDTO, MediaDTO, TagDTO} from "./types";
 import {GraphQLClient} from "graphql-request";
 import {
-    ArticleEntity,
+    ArticleEntity, ArticleEntityResponse,
     ArticleEntityResponseCollection,
     AuthorEntity, Maybe, TagEntity,
     UploadFileEntity
 } from "../strapi/graphql/codegen/graphql";
-import {GET_ARTICLES_QUERY} from "../strapi/graphql/queries/articles";
+import {GET_ARTICLE_BY_ID, GET_ARTICLES_QUERY} from "../strapi/graphql/queries/articles";
 
 const API_ENDPOINT = 'https://strapi.d17e.dev/graphql';
 const graphQLClient = new GraphQLClient(API_ENDPOINT);
 const articlesFetcher = (query: string) => graphQLClient.request<{ articles: ArticleEntityResponseCollection}>(query);
+const articleFetcher = (query: string, id: string) => graphQLClient.request<{ article: ArticleEntityResponse}>(query, {id: id});
 
 export const getAllArticles = async (): Promise<ArticleDTO[]> => {
     const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
     if (!articlesRaw.articles || !articlesRaw.articles.data) {
-        return Promise.reject("No data available");
+        throw new Error("No data available");
     }
-    return Promise.all(articlesRaw.articles.data.map(mapArticle))
+    return articlesRaw.articles.data.map(mapArticle);
+}
+
+export const getArticleById = async (id: string): Promise<ArticleDTO> => {
+    const articleRaw = await articleFetcher(GET_ARTICLE_BY_ID, id);
+    if (!articleRaw.article || !articleRaw.article.data) {
+        throw new Error("No article available for id " + id);
+    }
+    return mapArticle(articleRaw.article.data);
 }
 
 const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     return {
+        id: articleRaw.id || "",
         title: articleRaw.attributes?.title || "",
         slug: articleRaw.attributes?.slug || "",
         body: articleRaw.attributes?.body || "",

@@ -15,6 +15,7 @@ export declare type AuthorDTO = {
 }
 
 export declare type ArticleDTO = {
+    id: string;
     title: string;
     slug: string;
     cover?: MediaDTO | undefined;
