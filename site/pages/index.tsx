@@ -1,21 +1,9 @@
 import type {GetStaticProps, NextPage} from 'next'
 import About from "../components/About";
-import Script from "next/script";
-// import useSWR from "swr";
-// import request, {GraphQLClient} from "graphql-request";
-// import {ArticleEntityResponseCollection} from "../api/graphql/graphql";
-// import {GET_ARTICLES_QUERY} from "../api/graphql/queries/articles";
-
-// const API_ENDPOINT = 'http://127.0.0.1:1337/graphql';
-// const graphQLClient = new GraphQLClient(API_ENDPOINT);
-//
-// const fetcher = (query: string) => graphQLClient.request<ArticleEntityResponseCollection>(query);
+import Script from "next/script"
+import {getAllArticles} from "../services/ContentApi";
 
 const Home: NextPage = () => {
-
-    // const {data, error} = useSWR(GET_ARTICLES_QUERY, fetcher);
-    //
-    // console.log(data, error, typeof data);
 
   return (
       <>
@@ -26,5 +14,16 @@ const Home: NextPage = () => {
       </>
   )
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+    // Fetch data from an API or database
+    const data = await getAllArticles();
+    console.log(data);
+
+    // Return the data as props
+    return {
+        props: { data }
+    };
+};
 
 export default Home
