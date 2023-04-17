@@ -33,6 +33,7 @@ export type Article = {
   body: Scalars['String'];
   cover?: Maybe<UploadFileEntityResponse>;
   createdAt?: Maybe<Scalars['DateTime']>;
+  description: Scalars['String'];
   gallery?: Maybe<UploadFileRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']>;
   slug: Scalars['String'];
@@ -74,6 +75,7 @@ export type ArticleFiltersInput = {
   author?: InputMaybe<AuthorFiltersInput>;
   body?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<ArticleFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
@@ -88,6 +90,7 @@ export type ArticleInput = {
   author?: InputMaybe<Scalars['ID']>;
   body?: InputMaybe<Scalars['String']>;
   cover?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   gallery?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']>;
   slug?: InputMaybe<Scalars['String']>;

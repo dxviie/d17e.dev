@@ -32,12 +32,13 @@ export const getArticleById = async (id: string): Promise<ArticleDTO> => {
 const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     return {
         id: articleRaw.id || "",
-        title: articleRaw.attributes?.title || "",
         slug: articleRaw.attributes?.slug || "",
+        title: articleRaw.attributes?.title || "",
+        description: articleRaw.attributes?.description || "",
         body: articleRaw.attributes?.body || "",
         author: mapAuthor(articleRaw.attributes?.author?.data),
         cover: mapMedia(articleRaw.attributes?.cover?.data),
-        gallery: mapGallery(articleRaw.attributes?.gallery?.data),
+        gallery: mapMedias(articleRaw.attributes?.gallery?.data),
         tags: mapTags(articleRaw.attributes?.tags?.data),
         createdAt: articleRaw.attributes?.createdAt || "",
         updatedAt: articleRaw.attributes?.updatedAt || "",
@@ -52,6 +53,11 @@ const mapAuthor = (authorRaw: Maybe<AuthorEntity> | undefined): AuthorDTO | unde
     };
 }
 
+const mapMedias = (galleryRaw: Maybe<UploadFileEntity[]> | undefined): (MediaDTO | undefined)[] => {
+    if (!galleryRaw) return [];
+    return galleryRaw.map(mapMedia);
+}
+
 const mapMedia = (mediaRaw: Maybe<UploadFileEntity> | undefined): MediaDTO | undefined => {
     if (!mediaRaw) return undefined;
     return {
@@ -59,11 +65,6 @@ const mapMedia = (mediaRaw: Maybe<UploadFileEntity> | undefined): MediaDTO | und
         name: mediaRaw.attributes?.name || "",
         url: mediaRaw.attributes?.url || ""
     }
-}
-
-const mapGallery = (galleryRaw: Maybe<UploadFileEntity[]> | undefined): (MediaDTO | undefined)[] => {
-    if (!galleryRaw) return [];
-    return galleryRaw.map(mapMedia);
 }
 
 const mapTags = (tagsRaw: Maybe<TagEntity[]> | undefined): (TagDTO | undefined)[] => {
