@@ -13,6 +13,7 @@ import Cover from "../../components/blog/Cover";
 import Title from "../../components/blog/Title";
 import { Stack } from "@chakra-ui/react";
 import PublishDetails from "../../components/blog/PublishDetails";
+import ReadingTime from "../../components/blog/ReadingTime";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
@@ -33,7 +34,9 @@ const Blog = (props: { article: ArticleDTO }) => {
         createdAt={article.createdAt}
         updatedAt={article.updatedAt}
         publishedAt={article.publishDtm}
-      ></PublishDetails>
+      >
+        <ReadingTime content={article.body}></ReadingTime>
+      </PublishDetails>
 
       <p>{article.description}</p>
       <ReactMarkdown>{article.body}</ReactMarkdown>

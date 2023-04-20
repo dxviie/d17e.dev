@@ -5,10 +5,12 @@ export default function PublishDetails({
   createdAt,
   updatedAt,
   publishedAt,
+  children,
 }: {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
+  children?: any;
 }) {
   return (
     <>
@@ -16,6 +18,7 @@ export default function PublishDetails({
         published{" "}
         {publishedAt ? formatDate(publishedAt) : formatDate(createdAt)}{" "}
         {updatedAt ? ", last edited " + formatDate(updatedAt) : ""}
+        {children}
       </Text>
     </>
   );
