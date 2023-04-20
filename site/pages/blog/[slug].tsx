@@ -23,7 +23,9 @@ const Blog = (props: { article: ArticleDTO; }) => {
             <h2>{article.slug}</h2>
             <h2>created: {article.createdAt}, updated: {article.updatedAt}, published: {article.publishDtm}</h2>
             <p>{article.description}</p>
-            <ReactMarkdown children={article.body}/>
+            <ReactMarkdown>
+                {article.body}
+            </ReactMarkdown>
             <div>
                 <h3>Tags</h3>
                 <ul>
