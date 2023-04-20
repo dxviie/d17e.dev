@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import {ChakraProvider, Flex, Spacer} from '@chakra-ui/react'
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
-import Footer from "../components/structure/Footer";
+import Footer from "../components/layout/Footer";
 import {RecoilRoot} from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {

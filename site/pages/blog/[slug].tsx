@@ -5,6 +5,7 @@ import {ParsedUrlQuery} from "querystring";
 import {ArticleDTO} from "../../services/types";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
+import Cover from "../../components/blog/Cover";
 
 const Blog = (props: { article: ArticleDTO; }) => {
     const article = props.article as ArticleDTO;
@@ -16,10 +17,8 @@ const Blog = (props: { article: ArticleDTO; }) => {
 
     return (
         <div>
+            <Cover cover={article.cover}></Cover>
             <h1>{article.title}</h1>
-            <div>
-                <Image src={article.cover.url} alt={article.cover.alternativeText} width={1200} height={630} loader={imageLoader} objectFit={"cover"}/>
-            </div>
             <h2>{article.slug}</h2>
             <h2>created: {article.createdAt}, updated: {article.updatedAt}, published: {article.publishDtm}</h2>
             <p>{article.description}</p>
