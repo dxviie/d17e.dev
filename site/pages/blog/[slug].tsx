@@ -43,6 +43,7 @@ const Blog = (props: { article: ArticleDTO; }) => {
                 <h3>Gallery</h3>
                 {article.gallery.map(image => (
                     <Image
+                        key={image.url}
                         loader={imageLoader}
                         src={image.url} width={100} height={100} alt={image.alternativeText} />
                 ))}
