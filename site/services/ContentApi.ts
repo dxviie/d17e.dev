@@ -1,4 +1,4 @@
-import { ArticleDTO, AuthorDTO, MediaDTO, TagDTO } from "./types";
+import { ArticleDTO, AuthorDTO, MediaDTO, TagDTO } from "./ContentTypes";
 import { GraphQLClient } from "graphql-request";
 import {
   ArticleEntity,

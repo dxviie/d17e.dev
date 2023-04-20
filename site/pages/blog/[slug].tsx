@@ -6,7 +6,7 @@ import {
   imageLoader,
 } from "../../services/ContentApi";
 import { ParsedUrlQuery } from "querystring";
-import { ArticleDTO } from "../../services/types";
+import { ArticleDTO } from "../../services/ContentTypes";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import Cover from "../../components/blog/Cover";

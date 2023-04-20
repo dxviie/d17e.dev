@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { getAllArticles } from "../../services/ContentApi";
 import Link from "next/link";
-import { ArticleDTO } from "../../services/types";
+import { ArticleDTO } from "../../services/ContentTypes";
 import { useRouter } from "next/router";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {
