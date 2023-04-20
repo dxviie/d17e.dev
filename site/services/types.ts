@@ -11,19 +11,20 @@ export declare type TagDTO = {
 
 export declare type AuthorDTO = {
     name: string;
-    avatar: MediaDTO | undefined;
+    avatar: MediaDTO;
 }
 
 export declare type ArticleDTO = {
     id: string;
+    slug: string;
     title: string;
     description: string;
-    slug: string;
-    cover?: MediaDTO | undefined;
     body: string;
-    gallery?: (MediaDTO | undefined)[];
-    tags?: (TagDTO | undefined)[];
-    author?: AuthorDTO | undefined;
+    cover: MediaDTO;
+    gallery: (MediaDTO)[];
+    tags: (TagDTO)[];
+    author: AuthorDTO;
     createdAt: string;
     updatedAt: string;
+    publishDtm: string;
 };

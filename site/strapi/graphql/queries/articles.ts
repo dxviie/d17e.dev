@@ -13,6 +13,7 @@ export const GET_ARTICLES_QUERY = gql`
                     cover { data { attributes {
                         name, alternativeText, url
                     }}},
+                    description,
                     body,
                     gallery { data { attributes {
                         name, alternativeText, url
@@ -26,7 +27,8 @@ export const GET_ARTICLES_QUERY = gql`
                             url
                         }}}}}},
                     createdAt,
-                    updatedAt
+                    updatedAt,
+                    publishDtm
                 }
             }
         }
@@ -44,6 +46,7 @@ export const GET_ARTICLE_BY_ID = gql`
                     cover { data { attributes {
                         name, alternativeText, url
                     }}},
+                    description,
                     body,
                     gallery { data { attributes {
                         name, alternativeText, url
@@ -57,7 +60,41 @@ export const GET_ARTICLE_BY_ID = gql`
                             url
                         }}}}}},
                     createdAt,
-                    updatedAt
+                    updatedAt,
+                    publishDtm
+                }
+            }
+        }
+    }
+`;
+
+export const GET_ARTICLE_BY_SLUG = gql`
+    query GetArticleBySlug($slug: String!) {
+        articles (filters: {slug: {eq: $slug}}) {
+            data {
+                id,
+                attributes {
+                    title,
+                    slug,
+                    cover { data { attributes {
+                        name, alternativeText, url
+                    }}},
+                    description,
+                    body,
+                    gallery { data { attributes {
+                        name, alternativeText, url
+                    }}},
+                    tags { data { attributes {
+                        name, color
+                    }}},
+                    author { data { attributes {
+                        name,
+                        avatar { data { attributes {
+                            url
+                        }}}}}},
+                    createdAt,
+                    updatedAt,
+                    publishDtm
                 }
             }
         }
