@@ -5,6 +5,7 @@ export declare type MediaDTO = {
   name: string;
   alternativeText: string;
   url: string;
+  blurhash: string;
 };
 
 export declare type TagDTO = {
@@ -47,6 +48,7 @@ export const defaultMedia = (): MediaDTO => {
     alternativeText: "",
     name: "",
     url: "",
+    blurhash: "",
   };
 };
 

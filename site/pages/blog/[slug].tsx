@@ -1,6 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import {
+  formatBlurhash,
   getAllArticles,
   getArticleBySlug,
   imageLoader,
@@ -24,17 +25,9 @@ const Blog = (props: { article: ArticleDTO }) => {
 
   return (
     <Stack>
-      <ArticleCover
-        url={article.cover.url}
-        alternativeText={article.cover.alternativeText}
-      ></ArticleCover>
-      <ArticleTitle title={article.title}></ArticleTitle>
-      <ArticleDetails
-        createdAt={article.createdAt}
-        updatedAt={article.updatedAt}
-        publishedAt={article.publishDtm}
-        content={article.body}
-      ></ArticleDetails>
+      <ArticleCover article={article}></ArticleCover>
+      <ArticleTitle article={article}></ArticleTitle>
+      <ArticleDetails article={article}></ArticleDetails>
 
       <p>{article.description}</p>
       <ReactMarkdown>{article.body}</ReactMarkdown>
@@ -55,6 +48,8 @@ const Blog = (props: { article: ArticleDTO }) => {
           width={100}
           height={100}
           alt={article.author.avatar.alternativeText}
+          placeholder={"blur"}
+          blurDataURL={formatBlurhash(article.author.avatar.blurhash)}
         />
       </div>
       <div>

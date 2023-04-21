@@ -3,27 +3,26 @@ import {
   formatPublishedDetails,
   formatReadingTime,
 } from "../../services/ContentDetailFormatter";
+import { ArticleDTO } from "../../services/ContentTypes";
 
-export default function ArticleDetails({
-  createdAt,
-  updatedAt,
-  publishedAt,
-  content,
-}: {
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  content: string;
-}) {
+export default function ArticleDetails({ article }: { article: ArticleDTO }) {
+  if (!article) {
+    // don't try to render missing article
+    return <></>;
+  }
   return (
     <>
       <HStack>
         <Text fontWeight={"bold"} fontSize={"small"}>
-          {formatReadingTime(content)}
+          {formatReadingTime(article.body)}
         </Text>
         <Text fontStyle={"italic"} fontSize={"small"}>
           {" - "}
-          {formatPublishedDetails(createdAt, updatedAt, publishedAt)}
+          {formatPublishedDetails(
+            article.createdAt,
+            article.updatedAt,
+            article.publishDtm
+          )}
         </Text>
       </HStack>
     </>

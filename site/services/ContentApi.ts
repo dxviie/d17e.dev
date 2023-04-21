@@ -27,7 +27,7 @@ import { ID } from "graphql-ws";
 import { CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT } from "./Constants";
 
 /*****************************************************************
- * NextJS image loader for strapi-hosted resources
+ * NextJS image loader for strapi-hosted resources & blurhash formatter
  *****************************************************************/
 export const imageLoader = ({
   src,
@@ -57,6 +57,10 @@ export const imageLoader = ({
     filePath = path + "/" + sizePrefix + file;
   }
   return `${CONTENT_BASE_URL}${filePath}`;
+};
+
+export const formatBlurhash = (blurhash: string): string => {
+  return `data:image/png;base64,${blurhash}`;
 };
 
 /*****************************************************************
@@ -151,6 +155,7 @@ const mapMedia = (mediaRaw: Maybe<UploadFileEntity> | undefined): MediaDTO => {
     alternativeText: mediaRaw.attributes?.alternativeText || "",
     name: mediaRaw.attributes?.name || "",
     url: mediaRaw.attributes?.url || "",
+    blurhash: mediaRaw.attributes?.blurhash || "",
   };
 };
 

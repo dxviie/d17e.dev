@@ -1,15 +1,10 @@
 import Image from "next/image";
-import { imageLoader } from "../../services/ContentApi";
+import { formatBlurhash, imageLoader } from "../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
+import { ArticleDTO } from "../../services/ContentTypes";
 
-export default function ArticleCover({
-  url,
-  alternativeText,
-}: {
-  url: string;
-  alternativeText: string;
-}) {
-  if (!url) {
+export default function ArticleCover({ article }: { article: ArticleDTO }) {
+  if (!article || !article.cover || !article.cover.url) {
     // don't try to render non-images
     return <></>;
   }
@@ -17,11 +12,13 @@ export default function ArticleCover({
     <>
       <Box width={"100%"} height={"20rem"} position={"relative"}>
         <Image
-          src={url}
-          alt={alternativeText}
+          src={article.cover.url}
+          alt={article.cover.alternativeText}
           loader={imageLoader}
           layout={"fill"}
           objectFit={"contain"}
+          placeholder={"blur"}
+          blurDataURL={formatBlurhash(article.cover.blurhash)}
         ></Image>
       </Box>
     </>
