@@ -1,7 +1,6 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import {
-  blurhashToBase64,
   getAllArticles,
   getArticleBySlug,
   imageLoader,
@@ -14,6 +13,7 @@ import ArticleCover from "../../components/blog/ArticleCover";
 import ArticleTitle from "../../components/blog/ArticleTitle";
 import { Stack } from "@chakra-ui/react";
 import ArticleDetails from "../../components/blog/ArticleDetails";
+import useBlurData from "use-next-blurhash";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
@@ -23,6 +23,7 @@ const Blog = (props: { article: ArticleDTO }) => {
     return <div>Loading...</div>;
   }
 
+  const blurData = useBlurData(article.author.avatar.blurhash);
   return (
     <Stack>
       <ArticleCover article={article}></ArticleCover>
@@ -49,7 +50,7 @@ const Blog = (props: { article: ArticleDTO }) => {
           height={100}
           alt={article.author.avatar.alternativeText}
           placeholder={"blur"}
-          blurDataURL={blurhashToBase64(article.author.avatar.blurhash)}
+          blurDataURL={blurData[0]}
         />
       </div>
       <div>

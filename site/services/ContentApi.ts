@@ -25,8 +25,6 @@ import {
 } from "../strapi/graphql/queries/articles";
 import { ID } from "graphql-ws";
 import { CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT } from "./Constants";
-import { decode } from "blurhash";
-import { createCanvas } from "canvas";
 
 /*****************************************************************
  * NextJS image loader for strapi-hosted resources & blurhash formatter
@@ -59,17 +57,6 @@ export const imageLoader = ({
     filePath = path + "/" + sizePrefix + file;
   }
   return `${CONTENT_BASE_URL}${filePath}`;
-};
-
-export const blurhashToBase64 = (blurhash: string): string => {
-  const dimension = 10;
-  const pixels = decode(blurhash, dimension, dimension);
-  const canvas = createCanvas(dimension, dimension);
-  const context = canvas.getContext("2d");
-  const imageData = context.createImageData(dimension, dimension);
-  imageData.data.set(pixels);
-  context.putImageData(imageData, 0, 0);
-  return canvas.toDataURL("image/png");
 };
 
 /*****************************************************************
