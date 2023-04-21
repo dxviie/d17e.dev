@@ -5,11 +5,11 @@ import { ArticleDTO } from "../../services/ContentTypes";
 import useBlurData from "use-next-blurhash";
 
 export default function ArticleCover({ article }: { article: ArticleDTO }) {
+  const blurData = useBlurData(article.cover.blurhash);
   if (!article || !article.cover || !article.cover.url) {
     // don't try to render non-images
     return <></>;
   }
-  const blurData = useBlurData(article.cover.blurhash);
   return (
     <>
       <Box width={"100%"} height={"20rem"} position={"relative"}>

@@ -18,12 +18,10 @@ import useBlurData from "use-next-blurhash";
 const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
   const router = useRouter();
-
+  const blurData = useBlurData(article.author.avatar.blurhash);
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
-
-  const blurData = useBlurData(article.author.avatar.blurhash);
   return (
     <Stack>
       <ArticleCover article={article}></ArticleCover>
