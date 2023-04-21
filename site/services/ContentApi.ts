@@ -1,4 +1,13 @@
-import { ArticleDTO, AuthorDTO, MediaDTO, TagDTO } from "./ContentTypes";
+import {
+  ArticleDTO,
+  AuthorDTO,
+  defaultArticle,
+  defaultAuthor,
+  defaultMedia,
+  defaultTag,
+  MediaDTO,
+  TagDTO,
+} from "./ContentTypes";
 import { GraphQLClient } from "graphql-request";
 import {
   ArticleEntity,
@@ -15,18 +24,11 @@ import {
   GET_ARTICLES_QUERY,
 } from "../strapi/graphql/queries/articles";
 import { ID } from "graphql-ws";
+import { CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT } from "./Constants";
 
-const API_ENDPOINT = "https://strapi.d17e.dev/graphql";
-const graphQLClient = new GraphQLClient(API_ENDPOINT);
-const articlesFetcher = (query: string) =>
-  graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query);
-const articleByIdFetcher = (query: string, id: ID) =>
-  graphQLClient.request<{ article: ArticleEntityResponse }>(query, { id: id });
-const articleBySlugFetcher = (query: string, slug: string) =>
-  graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
-    slug: slug,
-  });
-
+/*****************************************************************
+ * NextJS image loader for strapi-hosted resources
+ *****************************************************************/
 export const imageLoader = ({
   src,
   width,
@@ -36,11 +38,43 @@ export const imageLoader = ({
   width: number;
   quality?: number;
 }): string => {
-  console.debug("Unused parameters width: ", width, ", quality: ", quality);
-  const normalizedSrc = src.startsWith("/") ? src : "/" + src;
-  return `https://strapi.d17e.dev${normalizedSrc}`; // ?w=${width || 100}&q=${quality || 75}
+  console.debug("unused parameter quality: ", quality);
+  let filePath = src.startsWith("/")
+    ? src.toLowerCase()
+    : "/" + src.toLowerCase();
+  if (filePath.endsWith(".jpg") || filePath.endsWith(".png")) {
+    const sizePrefix =
+      width <= 155
+        ? "thumbnail_"
+        : width <= 500
+        ? "small_"
+        : width <= 750
+        ? "medium_"
+        : "";
+    const lastPathIndex = filePath.lastIndexOf("/");
+    const path = filePath.slice(0, lastPathIndex);
+    const file = filePath.slice(lastPathIndex + 1);
+    filePath = path + "/" + sizePrefix + file;
+  }
+  return `${CONTENT_BASE_URL}${filePath}`;
 };
 
+/*****************************************************************
+ * GraphQL client & fetchers
+ *****************************************************************/
+const graphQLClient = new GraphQLClient(GRAPHQL_API_ENDPOINT);
+const articlesFetcher = (query: string) =>
+  graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query);
+const articleByIdFetcher = (query: string, id: ID) =>
+  graphQLClient.request<{ article: ArticleEntityResponse }>(query, { id: id });
+const articleBySlugFetcher = (query: string, slug: string) =>
+  graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
+    slug: slug,
+  });
+
+/******************************************************************
+ * Content APIs -- Articles
+ *****************************************************************/
 export const getAllArticles = async (): Promise<ArticleDTO[]> => {
   try {
     const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
@@ -76,6 +110,9 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
   return mapArticle(articleRaw.articles.data[0]);
 };
 
+/*****************************************************************
+ * Object mappers
+ *****************************************************************/
 const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
   return {
     id: articleRaw.id || "",
@@ -127,44 +164,5 @@ const mapTag = (tagRaw: Maybe<TagEntity> | undefined): TagDTO => {
   return {
     color: tagRaw.attributes?.color || "",
     name: tagRaw.attributes?.name || "",
-  };
-};
-
-const defaultTag = (): TagDTO => {
-  return {
-    color: "",
-    name: "",
-  };
-};
-
-const defaultMedia = (): MediaDTO => {
-  return {
-    alternativeText: "",
-    name: "",
-    url: "",
-  };
-};
-
-const defaultAuthor = (): AuthorDTO => {
-  return {
-    avatar: defaultMedia(),
-    name: "",
-  };
-};
-
-const defaultArticle = (): ArticleDTO => {
-  return {
-    id: "",
-    slug: "",
-    title: "",
-    description: "",
-    body: "",
-    author: defaultAuthor(),
-    cover: defaultMedia(),
-    gallery: [],
-    tags: [],
-    createdAt: "",
-    updatedAt: "",
-    publishDtm: "",
   };
 };

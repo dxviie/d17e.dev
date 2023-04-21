@@ -9,11 +9,10 @@ import { ParsedUrlQuery } from "querystring";
 import { ArticleDTO } from "../../services/ContentTypes";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import Cover from "../../components/blog/Cover";
-import Title from "../../components/blog/Title";
+import ArticleCover from "../../components/blog/ArticleCover";
+import ArticleTitle from "../../components/blog/ArticleTitle";
 import { Stack } from "@chakra-ui/react";
-import PublishDetails from "../../components/blog/PublishDetails";
-import ReadingTime from "../../components/blog/ReadingTime";
+import ArticleDetails from "../../components/blog/ArticleDetails";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
@@ -25,18 +24,17 @@ const Blog = (props: { article: ArticleDTO }) => {
 
   return (
     <Stack>
-      <Cover
+      <ArticleCover
         url={article.cover.url}
         alternativeText={article.cover.alternativeText}
-      ></Cover>
-      <Title title={article.title}></Title>
-      <PublishDetails
+      ></ArticleCover>
+      <ArticleTitle title={article.title}></ArticleTitle>
+      <ArticleDetails
         createdAt={article.createdAt}
         updatedAt={article.updatedAt}
         publishedAt={article.publishDtm}
-      >
-        <ReadingTime content={article.body}></ReadingTime>
-      </PublishDetails>
+        content={article.body}
+      ></ArticleDetails>
 
       <p>{article.description}</p>
       <ReactMarkdown>{article.body}</ReactMarkdown>

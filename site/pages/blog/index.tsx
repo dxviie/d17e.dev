@@ -1,8 +1,8 @@
 import { GetStaticProps } from "next";
 import { getAllArticles } from "../../services/ContentApi";
-import Link from "next/link";
 import { ArticleDTO } from "../../services/ContentTypes";
 import { useRouter } from "next/router";
+import ArticleCard from "../../components/blog/ArticleCard";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {
   const articles = props.articles as ArticleDTO[];
@@ -15,9 +15,7 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
   return (
     <>
       {articles.map((article) => (
-        <Link key={article.slug} href={"blog/" + article.slug}>
-          {article.title + "-->"}
-        </Link>
+        <ArticleCard key={article.slug} article={article}></ArticleCard>
       ))}
     </>
   );

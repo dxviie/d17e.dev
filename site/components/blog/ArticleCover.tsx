@@ -2,7 +2,7 @@ import Image from "next/image";
 import { imageLoader } from "../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
 
-export default function Cover({
+export default function ArticleCover({
   url,
   alternativeText,
 }: {
