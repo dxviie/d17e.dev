@@ -10,16 +10,16 @@ export default function Navigation() {
       {"/" === router.asPath ? (
         <></>
       ) : (
-        <Button>
-          <Link href={"/"}>home</Link>
-        </Button>
+        <Link href={"/"}>
+          <Button>home</Button>
+        </Link>
       )}
       {"/blog" === router.asPath ? (
         <></>
       ) : (
-        <Button>
-          <Link href={"/blog"}>blog</Link>
-        </Button>
+        <Link href={"/blog"}>
+          <Button>blog</Button>
+        </Link>
       )}
       <ColorModeToggle></ColorModeToggle>
     </>

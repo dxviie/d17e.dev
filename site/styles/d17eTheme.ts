@@ -12,8 +12,8 @@ const styles = {
     body: {
       fontFamily: "body",
       color: mode("gray.800", "whiteAlpha.900")(props),
-      bg: mode("gray.200", "blue.800")(props),
-      lineHeight: "base",
+      bg: mode("gray.200", "gray.700")(props),
+      lineHeight: "1.5",
     },
     "*::placeholder": {
       // color: mode("gray.400", "whiteAlpha.400")(props),
