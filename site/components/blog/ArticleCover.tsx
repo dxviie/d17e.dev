@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { formatBlurhash, imageLoader } from "../../services/ContentApi";
+import { blurhashToBase64, imageLoader } from "../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
 import { ArticleDTO } from "../../services/ContentTypes";
 
@@ -18,7 +18,7 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
           layout={"fill"}
           objectFit={"contain"}
           placeholder={"blur"}
-          blurDataURL={formatBlurhash(article.cover.blurhash)}
+          blurDataURL={blurhashToBase64(article.cover.blurhash)}
         ></Image>
       </Box>
     </>

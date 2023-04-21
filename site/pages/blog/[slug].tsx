@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import { useRouter } from "next/router";
 import {
-  formatBlurhash,
+  blurhashToBase64,
   getAllArticles,
   getArticleBySlug,
   imageLoader,
@@ -49,7 +49,7 @@ const Blog = (props: { article: ArticleDTO }) => {
           height={100}
           alt={article.author.avatar.alternativeText}
           placeholder={"blur"}
-          blurDataURL={formatBlurhash(article.author.avatar.blurhash)}
+          blurDataURL={blurhashToBase64(article.author.avatar.blurhash)}
         />
       </div>
       <div>
