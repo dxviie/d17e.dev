@@ -13,12 +13,11 @@ import ArticleCover from "../../components/blog/ArticleCover";
 import ArticleTitle from "../../components/blog/ArticleTitle";
 import { Stack } from "@chakra-ui/react";
 import ArticleDetails from "../../components/blog/ArticleDetails";
-import useBlurData from "use-next-blurhash";
+import blurHashToDataURL from "../../services/BlurHashTransformer";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
   const router = useRouter();
-  const blurData = useBlurData(article.author.avatar.blurhash);
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
@@ -48,7 +47,7 @@ const Blog = (props: { article: ArticleDTO }) => {
           height={100}
           alt={article.author.avatar.alternativeText}
           placeholder={"blur"}
-          blurDataURL={blurData[0]}
+          blurDataURL={blurHashToDataURL(article.author.avatar.blurhash)}
         />
       </div>
       <div>

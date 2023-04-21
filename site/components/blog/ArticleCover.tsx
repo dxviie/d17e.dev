@@ -2,10 +2,9 @@ import Image from "next/image";
 import { imageLoader } from "../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
 import { ArticleDTO } from "../../services/ContentTypes";
-import useBlurData from "use-next-blurhash";
+import blurHashToDataURL from "../../services/BlurHashTransformer";
 
 export default function ArticleCover({ article }: { article: ArticleDTO }) {
-  const blurData = useBlurData(article.cover.blurhash);
   if (!article || !article.cover || !article.cover.url) {
     // don't try to render non-images
     return <></>;
@@ -20,7 +19,7 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
           layout={"fill"}
           objectFit={"contain"}
           placeholder={"blur"}
-          blurDataURL={blurData[0]}
+          blurDataURL={blurHashToDataURL(article.cover.blurhash)}
         ></Image>
       </Box>
     </>
