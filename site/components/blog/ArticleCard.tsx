@@ -12,6 +12,8 @@ import {
 import Link from "next/link";
 import { imageLoader } from "../../services/ContentApi";
 import blurHashToDataURL from "../../services/BlurHashTransformer";
+import { formatReadingTime } from "../../services/ContentDetailFormatter";
+import { formatDate } from "../../services/DateTimeFormatter";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const bgColor = useColorModeValue("gray.100", "gray.700");
@@ -25,10 +27,10 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           bg={bgColor}
           className={"floating-card"}
           sx={{
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)",
             transition: "box-shadow 0.2s ease-in-out",
             _hover: {
-              boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.3)",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)",
             },
           }}
         >
@@ -47,8 +49,16 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           </CardHeader>
           <CardBody>
             <Stack spacing="3">
-              <Heading size="md">{article.title}</Heading>
-              <Text>{article.description}</Text>
+              <Heading size="md">
+                {article.title}
+                <Text fontSize={"x-small"}>
+                  {formatReadingTime(article.body)}
+                </Text>
+              </Heading>
+              <Text noOfLines={3}>{article.description}</Text>
+              <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>
+                {formatDate(article.publishDtm || article.createdAt)}
+              </Text>
             </Stack>
           </CardBody>
         </Card>

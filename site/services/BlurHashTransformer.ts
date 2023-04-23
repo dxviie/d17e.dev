@@ -7,6 +7,10 @@ export default function blurHashToDataURL(
   height: number = 10,
   punch?: number
 ): string {
+  if (!hash || hash.length < 6) {
+    console.error("Invalid hash", hash);
+    hash = "L6PZfSi_.AyE_3t7t7R**0o#DgR4";
+  }
   const pixels = decode(hash, width, height, punch);
   return parsePixels(pixels, width, height);
 }
