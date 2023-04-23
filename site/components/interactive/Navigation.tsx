@@ -4,14 +4,13 @@ import { useRouter } from "next/router";
 
 export default function Navigation() {
   const router = useRouter();
-  console.log(router.asPath, router.basePath);
   return (
     <>
       {"/" === router.asPath ? (
         <></>
       ) : (
         <Link href={"/"}>
-          <Button>home</Button>
+          <Button variant={"outline"}>home</Button>
         </Link>
       )}
       {"/blog" === router.asPath ? (

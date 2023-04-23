@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import {
   getAllArticles,
@@ -10,9 +10,9 @@ import { ArticleDTO } from "../../services/ContentTypes";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import ArticleCover from "../../components/blog/ArticleCover";
-import ArticleTitle from "../../components/blog/ArticleTitle";
+import ArticleHeader from "../../components/blog/ArticleHeader";
 import { Stack } from "@chakra-ui/react";
-import ArticleDetails from "../../components/blog/ArticleDetails";
+import ArticleFooter from "../../components/blog/ArticleFooter";
 import blurHashToDataURL from "../../services/BlurHashTransformer";
 
 const Blog = (props: { article: ArticleDTO }) => {
@@ -24,8 +24,7 @@ const Blog = (props: { article: ArticleDTO }) => {
   return (
     <Stack>
       <ArticleCover article={article}></ArticleCover>
-      <ArticleTitle article={article}></ArticleTitle>
-      <ArticleDetails article={article}></ArticleDetails>
+      <ArticleHeader article={article}></ArticleHeader>
 
       <p>{article.description}</p>
       <ReactMarkdown>{article.body}</ReactMarkdown>
@@ -50,19 +49,7 @@ const Blog = (props: { article: ArticleDTO }) => {
           blurDataURL={blurHashToDataURL(article.author.avatar.blurhash)}
         />
       </div>
-      <div>
-        <h3>Gallery</h3>
-        {article.gallery.map((image) => (
-          <Image
-            key={image.url}
-            loader={imageLoader}
-            src={image.url}
-            width={100}
-            height={100}
-            alt={image.alternativeText}
-          />
-        ))}
-      </div>
+      <ArticleFooter article={article}></ArticleFooter>
     </Stack>
   );
 };

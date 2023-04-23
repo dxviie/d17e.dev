@@ -17,7 +17,7 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
           alt={article.cover.alternativeText}
           loader={imageLoader}
           layout={"fill"}
-          objectFit={"contain"}
+          objectFit={"cover"}
           placeholder={"blur"}
           blurDataURL={blurHashToDataURL(article.cover.blurhash)}
         ></Image>
