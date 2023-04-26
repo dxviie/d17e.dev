@@ -21,6 +21,9 @@ const Blog = (props: { article: ArticleDTO }) => {
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
+  if (!article.slug) {
+    router.push("/404");
+  }
   return (
     <Stack>
       <ArticleCover article={article}></ArticleCover>

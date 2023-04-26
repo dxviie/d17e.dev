@@ -33,6 +33,17 @@ export declare type ArticleDTO = {
   publishDtm: string;
 };
 
+export declare type PostDTO = {
+  id: string;
+  slug: string;
+  title: string;
+  link: string;
+  author: AuthorDTO;
+  message: string;
+  content: MediaDTO;
+  createdAt: string;
+};
+
 /******************************************************************
  * Default DTOs
  *****************************************************************/
@@ -73,5 +84,18 @@ export const defaultArticle = (): ArticleDTO => {
     createdAt: "",
     updatedAt: "",
     publishDtm: "",
+  };
+};
+
+export const defaultPost = (): PostDTO => {
+  return {
+    id: "",
+    slug: "",
+    title: "",
+    link: "",
+    author: defaultAuthor(),
+    message: "",
+    content: defaultMedia(),
+    createdAt: "",
   };
 };

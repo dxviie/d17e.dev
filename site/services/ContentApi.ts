@@ -4,8 +4,10 @@ import {
   defaultArticle,
   defaultAuthor,
   defaultMedia,
+  defaultPost,
   defaultTag,
   MediaDTO,
+  PostDTO,
   TagDTO,
 } from "./ContentTypes";
 import { GraphQLClient } from "graphql-request";
@@ -15,6 +17,8 @@ import {
   ArticleEntityResponseCollection,
   AuthorEntity,
   Maybe,
+  PostEntity,
+  PostEntityResponseCollection,
   TagEntity,
   UploadFileEntity,
 } from "../strapi/graphql/codegen/graphql";
@@ -25,6 +29,10 @@ import {
 } from "../strapi/graphql/queries/articles";
 import { ID } from "graphql-ws";
 import { CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT } from "./Constants";
+import {
+  GET_POST_BY_SLUG,
+  GET_POSTS_QUERY,
+} from "../strapi/graphql/queries/posts";
 
 /*****************************************************************
  * NextJS image loader for strapi-hosted resources & blurhash formatter
@@ -71,7 +79,12 @@ const articleBySlugFetcher = (query: string, slug: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
     slug: slug,
   });
-
+const postsFetcher = (query: string) =>
+  graphQLClient.request<{ posts: PostEntityResponseCollection }>(query);
+const postBySlugFetcher = (query: string, slug: string) =>
+  graphQLClient.request<{ posts: PostEntityResponseCollection }>(query, {
+    slug: slug,
+  });
 /******************************************************************
  * Content APIs -- Articles
  *****************************************************************/
@@ -104,10 +117,41 @@ export const getArticleById = async (id: ID): Promise<ArticleDTO> => {
 
 export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
   const articleRaw = await articleBySlugFetcher(GET_ARTICLE_BY_SLUG, slug);
-  if (!articleRaw.articles || !articleRaw.articles.data) {
-    throw new Error("No article available for slug " + slug);
+  if (
+    !articleRaw.articles ||
+    !articleRaw.articles.data ||
+    !articleRaw.articles.data[0]
+  ) {
+    console.error("No article available for slug ", slug);
+    return Promise.resolve(defaultArticle());
   }
   return mapArticle(articleRaw.articles.data[0]);
+};
+
+/******************************************************************
+ * Content APIs -- Articles
+ *****************************************************************/
+
+export const getAllPosts = async (): Promise<PostDTO[]> => {
+  try {
+    const postsRaw = await postsFetcher(GET_POSTS_QUERY);
+    if (!postsRaw.posts || !postsRaw.posts.data) {
+      console.error("Fetching posts returned nothing...");
+    }
+    return postsRaw.posts.data.map(mapPost);
+  } catch (e) {
+    console.error("Problem fetching articles: " + e);
+    return [];
+  }
+};
+
+export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
+  const postRaw = await postBySlugFetcher(GET_POST_BY_SLUG, slug);
+  if (!postRaw.posts || !postRaw.posts.data || !postRaw.posts.data[0]) {
+    console.error("No post available for slug ", slug);
+    return Promise.resolve(defaultPost());
+  }
+  return mapPost(postRaw.posts.data[0]);
 };
 
 /*****************************************************************
@@ -127,6 +171,19 @@ const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     createdAt: articleRaw.attributes?.createdAt,
     updatedAt: articleRaw.attributes?.updatedAt,
     publishDtm: articleRaw.attributes?.publishDtm,
+  };
+};
+
+const mapPost = (postRaw: PostEntity): PostDTO => {
+  return {
+    id: postRaw.id || "",
+    slug: postRaw.attributes?.slug || "",
+    title: postRaw.attributes?.title || "",
+    message: postRaw.attributes?.message || "",
+    link: postRaw.attributes?.link || "",
+    author: mapAuthor(postRaw.attributes?.author?.data),
+    createdAt: postRaw.attributes?.createdAt,
+    content: mapMedia(postRaw.attributes?.content?.data),
   };
 };
 

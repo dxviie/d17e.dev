@@ -312,6 +312,7 @@ type TagRelationResponseCollection {
 
 type UploadFile {
     alternativeText: String
+    blurhash: String
     caption: String
     createdAt: DateTime
     ext: String
@@ -845,6 +846,7 @@ input TagInput {
 input UploadFileFiltersInput {
     alternativeText: StringFilterInput
     and: [UploadFileFiltersInput]
+    blurhash: StringFilterInput
     caption: StringFilterInput
     createdAt: DateTimeFilterInput
     ext: StringFilterInput
@@ -869,6 +871,7 @@ input UploadFileFiltersInput {
 
 input UploadFileInput {
     alternativeText: String
+    blurhash: String
     caption: String
     ext: String
     folder: ID

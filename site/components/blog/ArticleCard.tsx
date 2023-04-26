@@ -19,7 +19,10 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const bgColor = useColorModeValue("gray.100", "gray.700");
   return (
     <>
-      <Link key={article.slug} href={"/blog/" + article.slug}>
+      <Link
+        key={article.slug}
+        href={"/blog/" + encodeURIComponent(article.slug)}
+      >
         <Card
           maxW="sm"
           cursor={"pointer"}
@@ -35,7 +38,6 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           }}
         >
           <CardHeader position={"relative"}>
-            {/*<Box position={"relative"} width={"100%"} height={"3rem"}>*/}
             <Image
               src={article.cover.url}
               alt={article.cover.alternativeText}
@@ -45,7 +47,6 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               placeholder={"blur"}
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}
             ></Image>
-            {/*</Box>*/}
           </CardHeader>
           <CardBody>
             <Stack spacing="3">
