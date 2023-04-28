@@ -1,4 +1,5 @@
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react";
+import { bodyFont } from "../styles/fonts";
 
 export default function About() {
   return (
@@ -10,15 +11,21 @@ export default function About() {
         src={"d17e.dev-logo.svg"}
         alt={"d17e.dev logo"}
       ></Image>
-      <Flex direction={"column"} align={"center"}>
+      <Flex
+        direction={"column"}
+        align={"center"}
+        fontFamily={bodyFont.style.fontFamily}
+      >
         <Text
           fontSize={"xx-large"}
           borderBottomWidth={"1px"}
           borderBottomColor={"black"}
+          // fontFamily={headerFont.style.fontFamily}
+          // fontWeight={"bold"}
         >
           code. art. ideas.
         </Text>
-        <Box mt={"2rem"} textAlign={"center"} maxWidth={"20rem"}>
+        <Box mt={"2rem"} textAlign={"center"} maxWidth={"22rem"}>
           <Text fontSize={"lg"}>
             I used to build other people&apos;s dreams.
             <br />

@@ -1,21 +1,25 @@
 import { ArticleDTO } from "../../services/ContentTypes";
 import { Text, VStack } from "@chakra-ui/react";
-import { Poppins } from "@next/font/google";
+import Link from "next/link";
+import { bodyFont, headerFont } from "../../styles/fonts";
 
-const poppinsBold = Poppins({
-  weight: "600",
-  variable: "--f-poppins-bold",
-  subsets: ["latin"],
-});
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
   return (
     <>
-      <VStack alignItems={"flex-start"}>
-        <Text fontSize={"xx-large"} fontFamily={"var(--f-poppins-bold)"}>
-          {article.title}
-        </Text>
-        <Text>{article.description}</Text>
-      </VStack>
+      {/*  TODO make HOC for the Link wrapper */}
+      <Link
+        key={article.slug}
+        href={"/blog/" + encodeURIComponent(article.slug)}
+      >
+        <VStack alignItems={"flex-start"}>
+          <Text fontFamily={headerFont.style.fontFamily} fontSize={"xx-large"}>
+            {article.title}
+          </Text>
+          <Text fontFamily={bodyFont.style.fontFamily}>
+            {article.description}
+          </Text>
+        </VStack>
+      </Link>
     </>
   );
 }
