@@ -2,8 +2,8 @@ import { GetStaticProps } from "next";
 import { getAllArticles } from "../../services/ContentApi";
 import { ArticleDTO } from "../../services/ContentTypes";
 import { useRouter } from "next/router";
-import ArticleCard from "../../components/blog/ArticleCard";
 import { SimpleGrid } from "@chakra-ui/react";
+import ArticleListItem from "../../components/blog/ArticleListItem";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {
   const articles = props.articles as ArticleDTO[];
@@ -17,7 +17,11 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
     <>
       <SimpleGrid columns={[1, 1, 2, 3]} spacing={5} padding={3}>
         {articles.map((article) => (
-          <ArticleCard key={article.slug} article={article}></ArticleCard>
+          // <ArticleCard key={article.slug} article={article}></ArticleCard>
+          <ArticleListItem
+            key={article.slug}
+            article={article}
+          ></ArticleListItem>
         ))}
       </SimpleGrid>
     </>
