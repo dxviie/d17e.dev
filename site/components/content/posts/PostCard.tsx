@@ -34,6 +34,7 @@ export default function PostCard({ post }: { post: PostDTO }) {
           transition: "box-shadow 0.2s ease-in-out",
           _hover: {
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)",
+            textDecoration: "underline",
           },
         }}
       >
@@ -70,9 +71,6 @@ export default function PostCard({ post }: { post: PostDTO }) {
                 borderWidth={".15rem"}
                 borderColor={color}
                 borderStyle={"solid"}
-                sx={{
-                  boxShadow: `10px 0 0 ${bg}, -10px 0 0 ${bg}`,
-                }}
               >
                 {post.title}
               </Text>
