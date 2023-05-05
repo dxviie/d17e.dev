@@ -27,8 +27,8 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
         <SimpleGrid
           columns={1}
           maxWidth={"42rem"}
-          margin={"1.7rem"}
-          spacingY={"5"}
+          spacingY={"2rem"}
+          padding={"1.7rem"}
         >
           {articles.map((article) => (
             <>
