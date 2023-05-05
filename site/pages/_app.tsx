@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import Footer from "../components/core/layout/Footer";
@@ -26,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         {/* content */}
         <Flex direction={"column"} align={"center"} minH={"100vh"}>
+          <Box height={"5rem"}></Box> {/* navigation spacer */}
           <Component {...pageProps} />
           <Spacer />
           <Footer />
