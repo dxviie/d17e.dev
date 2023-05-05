@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { imageLoader } from "../../services/ContentApi";
+import { imageLoader } from "../../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
-import { ArticleDTO } from "../../services/ContentTypes";
-import blurHashToDataURL from "../../services/BlurHashTransformer";
+import { ArticleDTO } from "../../../services/ContentTypes";
+import blurHashToDataURL from "../../../services/BlurHashTransformer";
 
 export default function ArticleCover({ article }: { article: ArticleDTO }) {
   if (!article || !article.cover || !article.cover.url) {
@@ -16,8 +16,8 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
           src={article.cover.url}
           alt={article.cover.alternativeText}
           loader={imageLoader}
-          layout={"fill"}
-          objectFit={"cover"}
+          fill={true}
+          style={{ objectFit: "cover" }}
           placeholder={"blur"}
           blurDataURL={blurHashToDataURL(article.cover.blurhash)}
         ></Image>

@@ -1,16 +1,16 @@
-import { ArticleDTO } from "../../services/ContentTypes";
+import { ArticleDTO } from "../../../services/ContentTypes";
 import { HStack, Text, useColorModeValue, VStack } from "@chakra-ui/react";
-import { bodyFont, headerFont } from "../../styles/fonts";
-import WithLink from "../core/hocs/WithLink";
-import { formatReadingTime } from "../../services/ContentDetailFormatter";
-import { formatDate } from "../../services/DateTimeFormatter";
+import { bodyFont, headerFont } from "../../../styles/fonts";
+import WithLink from "../../core/hocs/WithLink";
+import { formatReadingTime } from "../../../services/ContentDetailFormatter";
+import { formatDate } from "../../../services/DateTimeFormatter";
 import {
   BG_COLOR_DARK,
   BG_COLOR_LIGHT,
   COLOR_DARK,
   COLOR_LIGHT,
-} from "../../styles/d17eTheme";
-import { ArrowIcon } from "../icons/ArrowIcon";
+} from "../../../styles/d17eTheme";
+import { ArrowIcon } from "../../icons/ArrowIcon";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);

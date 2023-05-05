@@ -9,10 +9,10 @@ import { ParsedUrlQuery } from "querystring";
 import { ArticleDTO } from "../../services/ContentTypes";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import ArticleCover from "../../components/blog/ArticleCover";
-import ArticleHeader from "../../components/blog/ArticleHeader";
+import ArticleCover from "../../components/content/blog/ArticleCover";
+import ArticleHeader from "../../components/content/blog/ArticleHeader";
 import { Stack } from "@chakra-ui/react";
-import ArticleFooter from "../../components/blog/ArticleFooter";
+import ArticleFooter from "../../components/content/blog/ArticleFooter";
 import blurHashToDataURL from "../../services/BlurHashTransformer";
 
 const Blog = (props: { article: ArticleDTO }) => {

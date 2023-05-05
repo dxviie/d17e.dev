@@ -1,6 +1,6 @@
 import { Text, VStack } from "@chakra-ui/react";
-import { ArticleDTO } from "../../services/ContentTypes";
-import { formatReadingTime } from "../../services/ContentDetailFormatter";
+import { ArticleDTO } from "../../../services/ContentTypes";
+import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 
 export default function ArticleHeader({ article }: { article: ArticleDTO }) {
   if (!article) {

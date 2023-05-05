@@ -3,7 +3,7 @@ import { getAllArticles } from "../../services/ContentApi";
 import { ArticleDTO } from "../../services/ContentTypes";
 import { useRouter } from "next/router";
 import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
-import ArticleListItem from "../../components/blog/ArticleListItem";
+import ArticleListItem from "../../components/content/blog/ArticleListItem";
 import { headerFont } from "../../styles/fonts";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {

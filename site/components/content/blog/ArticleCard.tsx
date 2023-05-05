@@ -1,4 +1,4 @@
-import { ArticleDTO } from "../../services/ContentTypes";
+import { ArticleDTO } from "../../../services/ContentTypes";
 import Image from "next/image";
 import {
   Card,
@@ -9,18 +9,18 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { imageLoader } from "../../services/ContentApi";
-import blurHashToDataURL from "../../services/BlurHashTransformer";
-import { formatReadingTime } from "../../services/ContentDetailFormatter";
-import { formatDate } from "../../services/DateTimeFormatter";
-import WithLink from "../core/hocs/WithLink";
-import { bodyFont, headerFont } from "../../styles/fonts";
+import { imageLoader } from "../../../services/ContentApi";
+import blurHashToDataURL from "../../../services/BlurHashTransformer";
+import { formatReadingTime } from "../../../services/ContentDetailFormatter";
+import { formatDate } from "../../../services/DateTimeFormatter";
+import WithLink from "../../core/hocs/WithLink";
+import { bodyFont, headerFont } from "../../../styles/fonts";
 import {
   BG_COLOR_DARK,
   BG_COLOR_LIGHT,
   COLOR_DARK,
   COLOR_LIGHT,
-} from "../../styles/d17eTheme";
+} from "../../../styles/d17eTheme";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
