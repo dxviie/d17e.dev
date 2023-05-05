@@ -35,7 +35,6 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
-          // bg={bg}
           className={"floating-card"}
           borderRadius={"0"}
           borderWidth={".1rem"}

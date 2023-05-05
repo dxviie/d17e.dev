@@ -63,7 +63,7 @@ const styles = {
     body: {
       fontFamily: bodyFont.style.fontFamily,
       color: mode(COLOR_LIGHT, COLOR_DARK)(props),
-      // bg: mode(BG_COLOR_LIGHT, BG_COLOR_DARK)(props),
+      bg: mode(BG_COLOR_LIGHT, BG_COLOR_DARK)(props),
       lineHeight: "1.5",
     },
     "*::placeholder": {
