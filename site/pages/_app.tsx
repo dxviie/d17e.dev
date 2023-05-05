@@ -3,10 +3,10 @@ import type { AppProps } from "next/app";
 import { ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
-import Footer from "../components/layout/Footer";
+import Footer from "../components/core/layout/Footer";
 import { RecoilRoot } from "recoil";
 import d17eTheme from "../styles/d17eTheme";
-import Navigation from "../components/interactive/Navigation";
+import Navigation from "../components/core/interactive/Navigation";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -1,7 +1,7 @@
 import { Box, Flex, HStack, Link, Spacer, Text } from "@chakra-ui/react";
-import { HeartIcon } from "../icons/HeartIcon";
-import { LinkedInIcon } from "../icons/LinkedInIcon";
-import { GitHubIcon } from "../icons/GitHubIcon";
+import { HeartIcon } from "../../icons/HeartIcon";
+import { LinkedInIcon } from "../../icons/LinkedInIcon";
+import { GitHubIcon } from "../../icons/GitHubIcon";
 
 export default function Footer() {
   return (
