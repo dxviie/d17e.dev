@@ -10,7 +10,7 @@ export default function Navigation() {
         <></>
       ) : (
         <Link href={"/"}>
-          <Button variant={"outline"}>home</Button>
+          <Button>home</Button>
         </Link>
       )}
       {"/blog" === router.asPath ? (

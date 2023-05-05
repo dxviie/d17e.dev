@@ -15,9 +15,16 @@ import { formatReadingTime } from "../../services/ContentDetailFormatter";
 import { formatDate } from "../../services/DateTimeFormatter";
 import WithLink from "../core/hocs/WithLink";
 import { bodyFont, headerFont } from "../../styles/fonts";
+import {
+  BG_COLOR_DARK,
+  BG_COLOR_LIGHT,
+  COLOR_DARK,
+  COLOR_LIGHT,
+} from "../../styles/d17eTheme";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
-  const bgColor = useColorModeValue("gray.100", "gray.700");
+  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
+  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   return (
     <>
       <WithLink
@@ -28,8 +35,12 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
-          bg={bgColor}
+          // bg={bg}
           className={"floating-card"}
+          borderRadius={"0"}
+          borderWidth={".1rem"}
+          borderColor={color}
+          borderStyle={"dashed"}
           sx={{
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)",
             transition: "box-shadow 0.2s ease-in-out",
