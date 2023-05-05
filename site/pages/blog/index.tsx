@@ -20,9 +20,10 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
         <Text
           fontFamily={headerFont.style.fontFamily}
           fontSize={"xx-large"}
-          margin={"2rem"}
+          margin={"1rem"}
         >
-          Hello, I write sometimes
+          Hello,...
+          <br /> Sometimes, I write
         </Text>
         <SimpleGrid
           columns={1}

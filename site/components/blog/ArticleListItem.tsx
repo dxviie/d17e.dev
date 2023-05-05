@@ -26,7 +26,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             fontSize={"xx-large"}
             fontWeight={"bold"}
             padding={".5rem"}
-            borderWidth={".2rem"}
+            borderWidth={".15rem"}
             borderColor={color}
             borderStyle={"solid"}
             marginLeft={"-1rem"}
@@ -64,7 +64,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
               fontFamily={bodyFont.style.fontFamily}
               paddingTop={".1rem"}
               paddingLeft={".5rem"}
-              noOfLines={3}
+              noOfLines={[5, 4, 3]}
             >
               {article.description}
             </Text>
