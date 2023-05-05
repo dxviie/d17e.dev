@@ -9,22 +9,23 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import { imageLoader } from "../../services/ContentApi";
 import blurHashToDataURL from "../../services/BlurHashTransformer";
 import { formatReadingTime } from "../../services/ContentDetailFormatter";
 import { formatDate } from "../../services/DateTimeFormatter";
+import WithLink from "../core/hocs/WithLink";
+import { bodyFont, headerFont } from "../../styles/fonts";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const bgColor = useColorModeValue("gray.100", "gray.700");
   return (
     <>
-      <Link
+      <WithLink
         key={article.slug}
-        href={"/blog/" + encodeURIComponent(article.slug)}
+        link={"/blog/" + encodeURIComponent(article.slug)}
       >
         <Card
-          maxW="sm"
+          maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
           bg={bgColor}
@@ -42,17 +43,17 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               src={article.cover.url}
               alt={article.cover.alternativeText}
               loader={imageLoader}
-              layout={"fill"}
-              objectFit={"cover"}
+              fill={true}
+              style={{ objectFit: "cover" }}
               placeholder={"blur"}
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}
             ></Image>
           </CardHeader>
-          <CardBody>
+          <CardBody fontFamily={bodyFont.style.fontFamily}>
             <Stack spacing="3">
-              <Heading size="md">
+              <Heading size="lg" fontFamily={headerFont.style.fontFamily}>
                 {article.title}
-                <Text fontSize={"x-small"}>
+                <Text fontSize={"small"}>
                   {formatReadingTime(article.body)}
                 </Text>
               </Heading>
@@ -63,7 +64,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
             </Stack>
           </CardBody>
         </Card>
-      </Link>
+      </WithLink>
     </>
   );
 }

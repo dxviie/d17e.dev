@@ -4,6 +4,7 @@ import { ArticleDTO } from "../../services/ContentTypes";
 import { useRouter } from "next/router";
 import { SimpleGrid } from "@chakra-ui/react";
 import ArticleListItem from "../../components/blog/ArticleListItem";
+import ArticleCard from "../../components/blog/ArticleCard";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {
   const articles = props.articles as ArticleDTO[];
@@ -15,13 +16,20 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
 
   return (
     <>
-      <SimpleGrid columns={[1, 1, 2, 3]} spacing={5} padding={3}>
+      <SimpleGrid
+        columns={1}
+        maxWidth={"42rem"}
+        margin={"1.7rem"}
+        spacingY={"5"}
+      >
         {articles.map((article) => (
-          // <ArticleCard key={article.slug} article={article}></ArticleCard>
-          <ArticleListItem
-            key={article.slug}
-            article={article}
-          ></ArticleListItem>
+          <>
+            <ArticleCard key={article.slug} article={article}></ArticleCard>
+            <ArticleListItem
+              key={article.slug}
+              article={article}
+            ></ArticleListItem>
+          </>
         ))}
       </SimpleGrid>
     </>
