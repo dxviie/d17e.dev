@@ -1,21 +1,24 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import {
-  getAllArticles,
-  getArticleBySlug,
-  imageLoader,
-} from "../../services/ContentApi";
+import { getAllArticles, getArticleBySlug } from "../../services/ContentApi";
 import { ParsedUrlQuery } from "querystring";
 import { ArticleDTO } from "../../services/ContentTypes";
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import ArticleCover from "../../components/content/blog/ArticleCover";
 import ArticleHeader from "../../components/content/blog/ArticleHeader";
-import { Stack } from "@chakra-ui/react";
+import { Stack, useColorModeValue, VStack } from "@chakra-ui/react";
 import ArticleFooter from "../../components/content/blog/ArticleFooter";
-import blurHashToDataURL from "../../services/BlurHashTransformer";
+import {
+  BG_COLOR_DARK,
+  BG_COLOR_LIGHT,
+  COLOR_DARK,
+  COLOR_LIGHT,
+} from "../../styles/d17eTheme";
+import { bodyFont } from "../../styles/fonts";
 
 const Blog = (props: { article: ArticleDTO }) => {
+  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
+  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   const article = props.article as ArticleDTO;
   const router = useRouter();
   if (router.isFallback) {
@@ -25,33 +28,18 @@ const Blog = (props: { article: ArticleDTO }) => {
     router.push("/404");
   }
   return (
-    <Stack>
+    <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
       <ArticleCover article={article}></ArticleCover>
       <ArticleHeader article={article}></ArticleHeader>
 
-      <p>{article.description}</p>
-      <ReactMarkdown>{article.body}</ReactMarkdown>
-      <div>
-        <h3>Tags</h3>
-        <ul>
-          {article.tags.map((tag) => (
-            <li key={tag.name}>{tag.name}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3>Author</h3>
-        {article.author.name}
-        <Image
-          loader={imageLoader}
-          src={article.author.avatar.url}
-          width={100}
-          height={100}
-          alt={article.author.avatar.alternativeText}
-          placeholder={"blur"}
-          blurDataURL={blurHashToDataURL(article.author.avatar.blurhash)}
-        />
-      </div>
+      <VStack
+        paddingTop={"1rem"}
+        alignItems={"flex-start"}
+        fontFamily={bodyFont.style.fontFamily}
+      >
+        <ReactMarkdown>{article.body}</ReactMarkdown>
+      </VStack>
+
       <ArticleFooter article={article}></ArticleFooter>
     </Stack>
   );
