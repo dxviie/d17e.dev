@@ -14,11 +14,19 @@ import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
 import Loading from "../../components/core/Loading";
+import { sortPostsNewestFirst } from "../../services/ContentUtils";
+import PostPrevNext from "../../components/content/posts/PostPrevNext";
 
-const Post = (props: { post: PostDTO }) => {
+const Post = (props: {
+  post: PostDTO;
+  prevPost?: PostDTO;
+  nextPost?: PostDTO;
+}) => {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
   const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   const post = props.post as PostDTO;
+  const prevPost = props.prevPost as PostDTO;
+  const nextPost = props.nextPost as PostDTO;
   const router = useRouter();
   if (router.isFallback) {
     return <Loading />;
@@ -38,7 +46,8 @@ const Post = (props: { post: PostDTO }) => {
       <PostCover post={post} />
       <PostHeader post={post} />
       <PostBody post={post} />
-      <Spacer></Spacer>
+      <Spacer />
+      <PostPrevNext nextPost={nextPost} prevPost={prevPost} />
     </Stack>
   );
 };
@@ -58,7 +67,21 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params as IParams;
   const post = await getPostBySlug(slug);
-  return { props: { post: post } };
+  let next = null,
+    prev = null;
+  const posts = await getAllPosts();
+  if (posts) {
+    const sortedPosts = posts.sort(sortPostsNewestFirst);
+    const index = sortedPosts.findIndex((value) => value.id === post.id);
+    if (index >= 1) {
+      next = posts[index - 1];
+    }
+    if (index > -1 && index < posts.length - 1) {
+      prev = posts[index + 1];
+    }
+  }
+
+  return { props: { post: post, prevPost: prev, nextPost: next } };
 };
 
 export default Post;

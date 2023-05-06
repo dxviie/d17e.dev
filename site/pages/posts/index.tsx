@@ -6,9 +6,10 @@ import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
 import { headerFont } from "../../styles/fonts";
+import { sortPostsNewestFirst } from "../../services/ContentUtils";
 
 export default function PostOverview(props: { posts: PostDTO[] }) {
-  const posts = props.posts as PostDTO[];
+  const posts = props.posts.sort(sortPostsNewestFirst) as PostDTO[];
   const router = useRouter();
 
   if (router.isFallback) {

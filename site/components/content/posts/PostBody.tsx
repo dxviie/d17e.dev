@@ -1,6 +1,6 @@
 import { PostDTO } from "../../../services/ContentTypes";
 import { Box, Text } from "@chakra-ui/react";
-import ExternalLink from "../../core/interactive/ExternalLink";
+import ArrowLink from "../../core/interactive/ArrowLink";
 
 export default function PostBody({ post }: { post: PostDTO }) {
   return (
@@ -10,7 +10,7 @@ export default function PostBody({ post }: { post: PostDTO }) {
         {post.link ? (
           <>
             <Box marginTop={"1rem"}>
-              <ExternalLink link={post.link}></ExternalLink>
+              <ArrowLink link={post.link} arrow={"right"}></ArrowLink>
             </Box>
           </>
         ) : (

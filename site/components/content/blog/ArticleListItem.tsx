@@ -10,7 +10,7 @@ import {
   COLOR_DARK,
   COLOR_LIGHT,
 } from "../../../styles/d17eTheme";
-import { ArrowIcon } from "../../icons/ArrowIcon";
+import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
@@ -70,7 +70,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             >
               {article.description}
             </Text>
-            <ArrowIcon alignSelf={"flex-end"} />
+            <ArrowRightIcon alignSelf={"flex-end"} />
           </HStack>
         </WithLink>
       </VStack>
