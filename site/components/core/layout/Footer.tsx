@@ -1,15 +1,31 @@
-import { Box, Flex, HStack, Link, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  HStack,
+  Link,
+  Spacer,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { HeartIcon } from "../../icons/HeartIcon";
 import { LinkedInIcon } from "../../icons/LinkedInIcon";
 import { GitHubIcon } from "../../icons/GitHubIcon";
+import {
+  BG_COLOR_DARK,
+  BG_COLOR_LIGHT,
+  COLOR_DARK,
+  COLOR_LIGHT,
+} from "../../../styles/d17eTheme";
 
 export default function Footer() {
+  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
+  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   return (
     <>
       <HStack
         width={"100%"}
-        bg={"black"}
-        color={"white"}
+        bg={color}
+        color={bg}
         padding={"1rem"}
         mt={"2rem"}
         fontSize={"sm"}

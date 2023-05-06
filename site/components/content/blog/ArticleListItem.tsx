@@ -1,5 +1,5 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
-import { HStack, Text, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Box, HStack, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import WithLink from "../../core/hocs/WithLink";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
@@ -21,22 +21,24 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
         alignItems={"flex-start"}
         fontFamily={headerFont.style.fontFamily}
       >
-        <VStack alignItems={"flex-start"} lineHeight={".8"} width={"100%"}>
-          <Text
-            fontSize={"xx-large"}
-            fontWeight={"bold"}
-            padding={".5rem"}
-            borderWidth={".15rem"}
-            borderColor={color}
-            borderStyle={"solid"}
-            marginLeft={"-1rem"}
-            marginBottom={"-.5rem"}
-          >
-            {article.title}
-          </Text>
+        <VStack lineHeight={".8"} width={"100%"} alignItems={"flex-start"}>
+          <Box marginBottom={"-.5rem"}>
+            <Text
+              fontSize={"xx-large"}
+              lineHeight={"2.3rem"}
+              marginLeft={"-1rem"}
+              padding={"0 .5rem"}
+              display={"inline"}
+              color={bg}
+              bg={color}
+            >
+              {article.title}
+            </Text>
+          </Box>
           <HStack
             padding={".5rem"}
             width={"100%"}
+            display={"inline-flex"}
             justifyContent={"space-between"}
             borderWidth={".1rem"}
             borderTop={"0"}

@@ -62,9 +62,8 @@ export default function PostCard({ post }: { post: PostDTO }) {
               <Text
                 fontFamily={headerFont.style.fontFamily}
                 fontSize={"large"}
-                fontWeight={"bold"}
-                color={color}
-                background={bg}
+                color={bg}
+                background={color}
                 display={"inline"}
                 lineHeight={"1.9rem"}
                 padding={".2rem"}
@@ -75,8 +74,6 @@ export default function PostCard({ post }: { post: PostDTO }) {
                 {post.title}
               </Text>
             </Box>
-
-            {/*<Spacer minWidth={"25%"}></Spacer>*/}
           </HStack>
         </VStack>
       </Card>
