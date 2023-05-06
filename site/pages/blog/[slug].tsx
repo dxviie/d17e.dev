@@ -14,6 +14,7 @@ import {
   COLOR_LIGHT,
 } from "../../styles/d17eTheme";
 import ArticleBody from "../../components/content/blog/ArticleBody";
+import Loading from "../../components/core/Loading";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
@@ -21,9 +22,10 @@ const Blog = (props: { article: ArticleDTO }) => {
   const article = props.article as ArticleDTO;
   const router = useRouter();
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
   if (!article.slug) {
+    // TODO: figure out what to do with this
     router.push("/404");
   }
   return (

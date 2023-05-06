@@ -13,6 +13,7 @@ import {
 import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
+import Loading from "../../components/core/Loading";
 
 const Post = (props: { post: PostDTO }) => {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
@@ -20,11 +21,12 @@ const Post = (props: { post: PostDTO }) => {
   const post = props.post as PostDTO;
   const router = useRouter();
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
-  // if (!post.slug && router.) {
-  //   router.push("/404");
-  // }
+  if (!post.slug) {
+    // TODO: figure out what to do with this
+    router.push("/404");
+  }
   return (
     <Stack
       width={"100vw"}
