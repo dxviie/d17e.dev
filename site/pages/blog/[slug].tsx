@@ -15,11 +15,19 @@ import {
 } from "../../styles/d17eTheme";
 import ArticleBody from "../../components/content/blog/ArticleBody";
 import Loading from "../../components/core/Loading";
+import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
+import { sortArticlesNewestFirst } from "../../services/ContentUtils";
 
-const Blog = (props: { article: ArticleDTO }) => {
+const Blog = (props: {
+  article: ArticleDTO;
+  prevArticle?: ArticleDTO;
+  nextArticle?: ArticleDTO;
+}) => {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
   const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   const article = props.article as ArticleDTO;
+  const prevArticle = props.prevArticle as ArticleDTO;
+  const nextArticle = props.nextArticle as ArticleDTO;
   const router = useRouter();
   if (router.isFallback) {
     return <Loading />;
@@ -34,6 +42,7 @@ const Blog = (props: { article: ArticleDTO }) => {
       <ArticleHeader article={article} />
       <ArticleBody article={article} />
       <ArticleFooter article={article} />
+      <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle} />
     </Stack>
   );
 };
@@ -53,7 +62,20 @@ export const getStaticPaths: GetStaticPaths<IParams> = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params as IParams;
   const article = await getArticleBySlug(slug);
-  return { props: { article: article } };
+  let next = null,
+    prev = null;
+  const articles = await getAllArticles();
+  if (articles) {
+    const sortedArticles = articles.sort(sortArticlesNewestFirst);
+    const index = sortedArticles.findIndex((value) => value.id === article.id);
+    if (index >= 1) {
+      next = articles[index - 1];
+    }
+    if (index > -1 && index < articles.length - 1) {
+      prev = articles[index + 1];
+    }
+  }
+  return { props: { article: article, prevArticle: prev, nextArticle: next } };
 };
 
 export default Blog;
