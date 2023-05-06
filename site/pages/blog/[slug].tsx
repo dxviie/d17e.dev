@@ -3,10 +3,9 @@ import { useRouter } from "next/router";
 import { getAllArticles, getArticleBySlug } from "../../services/ContentApi";
 import { ParsedUrlQuery } from "querystring";
 import { ArticleDTO } from "../../services/ContentTypes";
-import ReactMarkdown from "react-markdown";
 import ArticleCover from "../../components/content/blog/ArticleCover";
 import ArticleHeader from "../../components/content/blog/ArticleHeader";
-import { Stack, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Stack, useColorModeValue } from "@chakra-ui/react";
 import ArticleFooter from "../../components/content/blog/ArticleFooter";
 import {
   BG_COLOR_DARK,
@@ -14,7 +13,7 @@ import {
   COLOR_DARK,
   COLOR_LIGHT,
 } from "../../styles/d17eTheme";
-import { bodyFont } from "../../styles/fonts";
+import ArticleBody from "../../components/content/blog/ArticleBody";
 
 const Blog = (props: { article: ArticleDTO }) => {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
@@ -29,18 +28,10 @@ const Blog = (props: { article: ArticleDTO }) => {
   }
   return (
     <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
-      <ArticleCover article={article}></ArticleCover>
-      <ArticleHeader article={article}></ArticleHeader>
-
-      <VStack
-        paddingTop={"1rem"}
-        alignItems={"flex-start"}
-        fontFamily={bodyFont.style.fontFamily}
-      >
-        <ReactMarkdown>{article.body}</ReactMarkdown>
-      </VStack>
-
-      <ArticleFooter article={article}></ArticleFooter>
+      <ArticleCover article={article} />
+      <ArticleHeader article={article} />
+      <ArticleBody article={article} />
+      <ArticleFooter article={article} />
     </Stack>
   );
 };
