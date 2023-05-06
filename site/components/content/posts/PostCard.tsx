@@ -34,7 +34,6 @@ export default function PostCard({ post }: { post: PostDTO }) {
           transition: "box-shadow 0.2s ease-in-out",
           _hover: {
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)",
-            textDecoration: "underline",
           },
         }}
       >

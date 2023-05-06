@@ -11,7 +11,7 @@ export const formatPublishedDetails = (
     return publishedAt ? formatDate(publishedAt) : formatDate(createdAt);
   }
   return (
-    "published " +
+    // "published " +
     (publishedAt ? formatDate(publishedAt) : formatDate(createdAt)) +
     " " +
     (updatedAt ? ", last edited " + formatDate(updatedAt) : "")
