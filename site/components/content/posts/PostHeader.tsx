@@ -1,5 +1,5 @@
 import { PostDTO } from "../../../services/ContentTypes";
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
 import {
   BG_COLOR_DARK,
@@ -7,27 +7,43 @@ import {
   COLOR_DARK,
   COLOR_LIGHT,
 } from "../../../styles/d17eTheme";
+import { formatDate } from "../../../services/DateTimeFormatter";
 
 export default function PostHeader({ post }: { post: PostDTO }) {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
   const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
   return (
     <>
-      <Box paddingTop={"1rem"}>
+      <VStack
+        lineHeight={".7"}
+        alignItems={"flex-start"}
+        fontFamily={headerFont.style.fontFamily}
+      >
+        <Box paddingTop={"1rem"}>
+          <Text
+            fontFamily={headerFont.style.fontFamily}
+            fontSize={["large", "x-large"]}
+            lineHeight={["1rem", "1.9rem"]}
+            marginTop={"3rem"}
+            marginLeft={"-1rem"}
+            padding={"2px .5rem"}
+            display={"inline"}
+            color={bg}
+            bg={color}
+          >
+            {post.title}
+          </Text>
+        </Box>
         <Text
-          fontFamily={headerFont.style.fontFamily}
-          fontSize={["large", "x-large"]}
-          lineHeight={["1rem", "1.9rem"]}
-          marginTop={"3rem"}
-          marginLeft={"-1rem"}
-          padding={"2px .5rem"}
-          display={"inline"}
-          color={bg}
-          bg={color}
+          fontSize={"small"}
+          display={"flex"}
+          alignSelf={"flex-start"}
+          noOfLines={1}
+          overflow={"visible"}
         >
-          {post.title}
+          {formatDate(post.createdAt)}
         </Text>
-      </Box>
+      </VStack>
     </>
   );
 }

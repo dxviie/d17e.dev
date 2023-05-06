@@ -48,28 +48,17 @@ export default function ArticleHeader({ article }: { article: ArticleDTO }) {
             {article.title}
           </Text>
         </Box>
-        <HStack
-          padding={".5rem"}
-          width={"100%"}
-          display={"inline-flex"}
-          justifyContent={"space-between"}
-          borderWidth={".1rem"}
-          borderTop={"0"}
-          borderRight={"0"}
-          borderLeft={"1px"}
-          borderBottom={"1px"}
-          borderColor={color}
-          borderStyle={"dashed"}
-        >
-          <Text fontSize={"small"} noOfLines={1}>
-            {formatReadingTime(article.body)}
-          </Text>
+        <HStack padding={".5rem"} width={"100%"}>
           <Text
             fontSize={"small"}
-            display={"flex"}
-            alignSelf={"flex-end"}
             noOfLines={1}
+            fontWeight={"bold"}
+            overflow={"visible"}
           >
+            {formatReadingTime(article.body)}
+          </Text>
+          <Text>{" - "}</Text>
+          <Text fontSize={"small"} noOfLines={1} overflow={"visible"}>
             {formatPublishedDetails(
               article.createdAt,
               article.updatedAt,
