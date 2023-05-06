@@ -43,8 +43,8 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             borderWidth={".1rem"}
             borderTop={"0"}
             borderRight={"0"}
-            borderLeft={".1rem"}
-            borderBottom={".1rem"}
+            borderLeft={"1px"}
+            borderBottom={"1px"}
             borderColor={color}
             borderStyle={"dashed"}
           >

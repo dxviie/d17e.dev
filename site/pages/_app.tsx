@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Head>
           <title>d17e.dev - code. art. ideas.</title>
           <meta name="description" content="d17e.dev - code. art. ideas." />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/d17e-favicon.ico" />
         </Head>
 

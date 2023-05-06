@@ -37,7 +37,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           variant={"elevated"}
           className={"floating-card"}
           borderRadius={"0"}
-          borderWidth={".1rem"}
+          borderWidth={"1px"}
           borderColor={color}
           borderStyle={"dashed"}
           sx={{

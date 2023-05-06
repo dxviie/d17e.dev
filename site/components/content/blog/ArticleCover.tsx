@@ -20,11 +20,10 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
   return (
     <>
       <Box
-        width={"100%"}
         height={"20rem"}
         position={"relative"}
-        marginBottom={"1.5rem"}
-        borderWidth={".1rem"}
+        margin={"0 -1rem 1rem -1rem"}
+        borderWidth={"1px"}
         borderColor={color}
         borderStyle={"dashed"}
       >

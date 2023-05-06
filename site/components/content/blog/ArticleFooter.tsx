@@ -22,7 +22,7 @@ export default function ArticleFooter({ article }: { article: ArticleDTO }) {
             width={"4rem"}
             overflow={"hidden"}
             filter={"grayscale(50%)"}
-            borderWidth={".1rem"}
+            borderWidth={"1px"}
             borderColor={color}
             borderStyle={"dashed"}
           >
