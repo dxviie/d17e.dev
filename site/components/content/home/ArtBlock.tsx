@@ -19,7 +19,7 @@ export default function ArtBlock() {
         color={bg}
         scrollSnapAlign={"start"}
       >
-        <Text>I'm an art</Text>
+        <Text>I&apos;m an art</Text>
       </VStack>
     </>
   );
