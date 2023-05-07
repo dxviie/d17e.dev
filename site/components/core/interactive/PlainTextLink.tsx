@@ -7,7 +7,7 @@ import {
   COLOR_LIGHT,
 } from "../../../styles/d17eTheme";
 
-export default function DLink({
+export default function PlainTextLink({
   link,
   description,
 }: {

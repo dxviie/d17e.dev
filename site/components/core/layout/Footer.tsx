@@ -27,7 +27,6 @@ export default function Footer() {
         bg={color}
         color={bg}
         padding={"1rem"}
-        mt={"2rem"}
         fontSize={"sm"}
       >
         <Flex direction={"column"}>

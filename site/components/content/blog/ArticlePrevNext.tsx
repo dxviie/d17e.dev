@@ -1,7 +1,7 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import DLink from "../../core/interactive/DLink";
+import PlainTextLink from "../../core/interactive/PlainTextLink";
 
 export default function ArticlePrevNext({
   prevArticle,
@@ -21,7 +21,10 @@ export default function ArticlePrevNext({
                 description={"next"}
                 arrow={"left"}
               />
-              <DLink link={nextArticle.slug} description={nextArticle.title} />
+              <PlainTextLink
+                link={nextArticle.slug}
+                description={nextArticle.title}
+              />
             </VStack>
           ) : (
             <></>
@@ -49,7 +52,10 @@ export default function ArticlePrevNext({
                 description={"prev"}
                 arrow={"right"}
               />
-              <DLink link={prevArticle.slug} description={prevArticle.title} />
+              <PlainTextLink
+                link={prevArticle.slug}
+                description={prevArticle.title}
+              />
             </VStack>
           ) : (
             <></>

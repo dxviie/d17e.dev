@@ -1,7 +1,7 @@
 import { PostDTO } from "../../../services/ContentTypes";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import DLink from "../../core/interactive/DLink";
+import PlainTextLink from "../../core/interactive/PlainTextLink";
 
 export default function PostPrevNext({
   prevPost,
@@ -21,7 +21,10 @@ export default function PostPrevNext({
                 description={"next"}
                 arrow={"left"}
               />
-              <DLink link={nextPost.slug} description={nextPost.title} />
+              <PlainTextLink
+                link={nextPost.slug}
+                description={nextPost.title}
+              />
             </VStack>
           ) : (
             <></>
@@ -49,7 +52,10 @@ export default function PostPrevNext({
                 description={"prev"}
                 arrow={"right"}
               />
-              <DLink link={prevPost.slug} description={prevPost.title} />
+              <PlainTextLink
+                link={prevPost.slug}
+                description={prevPost.title}
+              />
             </VStack>
           ) : (
             <></>

@@ -1,5 +1,5 @@
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react";
-import { bodyFont } from "../styles/fonts";
+import { bodyFont } from "../../../styles/fonts";
 
 export default function About() {
   return (
