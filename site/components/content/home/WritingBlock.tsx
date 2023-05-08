@@ -1,6 +1,7 @@
 import { Text, VStack } from "@chakra-ui/react";
+import { ArticleDTO } from "../../../services/ContentTypes";
 
-export default function WritingBlock() {
+export default function WritingBlock({ articles }: { articles: ArticleDTO[] }) {
   return (
     <>
       <VStack

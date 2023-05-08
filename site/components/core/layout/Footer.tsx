@@ -28,6 +28,7 @@ export default function Footer() {
         color={bg}
         padding={"1rem"}
         fontSize={"sm"}
+        scrollSnapAlign={"end"}
       >
         <Flex direction={"column"}>
           <Text>
