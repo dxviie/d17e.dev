@@ -16,10 +16,13 @@ import {
   COLOR_DARK,
   COLOR_LIGHT,
 } from "../../../styles/d17eTheme";
+import { useRouter } from "next/router";
 
 export default function Footer() {
   const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
   const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const router = useRouter();
+  const scrollSnapping = "/" === router.asPath ? "end" : "none";
   return (
     <>
       <HStack
@@ -28,7 +31,7 @@ export default function Footer() {
         color={bg}
         padding={"1rem"}
         fontSize={"sm"}
-        scrollSnapAlign={"end"}
+        scrollSnapAlign={scrollSnapping}
       >
         <Flex direction={"column"}>
           <Text>
