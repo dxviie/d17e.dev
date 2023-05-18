@@ -11,14 +11,12 @@ import ArticleBody from "../../components/content/blog/ArticleBody";
 import Loading from "../../components/core/Loading";
 import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
 import { sortArticlesNewestFirst } from "../../services/ContentUtils";
-import useThemeColors from "../../styles/useThemeColors";
 
 const Blog = (props: {
   article: ArticleDTO;
   prevArticle?: ArticleDTO;
   nextArticle?: ArticleDTO;
 }) => {
-  const colors = useThemeColors();
   const article = props.article as ArticleDTO;
   const prevArticle = props.prevArticle as ArticleDTO;
   const nextArticle = props.nextArticle as ArticleDTO;

@@ -10,14 +10,12 @@ import PostBody from "../../components/content/posts/PostBody";
 import Loading from "../../components/core/Loading";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
 import PostPrevNext from "../../components/content/posts/PostPrevNext";
-import useThemeColors from "../../styles/useThemeColors";
 
 const Post = (props: {
   post: PostDTO;
   prevPost?: PostDTO;
   nextPost?: PostDTO;
 }) => {
-  const colors = useThemeColors();
   const post = props.post as PostDTO;
   const prevPost = props.prevPost as PostDTO;
   const nextPost = props.nextPost as PostDTO;
