@@ -1,10 +1,8 @@
 import {
   ArticleDTO,
   AuthorDTO,
-  defaultArticle,
   defaultAuthor,
   defaultMedia,
-  defaultPost,
   defaultTag,
   MediaDTO,
   PostDTO,
@@ -89,31 +87,19 @@ const postBySlugFetcher = (query: string, slug: string) =>
  * Content APIs -- Articles
  *****************************************************************/
 export const getAllArticles = async (): Promise<ArticleDTO[]> => {
-  try {
-    const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
-    if (!articlesRaw.articles || !articlesRaw.articles.data) {
-      console.error("Fetching articles returned nothing...");
-      return [];
-    }
-    return articlesRaw.articles.data.map(mapArticle);
-  } catch (e) {
-    console.error("Problem fetching articles", e);
-    return [];
+  const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
+  if (!articlesRaw.articles || !articlesRaw.articles.data) {
+    throw Error("Fetching articles returned nothing...");
   }
+  return articlesRaw.articles.data.map(mapArticle);
 };
 
 export const getArticleById = async (id: ID): Promise<ArticleDTO> => {
-  try {
-    const articleRaw = await articleByIdFetcher(GET_ARTICLE_BY_ID, id);
-    if (!articleRaw.article || !articleRaw.article.data) {
-      console.error("No article available for id " + id);
-      return defaultArticle();
-    }
-    return mapArticle(articleRaw.article.data);
-  } catch (e) {
-    console.error("Problem fetching article with id", id, e);
-    return defaultArticle();
+  const articleRaw = await articleByIdFetcher(GET_ARTICLE_BY_ID, id);
+  if (!articleRaw.article || !articleRaw.article.data) {
+    throw Error("No article available for id " + id);
   }
+  return mapArticle(articleRaw.article.data);
 };
 
 export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
@@ -123,8 +109,7 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
     !articleRaw.articles.data ||
     !articleRaw.articles.data[0]
   ) {
-    console.error("No article available for slug", slug);
-    return Promise.resolve(defaultArticle());
+    throw Error("No article available for slug " + slug);
   }
   return mapArticle(articleRaw.articles.data[0]);
 };
@@ -134,24 +119,17 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
  *****************************************************************/
 
 export const getAllPosts = async (): Promise<PostDTO[]> => {
-  try {
-    const postsRaw = await postsFetcher(GET_POSTS_QUERY);
-    if (!postsRaw.posts || !postsRaw.posts.data) {
-      console.error("Fetching posts returned nothing...");
-      return [];
-    }
-    return postsRaw.posts.data.map(mapPost);
-  } catch (e) {
-    console.error("Problem fetching articles", e);
-    return [];
+  const postsRaw = await postsFetcher(GET_POSTS_QUERY);
+  if (!postsRaw.posts || !postsRaw.posts.data) {
+    throw Error("Fetching posts returned nothing...");
   }
+  return postsRaw.posts.data.map(mapPost);
 };
 
 export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
   const postRaw = await postBySlugFetcher(GET_POST_BY_SLUG, slug);
   if (!postRaw.posts || !postRaw.posts.data || !postRaw.posts.data[0]) {
-    console.error("No post available for slug", slug);
-    return Promise.resolve(defaultPost());
+    throw Error("No post available for slug " + slug);
   }
   return mapPost(postRaw.posts.data[0]);
 };
