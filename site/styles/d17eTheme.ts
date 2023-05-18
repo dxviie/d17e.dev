@@ -1,7 +1,7 @@
 // noinspection JSUnusedLocalSymbols
 
 import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
-import { bodyFont } from "./fonts";
+import { bodyFont, handWrittenFont, headerFont } from "./fonts";
 import { mode } from "@chakra-ui/theme-tools";
 
 const warmNeutrals = ["#D9B99B", "#A97D5D", "#8F6A48", "#624F3B", "#F6F3F1"];
@@ -16,6 +16,8 @@ export const BG_COLOR_LIGHT = "white"; //"gray.200";
 export const BG_COLOR_DARK = "black"; //"gray.800";
 export const ACCENT_COLOR_LIGHT = "orange.500";
 export const ACCENT_COLOR_DARK = "orange.300";
+export const BUTTON_BG_COLOR_LIGHT = "gray.100";
+export const BUTTON_BG_COLOR_DARK = "gray.700";
 
 const Button = defineStyleConfig({
   // The styles all button have in common
@@ -67,6 +69,16 @@ const styles = {
       color: mode(COLOR_LIGHT, COLOR_DARK)(props),
       bg: mode(BG_COLOR_LIGHT, BG_COLOR_DARK)(props),
       lineHeight: "1.5",
+      "--header-font-family": headerFont.style.fontFamily,
+      "--body-font-family": bodyFont.style.fontFamily,
+      "--handwritten-font-family": handWrittenFont.style.fontFamily,
+      "--color": mode(COLOR_LIGHT, COLOR_DARK)(props),
+      "--bg-color": mode(BG_COLOR_LIGHT, BG_COLOR_DARK)(props),
+      "--accent-color": mode(ACCENT_COLOR_LIGHT, ACCENT_COLOR_DARK)(props),
+      "--button-bg-color": mode(
+        BUTTON_BG_COLOR_LIGHT,
+        BUTTON_BG_COLOR_DARK
+      )(props),
     },
     "*::placeholder": {
       // color: mode("gray.400", "whiteAlpha.400")(props),

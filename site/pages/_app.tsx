@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../styles/markdown.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";

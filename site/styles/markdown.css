@@ -1,0 +1,55 @@
+.d17e-markdown a {
+    text-decoration: dashed;
+    color: var(--accent-color);
+}
+
+.d17e-markdown h1, .d17e-markdown h2, .d17e-markdown h3, .d17e-markdown h4, .d17e-markdown h5, .d17e-markdown h6 {
+    font-family: var(--header-font-family);
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.d17e-markdown h1 {
+    font-size: xx-large;
+}
+
+.d17e-markdown h2 {
+    font-size: x-large;
+}
+
+.d17e-markdown h3 {
+    font-size: large;
+}
+
+.d17e-markdown p {
+    margin-top: 1rem;
+}
+
+.d17e-markdown ol, .d17e-markdown ul {
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.d17e-markdown blockquote {
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+    padding-top: 1px;
+    padding-bottom: 10px;
+    border-left-width: 3px;
+    border-color: var(--color);
+    font-family: var(--handwritten-font-family);
+    font-style: italic;
+    font-size: x-large;
+}
+
+.d17e-markdown pre {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--button-bg-color);
+    color: var(--color);
+    border-width: 1px;
+    border-style: dashed;
+    border-color: var(--color);
+    font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}

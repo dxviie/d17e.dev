@@ -7,11 +7,13 @@ export default function ArticleBody({ article }: { article: ArticleDTO }) {
   return (
     <>
       <VStack
-        paddingTop={"1rem"}
         alignItems={"flex-start"}
         fontFamily={bodyFont.style.fontFamily}
+        style={{ wordWrap: "break-word" }}
       >
-        <ReactMarkdown>{article.body}</ReactMarkdown>
+        <ReactMarkdown className={"d17e-markdown"}>
+          {article.body}
+        </ReactMarkdown>
       </VStack>
     </>
   );

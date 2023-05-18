@@ -1,7 +1,9 @@
 import { Box, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { bodyFont } from "../../../styles/fonts";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function About() {
+  const colors = useThemeColors();
   return (
     <>
       <Image
@@ -36,7 +38,7 @@ export default function About() {
             <br />{" "}
             <Link
               href={"https://tally.so/r/npePpB"}
-              color={"teal.500"}
+              color={colors.accentColor}
               target={"_self"}
               className={"umami--click--mailing-form"}
             >
@@ -49,7 +51,7 @@ export default function About() {
             project where you think I can make a difference, please do{" "}
             <Link
               href={"https://tally.so/r/mDqALj"}
-              color={"teal.500"}
+              color={colors.accentColor}
               target={"_self"}
               className={"umami--click--contact-form"}
             >
