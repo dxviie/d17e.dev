@@ -93,10 +93,11 @@ export const getAllArticles = async (): Promise<ArticleDTO[]> => {
     const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
     if (!articlesRaw.articles || !articlesRaw.articles.data) {
       console.error("Fetching articles returned nothing...");
+      return [];
     }
     return articlesRaw.articles.data.map(mapArticle);
   } catch (e) {
-    console.error("Problem fetching articles: " + e);
+    console.error("Problem fetching articles", e);
     return [];
   }
 };
@@ -110,7 +111,7 @@ export const getArticleById = async (id: ID): Promise<ArticleDTO> => {
     }
     return mapArticle(articleRaw.article.data);
   } catch (e) {
-    console.error("Problem fetching article: " + e);
+    console.error("Problem fetching article with id", id, e);
     return defaultArticle();
   }
 };
@@ -122,7 +123,7 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
     !articleRaw.articles.data ||
     !articleRaw.articles.data[0]
   ) {
-    console.error("No article available for slug ", slug);
+    console.error("No article available for slug", slug);
     return Promise.resolve(defaultArticle());
   }
   return mapArticle(articleRaw.articles.data[0]);
@@ -137,10 +138,11 @@ export const getAllPosts = async (): Promise<PostDTO[]> => {
     const postsRaw = await postsFetcher(GET_POSTS_QUERY);
     if (!postsRaw.posts || !postsRaw.posts.data) {
       console.error("Fetching posts returned nothing...");
+      return [];
     }
     return postsRaw.posts.data.map(mapPost);
   } catch (e) {
-    console.error("Problem fetching articles: " + e);
+    console.error("Problem fetching articles", e);
     return [];
   }
 };
@@ -148,7 +150,7 @@ export const getAllPosts = async (): Promise<PostDTO[]> => {
 export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
   const postRaw = await postBySlugFetcher(GET_POST_BY_SLUG, slug);
   if (!postRaw.posts || !postRaw.posts.data || !postRaw.posts.data[0]) {
-    console.error("No post available for slug ", slug);
+    console.error("No post available for slug", slug);
     return Promise.resolve(defaultPost());
   }
   return mapPost(postRaw.posts.data[0]);
