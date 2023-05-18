@@ -1,20 +1,14 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
-import { Box, HStack, Text, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import WithLink from "../../core/hocs/WithLink";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 import { formatDate } from "../../../services/DateTimeFormatter";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <VStack
@@ -29,8 +23,8 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
               marginLeft={"-1rem"}
               padding={"0 .5rem"}
               display={"inline"}
-              color={bg}
-              bg={color}
+              color={colors.bgColor}
+              bg={colors.color}
             >
               {article.title}
             </Text>
@@ -45,7 +39,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             borderRight={"0"}
             borderLeft={"1px"}
             borderBottom={"1px"}
-            borderColor={color}
+            borderColor={colors.color}
             borderStyle={"dashed"}
           >
             <Text fontSize={"small"}>{formatReadingTime(article.body)}</Text>

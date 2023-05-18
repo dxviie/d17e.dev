@@ -3,27 +3,21 @@ import { useRouter } from "next/router";
 import { getAllPosts, getPostBySlug } from "../../services/ContentApi";
 import { ParsedUrlQuery } from "querystring";
 import { PostDTO } from "../../services/ContentTypes";
-import { Spacer, Stack, useColorModeValue } from "@chakra-ui/react";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../styles/d17eTheme";
+import { Spacer, Stack } from "@chakra-ui/react";
 import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
 import Loading from "../../components/core/Loading";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
 import PostPrevNext from "../../components/content/posts/PostPrevNext";
+import useThemeColors from "../../styles/useThemeColors";
 
 const Post = (props: {
   post: PostDTO;
   prevPost?: PostDTO;
   nextPost?: PostDTO;
 }) => {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   const post = props.post as PostDTO;
   const prevPost = props.prevPost as PostDTO;
   const nextPost = props.nextPost as PostDTO;

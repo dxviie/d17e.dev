@@ -7,7 +7,6 @@ import {
   Heading,
   Stack,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
@@ -15,16 +14,10 @@ import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 import { formatDate } from "../../../services/DateTimeFormatter";
 import WithLink from "../../core/hocs/WithLink";
 import { bodyFont, headerFont } from "../../../styles/fonts";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <WithLink
@@ -38,7 +31,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           className={"floating-card"}
           borderRadius={"0"}
           borderWidth={"1px"}
-          borderColor={color}
+          borderColor={colors.color}
           borderStyle={"dashed"}
           sx={{
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)",

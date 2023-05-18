@@ -1,11 +1,6 @@
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function PlainTextLink({
   link,
@@ -14,19 +9,18 @@ export default function PlainTextLink({
   link: string;
   description: string;
 }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <Box
         borderBottomWidth={"1px"}
         borderStyle={"dashed"}
-        borderColor={bg}
+        borderColor={colors.bgColor}
         sx={{
           _hover: {
             borderBottomWidth: "1px",
             borderStyle: "dashed",
-            borderColor: color,
+            borderColor: colors.color,
           },
         }}
       >

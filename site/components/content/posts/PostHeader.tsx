@@ -1,17 +1,11 @@
 import { PostDTO } from "../../../services/ContentTypes";
-import { Box, Text, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Box, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { formatDate } from "../../../services/DateTimeFormatter";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function PostHeader({ post }: { post: PostDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <VStack
@@ -28,8 +22,8 @@ export default function PostHeader({ post }: { post: PostDTO }) {
             marginLeft={"-1rem"}
             padding={"2px .5rem"}
             display={"inline"}
-            color={bg}
-            bg={color}
+            color={colors.bgColor}
+            bg={colors.color}
           >
             {post.title}
           </Text>

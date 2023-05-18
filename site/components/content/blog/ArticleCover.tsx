@@ -1,18 +1,12 @@
 import Image from "next/image";
 import { imageLoader } from "../../../services/ContentApi";
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArticleCover({ article }: { article: ArticleDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   if (!article || !article.cover || !article.cover.url) {
     // don't try to render non-images
     return <></>;
@@ -24,7 +18,7 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
         position={"relative"}
         margin={"0 -1rem 1rem -1rem"}
         borderWidth={"1px"}
-        borderColor={color}
+        borderColor={colors.color}
         borderStyle={"dashed"}
       >
         <Image

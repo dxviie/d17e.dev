@@ -1,27 +1,14 @@
-import {
-  Box,
-  HStack,
-  Text,
-  useColorModeValue,
-  useMediaQuery,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, HStack, Text, useMediaQuery, VStack } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import {
   formatPublishedDetails,
   formatReadingTime,
 } from "../../../services/ContentDetailFormatter";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { headerFont } from "../../../styles/fonts";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArticleHeader({ article }: { article: ArticleDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   const [isSmallerThan500] = useMediaQuery("(max-width: 500px)");
   if (!article) {
     // don't try to render missing article
@@ -42,8 +29,8 @@ export default function ArticleHeader({ article }: { article: ArticleDTO }) {
             marginLeft={"-1rem"}
             padding={"0 .5rem"}
             display={"inline"}
-            color={bg}
-            bg={color}
+            color={colors.bgColor}
+            bg={colors.color}
           >
             {article.title}
           </Text>

@@ -10,10 +10,12 @@ const navyAndMustard = ["#00293C", "#F9A602", "#F7E4BE", "#B4B4B4", "#EFEFEF"];
 const oliveAndRust = ["#8A8665", "#BC5C58", "#F2E8C4", "#E9D9B9", "#D8C8A7"];
 const grayAndPlum = ["#747B81", "#4A4C4E", "#B67A7E", "#DBD5D0", "#E5E5E5"];
 
-export const COLOR_LIGHT = "gray.800";
-export const COLOR_DARK = "whiteAlpha.900";
-export const BG_COLOR_LIGHT = "gray.200";
-export const BG_COLOR_DARK = "gray.800";
+export const COLOR_LIGHT = "black"; //"gray.800";
+export const COLOR_DARK = "white"; //"whiteAlpha.900";
+export const BG_COLOR_LIGHT = "white"; //"gray.200";
+export const BG_COLOR_DARK = "black"; //"gray.800";
+export const ACCENT_COLOR_LIGHT = "orange.500";
+export const ACCENT_COLOR_DARK = "orange.300";
 
 const Button = defineStyleConfig({
   // The styles all button have in common

@@ -1,26 +1,13 @@
 import { PostDTO } from "../../../services/ContentTypes";
-import {
-  Box,
-  Card,
-  HStack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import Image from "next/image";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { headerFont } from "../../../styles/fonts";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function PostCard({ post }: { post: PostDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <Card
@@ -61,13 +48,13 @@ export default function PostCard({ post }: { post: PostDTO }) {
               <Text
                 fontFamily={headerFont.style.fontFamily}
                 fontSize={"large"}
-                color={bg}
-                background={color}
+                color={colors.bgColor}
+                background={colors.color}
                 display={"inline"}
                 lineHeight={"1.9rem"}
                 padding={".2rem"}
                 borderWidth={".15rem"}
-                borderColor={color}
+                borderColor={colors.color}
                 borderStyle={"solid"}
               >
                 {post.title}

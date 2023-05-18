@@ -1,34 +1,20 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Link,
-  Spacer,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Link, Spacer, Text } from "@chakra-ui/react";
 import { HeartIcon } from "../../icons/HeartIcon";
 import { LinkedInIcon } from "../../icons/LinkedInIcon";
 import { GitHubIcon } from "../../icons/GitHubIcon";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { useRouter } from "next/router";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function Footer() {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   const router = useRouter();
   const scrollSnapping = "/" === router.asPath ? "end" : "none";
   return (
     <>
       <HStack
         width={"100%"}
-        bg={color}
-        color={bg}
+        bg={colors.color}
+        color={colors.bgColor}
         padding={"1rem"}
         fontSize={"sm"}
         scrollSnapAlign={scrollSnapping}

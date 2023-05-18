@@ -1,16 +1,4 @@
-import {
-  Box,
-  Container,
-  IconButton,
-  useColorModeValue,
-  VStack,
-} from "@chakra-ui/react";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
+import { Box, Container, IconButton, VStack } from "@chakra-ui/react";
 import { PostDTO } from "../../../services/ContentTypes";
 import React from "react";
 // import { Slider } from "@chakra-ui/theme/dist/components";
@@ -19,6 +7,7 @@ import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
 // @ts-ignore
 import Slider from "react-slick";
 import PostCard from "../posts/PostCard";
+import useThemeColors from "../../../styles/useThemeColors";
 
 // Settings for the slider
 const settings = {
@@ -35,16 +24,15 @@ const settings = {
 
 export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <VStack
         height={"100vh"}
         width={"100%"}
         justifyContent={"center"}
-        bg={color}
-        color={bg}
+        bg={colors.color}
+        color={colors.bgColor}
         scrollSnapAlign={"start"}
       >
         {/*<Text>I&apos;m an art</Text>*/}
@@ -71,9 +59,9 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
             transform={"translate(0%, -50%)"}
             zIndex={2}
             onClick={() => slider?.slickPrev()}
-            bg={bg}
+            bg={colors.bgColor}
           >
-            <ArrowLeftIcon color={color} />
+            <ArrowLeftIcon color={colors.color} />
           </IconButton>
           {/* Right Icon */}
           <IconButton
@@ -84,9 +72,9 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
             transform={"translate(0%, -50%)"}
             zIndex={2}
             onClick={() => slider?.slickNext()}
-            bg={bg}
+            bg={colors.bgColor}
           >
-            <ArrowRightIcon color={color} />
+            <ArrowRightIcon color={colors.color} />
           </IconButton>
           {/* Slider */}
           <Slider {...settings} ref={(slider: any) => setSlider(slider)}>

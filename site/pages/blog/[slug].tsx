@@ -5,26 +5,20 @@ import { ParsedUrlQuery } from "querystring";
 import { ArticleDTO } from "../../services/ContentTypes";
 import ArticleCover from "../../components/content/blog/ArticleCover";
 import ArticleHeader from "../../components/content/blog/ArticleHeader";
-import { Stack, useColorModeValue } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import ArticleFooter from "../../components/content/blog/ArticleFooter";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../styles/d17eTheme";
 import ArticleBody from "../../components/content/blog/ArticleBody";
 import Loading from "../../components/core/Loading";
 import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
 import { sortArticlesNewestFirst } from "../../services/ContentUtils";
+import useThemeColors from "../../styles/useThemeColors";
 
 const Blog = (props: {
   article: ArticleDTO;
   prevArticle?: ArticleDTO;
   nextArticle?: ArticleDTO;
 }) => {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   const article = props.article as ArticleDTO;
   const prevArticle = props.prevArticle as ArticleDTO;
   const nextArticle = props.nextArticle as ArticleDTO;

@@ -1,14 +1,9 @@
-import { Box, HStack, useColorModeValue } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { headerFont } from "../../../styles/fonts";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
-import {
-  BG_COLOR_DARK,
-  BG_COLOR_LIGHT,
-  COLOR_DARK,
-  COLOR_LIGHT,
-} from "../../../styles/d17eTheme";
 import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArrowLink({
   link,
@@ -19,8 +14,7 @@ export default function ArrowLink({
   description?: string;
   arrow: "right" | "left";
 }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
-  const bg = useColorModeValue(BG_COLOR_LIGHT, BG_COLOR_DARK);
+  const colors = useThemeColors();
   return (
     <>
       <HStack fontFamily={headerFont.style.fontFamily}>
@@ -28,12 +22,12 @@ export default function ArrowLink({
         <Box
           borderBottomWidth={"1px"}
           borderStyle={"dashed"}
-          borderColor={bg}
+          borderColor={colors.bgColor}
           sx={{
             _hover: {
               borderBottomWidth: "1px",
               borderStyle: "dashed",
-              borderColor: color,
+              borderColor: colors.color,
             },
           }}
         >

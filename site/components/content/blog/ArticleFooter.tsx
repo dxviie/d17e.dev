@@ -1,12 +1,12 @@
-import { Box, HStack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import Image from "next/image";
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
-import { COLOR_DARK, COLOR_LIGHT } from "../../../styles/d17eTheme";
+import useThemeColors from "../../../styles/useThemeColors";
 
 export default function ArticleFooter({ article }: { article: ArticleDTO }) {
-  const color = useColorModeValue(COLOR_LIGHT, COLOR_DARK);
+  const colors = useThemeColors();
   if (!article) {
     // don't try to render missing article
     return <></>;
@@ -25,7 +25,7 @@ export default function ArticleFooter({ article }: { article: ArticleDTO }) {
                 overflow={"hidden"}
                 filter={"grayscale(50%)"}
                 borderWidth={"1px"}
-                borderColor={color}
+                borderColor={colors.color}
                 borderStyle={"dashed"}
               >
                 <Image
