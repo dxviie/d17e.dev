@@ -1,25 +1,26 @@
 import { Box, Container, IconButton, VStack } from "@chakra-ui/react";
 import { PostDTO } from "../../../services/ContentTypes";
 import React from "react";
-// import { Slider } from "@chakra-ui/theme/dist/components";
 import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
 // @ts-ignore
 import Slider from "react-slick";
 import PostCard from "../posts/PostCard";
 import useThemeColors from "../../../styles/useThemeColors";
+import WithLink from "../../core/hocs/WithLink";
 
 // Settings for the slider
 const settings = {
-  dots: true,
+  dots: false,
   arrows: false,
-  fade: true,
+  fade: false,
   infinite: true,
   autoplay: true,
   speed: 500,
   autoplaySpeed: 5000,
-  slidesToShow: 3,
+  slidesToShow: 1,
   slidesToScroll: 1,
+  pauseOnDotsHover: true,
 };
 
 export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
@@ -31,11 +32,10 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
         height={"100vh"}
         width={"100%"}
         justifyContent={"center"}
-        bg={colors.color}
-        color={colors.bgColor}
+        bg={colors.bgColor}
+        color={colors.color}
         scrollSnapAlign={"start"}
       >
-        {/*<Text>I&apos;m an art</Text>*/}
         <Box
           position={"relative"}
           height={"100%"}
@@ -59,7 +59,7 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
             transform={"translate(0%, -50%)"}
             zIndex={2}
             onClick={() => slider?.slickPrev()}
-            bg={colors.bgColor}
+            bg={colors.buttonBgColor}
           >
             <ArrowLeftIcon color={colors.color} />
           </IconButton>
@@ -72,7 +72,7 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
             transform={"translate(0%, -50%)"}
             zIndex={2}
             onClick={() => slider?.slickNext()}
-            bg={colors.bgColor}
+            bg={colors.buttonBgColor}
           >
             <ArrowRightIcon color={colors.color} />
           </IconButton>
@@ -82,56 +82,11 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
               <Box key={index} height={"100vh"} position="relative">
                 <VStack height={"100%"} justifyContent={"center"}>
                   <Container>
-                    <PostCard post={post} />
+                    <WithLink link={"posts/" + post.slug}>
+                      <PostCard post={post} />
+                    </WithLink>
                   </Container>
-                  {/*<PostCard post={post} />*/}
                 </VStack>
-
-                {/*<Image*/}
-                {/*  src={post.content.url}*/}
-                {/*  alt={post.content.alternativeText}*/}
-                {/*  loader={imageLoader}*/}
-                {/*  fill={true}*/}
-                {/*  style={{ objectFit: "cover", transform: "scale(1.5)" }}*/}
-                {/*  placeholder={"blur"}*/}
-                {/*  blurDataURL={blurHashToDataURL(post.content.blurhash)}*/}
-                {/*></Image>*/}
-                {/*/!* This is the block you need to change, to customize the caption *!/*/}
-                {/*<Container*/}
-                {/*  size="container.lg"*/}
-                {/*  height="100%"*/}
-                {/*  position="relative"*/}
-                {/*  display={"flex"}*/}
-                {/*>*/}
-                {/*  <Stack*/}
-                {/*    spacing={6}*/}
-                {/*    maxW={"lg"}*/}
-                {/*    // position="absolute"*/}
-                {/*    // top="50%"*/}
-                {/*    // transform="translate(0, -50%)"*/}
-                {/*  >*/}
-                {/*    <Text*/}
-                {/*      fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}*/}
-                {/*      fontFamily={headerFont.style.fontFamily}*/}
-                {/*      marginLeft={"-1rem"}*/}
-                {/*      padding={"0 .5rem"}*/}
-                {/*      display={"inline"}*/}
-                {/*      color={bg}*/}
-                {/*      bg={color}*/}
-                {/*    >*/}
-                {/*      {post.title}*/}
-                {/*    </Text>*/}
-                {/*    <Text*/}
-                {/*      fontSize={{ base: "md", lg: "lg" }}*/}
-                {/*      padding={"0 .5rem"}*/}
-                {/*      display={"inline"}*/}
-                {/*      color={color}*/}
-                {/*      bg={bg}*/}
-                {/*    >*/}
-                {/*      {post.message}*/}
-                {/*    </Text>*/}
-                {/*  </Stack>*/}
-                {/*</Container>*/}
               </Box>
             ))}
           </Slider>

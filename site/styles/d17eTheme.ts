@@ -15,9 +15,9 @@ export const COLOR_DARK = "white"; //"whiteAlpha.900";
 export const BG_COLOR_LIGHT = "white"; //"gray.200";
 export const BG_COLOR_DARK = "black"; //"gray.800";
 export const ACCENT_COLOR_LIGHT = "orangered";
-export const ACCENT_COLOR_DARK = "orange.300";
+export const ACCENT_COLOR_DARK = "orange";
 export const BUTTON_BG_COLOR_LIGHT = "#efefef";
-export const BUTTON_BG_COLOR_DARK = "gray.700";
+export const BUTTON_BG_COLOR_DARK = "#202020";
 
 const Button = defineStyleConfig({
   // The styles all button have in common

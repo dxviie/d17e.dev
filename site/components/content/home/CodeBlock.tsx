@@ -1,7 +1,7 @@
-import { Text, VStack } from "@chakra-ui/react";
 import useThemeColors from "../../../styles/useThemeColors";
+import { Text, VStack } from "@chakra-ui/react";
 
-export default function ContactBlock() {
+export default function CodeBlock() {
   const colors = useThemeColors();
   return (
     <>
@@ -9,11 +9,11 @@ export default function ContactBlock() {
         height={"100vh"}
         width={"100%"}
         justifyContent={"center"}
-        // bg={colors.color}
-        // color={colors.bgColor}
+        bg={colors.color}
+        color={colors.bgColor}
         scrollSnapAlign={"start"}
       >
-        <Text>Get in touch!</Text>
+        <Text>All I do is code...</Text>
       </VStack>
     </>
   );

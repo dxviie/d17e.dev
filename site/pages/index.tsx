@@ -9,6 +9,7 @@ import {
   sortPostsNewestFirst,
 } from "../services/ContentUtils";
 import { ArticleDTO, PostDTO } from "../services/ContentTypes";
+import CodeBlock from "../components/content/home/CodeBlock";
 
 export default function Home({
   posts,
@@ -20,6 +21,7 @@ export default function Home({
   return (
     <>
       <IntroBlock />
+      <CodeBlock />
       <ArtBlock posts={posts} />
       <WritingBlock articles={articles} />
       <ContactBlock />

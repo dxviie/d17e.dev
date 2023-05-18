@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import { Text, VStack } from "@chakra-ui/react";
 import BlockQuote from "../../core/elements/BlockQuote";
 import LinkWrapper from "../../core/hocs/LinkWrapper";
+import Header from "../../core/elements/Header";
 
 const getBlockQuote = (props: any) => {
   return <Text>{props.children}</Text>;
@@ -25,6 +26,24 @@ export default function ArticleBody({ article }: { article: ArticleDTO }) {
             ),
             a: ({ children, href, ...props }) => (
               <LinkWrapper link={href || ""}>{children}</LinkWrapper>
+            ),
+            h1: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
+            ),
+            h2: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
+            ),
+            h3: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
+            ),
+            h4: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
+            ),
+            h5: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
+            ),
+            h6: ({ level, children, ...props }) => (
+              <Header level={level}>{children}</Header>
             ),
           }}
         >
