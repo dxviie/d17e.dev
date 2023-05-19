@@ -1,12 +1,13 @@
 import { Button, Link } from "@chakra-ui/react";
 import ColorModeToggle from "./ColorModeToggle";
 import { useRouter } from "next/router";
+import { isAtHomePage } from "../../../services/RouterUtils";
 
 export default function Navigation() {
   const router = useRouter();
   return (
     <>
-      {"/" === router.asPath ? (
+      {isAtHomePage(router.asPath) ? (
         <></>
       ) : (
         <Link href={"/"}>
