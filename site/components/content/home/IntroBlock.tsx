@@ -13,7 +13,7 @@ const IntroBox = (text: string, colors: ThemeColors, index: number) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, (index - 1) * DELAY_MILLIS);
+    }, index * DELAY_MILLIS);
 
     return () => {
       clearTimeout(timer);
@@ -60,7 +60,7 @@ export default function IntroBlock() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, 3 * DELAY_MILLIS);
+    }, 4 * DELAY_MILLIS);
     return () => {
       clearTimeout(timer);
     };
