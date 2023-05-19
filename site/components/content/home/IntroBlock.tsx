@@ -1,4 +1,4 @@
-import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, keyframes, Text, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import D17eLogo from "../../icons/D17eLogo";
 import useThemeColors, { ThemeColors } from "../../../styles/useThemeColors";
@@ -6,13 +6,14 @@ import WithLink from "../../core/hocs/WithLink";
 import { ArrowDownIcon } from "../../icons/ArrowDownIcon";
 import { useEffect, useState } from "react";
 
+const DELAY_MILLIS = 700;
 const IntroBox = (text: string, colors: ThemeColors, index: number) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, index * 1000);
+    }, (index - 1) * DELAY_MILLIS);
 
     return () => {
       clearTimeout(timer);
@@ -22,8 +23,7 @@ const IntroBox = (text: string, colors: ThemeColors, index: number) => {
   return (
     <Box
       opacity={visible ? 1 : 0}
-      transition="opacity 0.5s"
-      transitionDelay={`${index + 1}s`}
+      transition="opacity 0.3s"
       paddingLeft={".3rem"}
       paddingRight={".3rem"}
       marginLeft={"2px"}
@@ -47,6 +47,24 @@ const IntroBox = (text: string, colors: ThemeColors, index: number) => {
 
 export default function IntroBlock() {
   const colors = useThemeColors();
+  const bounce = keyframes`
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(20px)
+    }
+  `;
+  const bounceAnimation = `${bounce} infinite .5s ease-in-out alternate`;
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(true);
+    }, 3 * DELAY_MILLIS);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
   return (
     <>
       <VStack
@@ -71,12 +89,14 @@ export default function IntroBlock() {
             <WithLink link={"#art"}>{IntroBox("art.", colors, 2)}</WithLink>
             <WithLink link={"#ideas"}>{IntroBox("ideas.", colors, 3)}</WithLink>
           </Text>
-          <VStack marginTop={"2rem"}>
-            <Text>
-              Scroll down <ArrowDownIcon /> for more
-            </Text>
-            <Text>or just get in touch</Text>
-          </VStack>
+          <Box
+            marginTop={"2rem"}
+            animation={bounceAnimation}
+            opacity={visible ? 1 : 0}
+            transition="opacity 0.3s"
+          >
+            <ArrowDownIcon />
+          </Box>
         </Flex>
       </VStack>
     </>
