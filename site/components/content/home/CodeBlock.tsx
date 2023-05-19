@@ -50,7 +50,7 @@ export default function CodeBlock() {
           <Flex
             width={"100%"}
             alignItems={"center"}
-            justifyContent={"center"}
+            justifyContent={"space-evenly"}
             fontSize={"1.5rem"}
             paddingTop={"1rem"}
           >
