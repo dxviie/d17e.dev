@@ -13,6 +13,7 @@ export default function WritingBlock({ articles }: { articles: ArticleDTO[] }) {
         scrollSnapAlign={"start"}
         color={colors.bgColor}
         bgColor={colors.color}
+        id={"ideas"}
       >
         <Text>I write</Text>
       </VStack>

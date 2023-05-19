@@ -35,6 +35,7 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
         bg={colors.bgColor}
         color={colors.color}
         scrollSnapAlign={"start"}
+        id={"art"}
       >
         <Box
           position={"relative"}

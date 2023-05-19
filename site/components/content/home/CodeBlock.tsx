@@ -12,6 +12,7 @@ export default function CodeBlock() {
         bg={colors.color}
         color={colors.bgColor}
         scrollSnapAlign={"start"}
+        id={"code"}
       >
         <Text>All I do is code...</Text>
       </VStack>

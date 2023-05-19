@@ -5,10 +5,19 @@ import { GitHubIcon } from "../../icons/GitHubIcon";
 import { useRouter } from "next/router";
 import useThemeColors from "../../../styles/useThemeColors";
 
+const isAtHomePage = (route: string): boolean => {
+  let path = route;
+  const indexOf = route.indexOf("#");
+  if (indexOf > -1) {
+    path = route.substring(0, indexOf);
+  }
+  return path === "/";
+};
+
 export default function Footer() {
   const colors = useThemeColors();
   const router = useRouter();
-  const scrollSnapping = "/" === router.asPath ? "end" : "none";
+  const scrollSnapping = isAtHomePage(router.asPath) ? "end" : "none";
   return (
     <>
       <HStack
