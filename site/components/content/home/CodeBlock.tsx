@@ -40,8 +40,8 @@ export default function CodeBlock() {
             one way or the other.
           </Text>
           <Text>
-            Currently I'm working on some projects that I'm excited to share
-            more about in the near future.
+            Currently I&apos;m working on some projects that I&apos;m excited to
+            share more about in the near future.
           </Text>
           <Text>
             For now if you want to know more about my experience, you can check
