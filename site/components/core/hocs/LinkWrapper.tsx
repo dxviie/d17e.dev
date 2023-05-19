@@ -6,9 +6,11 @@ import React from "react";
 export default function LinkWrapper({
   link,
   children,
+  color,
 }: {
   link: string;
   children?: React.ReactNode;
+  color?: string;
 }) {
   const colors = useThemeColors();
   return (
@@ -18,12 +20,13 @@ export default function LinkWrapper({
           cursor={"pointer"}
           display={"inline"}
           textDecoration={"dashed"}
-          color={colors.accentColor}
+          color={color || colors.accentColor}
           borderBottomWidth={"1px"}
           borderStyle={"dashed"}
           borderColor={colors.bgColor}
           sx={{
             _hover: {
+              color: colors.accentColor,
               borderBottomWidth: "1px",
               borderStyle: "dashed",
               borderColor: colors.accentColor,
