@@ -52,10 +52,10 @@ export default function IntroBlock() {
       transform: translateY(0);
     }
     to {
-      transform: translateY(20px)
+      transform: translateY(15px)
     }
   `;
-  const bounceAnimation = `${bounce} infinite .5s ease-in-out alternate`;
+  const bounceAnimation = `${bounce} infinite .8s ease-in-out alternate`;
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
