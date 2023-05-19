@@ -13,6 +13,7 @@ export default function ContactBlock() {
         // bg={colors.color}
         // color={colors.bgColor}
         scrollSnapAlign={"start"}
+        id={"contact"}
       >
         <Box mt={"2rem"} textAlign={"center"} maxWidth={"22rem"}>
           <Text fontSize={"lg"}>

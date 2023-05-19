@@ -1,8 +1,49 @@
 import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import D17eLogo from "../../icons/D17eLogo";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors, { ThemeColors } from "../../../styles/useThemeColors";
 import WithLink from "../../core/hocs/WithLink";
+import { ArrowDownIcon } from "../../icons/ArrowDownIcon";
+import { useEffect, useState } from "react";
+
+const IntroBox = (text: string, colors: ThemeColors, index: number) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(true);
+    }, index * 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [index]);
+
+  return (
+    <Box
+      opacity={visible ? 1 : 0}
+      transition="opacity 0.5s"
+      transitionDelay={`${index + 1}s`}
+      paddingLeft={".3rem"}
+      paddingRight={".3rem"}
+      marginLeft={"2px"}
+      borderBottomWidth={"1px"}
+      borderBottomStyle={"dashed"}
+      color={colors.color}
+      borderBottomColor={colors.color}
+      sx={{
+        _hover: {
+          borderBottomWidth: "1px",
+          borderBottomStyle: "dashed",
+          borderBottomColor: colors.accentColor,
+          color: colors.accentColor,
+        },
+      }}
+    >
+      {text}
+    </Box>
+  );
+};
 
 export default function IntroBlock() {
   const colors = useThemeColors();
@@ -23,21 +64,19 @@ export default function IntroBlock() {
           <D17eLogo />
           <Text
             fontSize={["x-large", "xx-large", "xxx-large"]}
-            borderBottomWidth={"1px"}
-            borderBottomColor={colors.color}
             fontFamily={headerFont.style.fontFamily}
             display={"flex"}
           >
-            <WithLink link={"#code"}>
-              <Box>code.</Box>
-            </WithLink>
-            <WithLink link={"#art"}>
-              <Box marginLeft={"1rem"}>art.</Box>
-            </WithLink>
-            <WithLink link={"#ideas"}>
-              <Box marginLeft={"1rem"}>ideas.</Box>
-            </WithLink>
+            <WithLink link={"#code"}>{IntroBox("code.", colors, 1)}</WithLink>
+            <WithLink link={"#art"}>{IntroBox("art.", colors, 2)}</WithLink>
+            <WithLink link={"#ideas"}>{IntroBox("ideas.", colors, 3)}</WithLink>
           </Text>
+          <VStack marginTop={"2rem"}>
+            <Text>
+              Scroll down <ArrowDownIcon /> for more
+            </Text>
+            <Text>or just get in touch</Text>
+          </VStack>
         </Flex>
       </VStack>
     </>
