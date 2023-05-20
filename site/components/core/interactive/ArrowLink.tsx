@@ -9,10 +9,12 @@ export default function ArrowLink({
   link,
   description,
   arrow,
+  invertColors = false,
 }: {
   link: string;
   description?: string;
   arrow: "right" | "left";
+  invertColors?: boolean;
 }) {
   const colors = useThemeColors();
   return (
@@ -22,12 +24,12 @@ export default function ArrowLink({
         <Box
           borderBottomWidth={"1px"}
           borderStyle={"dashed"}
-          borderColor={colors.bgColor}
+          borderColor={invertColors ? colors.color : colors.bgColor}
           sx={{
             _hover: {
               borderBottomWidth: "1px",
               borderStyle: "dashed",
-              borderColor: colors.color,
+              borderColor: invertColors ? colors.bgColor : colors.color,
             },
           }}
         >

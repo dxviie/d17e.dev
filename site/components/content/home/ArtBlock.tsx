@@ -6,6 +6,7 @@ import useThemeColors from "../../../styles/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
+import WithLink from "../../core/hocs/WithLink";
 
 export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
   const colors = useThemeColors();
@@ -45,12 +46,16 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
         {/* Slider */}
         <SliderWrapper>
           {posts.map((post, index) => (
-            <Box key={index} height={"50vh"} position="relative">
-              <VStack justifyContent={"center"} height={"100%"}>
+            <Box key={post.slug} height={"100%"} position="relative">
+              <VStack
+                justifyContent={"center"}
+                height={"100%"}
+                padding={"1rem"}
+              >
                 <Container>
-                  {/*<WithLink link={"posts/" + post.slug}>*/}
-                  <PostCard post={post} />
-                  {/*</WithLink>*/}
+                  <WithLink link={"posts/" + post.slug}>
+                    <PostCard post={post} />
+                  </WithLink>
                 </Container>
               </VStack>
             </Box>

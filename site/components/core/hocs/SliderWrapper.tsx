@@ -22,8 +22,10 @@ const settings = {
 
 export default function SliderWrapper({
   children,
+  invertedColors = false,
 }: {
   children?: React.ReactNode;
+  invertedColors?: boolean;
 }) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
   const colors = useThemeColors();
@@ -48,17 +50,21 @@ export default function SliderWrapper({
         <IconButton
           aria-label="left-arrow"
           onClick={() => slider?.slickPrev()}
-          bg={colors.buttonBgColor}
+          bg={invertedColors ? colors.buttonColor : colors.buttonBgColor}
         >
-          <ArrowLeftIcon color={colors.color} />
+          <ArrowLeftIcon
+            color={invertedColors ? colors.bgColor : colors.color}
+          />
         </IconButton>
         {/* Right Icon */}
         <IconButton
           aria-label="right-arrow"
           onClick={() => slider?.slickNext()}
-          bg={colors.buttonBgColor}
+          bg={invertedColors ? colors.buttonColor : colors.buttonBgColor}
         >
-          <ArrowRightIcon color={colors.color} />
+          <ArrowRightIcon
+            color={invertedColors ? colors.bgColor : colors.color}
+          />
         </IconButton>
       </HStack>
     </>

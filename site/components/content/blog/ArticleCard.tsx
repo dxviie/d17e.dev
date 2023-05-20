@@ -28,7 +28,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
-          className={"floating-card"}
+          size={"lg"}
           borderRadius={"0"}
           borderWidth={"1px"}
           borderColor={colors.color}
@@ -52,7 +52,11 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}
             ></Image>
           </CardHeader>
-          <CardBody fontFamily={bodyFont.style.fontFamily}>
+          <CardBody
+            fontFamily={bodyFont.style.fontFamily}
+            bg={colors.buttonColor}
+            color={colors.bgColor}
+          >
             <Stack spacing="3">
               <Heading size="lg" fontFamily={headerFont.style.fontFamily}>
                 {article.title}
