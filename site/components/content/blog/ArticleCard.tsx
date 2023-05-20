@@ -32,7 +32,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           borderRadius={"0"}
           borderWidth={"1px"}
           borderColor={colors.color}
-          borderStyle={"dashed"}
+          borderStyle={"none"}
           sx={{
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)",
             transition: "box-shadow 0.2s ease-in-out",
