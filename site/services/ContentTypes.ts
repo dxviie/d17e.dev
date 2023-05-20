@@ -1,6 +1,15 @@
 /******************************************************************
  * DTO types
  *****************************************************************/
+export declare type LandingPageDTO = {
+  codeDescription: string;
+  artDescription: string;
+  ideasDescription: string;
+  featuredArtPostSlugs: string[];
+  featuredIdeaArticleSlugs: string[];
+  author: AuthorDTO;
+};
+
 export declare type MediaDTO = {
   name: string;
   alternativeText: string;

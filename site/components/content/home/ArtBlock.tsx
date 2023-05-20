@@ -8,7 +8,13 @@ import ArrowLink from "../../core/interactive/ArrowLink";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
 import WithLink from "../../core/hocs/WithLink";
 
-export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
+export default function ArtBlock({
+  description,
+  posts,
+}: {
+  description: string;
+  posts: PostDTO[];
+}) {
   const colors = useThemeColors();
   return (
     <>
@@ -38,9 +44,7 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
           >
             art.
           </Text>
-          <Text paddingBottom={"1rem"}>
-            I post about my pursuits as a generative artist.
-          </Text>
+          <Text paddingBottom={"1rem"}>{description}</Text>
         </VStack>
 
         {/* Slider */}

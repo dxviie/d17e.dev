@@ -7,7 +7,13 @@ import ArrowLink from "../../core/interactive/ArrowLink";
 import React from "react";
 import ArticleCard from "../blog/ArticleCard";
 
-export default function WritingBlock({ articles }: { articles: ArticleDTO[] }) {
+export default function WritingBlock({
+  description,
+  articles,
+}: {
+  description: string;
+  articles: ArticleDTO[];
+}) {
   const colors = useThemeColors();
   return (
     <>
@@ -37,9 +43,7 @@ export default function WritingBlock({ articles }: { articles: ArticleDTO[] }) {
           >
             ideas.
           </Text>
-          <Text paddingBottom={"1rem"}>
-            I write about things that make me think and learn.
-          </Text>
+          <Text paddingBottom={"1rem"}>{description}</Text>
         </VStack>
 
         {/* Slider */}
@@ -53,9 +57,7 @@ export default function WritingBlock({ articles }: { articles: ArticleDTO[] }) {
             >
               <VStack justifyContent={"center"} height={"100%"}>
                 <Container>
-                  {/*<WithLink link={"posts/" + post.slug}>*/}
                   <ArticleCard article={article} />
-                  {/*</WithLink>*/}
                 </Container>
               </VStack>
             </Box>

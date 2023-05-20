@@ -45,7 +45,7 @@ export const GET_POSTS_QUERY = gql`
 `;
 
 export const GET_POST_BY_SLUG = gql`
-  query GetArticleBySlug($slug: String!) {
+  query GetPostBySlug($slug: String!) {
     posts(filters: { slug: { eq: $slug } }) {
       data {
         id

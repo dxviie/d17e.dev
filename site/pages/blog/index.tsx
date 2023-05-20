@@ -32,12 +32,10 @@ export default function BlogOverview(props: { articles: ArticleDTO[] }) {
           padding={"1.7rem"}
         >
           {articles.map((article) => (
-            <>
-              <ArticleListItem
-                key={article.slug}
-                article={article}
-              ></ArticleListItem>
-            </>
+            <ArticleListItem
+              key={article.slug}
+              article={article}
+            ></ArticleListItem>
           ))}
         </SimpleGrid>
       </VStack>

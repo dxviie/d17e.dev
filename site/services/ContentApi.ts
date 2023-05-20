@@ -4,6 +4,7 @@ import {
   defaultAuthor,
   defaultMedia,
   defaultTag,
+  LandingPageDTO,
   MediaDTO,
   PostDTO,
   TagDTO,
@@ -14,6 +15,7 @@ import {
   ArticleEntityResponse,
   ArticleEntityResponseCollection,
   AuthorEntity,
+  LandingPageEntityResponse,
   Maybe,
   PostEntity,
   PostEntityResponseCollection,
@@ -31,6 +33,7 @@ import {
   GET_POST_BY_SLUG,
   GET_POSTS_QUERY,
 } from "../strapi/graphql/queries/posts";
+import { GET_LANDING_PAGE_QUERY } from "../strapi/graphql/queries/landingPage";
 
 /*****************************************************************
  * NextJS image loader for strapi-hosted resources & blurhash formatter
@@ -83,6 +86,19 @@ const postBySlugFetcher = (query: string, slug: string) =>
   graphQLClient.request<{ posts: PostEntityResponseCollection }>(query, {
     slug: slug,
   });
+const landingPageFetcher = (query: string) =>
+  graphQLClient.request<{ landingPage: LandingPageEntityResponse }>(query);
+
+/******************************************************************
+ * Content APIs -- Landing Page
+ *****************************************************************/
+export const getLandingPage = async (): Promise<LandingPageDTO> => {
+  const landingPageRaw = await landingPageFetcher(GET_LANDING_PAGE_QUERY);
+  if (!landingPageRaw.landingPage || !landingPageRaw.landingPage.data) {
+    throw new Error("Fetching landing page returned nothing...");
+  }
+  return mapLandingPage(landingPageRaw.landingPage);
+};
 /******************************************************************
  * Content APIs -- Articles
  *****************************************************************/
@@ -202,5 +218,26 @@ const mapTag = (tagRaw: Maybe<TagEntity> | undefined): TagDTO => {
   return {
     color: tagRaw.attributes?.color || "",
     name: tagRaw.attributes?.name || "",
+  };
+};
+
+const mapLandingPage = (
+  landingPageRaw: Maybe<LandingPageEntityResponse>
+): LandingPageDTO => {
+  return {
+    codeDescription: landingPageRaw?.data?.attributes?.codeDescription || "",
+    artDescription: landingPageRaw?.data?.attributes?.artDescription || "",
+    ideasDescription: landingPageRaw?.data?.attributes?.ideasDescription || "",
+    featuredArtPostSlugs:
+      landingPageRaw?.data?.attributes?.featuredArtPosts?.data.map(
+        (value) => value.attributes?.slug || ""
+      ) || [],
+    featuredIdeaArticleSlugs:
+      landingPageRaw?.data?.attributes?.featuredIdeaArticles?.data.map(
+        (value) => value.attributes?.slug || ""
+      ) || [],
+    author: mapAuthor(
+      landingPageRaw?.data?.attributes?.author?.data || undefined
+    ),
   };
 };

@@ -5,7 +5,7 @@ import { LinkedInIcon } from "../../icons/LinkedInIcon";
 import { GitHubIcon } from "../../icons/GitHubIcon";
 import LinkWrapper from "../../core/hocs/LinkWrapper";
 
-export default function CodeBlock() {
+export default function CodeBlock({ description }: { description: string }) {
   const colors = useThemeColors();
   return (
     <>
@@ -35,18 +35,9 @@ export default function CodeBlock() {
           >
             code.
           </Text>
-          <Text>
-            Most of my -almost 2 decade long- career has revolved around code in
-            one way or the other.
-          </Text>
-          <Text>
-            Currently I&apos;m working on some projects that I&apos;m excited to
-            share more about in the near future.
-          </Text>
-          <Text>
-            For now if you want to know more about my experience, you can check
-            out
-          </Text>
+          {description.split("\n").map((line, index) => (
+            <Text key={index}>{line}</Text>
+          ))}
           <Flex
             width={"100%"}
             alignItems={"center"}

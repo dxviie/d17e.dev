@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -338,6 +339,7 @@ export type GenericMorph =
   | ComponentSharedMetaSocial
   | ComponentSharedSeo
   | I18NLocale
+  | LandingPage
   | Link
   | Post
   | Quote
@@ -461,6 +463,75 @@ export type JsonFilterInput = {
   startsWith?: InputMaybe<Scalars["JSON"]>;
 };
 
+export type LandingPage = {
+  artDescription?: Maybe<Scalars["String"]>;
+  author?: Maybe<AuthorEntityResponse>;
+  codeDescription?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<Scalars["DateTime"]>;
+  featuredArtPosts?: Maybe<PostRelationResponseCollection>;
+  featuredIdeaArticles?: Maybe<ArticleRelationResponseCollection>;
+  ideasDescription?: Maybe<Scalars["String"]>;
+  publishedAt?: Maybe<Scalars["DateTime"]>;
+  updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type LandingPageFeaturedArtPostsArgs = {
+  filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type LandingPageFeaturedIdeaArticlesArgs = {
+  filters?: InputMaybe<ArticleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  publicationState?: InputMaybe<PublicationState>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type LandingPageEntity = {
+  attributes?: Maybe<LandingPage>;
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type LandingPageEntityResponse = {
+  data?: Maybe<LandingPageEntity>;
+};
+
+export type LandingPageEntityResponseCollection = {
+  data: Array<LandingPageEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type LandingPageFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<LandingPageFiltersInput>>>;
+  artDescription?: InputMaybe<StringFilterInput>;
+  author?: InputMaybe<AuthorFiltersInput>;
+  codeDescription?: InputMaybe<StringFilterInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  featuredArtPosts?: InputMaybe<PostFiltersInput>;
+  featuredIdeaArticles?: InputMaybe<ArticleFiltersInput>;
+  ideasDescription?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<LandingPageFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<LandingPageFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type LandingPageInput = {
+  artDescription?: InputMaybe<Scalars["String"]>;
+  author?: InputMaybe<Scalars["ID"]>;
+  codeDescription?: InputMaybe<Scalars["String"]>;
+  featuredArtPosts?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  featuredIdeaArticles?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  ideasDescription?: InputMaybe<Scalars["String"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type LandingPageRelationResponseCollection = {
+  data: Array<LandingPageEntity>;
+};
+
 export type Link = {
   createdAt?: Maybe<Scalars["DateTime"]>;
   description?: Maybe<Scalars["String"]>;
@@ -557,6 +628,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteArticle?: Maybe<ArticleEntityResponse>;
   deleteAuthor?: Maybe<AuthorEntityResponse>;
+  deleteLandingPage?: Maybe<LandingPageEntityResponse>;
   deleteLink?: Maybe<LinkEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
   deleteQuote?: Maybe<QuoteEntityResponse>;
@@ -581,6 +653,7 @@ export type Mutation = {
   updateArticle?: Maybe<ArticleEntityResponse>;
   updateAuthor?: Maybe<AuthorEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateLandingPage?: Maybe<LandingPageEntityResponse>;
   updateLink?: Maybe<LinkEntityResponse>;
   updatePost?: Maybe<PostEntityResponse>;
   updateQuote?: Maybe<QuoteEntityResponse>;
@@ -728,6 +801,10 @@ export type MutationUpdateFileInfoArgs = {
   info?: InputMaybe<FileInfoInput>;
 };
 
+export type MutationUpdateLandingPageArgs = {
+  data: LandingPageInput;
+};
+
 export type MutationUpdateLinkArgs = {
   data: LinkInput;
   id: Scalars["ID"];
@@ -866,6 +943,7 @@ export type Query = {
   authors?: Maybe<AuthorEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+  landingPage?: Maybe<LandingPageEntityResponse>;
   link?: Maybe<LinkEntityResponse>;
   links?: Maybe<LinkEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
@@ -914,6 +992,10 @@ export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type QueryLandingPageArgs = {
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 export type QueryLinkArgs = {
@@ -1565,6 +1647,7 @@ export type GetArticlesQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           } | null;
         } | null;
@@ -1574,6 +1657,7 @@ export type GetArticlesQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           }>;
         } | null;
@@ -1586,7 +1670,11 @@ export type GetArticlesQuery = {
           data?: {
             attributes?: {
               name: string;
-              avatar: { data?: { attributes?: { url: string } | null } | null };
+              avatar: {
+                data?: {
+                  attributes?: { url: string; blurhash?: string | null } | null;
+                } | null;
+              };
             } | null;
           } | null;
         } | null;
@@ -1617,6 +1705,7 @@ export type GetArticleByIdQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           } | null;
         } | null;
@@ -1626,6 +1715,7 @@ export type GetArticleByIdQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           }>;
         } | null;
@@ -1638,7 +1728,11 @@ export type GetArticleByIdQuery = {
           data?: {
             attributes?: {
               name: string;
-              avatar: { data?: { attributes?: { url: string } | null } | null };
+              avatar: {
+                data?: {
+                  attributes?: { url: string; blurhash?: string | null } | null;
+                } | null;
+              };
             } | null;
           } | null;
         } | null;
@@ -1669,6 +1763,7 @@ export type GetArticleBySlugQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           } | null;
         } | null;
@@ -1678,6 +1773,7 @@ export type GetArticleBySlugQuery = {
               name: string;
               alternativeText?: string | null;
               url: string;
+              blurhash?: string | null;
             } | null;
           }>;
         } | null;
@@ -1690,7 +1786,133 @@ export type GetArticleBySlugQuery = {
           data?: {
             attributes?: {
               name: string;
-              avatar: { data?: { attributes?: { url: string } | null } | null };
+              avatar: {
+                data?: {
+                  attributes?: { url: string; blurhash?: string | null } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+};
+
+export type GetLandingPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetLandingPageQuery = {
+  landingPage?: {
+    data?: {
+      attributes?: {
+        codeDescription?: string | null;
+        artDescription?: string | null;
+        ideasDescription?: string | null;
+        featuredArtPosts?: {
+          data: Array<{ attributes?: { slug?: string | null } | null }>;
+        } | null;
+        featuredIdeaArticles?: {
+          data: Array<{ attributes?: { slug: string } | null }>;
+        } | null;
+        author?: {
+          data?: {
+            attributes?: {
+              name: string;
+              avatar: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type GetPostsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPostsQuery = {
+  posts?: {
+    data: Array<{
+      id?: string | null;
+      attributes?: {
+        link?: string | null;
+        message?: string | null;
+        slug?: string | null;
+        title: string;
+        createdAt?: any | null;
+        author?: {
+          data?: {
+            attributes?: {
+              name: string;
+              avatar: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+        content?: {
+          data?: {
+            attributes?: {
+              url: string;
+              blurhash?: string | null;
+              alternativeText?: string | null;
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+};
+
+export type GetPostBySlugQueryVariables = Exact<{
+  slug: Scalars["String"];
+}>;
+
+export type GetPostBySlugQuery = {
+  posts?: {
+    data: Array<{
+      id?: string | null;
+      attributes?: {
+        link?: string | null;
+        message?: string | null;
+        slug?: string | null;
+        title: string;
+        createdAt?: any | null;
+        author?: {
+          data?: {
+            attributes?: {
+              name: string;
+              avatar: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+        content?: {
+          data?: {
+            attributes?: {
+              url: string;
+              blurhash?: string | null;
+              alternativeText?: string | null;
             } | null;
           } | null;
         } | null;
@@ -1778,6 +2000,13 @@ export const GetArticlesDocument = {
                                                   value: "url",
                                                 },
                                               },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
+                                                },
+                                              },
                                             ],
                                           },
                                         },
@@ -1835,6 +2064,13 @@ export const GetArticlesDocument = {
                                                 name: {
                                                   kind: "Name",
                                                   value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
                                                 },
                                               },
                                             ],
@@ -1952,6 +2188,14 @@ export const GetArticlesDocument = {
                                                                     kind: "Name",
                                                                     value:
                                                                       "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
                                                                   },
                                                                 },
                                                               ],
@@ -2097,6 +2341,13 @@ export const GetArticleByIdDocument = {
                                                   value: "url",
                                                 },
                                               },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
+                                                },
+                                              },
                                             ],
                                           },
                                         },
@@ -2154,6 +2405,13 @@ export const GetArticleByIdDocument = {
                                                 name: {
                                                   kind: "Name",
                                                   value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
                                                 },
                                               },
                                             ],
@@ -2271,6 +2529,14 @@ export const GetArticleByIdDocument = {
                                                                     kind: "Name",
                                                                     value:
                                                                       "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
                                                                   },
                                                                 },
                                                               ],
@@ -2437,6 +2703,13 @@ export const GetArticleBySlugDocument = {
                                                   value: "url",
                                                 },
                                               },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
+                                                },
+                                              },
                                             ],
                                           },
                                         },
@@ -2494,6 +2767,13 @@ export const GetArticleBySlugDocument = {
                                                 name: {
                                                   kind: "Name",
                                                   value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
                                                 },
                                               },
                                             ],
@@ -2613,6 +2893,14 @@ export const GetArticleBySlugDocument = {
                                                                       "url",
                                                                   },
                                                                 },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
                                                               ],
                                                             },
                                                           },
@@ -2660,3 +2948,697 @@ export const GetArticleBySlugDocument = {
   GetArticleBySlugQuery,
   GetArticleBySlugQueryVariables
 >;
+export const GetLandingPageDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetLandingPage" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "landingPage" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "codeDescription" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "artDescription" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "ideasDescription" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "featuredArtPosts" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "slug",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "featuredIdeaArticles",
+                              },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "slug",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "author" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "avatar",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetLandingPageQuery, GetLandingPageQueryVariables>;
+export const GetPostsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetPosts" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "posts" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "author" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "avatar",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "link" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "slug" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "content" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "alternativeText",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPostsQuery, GetPostsQueryVariables>;
+export const GetPostBySlugDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetPostBySlug" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "slug" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "posts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filters" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "slug" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "slug" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "author" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "avatar",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "link" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "message" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "slug" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "content" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "url",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "blurhash",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "alternativeText",
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetPostBySlugQuery, GetPostBySlugQueryVariables>;
