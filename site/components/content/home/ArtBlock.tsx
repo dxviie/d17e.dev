@@ -1,38 +1,13 @@
-import {
-  Box,
-  Container,
-  HStack,
-  IconButton,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { PostDTO } from "../../../services/ContentTypes";
 import React from "react";
-import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
-import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
-// @ts-ignore
-import Slider from "react-slick";
 import PostCard from "../posts/PostCard";
 import useThemeColors from "../../../styles/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
-
-// Settings for the slider
-const settings = {
-  dots: false,
-  arrows: false,
-  fade: false,
-  infinite: true,
-  autoplay: true,
-  speed: 500,
-  autoplaySpeed: 5000,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  pauseOnDotsHover: true,
-};
+import SliderWrapper from "../../core/hocs/SliderWrapper";
 
 export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
   const colors = useThemeColors();
   return (
     <>
@@ -62,49 +37,26 @@ export default function ArtBlock({ posts }: { posts: PostDTO[] }) {
           >
             art.
           </Text>
+          <Text paddingBottom={"1rem"}>
+            I post about my pursuits as a generative artist.
+          </Text>
         </VStack>
-        <Box position={"relative"} width={"100%"} overflow={"hidden"}>
-          {/* CSS files for react-slick */}
-          <link
-            rel="stylesheet"
-            type="text/css"
-            charSet="UTF-8"
-            href={
-              "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-            }
-          />
-          {/* Slider */}
-          <Slider {...settings} ref={(slider: any) => setSlider(slider)}>
-            {posts.map((post, index) => (
-              <Box key={index} height={"50vh"} position="relative">
-                <VStack justifyContent={"center"} height={"100%"}>
-                  <Container>
-                    {/*<WithLink link={"posts/" + post.slug}>*/}
-                    <PostCard post={post} />
-                    {/*</WithLink>*/}
-                  </Container>
-                </VStack>
-              </Box>
-            ))}
-          </Slider>
-        </Box>
-        <HStack paddingTop={"1rem"}>
-          <IconButton
-            aria-label="left-arrow"
-            onClick={() => slider?.slickPrev()}
-            bg={colors.buttonBgColor}
-          >
-            <ArrowLeftIcon color={colors.color} />
-          </IconButton>
-          {/* Right Icon */}
-          <IconButton
-            aria-label="right-arrow"
-            onClick={() => slider?.slickNext()}
-            bg={colors.buttonBgColor}
-          >
-            <ArrowRightIcon color={colors.color} />
-          </IconButton>
-        </HStack>
+
+        {/* Slider */}
+        <SliderWrapper>
+          {posts.map((post, index) => (
+            <Box key={index} height={"50vh"} position="relative">
+              <VStack justifyContent={"center"} height={"100%"}>
+                <Container>
+                  {/*<WithLink link={"posts/" + post.slug}>*/}
+                  <PostCard post={post} />
+                  {/*</WithLink>*/}
+                </Container>
+              </VStack>
+            </Box>
+          ))}
+        </SliderWrapper>
+
         <HStack paddingTop={"2rem"}>
           <ArrowLink
             link={"/posts"}
