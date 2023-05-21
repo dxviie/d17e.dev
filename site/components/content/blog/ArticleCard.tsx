@@ -13,6 +13,7 @@ import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../../styles/useThemeColors";
 import { bodyFont, headerFont } from "../../../styles/fonts";
+import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
@@ -58,9 +59,9 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
             <Stack spacing="3">
               <Heading size="lg" fontFamily={headerFont.style.fontFamily}>
                 {article.title}
-                {/*<Text fontSize={"small"}>*/}
-                {/*  {formatReadingTime(article.body)}*/}
-                {/*</Text>*/}
+                <Text fontSize={"small"}>
+                  {formatReadingTime(article.body)}
+                </Text>
               </Heading>
               <Text noOfLines={3}>{article.description}</Text>
               {/*<Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>*/}
