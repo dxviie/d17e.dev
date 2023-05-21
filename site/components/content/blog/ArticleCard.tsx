@@ -14,6 +14,7 @@ import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../../styles/useThemeColors";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
+import { formatDate } from "../../../services/DateTimeFormatter";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
@@ -64,9 +65,9 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
                 </Text>
               </Heading>
               <Text noOfLines={3}>{article.description}</Text>
-              {/*<Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>*/}
-              {/*  {formatDate(article.publishDtm || article.createdAt)}*/}
-              {/*</Text>*/}
+              <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>
+                {formatDate(article.publishDtm || article.createdAt)}
+              </Text>
             </Stack>
           </CardBody>
         </Card>
