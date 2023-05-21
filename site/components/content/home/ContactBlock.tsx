@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { Button, VStack } from "@chakra-ui/react";
 import useThemeColors from "../../../styles/useThemeColors";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
 
@@ -17,6 +17,13 @@ export default function ContactBlock() {
       >
         <VStack>
           <EmailSubscriptionForm />
+          <Button
+            onClick={() => {
+              throw new Error("well have ya ever");
+            }}
+          >
+            Boom!
+          </Button>
         </VStack>
       </VStack>
     </>
