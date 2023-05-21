@@ -12,6 +12,7 @@ import { ArticleDTO, LandingPageDTO, PostDTO } from "../services/ContentTypes";
 import CodeBlock from "../components/content/home/CodeBlock";
 import ContactBlock from "../components/content/home/ContactBlock";
 import IntroBlock from "../components/content/home/IntroBlock";
+import ArtBlock from "../components/content/home/ArtBlock";
 
 export default function Home({
   landingPage,
@@ -26,7 +27,7 @@ export default function Home({
     <>
       <IntroBlock />
       <CodeBlock description={landingPage.codeDescription} />
-      {/*<ArtBlock description={landingPage.artDescription} posts={posts} />*/}
+      <ArtBlock description={landingPage.artDescription} posts={posts} />
       {/*<WritingBlock*/}
       {/*  description={landingPage.ideasDescription}*/}
       {/*  articles={articles}*/}
