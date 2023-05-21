@@ -5,7 +5,6 @@ import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import React from "react";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
-import ArticleCard from "../blog/ArticleCard";
 
 export default function WritingBlock({
   description,
@@ -58,9 +57,7 @@ export default function WritingBlock({
               padding={"1rem"}
             >
               <VStack justifyContent={"center"} height={"100%"}>
-                <Container>
-                  <ArticleCard article={article} />
-                </Container>
+                <Container>{/*<ArticleCard article={article} />*/}</Container>
               </VStack>
             </Box>
           ))}
