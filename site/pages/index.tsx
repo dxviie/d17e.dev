@@ -10,7 +10,6 @@ import {
 } from "../services/ContentUtils";
 import { ArticleDTO, LandingPageDTO, PostDTO } from "../services/ContentTypes";
 import CodeBlock from "../components/content/home/CodeBlock";
-import IntroBlock from "../components/content/home/IntroBlock";
 import ContactBlock from "../components/content/home/ContactBlock";
 import ArtBlock from "../components/content/home/ArtBlock";
 import WritingBlock from "../components/content/home/WritingBlock";
@@ -26,7 +25,7 @@ export default function Home({
 }) {
   return (
     <>
-      <IntroBlock />
+      {/*<IntroBlock />*/}
       <CodeBlock description={landingPage.codeDescription} />
       <ArtBlock description={landingPage.artDescription} posts={posts} />
       <WritingBlock
