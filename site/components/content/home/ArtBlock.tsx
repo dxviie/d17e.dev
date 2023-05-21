@@ -1,9 +1,12 @@
-import { HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { PostDTO } from "../../../services/ContentTypes";
 import React from "react";
 import useThemeColors from "../../../styles/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
+import SliderWrapper from "../../core/hocs/SliderWrapper";
+import PostCard from "../posts/PostCard";
+import WithLink from "../../core/hocs/WithLink";
 
 export default function ArtBlock({
   description,
@@ -47,23 +50,23 @@ export default function ArtBlock({
         </VStack>
 
         {/* Slider */}
-        {/*<SliderWrapper>*/}
-        {/*  {posts.map((post, index) => (*/}
-        {/*    <Box key={post.slug} height={"100%"} position="relative">*/}
-        {/*      <VStack*/}
-        {/*        justifyContent={"center"}*/}
-        {/*        height={"100%"}*/}
-        {/*        padding={"1rem"}*/}
-        {/*      >*/}
-        {/*        <Container>*/}
-        {/*          <WithLink link={"posts/" + post.slug}>*/}
-        {/*            <PostCard post={post} />*/}
-        {/*          </WithLink>*/}
-        {/*        </Container>*/}
-        {/*      </VStack>*/}
-        {/*    </Box>*/}
-        {/*  ))}*/}
-        {/*</SliderWrapper>*/}
+        <SliderWrapper>
+          {posts.map((post, index) => (
+            <Box key={post.slug} height={"100%"} position="relative">
+              <VStack
+                justifyContent={"center"}
+                height={"100%"}
+                padding={"1rem"}
+              >
+                <Container>
+                  <WithLink link={"posts/" + post.slug}>
+                    <PostCard post={post} />
+                  </WithLink>
+                </Container>
+              </VStack>
+            </Box>
+          ))}
+        </SliderWrapper>
 
         <HStack paddingTop={"2rem"}>
           <ArrowLink
