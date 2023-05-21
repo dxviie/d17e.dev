@@ -8,7 +8,6 @@ import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
-import PostPrevNext from "../../components/content/posts/PostPrevNext";
 
 const Post = (props: {
   post: PostDTO;
@@ -31,7 +30,7 @@ const Post = (props: {
       <PostHeader post={post} />
       <PostBody post={post} />
       <Spacer />
-      <PostPrevNext nextPost={nextPost} prevPost={prevPost} />
+      {/*<PostPrevNext nextPost={nextPost} prevPost={prevPost} />*/}
     </Stack>
   );
 };
