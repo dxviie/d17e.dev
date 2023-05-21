@@ -2,13 +2,45 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  name: string;
+  message: string;
 };
 
-export default function handler(
+const getResponseMessage = (status: number) => {
+  switch (status) {
+    case 200:
+      return "Thank you! (again...)";
+    case 201:
+      return "Thank you!";
+    default:
+      return "";
+  }
+};
+
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  console.log("hello api routes", req.body);
-  res.status(200).json({ name: "John Doe" });
+  const webhook = process.env.SUBSCRIPTION_WEBHOOK_URL || "";
+  if (webhook === "") {
+    console.log("error: webhook url is empty");
+    res.status(500).json({ message: "error: missing configuration" });
+  }
+  const response = await fetch(webhook, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(req.body),
+  });
+  if (response.status >= 500) {
+    console.error(
+      "error: webhook error",
+      response.status,
+      response.statusText,
+      response.body
+    );
+  }
+  res
+    .status(response.status)
+    .json({ message: getResponseMessage(response.status) });
 }
