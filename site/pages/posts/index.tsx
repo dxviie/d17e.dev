@@ -1,7 +1,6 @@
 import { GetStaticProps } from "next";
 import { getAllPosts } from "../../services/ContentApi";
 import { PostDTO } from "../../services/ContentTypes";
-import { useRouter } from "next/router";
 import { SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
@@ -10,11 +9,11 @@ import { sortPostsNewestFirst } from "../../services/ContentUtils";
 
 export default function PostOverview(props: { posts: PostDTO[] }) {
   const posts = props.posts.sort(sortPostsNewestFirst) as PostDTO[];
-  const router = useRouter();
-
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
+  // const router = useRouter();
+  //
+  // if (router.isFallback) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>

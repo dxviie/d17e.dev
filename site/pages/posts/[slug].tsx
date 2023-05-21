@@ -7,7 +7,6 @@ import { Spacer, Stack } from "@chakra-ui/react";
 import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
-import Loading from "../../components/core/Loading";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
 import PostPrevNext from "../../components/content/posts/PostPrevNext";
 
@@ -20,13 +19,6 @@ const Post = (props: {
   const prevPost = props.prevPost as PostDTO;
   const nextPost = props.nextPost as PostDTO;
   const router = useRouter();
-  if (router.isFallback) {
-    return <Loading />;
-  }
-  if (!post.slug) {
-    // TODO: figure out what to do with this
-    router.push("/404");
-  }
   return (
     <Stack
       width={"100vw"}
