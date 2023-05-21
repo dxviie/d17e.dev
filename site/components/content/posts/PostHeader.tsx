@@ -2,6 +2,7 @@ import { PostDTO } from "../../../services/ContentTypes";
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
 import useThemeColors from "../../../styles/useThemeColors";
+import { formatDate } from "../../../services/DateTimeFormatter";
 
 export default function PostHeader({ post }: { post: PostDTO }) {
   const colors = useThemeColors();
@@ -34,8 +35,7 @@ export default function PostHeader({ post }: { post: PostDTO }) {
           noOfLines={1}
           overflow={"visible"}
         >
-          {/*{formatDate(post.createdAt)}*/}
-          Hello
+          {formatDate(post.createdAt)}
         </Text>
       </VStack>
     </>
