@@ -1,11 +1,9 @@
-import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import useThemeColors from "../../../styles/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
-import SliderWrapper from "../../core/hocs/SliderWrapper";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import React from "react";
-import ArticleCard from "../blog/ArticleCard";
 
 export default function WritingBlock({
   description,
@@ -49,22 +47,22 @@ export default function WritingBlock({
         </VStack>
 
         {/* Slider */}
-        <SliderWrapper invertedColors={true}>
-          {articles.map((article, index) => (
-            <Box
-              key={article.slug}
-              height={"100%"}
-              position="relative"
-              padding={"1rem"}
-            >
-              <VStack justifyContent={"center"} height={"100%"}>
-                <Container>
-                  <ArticleCard article={article} />
-                </Container>
-              </VStack>
-            </Box>
-          ))}
-        </SliderWrapper>
+        {/*<SliderWrapper invertedColors={true}>*/}
+        {/*  {articles.map((article, index) => (*/}
+        {/*    <Box*/}
+        {/*      key={article.slug}*/}
+        {/*      height={"100%"}*/}
+        {/*      position="relative"*/}
+        {/*      padding={"1rem"}*/}
+        {/*    >*/}
+        {/*      <VStack justifyContent={"center"} height={"100%"}>*/}
+        {/*        <Container>*/}
+        {/*          <ArticleCard article={article} />*/}
+        {/*        </Container>*/}
+        {/*      </VStack>*/}
+        {/*    </Box>*/}
+        {/*  ))}*/}
+        {/*</SliderWrapper>*/}
 
         <HStack paddingTop={"2rem"}>
           <ArrowLink
