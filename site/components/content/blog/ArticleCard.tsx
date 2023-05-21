@@ -1,10 +1,18 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
 import Image from "next/image";
-import { Card, CardHeader } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../../styles/useThemeColors";
+import { bodyFont, headerFont } from "../../../styles/fonts";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
@@ -42,24 +50,24 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}
             ></Image>
           </CardHeader>
-          {/*<CardBody*/}
-          {/*  fontFamily={bodyFont.style.fontFamily}*/}
-          {/*  bg={colors.buttonColor}*/}
-          {/*  color={colors.bgColor}*/}
-          {/*>*/}
-          {/*  <Stack spacing="3">*/}
-          {/*    <Heading size="lg" fontFamily={headerFont.style.fontFamily}>*/}
-          {/*      {article.title}*/}
-          {/*      <Text fontSize={"small"}>*/}
-          {/*        {formatReadingTime(article.body)}*/}
-          {/*      </Text>*/}
-          {/*    </Heading>*/}
-          {/*    <Text noOfLines={3}>{article.description}</Text>*/}
-          {/*    <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>*/}
-          {/*      {formatDate(article.publishDtm || article.createdAt)}*/}
-          {/*    </Text>*/}
-          {/*  </Stack>*/}
-          {/*</CardBody>*/}
+          <CardBody
+            fontFamily={bodyFont.style.fontFamily}
+            bg={colors.buttonColor}
+            color={colors.bgColor}
+          >
+            <Stack spacing="3">
+              <Heading size="lg" fontFamily={headerFont.style.fontFamily}>
+                {article.title}
+                {/*<Text fontSize={"small"}>*/}
+                {/*  {formatReadingTime(article.body)}*/}
+                {/*</Text>*/}
+              </Heading>
+              <Text noOfLines={3}>{article.description}</Text>
+              {/*<Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>*/}
+              {/*  {formatDate(article.publishDtm || article.createdAt)}*/}
+              {/*</Text>*/}
+            </Stack>
+          </CardBody>
         </Card>
       </WithLink>
     </>
