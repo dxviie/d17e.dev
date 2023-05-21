@@ -7,12 +7,6 @@ import { headerFont } from "../../styles/fonts";
 
 export default function BlogOverview(props: { articles: ArticleDTO[] }) {
   const articles = props.articles as ArticleDTO[];
-  // const router = useRouter();
-  //
-  // if (router.isFallback) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <>
       <VStack>

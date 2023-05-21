@@ -9,12 +9,6 @@ import { sortPostsNewestFirst } from "../../services/ContentUtils";
 
 export default function PostOverview(props: { posts: PostDTO[] }) {
   const posts = props.posts.sort(sortPostsNewestFirst) as PostDTO[];
-  // const router = useRouter();
-  //
-  // if (router.isFallback) {
-  //   return <div>Loading...</div>;
-  // }
-
   return (
     <>
       <VStack>
