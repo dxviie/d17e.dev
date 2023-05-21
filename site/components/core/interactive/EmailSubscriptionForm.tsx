@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
-import { Button, Input, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import useThemeColors from "../../../styles/useThemeColors";
+import { headerFont } from "../../../styles/fonts";
+import Spinner from "../elements/Spinner";
 
 export default function EmailSubscriptionForm() {
   const colors = useThemeColors();
@@ -56,27 +58,40 @@ export default function EmailSubscriptionForm() {
 
   return (
     <>
-      <form>
-        <Input
-          type="email"
-          name="email"
-          placeholder="me@example.com"
-          value={inputData}
-          onChange={(e) => setInputData(e.target.value)}
-          ref={inputRef}
-          disabled={working}
-        />
-        <Button
-          type={"submit"}
-          onClick={handleButtonClick}
-          cursor={working ? "auto" : "pointer"}
-          color={working ? colors.buttonBgColor : colors.color}
-          disabled={working}
-        >
-          Subscribe
-        </Button>
-        <Text height={"1rem"}>{response}</Text>
-      </form>
+      <VStack>
+        <form>
+          <HStack>
+            <Input
+              type="email"
+              name="email"
+              placeholder="me@example.com"
+              value={inputData}
+              onChange={(e) => setInputData(e.target.value)}
+              ref={inputRef}
+              disabled={working}
+            />
+            <Button
+              type={"submit"}
+              onClick={handleButtonClick}
+              cursor={working ? "auto" : "pointer"}
+              color={working ? colors.buttonBgColor : colors.color}
+              disabled={working}
+              variant={"solid"}
+              fontFamily={headerFont.style.fontFamily}
+            >
+              <Text padding={"0 1rem"}>Stay tuned!</Text>
+            </Button>
+          </HStack>
+          <Box
+            margin={"1rem"}
+            height={"2rem"}
+            width={"calc(100% - 2rem)"}
+            display={"flex"}
+          >
+            {working ? <Spinner /> : <Text>{response}</Text>}
+          </Box>
+        </form>
+      </VStack>
     </>
   );
 }

@@ -8,9 +8,9 @@ type Data = {
 const getResponseMessage = (status: number) => {
   switch (status) {
     case 200:
-      return "Thank you! (again...)";
+      return "Thank you! (again... ;)";
     case 201:
-      return "Thank you!";
+      return "Thank you! :)";
     default:
       return "";
   }
