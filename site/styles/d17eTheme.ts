@@ -95,7 +95,8 @@ const styles = {
 // fixes theme initialization (without: invisible controls)
 const d17eTheme = extendTheme({
   styles: styles,
-  useSystemColorMode: "true",
+  initialColorMode: "system",
+  useSystemColorMode: true,
 });
 
 export default d17eTheme;

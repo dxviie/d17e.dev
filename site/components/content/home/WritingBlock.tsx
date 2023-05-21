@@ -43,7 +43,9 @@ export default function WritingBlock({
           >
             ideas.
           </Text>
-          <Text paddingBottom={"1rem"}>{description}</Text>
+          {description.split("\n").map((line, index) => (
+            <Text key={index}>{line}</Text>
+          ))}
         </VStack>
 
         {/* Slider */}

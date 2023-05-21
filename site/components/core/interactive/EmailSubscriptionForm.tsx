@@ -88,7 +88,7 @@ export default function EmailSubscriptionForm() {
             width={"calc(100% - 2rem)"}
             display={"flex"}
           >
-            {working ? <Spinner /> : <Text>{response}</Text>}
+            <HStack>{working ? <Spinner /> : <Text>{response}</Text>}</HStack>
           </Box>
         </form>
       </VStack>
