@@ -14,10 +14,13 @@ import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../../styles/useThemeColors";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
-import { formatDate } from "../../../services/DateTimeFormatter";
+import { useFormattedDate } from "../../../services/useFormattedDate";
 
 export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
+  const formattedDate = useFormattedDate(
+    article.publishDtm || article.createdAt
+  );
   return (
     <>
       <WithLink
@@ -66,7 +69,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               </Heading>
               <Text noOfLines={3}>{article.description}</Text>
               <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>
-                {formatDate(article.publishDtm || article.createdAt)}
+                {formattedDate}
               </Text>
             </Stack>
           </CardBody>

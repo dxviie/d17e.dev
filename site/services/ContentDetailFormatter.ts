@@ -1,5 +1,5 @@
-import { formatDate } from "./DateTimeFormatter";
 import readingTime from "reading-time";
+import { useFormattedDate } from "./useFormattedDate";
 
 export const formatPublishedDetails = (
   createdAt: string,
@@ -7,14 +7,15 @@ export const formatPublishedDetails = (
   publishedAt: string,
   compact?: boolean | false
 ): string => {
+  const formattedCreationDate = useFormattedDate(publishedAt || createdAt);
+  const formattedUpdateDate = useFormattedDate(updatedAt);
   if (compact) {
-    return publishedAt ? formatDate(publishedAt) : formatDate(createdAt);
+    return formattedCreationDate;
   }
   return (
-    // "published " +
-    (publishedAt ? formatDate(publishedAt) : formatDate(createdAt)) +
+    formattedCreationDate +
     " " +
-    (updatedAt ? ", last edited " + formatDate(updatedAt) : "")
+    (updatedAt ? ", last edited " + formattedUpdateDate : "")
   );
 };
 

@@ -3,12 +3,15 @@ import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import WithLink from "../../core/hocs/WithLink";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
-import { formatDate } from "../../../services/DateTimeFormatter";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
 import useThemeColors from "../../../styles/useThemeColors";
+import { useFormattedDate } from "../../../services/useFormattedDate";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
+  const formattedDate = useFormattedDate(
+    article.publishDtm || article.createdAt
+  );
   return (
     <>
       <VStack
@@ -44,7 +47,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
           >
             <Text fontSize={"small"}>{formatReadingTime(article.body)}</Text>
             <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>
-              {formatDate(article.publishDtm || article.createdAt)}
+              {formattedDate}
             </Text>
           </HStack>
         </VStack>
