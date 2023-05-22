@@ -22,6 +22,20 @@ export const formatDate = (date: string): string => {
           "November",
           "December",
         ],
+        monthsShort: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ],
       })
       .format(DATE_FORMAT)
   );
