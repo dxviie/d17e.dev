@@ -19,5 +19,5 @@ const MONTHS = [
 
 export const formatDate = (date: string): string => {
   const myMoment = moment(date);
-  return `{MONTHS[myMoment.month()]} ${myMoment.day()} ${myMoment.year()}`;
+  return `${MONTHS[myMoment.month()]} ${myMoment.day()} ${myMoment.year()}`;
 };
