@@ -87,6 +87,7 @@ export default function EmailSubscriptionForm() {
             height={"2rem"}
             width={"calc(100% - 2rem)"}
             display={"flex"}
+            justifyContent={"center"}
           >
             <HStack>{working ? <Spinner /> : <Text>{response}</Text>}</HStack>
           </Box>
