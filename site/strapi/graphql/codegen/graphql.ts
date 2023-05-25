@@ -467,6 +467,7 @@ export type LandingPage = {
   artDescription?: Maybe<Scalars["String"]>;
   author?: Maybe<AuthorEntityResponse>;
   codeDescription?: Maybe<Scalars["String"]>;
+  contactDescription?: Maybe<Scalars["String"]>;
   createdAt?: Maybe<Scalars["DateTime"]>;
   featuredArtPosts?: Maybe<PostRelationResponseCollection>;
   featuredIdeaArticles?: Maybe<ArticleRelationResponseCollection>;
@@ -508,6 +509,7 @@ export type LandingPageFiltersInput = {
   artDescription?: InputMaybe<StringFilterInput>;
   author?: InputMaybe<AuthorFiltersInput>;
   codeDescription?: InputMaybe<StringFilterInput>;
+  contactDescription?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   featuredArtPosts?: InputMaybe<PostFiltersInput>;
   featuredIdeaArticles?: InputMaybe<ArticleFiltersInput>;
@@ -522,6 +524,7 @@ export type LandingPageInput = {
   artDescription?: InputMaybe<Scalars["String"]>;
   author?: InputMaybe<Scalars["ID"]>;
   codeDescription?: InputMaybe<Scalars["String"]>;
+  contactDescription?: InputMaybe<Scalars["String"]>;
   featuredArtPosts?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   featuredIdeaArticles?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   ideasDescription?: InputMaybe<Scalars["String"]>;

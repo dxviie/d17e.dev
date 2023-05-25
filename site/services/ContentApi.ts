@@ -228,6 +228,8 @@ const mapLandingPage = (
     codeDescription: landingPageRaw?.data?.attributes?.codeDescription || "",
     artDescription: landingPageRaw?.data?.attributes?.artDescription || "",
     ideasDescription: landingPageRaw?.data?.attributes?.ideasDescription || "",
+    contactDescription:
+      landingPageRaw?.data?.attributes?.contactDescription || "",
     featuredArtPostSlugs:
       landingPageRaw?.data?.attributes?.featuredArtPosts?.data.map(
         (value) => value.attributes?.slug || ""

@@ -8,6 +8,7 @@ export const GET_LANDING_PAGE_QUERY = gql`
           codeDescription
           artDescription
           ideasDescription
+          contactDescription
           featuredArtPosts {
             data {
               attributes {

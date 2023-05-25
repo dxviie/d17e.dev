@@ -5,6 +5,7 @@ export declare type LandingPageDTO = {
   codeDescription: string;
   artDescription: string;
   ideasDescription: string;
+  contactDescription: string;
   featuredArtPostSlugs: string[];
   featuredIdeaArticleSlugs: string[];
   author: AuthorDTO;

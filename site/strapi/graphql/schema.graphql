@@ -662,6 +662,7 @@ input LandingPageInput {
   featuredArtPosts: [ID]
   featuredIdeaArticles: [ID]
   author: ID
+  contactDescription: String
   publishedAt: DateTime
 }
 
@@ -682,6 +683,7 @@ type LandingPage {
     publicationState: PublicationState = LIVE
   ): ArticleRelationResponseCollection
   author: AuthorEntityResponse
+  contactDescription: String
   createdAt: DateTime
   updatedAt: DateTime
   publishedAt: DateTime

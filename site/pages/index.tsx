@@ -33,7 +33,7 @@ export default function Home({
         description={landingPage.ideasDescription}
         articles={articles}
       />
-      <ContactBlock />
+      <ContactBlock description={landingPage.contactDescription} />
     </>
   );
 }
