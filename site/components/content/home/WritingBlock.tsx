@@ -66,7 +66,7 @@ export default function WritingBlock({
           ))}
         </SliderWrapper>
 
-        <HStack paddingTop={"2rem"}>
+        <HStack paddingTop={"2rem"} paddingBottom={"3rem"}>
           <ArrowLink
             link={"/blog"}
             description={"View all articles"}

@@ -68,7 +68,7 @@ export default function ArtBlock({
           ))}
         </SliderWrapper>
 
-        <HStack paddingTop={"2rem"}>
+        <HStack paddingTop={"2rem"} paddingBottom={"3rem"}>
           <ArrowLink
             link={"/posts"}
             description={"View all posts"}
