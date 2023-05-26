@@ -1,6 +1,6 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
 import ArrowLink from "../../core/interactive/ArrowLink";
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, VStack } from "@chakra-ui/react";
 import PlainTextLink from "../../core/interactive/PlainTextLink";
 import { useEffect, useState } from "react";
 
@@ -37,7 +37,7 @@ export default function ArticlePrevNext({
                 <></>
               )}
             </Box>
-            <Text>
+            <Box>
               {nextArticle && prevArticle ? (
                 <Box
                   width={"1px"}
@@ -50,7 +50,7 @@ export default function ArticlePrevNext({
               ) : (
                 <></>
               )}
-            </Text>
+            </Box>
             <Box width={"50%"}>
               {prevArticle ? (
                 <VStack alignItems={"flex-start"}>
