@@ -27,15 +27,19 @@ export default function Footer() {
             <HeartIcon color={colors.accentColor} ml={".2rem"} mr={".2rem"} />{" "}
             by David Vandenbogaerde
           </Text>
-          <Box alignSelf={["center", "flex-start"]} display={"flex"}>
+          <Box
+            alignSelf={["center", "flex-start"]}
+            display={"flex"}
+            fontSize={"small"}
+          >
             <LinkWrapper
               link={"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
               color={colors.bgColor}
               target={"_blank"}
             >
-              CC BY-NC-SA 4.0
+              © CC BY-NC-SA 4.0
             </LinkWrapper>
-            <Text marginLeft={".5rem"}>© 2022 - present</Text>
+            <Text marginLeft={".5rem"}>| 2022 - present</Text>
           </Box>
         </Flex>
 
