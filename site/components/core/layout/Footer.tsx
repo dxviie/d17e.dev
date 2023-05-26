@@ -1,10 +1,9 @@
-import { Box, Flex, HStack, Link, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import { HeartIcon } from "../../icons/HeartIcon";
-import { LinkedInIcon } from "../../icons/LinkedInIcon";
-import { GitHubIcon } from "../../icons/GitHubIcon";
 import { useRouter } from "next/router";
 import useThemeColors from "../../../styles/useThemeColors";
 import { isAtHomePage } from "../../../services/RouterUtils";
+import LinkWrapper from "../hocs/LinkWrapper";
 
 export default function Footer() {
   const colors = useThemeColors();
@@ -12,39 +11,44 @@ export default function Footer() {
   const scrollSnapping = isAtHomePage(router.asPath) ? "end" : "none";
   return (
     <>
-      <HStack
+      <Flex
         width={"100%"}
         bg={colors.color}
         color={colors.bgColor}
         padding={"1rem"}
         fontSize={"sm"}
         scrollSnapAlign={scrollSnapping}
+        direction={["column", "row"]}
+        alignItems={"center"}
       >
-        <Flex direction={"column"}>
+        <Flex direction={"column"} alignItems={["center", "flex-start"]}>
           <Text>
             made with{" "}
-            <HeartIcon color={"orangered"} ml={".2rem"} mr={".2rem"} /> by David
-            Vandenbogaerde
+            <HeartIcon color={colors.accentColor} ml={".2rem"} mr={".2rem"} />{" "}
+            by David Vandenbogaerde
           </Text>
-          <Box alignContent={"center"} justifyContent={"center"}>
-            <LinkedInIcon />{" "}
-            <Link href={"https://www.linkedin.com/in/d16de/"} target={"_blank"}>
-              d16de
-            </Link>{" "}
-            -
-            <GitHubIcon ml={".3rem"} />{" "}
-            <Link href={"https://github.com/dxviie"} target={"_blank"}>
-              dxviie
-            </Link>
+          <Box alignSelf={["center", "flex-start"]} display={"flex"}>
+            <LinkWrapper
+              link={"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+              color={colors.bgColor}
+              target={"_blank"}
+            >
+              CC BY-NC-SA 4.0
+            </LinkWrapper>
+            <Text marginLeft={".5rem"}>© 2022 - present</Text>
           </Box>
         </Flex>
 
         <Spacer />
-        <Flex direction={"column"}>
+        <Flex
+          direction={"column"}
+          alignItems={["center", "flex-start"]}
+          marginTop={["1rem", "0"]}
+        >
           <span>KVK - 87650770</span>
           <span>BTW - NL004463884B92</span>
         </Flex>
-      </HStack>
+      </Flex>
     </>
   );
 }

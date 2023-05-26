@@ -6,16 +6,18 @@ import React from "react";
 export default function LinkWrapper({
   link,
   children,
+  target,
   color,
 }: {
   link: string;
   children?: React.ReactNode;
+  target?: string | "_self";
   color?: string;
 }) {
   const colors = useThemeColors();
   return (
     <>
-      <WithLink link={link}>
+      <WithLink link={link} target={target}>
         <Box
           cursor={"pointer"}
           display={"inline"}
