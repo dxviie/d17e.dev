@@ -40,7 +40,5 @@ export default async function handler(
       response.body
     );
   }
-  res
-    .status(response.status)
-    .json({ message: getResponseMessage(response.status) });
+  res.status(200).json({ message: getResponseMessage(response.status) });
 }

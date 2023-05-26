@@ -24,7 +24,7 @@ export default function EmailSubscriptionForm() {
         return;
       }
       if (working) {
-        console.error("already working on it. skipping api call.");
+        console.debug("already working on it. skipping api call.");
         event.preventDefault();
         return;
       }
