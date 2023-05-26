@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <link rel="icon" href="/d17e-favicon.ico" />
           </Head>
           <Box
-            zIndex={"1"}
+            zIndex={"5"}
             position={"fixed"}
             top={"0"}
             right={"0"}
