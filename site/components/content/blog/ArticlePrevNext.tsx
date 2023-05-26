@@ -56,7 +56,7 @@ export default function ArticlePrevNext({
                 <VStack alignItems={"flex-start"}>
                   <ArrowLink
                     link={prevArticle.slug}
-                    description={"prev"}
+                    description={"prior"}
                     arrow={"right"}
                   />
                   <PlainTextLink

@@ -1,5 +1,5 @@
 import { ArticleDTO } from "../../../services/ContentTypes";
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import WithLink from "../../core/hocs/WithLink";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
@@ -51,8 +51,13 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             </Text>
           </HStack>
         </VStack>
-        <WithLink key={article.slug} link={"/blog/" + article.slug}>
+        <WithLink
+          key={article.slug}
+          link={"/blog/" + article.slug}
+          style={{ width: "100%" }}
+        >
           <HStack
+            width={"100%"}
             sx={{
               _hover: {
                 textDecoration: "underline",
@@ -67,6 +72,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
             >
               {article.description}
             </Text>
+            <Spacer />
             <ArrowRightIcon alignSelf={"flex-end"} />
           </HStack>
         </WithLink>

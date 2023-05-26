@@ -12,6 +12,7 @@ export default function PostCover({ post }: { post: PostDTO }) {
           loader={imageLoader}
           src={post.content.url}
           fill={true}
+          sizes={"100%"}
           style={{ objectFit: "contain" }}
           alt={post.content.alternativeText}
           placeholder={"blur"}

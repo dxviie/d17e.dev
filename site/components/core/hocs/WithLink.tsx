@@ -6,15 +6,17 @@ export default function WithLink({
   children,
   target,
   onClick,
+  style,
 }: {
   link: string;
   children?: React.ReactNode;
   target?: string | "_self";
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  style?: React.CSSProperties;
 }) {
   return (
     <>
-      <Link href={link} target={target} onClick={onClick}>
+      <Link href={link} target={target} onClick={onClick} style={style}>
         {children}
       </Link>
     </>

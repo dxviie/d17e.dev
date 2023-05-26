@@ -50,6 +50,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
               alt={article.cover.alternativeText}
               loader={imageLoader}
               fill={true}
+              sizes={"100%"}
               style={{ objectFit: "cover" }}
               placeholder={"blur"}
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}

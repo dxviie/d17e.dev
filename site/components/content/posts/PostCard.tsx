@@ -29,6 +29,7 @@ export default function PostCard({ post }: { post: PostDTO }) {
           alt={post.content.alternativeText}
           loader={imageLoader}
           fill={true}
+          sizes={"100%"}
           style={{ objectFit: "cover", transform: "scale(1.5)" }}
           placeholder={"blur"}
           blurDataURL={blurHashToDataURL(post.content.blurhash)}

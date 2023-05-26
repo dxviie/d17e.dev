@@ -33,6 +33,7 @@ export default function ArticleFooter({ article }: { article: ArticleDTO }) {
                   src={article.author.avatar.url}
                   alt={article.author.avatar.alternativeText}
                   fill={true}
+                  sizes={"100%"}
                   style={{ objectFit: "cover" }}
                   placeholder={"blur"}
                   blurDataURL={blurHashToDataURL(
