@@ -1,7 +1,7 @@
 import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { PostDTO } from "../../../services/ContentTypes";
 import React from "react";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import SliderWrapper from "../../core/hocs/SliderWrapper";

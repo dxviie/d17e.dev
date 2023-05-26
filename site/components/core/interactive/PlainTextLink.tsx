@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 
 export default function PlainTextLink({
   link,

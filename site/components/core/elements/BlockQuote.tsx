@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import React from "react";
 import { handWrittenFont } from "../../../styles/fonts";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 
 export default function BlockQuote({
   children,

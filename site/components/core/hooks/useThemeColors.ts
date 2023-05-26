@@ -8,7 +8,7 @@ import {
   BUTTON_BG_COLOR_LIGHT,
   COLOR_DARK,
   COLOR_LIGHT,
-} from "./d17eTheme";
+} from "../../../styles/d17eTheme";
 
 export interface ThemeColors {
   color: string;

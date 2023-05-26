@@ -1,7 +1,7 @@
 import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import { HeartIcon } from "../../icons/HeartIcon";
 import { useRouter } from "next/router";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 import { isAtHomePage } from "../../../services/RouterUtils";
 import LinkWrapper from "../hocs/LinkWrapper";
 

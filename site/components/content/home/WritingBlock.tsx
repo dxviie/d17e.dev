@@ -1,6 +1,6 @@
 import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import React from "react";

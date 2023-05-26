@@ -4,7 +4,7 @@ import { bodyFont, headerFont } from "../../../styles/fonts";
 import WithLink from "../../core/hocs/WithLink";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { useFormattedDate } from "../../../services/useFormattedDate";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {

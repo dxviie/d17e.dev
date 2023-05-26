@@ -1,5 +1,5 @@
 import { Text, VStack } from "@chakra-ui/react";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
 
 export default function ContactBlock({ description }: { description: string }) {

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, HStack, IconButton } from "@chakra-ui/react";
 import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 // @ts-ignore
 import Slider from "react-slick";
 

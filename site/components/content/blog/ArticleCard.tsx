@@ -11,7 +11,7 @@ import {
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import WithLink from "../../core/hocs/WithLink";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import { formatReadingTime } from "../../../services/ContentDetailFormatter";
 import { useFormattedDate } from "../../../services/useFormattedDate";

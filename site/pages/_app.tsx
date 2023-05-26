@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import "../styles/markdown.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
+import { Box, ChakraProvider, Flex, Spacer } from "@chakra-ui/react";
 import Head from "next/head";
 import Footer from "../components/core/layout/Footer";
 import d17eTheme from "../styles/d17eTheme";
@@ -30,11 +30,16 @@ function MyApp({ Component, pageProps }: AppProps) {
             />
             <link rel="icon" href="/d17e-favicon.ico" />
           </Head>
-
-          <HStack zIndex={"1"} position={"absolute"} top={"5"} right={"5"}>
+          <Box
+            zIndex={"1"}
+            position={"fixed"}
+            top={"0"}
+            right={"0"}
+            width={"100%"}
+          >
             <Navigation></Navigation>
-          </HStack>
-
+          </Box>
+          <Box height={"4rem"}></Box> {/* navigation spacer */}
           {/* content */}
           <Flex
             direction={"column"}

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 import { headerFont } from "../../../styles/fonts";
 import Spinner from "../elements/Spinner";
 

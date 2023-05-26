@@ -1,7 +1,7 @@
 import { PostDTO } from "../../../services/ContentTypes";
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { useFormattedDate } from "../../../services/useFormattedDate";
 
 export default function PostHeader({ post }: { post: PostDTO }) {

@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 import WithLink from "./WithLink";
 import React from "react";
 

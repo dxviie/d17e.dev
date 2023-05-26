@@ -5,7 +5,7 @@ import {
   formatReadingTime,
 } from "../../../services/ContentDetailFormatter";
 import { headerFont } from "../../../styles/fonts";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 
 export default function ArticleHeader({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();

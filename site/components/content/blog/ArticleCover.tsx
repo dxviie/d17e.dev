@@ -3,7 +3,7 @@ import { imageLoader } from "../../../services/ContentApi";
 import { Box } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 
 export default function ArticleCover({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();

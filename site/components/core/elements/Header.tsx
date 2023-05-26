@@ -1,5 +1,5 @@
 import React from "react";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 import { Text } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
 

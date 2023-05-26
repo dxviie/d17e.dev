@@ -3,7 +3,7 @@ import { ArticleDTO } from "../../../services/ContentTypes";
 import Image from "next/image";
 import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 
 export default function ArticleFooter({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();

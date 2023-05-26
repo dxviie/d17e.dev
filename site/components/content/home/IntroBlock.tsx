@@ -1,10 +1,11 @@
-import { Box, Flex, keyframes, useMediaQuery, VStack } from "@chakra-ui/react";
+import { Box, Flex, keyframes, VStack } from "@chakra-ui/react";
 import { bodyFont, headerFont } from "../../../styles/fonts";
 import D17eLogo from "../../icons/D17eLogo";
-import useThemeColors, { ThemeColors } from "../../../styles/useThemeColors";
+import useThemeColors, { ThemeColors } from "../../core/hooks/useThemeColors";
 import { useEffect, useState } from "react";
 import { ArrowDownIcon } from "../../icons/ArrowDownIcon";
 import WithLink from "../../core/hocs/WithLink";
+import useIsPhone from "../../core/hooks/useIsPhone";
 
 const DELAY_MILLIS = 700;
 
@@ -28,10 +29,7 @@ export default function IntroBlock() {
       clearTimeout(timer);
     };
   }, []);
-  const [isPhone] = useMediaQuery("(max-width: 480px)", {
-    ssr: true,
-    fallback: false, // return false on the server, and re-evaluate on the client side
-  });
+  const isPhone = useIsPhone();
   return (
     <>
       <VStack

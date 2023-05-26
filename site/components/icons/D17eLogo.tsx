@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import useThemeColors from "../../styles/useThemeColors";
+import useThemeColors from "../core/hooks/useThemeColors";
 
 export default function D17eLogo({ color }: { color?: string }) {
   const colors = useThemeColors();

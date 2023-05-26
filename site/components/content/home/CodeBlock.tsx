@@ -1,4 +1,4 @@
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 import { Flex, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
 import { LinkedInIcon } from "../../icons/LinkedInIcon";

@@ -4,7 +4,7 @@ import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import Image from "next/image";
 import { headerFont } from "../../../styles/fonts";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../../core/hooks/useThemeColors";
 
 export default function PostCard({ post }: { post: PostDTO }) {
   const colors = useThemeColors();

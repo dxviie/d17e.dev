@@ -3,7 +3,7 @@ import Link from "next/link";
 import { headerFont } from "../../../styles/fonts";
 import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
 import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
-import useThemeColors from "../../../styles/useThemeColors";
+import useThemeColors from "../hooks/useThemeColors";
 
 export default function ArrowLink({
   link,
