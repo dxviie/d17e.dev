@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import "../styles/markdown.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider, Flex, HStack, Spacer } from "@chakra-ui/react";
-import { Analytics } from "@vercel/analytics/react";
 import Head from "next/head";
 import Footer from "../components/core/layout/Footer";
 import d17eTheme from "../styles/d17eTheme";
@@ -49,9 +48,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Spacer />
             <Footer />
           </Flex>
-
-          {/* analytics, scripts,... */}
-          <Analytics />
         </ChakraProvider>
       </React.StrictMode>
     </>
