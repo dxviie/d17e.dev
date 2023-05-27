@@ -32,11 +32,7 @@ export default function IntroBlock() {
   const isPhone = useIsPhone();
   return (
     <>
-      <VStack
-        height={"100vh"}
-        justifyContent={"center"}
-        scrollSnapAlign={"start"}
-      >
+      <VStack height={"calc(100vh - 3.5rem)"} justifyContent={"center"}>
         <Flex
           width={"80vw"}
           maxWidth={["20rem", "25rem", "35rem"]}

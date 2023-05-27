@@ -14,6 +14,8 @@ import useIsPhone from "../hooks/useIsPhone";
 import Link from "next/link";
 import D17eIcon from "../../icons/D17eIcon";
 import { headerFont } from "../../../styles/fonts";
+import PostsIcon from "../../icons/PostsIcon";
+import BlogIcon from "../../icons/BlogIcon";
 
 export default function Navigation() {
   const colors = useThemeColors();
@@ -32,18 +34,6 @@ export default function Navigation() {
               }
             />
           </Box>
-          {/*{isPhone ? (*/}
-          {/*  <></>*/}
-          {/*) : (*/}
-          {/*  <Text*/}
-          {/*    marginLeft={".5rem"}*/}
-          {/*    color={*/}
-          {/*      isAtHomePage(router.asPath) ? colors.buttonBgColor : undefined*/}
-          {/*    }*/}
-          {/*  >*/}
-          {/*    home*/}
-          {/*  </Text>*/}
-          {/*)}*/}
         </Button>
       </Link>
 
@@ -52,60 +42,60 @@ export default function Navigation() {
       {/*  POSTS BUTTON */}
       <Link href={POSTS_PATH}>
         <Button bg={"transparent"}>
-          {/*<Box width={"24px"} height={"24px"}>*/}
-          {/*<ArtIcon*/}
-          {/*  color={*/}
-          {/*    isAtPostsPage(router.asPath) ? colors.buttonBgColor : undefined*/}
-          {/*  }*/}
-          {/*/>*/}
-          {/*</Box>*/}
-          {/*{isPhone ? (*/}
-          {/*  <></>*/}
-          {/*) : (*/}
-          <Text
-            marginLeft={".5rem"}
-            color={
-              isAtPostsPage(router.asPath) ? colors.buttonBgColor : undefined
-            }
-          >
-            posts
-          </Text>
-          {/*)}*/}
+          <Box width={"24px"} height={"24px"}>
+            <PostsIcon
+              color={
+                isAtPostsPage(router.asPath) ? colors.buttonBgColor : undefined
+              }
+            />
+          </Box>
+          {isPhone ? (
+            <></>
+          ) : (
+            <Text
+              marginLeft={".5rem"}
+              color={
+                isAtPostsPage(router.asPath) ? colors.buttonBgColor : undefined
+              }
+            >
+              posts
+            </Text>
+          )}
         </Button>
       </Link>
 
       {/*  BLOG BUTTON */}
       <Link href={BLOG_PATH}>
         <Button bg={"transparent"}>
-          {/*<Box*/}
-          {/*  width={"24px"}*/}
-          {/*  height={"24px"}*/}
-          {/*  style={{*/}
-          {/*    fillRule: "evenodd",*/}
-          {/*    clipRule: "evenodd",*/}
-          {/*    strokeLinejoin: "round",*/}
-          {/*    strokeMiterlimit: 2,*/}
-          {/*    strokeWidth: 5,*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*<IdeaIcon*/}
-          {/*  color={*/}
-          {/*    isAtBlogPage(router.asPath) ? colors.buttonBgColor : undefined*/}
-          {/*  }*/}
-          {/*/>*/}
-          {/*</Box>*/}
-          {/*{isPhone ? (*/}
-          {/*  <></>*/}
-          {/*) : (*/}
-          <Text
-            marginLeft={".5rem"}
-            color={
-              isAtBlogPage(router.asPath) ? colors.buttonBgColor : undefined
-            }
+          <Box
+            width={"24px"}
+            height={"24px"}
+            style={{
+              fillRule: "evenodd",
+              clipRule: "evenodd",
+              strokeLinejoin: "round",
+              strokeMiterlimit: 2,
+              strokeWidth: 5,
+            }}
           >
-            blog
-          </Text>
-          {/*)}*/}
+            <BlogIcon
+              color={
+                isAtBlogPage(router.asPath) ? colors.buttonBgColor : undefined
+              }
+            />
+          </Box>
+          {isPhone ? (
+            <></>
+          ) : (
+            <Text
+              marginLeft={".5rem"}
+              color={
+                isAtBlogPage(router.asPath) ? colors.buttonBgColor : undefined
+              }
+            >
+              blog
+            </Text>
+          )}
         </Button>
       </Link>
 
