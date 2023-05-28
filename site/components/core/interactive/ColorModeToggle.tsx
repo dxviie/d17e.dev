@@ -1,5 +1,5 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { Button, useColorMode } from "@chakra-ui/react";
+import { Flex, useColorMode } from "@chakra-ui/react";
 import useThemeColors from "../hooks/useThemeColors";
 
 export default function ColorModeToggle() {
@@ -7,12 +7,13 @@ export default function ColorModeToggle() {
   const colorModeContext = useColorMode();
   return (
     <>
-      <Button
+      <Flex
         onClick={() => colorModeContext.toggleColorMode()}
-        bg={"transparent"}
+        padding={"1rem"}
+        cursor={"pointer"}
       >
         {colorModeContext.colorMode === "light" ? <SunIcon /> : <MoonIcon />}
-      </Button>
+      </Flex>
     </>
   );
 }

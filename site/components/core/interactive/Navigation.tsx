@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
 import ColorModeToggle from "./ColorModeToggle";
 import { useRouter } from "next/router";
 import {
@@ -26,7 +26,7 @@ export default function Navigation() {
     <>
       {/*  HOME BUTTON */}
       <Link href={HOME_PATH}>
-        <Button bg={"transparent"}>
+        <Flex padding={"1rem"}>
           <Box width={"24px"} height={"24px"}>
             <D17eIcon
               color={
@@ -34,14 +34,14 @@ export default function Navigation() {
               }
             />
           </Box>
-        </Button>
+        </Flex>
       </Link>
 
       <Spacer />
 
       {/*  POSTS BUTTON */}
       <Link href={POSTS_PATH}>
-        <Button bg={"transparent"}>
+        <Flex padding={"1rem"}>
           <Box width={"24px"} height={"24px"}>
             <PostsIcon
               color={
@@ -61,12 +61,12 @@ export default function Navigation() {
               posts
             </Text>
           )}
-        </Button>
+        </Flex>
       </Link>
 
       {/*  BLOG BUTTON */}
       <Link href={BLOG_PATH}>
-        <Button bg={"transparent"}>
+        <Flex padding={"1rem"}>
           <Box
             width={"24px"}
             height={"24px"}
@@ -96,7 +96,7 @@ export default function Navigation() {
               blog
             </Text>
           )}
-        </Button>
+        </Flex>
       </Link>
 
       {/*  SETTINGS*/}

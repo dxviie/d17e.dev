@@ -74,6 +74,7 @@ export default function IntroBlock() {
           >
             <ArrowDownIcon />
           </Box>
+          <Box height={"7rem"} />
         </Flex>
       </VStack>
     </>
