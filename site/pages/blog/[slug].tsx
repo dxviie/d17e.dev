@@ -9,6 +9,7 @@ import ArticleFooter from "../../components/content/blog/ArticleFooter";
 import ArticleBody from "../../components/content/blog/ArticleBody";
 import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
 import { sortArticlesNewestFirst } from "../../services/ContentUtils";
+import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 
 const Blog = (props: {
   article: ArticleDTO;
@@ -25,6 +26,7 @@ const Blog = (props: {
       <ArticleBody article={article} />
       <ArticleFooter article={article} />
       <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle} />
+      <EmailSubscriptionFooter />
     </Stack>
   );
 };
