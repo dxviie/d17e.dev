@@ -4,6 +4,7 @@ import { headerFont } from "../../../styles/fonts";
 import { LinkedInIcon } from "../../icons/LinkedInIcon";
 import { GitHubIcon } from "../../icons/GitHubIcon";
 import LinkWrapper from "../../core/hocs/LinkWrapper";
+import Markdown from "../../core/elements/Markdown";
 
 export default function CodeBlock({ description }: { description: string }) {
   const colors = useThemeColors();
@@ -35,9 +36,7 @@ export default function CodeBlock({ description }: { description: string }) {
           >
             code.
           </Text>
-          {description.split("\n").map((line, index) => (
-            <Text key={index}>{line}</Text>
-          ))}
+          <Markdown markdown={description} />
           <Flex
             width={"100%"}
             alignItems={"center"}

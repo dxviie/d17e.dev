@@ -7,6 +7,7 @@ import ArrowLink from "../../core/interactive/ArrowLink";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
 import PostCard from "../posts/PostCard";
 import WithLink from "../../core/hocs/WithLink";
+import Markdown from "../../core/elements/Markdown";
 
 export default function ArtBlock({
   description,
@@ -44,9 +45,7 @@ export default function ArtBlock({
           >
             art.
           </Text>
-          {description.split("\n").map((line, index) => (
-            <Text key={index}>{line}</Text>
-          ))}
+          <Markdown markdown={description} />
         </VStack>
 
         {/* Slider */}

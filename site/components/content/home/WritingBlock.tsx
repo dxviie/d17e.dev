@@ -6,6 +6,7 @@ import ArrowLink from "../../core/interactive/ArrowLink";
 import React from "react";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
 import ArticleCard from "../blog/ArticleCard";
+import Markdown from "../../core/elements/Markdown";
 
 export default function WritingBlock({
   description,
@@ -43,9 +44,7 @@ export default function WritingBlock({
           >
             ideas.
           </Text>
-          {description.split("\n").map((line, index) => (
-            <Text key={index}>{line}</Text>
-          ))}
+          <Markdown markdown={description} />
         </VStack>
 
         {/* Slider */}

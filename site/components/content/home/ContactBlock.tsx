@@ -1,6 +1,7 @@
-import { Text, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import useThemeColors from "../../core/hooks/useThemeColors";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
+import Markdown from "../../core/elements/Markdown";
 
 export default function ContactBlock({ description }: { description: string }) {
   const colors = useThemeColors();
@@ -19,9 +20,7 @@ export default function ContactBlock({ description }: { description: string }) {
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          {description.split("\n").map((line, index) => (
-            <Text key={index}>{line}</Text>
-          ))}
+          <Markdown markdown={description} />
           <EmailSubscriptionForm />
         </VStack>
       </VStack>
