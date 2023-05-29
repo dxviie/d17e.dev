@@ -36,19 +36,17 @@ export default function Markdown({ markdown }: { markdown: string }) {
         h6: ({ level, children, ...props }) => (
           <Header level={level}>{children}</Header>
         ),
-        p: ({ children, ...props }) => {
-          return (
-            <p
-              style={{
-                wordWrap: "break-word",
-                whiteSpace: "pre-line",
-                lineHeight: "1.9rem",
-              }}
-            >
-              {children}
-            </p>
-          );
-        },
+        p: ({ children, ...props }) => (
+          <p
+            style={{
+              wordWrap: "break-word",
+              whiteSpace: "pre-line",
+              lineHeight: "1.9rem",
+            }}
+          >
+            {children}
+          </p>
+        ),
       }
     : {};
   return (

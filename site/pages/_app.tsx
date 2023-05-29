@@ -41,16 +41,12 @@ function MyApp({ Component, pageProps }: AppProps) {
           >
             <Navigation></Navigation>
           </Flex>
-          {/*<Box height={"4rem"}></Box> /!* navigation spacer *!/*/}
-          {/* content */}
           <Flex
             direction={"column"}
             align={"center"}
-            minH={"100vh"}
+            minH={"calc(100vh - 3.5rem)"}
             width={"100%"}
-            // scrollSnapType={"y mandatory"}
           >
-            {/*<Box height={"5rem"}></Box> /!* navigation spacer *!/*/}
             <Component {...pageProps} />
             <Spacer />
             <Footer />

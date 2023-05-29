@@ -27,7 +27,10 @@ export default function Home({
   return (
     <>
       <IntroBlock />
-      <CodeBlock description={landingPage.codeDescription} />
+      <CodeBlock
+        description={landingPage.codeDescription}
+        author={landingPage.author}
+      />
       <ArtBlock description={landingPage.artDescription} posts={posts} />
       <WritingBlock
         description={landingPage.ideasDescription}

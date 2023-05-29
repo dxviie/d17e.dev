@@ -1,12 +1,20 @@
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { Flex, Text, VStack } from "@chakra-ui/react";
+import { Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
 import { LinkedInIcon } from "../../icons/LinkedInIcon";
 import { GitHubIcon } from "../../icons/GitHubIcon";
 import LinkWrapper from "../../core/hocs/LinkWrapper";
 import Markdown from "../../core/elements/Markdown";
+import Avatar from "../../core/elements/Avatar";
+import { AuthorDTO } from "../../../services/ContentTypes";
 
-export default function CodeBlock({ description }: { description: string }) {
+export default function CodeBlock({
+  description,
+  author,
+}: {
+  description: string;
+  author: AuthorDTO;
+}) {
   const colors = useThemeColors();
   return (
     <>
@@ -25,17 +33,21 @@ export default function CodeBlock({ description }: { description: string }) {
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          <Text
-            fontFamily={headerFont.style.fontFamily}
-            fontSize={"3rem"}
-            bgColor={colors.bgColor}
-            color={colors.color}
-            padding={"0 1rem"}
-            marginLeft={"-1rem"}
-            marginBottom={"2rem"}
-          >
-            code.
-          </Text>
+          <HStack>
+            <Text
+              fontFamily={headerFont.style.fontFamily}
+              fontSize={"3rem"}
+              bgColor={colors.bgColor}
+              color={colors.color}
+              padding={"0 1rem"}
+              marginLeft={"-1rem"}
+              marginBottom={"2rem"}
+            >
+              code.
+            </Text>
+            <Avatar author={author} />
+          </HStack>
+
           <Markdown markdown={description} />
           <Flex
             width={"100%"}
