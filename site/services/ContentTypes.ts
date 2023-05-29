@@ -11,11 +11,35 @@ export declare type LandingPageDTO = {
   author: AuthorDTO;
 };
 
+export declare type ArtPageDTO = {
+  title: string;
+  description: string;
+  author: AuthorDTO;
+};
+
+export declare type IdeasPageDTO = {
+  title: string;
+  description: string;
+  author: AuthorDTO;
+};
+
+export declare type FindMeOnLinkListDTO = {
+  links: LinkDTO[];
+};
+
 export declare type MediaDTO = {
   name: string;
   alternativeText: string;
   url: string;
   blurhash: string;
+};
+
+export declare type LinkDTO = {
+  title: string;
+  description: string;
+  link: string;
+  icon: MediaDTO;
+  tags: TagDTO[];
 };
 
 export declare type TagDTO = {
@@ -57,6 +81,15 @@ export declare type PostDTO = {
 /******************************************************************
  * Default DTOs
  *****************************************************************/
+export const defaultLink = (): LinkDTO => {
+  return {
+    title: "",
+    description: "",
+    link: "",
+    icon: defaultMedia(),
+    tags: [],
+  };
+};
 export const defaultTag = (): TagDTO => {
   return {
     color: "",

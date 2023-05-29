@@ -1805,6 +1805,35 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type GetArtPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetArtPageQuery = {
+  artPage?: {
+    data?: {
+      attributes?: {
+        title: string;
+        description: string;
+        author?: {
+          data?: {
+            attributes?: {
+              name: string;
+              avatar: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type GetArticlesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetArticlesQuery = {
@@ -1977,6 +2006,69 @@ export type GetArticleBySlugQuery = {
   } | null;
 };
 
+export type GetFindMeOnLinkListQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetFindMeOnLinkListQuery = {
+  findMeOnLinkList?: {
+    data?: {
+      attributes?: {
+        links?: {
+          data: Array<{
+            attributes?: {
+              title: string;
+              link: string;
+              description?: string | null;
+              icon?: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              } | null;
+              tags?: {
+                data: Array<{
+                  attributes?: { name: string; color?: string | null } | null;
+                }>;
+              } | null;
+            } | null;
+          }>;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
+export type GetIdeasPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetIdeasPageQuery = {
+  ideasPage?: {
+    data?: {
+      attributes?: {
+        title: string;
+        description: string;
+        author?: {
+          data?: {
+            attributes?: {
+              name: string;
+              avatar: {
+                data?: {
+                  attributes?: {
+                    url: string;
+                    blurhash?: string | null;
+                    alternativeText?: string | null;
+                  } | null;
+                } | null;
+              };
+            } | null;
+          } | null;
+        } | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type GetLandingPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetLandingPageQuery = {
@@ -2100,6 +2192,154 @@ export type GetPostBySlugQuery = {
   } | null;
 };
 
+export const GetArtPageDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetArtPage" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "artPage" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "author" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "avatar",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetArtPageQuery, GetArtPageQueryVariables>;
 export const GetArticlesDocument = {
   kind: "Document",
   definitions: [
@@ -3127,6 +3367,364 @@ export const GetArticleBySlugDocument = {
   GetArticleBySlugQuery,
   GetArticleBySlugQueryVariables
 >;
+export const GetFindMeOnLinkListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetFindMeOnLinkList" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "findMeOnLinkList" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "links" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "title",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "link",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "description",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "icon",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "tags",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "name",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "color",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetFindMeOnLinkListQuery,
+  GetFindMeOnLinkListQueryVariables
+>;
+export const GetIdeasPageDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetIdeasPage" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "ideasPage" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "attributes" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "title" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "author" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "data" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "attributes",
+                                          },
+                                          selectionSet: {
+                                            kind: "SelectionSet",
+                                            selections: [
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "name",
+                                                },
+                                              },
+                                              {
+                                                kind: "Field",
+                                                name: {
+                                                  kind: "Name",
+                                                  value: "avatar",
+                                                },
+                                                selectionSet: {
+                                                  kind: "SelectionSet",
+                                                  selections: [
+                                                    {
+                                                      kind: "Field",
+                                                      name: {
+                                                        kind: "Name",
+                                                        value: "data",
+                                                      },
+                                                      selectionSet: {
+                                                        kind: "SelectionSet",
+                                                        selections: [
+                                                          {
+                                                            kind: "Field",
+                                                            name: {
+                                                              kind: "Name",
+                                                              value:
+                                                                "attributes",
+                                                            },
+                                                            selectionSet: {
+                                                              kind: "SelectionSet",
+                                                              selections: [
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "url",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "blurhash",
+                                                                  },
+                                                                },
+                                                                {
+                                                                  kind: "Field",
+                                                                  name: {
+                                                                    kind: "Name",
+                                                                    value:
+                                                                      "alternativeText",
+                                                                  },
+                                                                },
+                                                              ],
+                                                            },
+                                                          },
+                                                        ],
+                                                      },
+                                                    },
+                                                  ],
+                                                },
+                                              },
+                                            ],
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetIdeasPageQuery, GetIdeasPageQueryVariables>;
 export const GetLandingPageDocument = {
   kind: "Document",
   definitions: [

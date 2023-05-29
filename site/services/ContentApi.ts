@@ -1,10 +1,15 @@
 import {
   ArticleDTO,
+  ArtPageDTO,
   AuthorDTO,
   defaultAuthor,
+  defaultLink,
   defaultMedia,
   defaultTag,
+  FindMeOnLinkListDTO,
+  IdeasPageDTO,
   LandingPageDTO,
+  LinkDTO,
   MediaDTO,
   PostDTO,
   TagDTO,
@@ -14,8 +19,12 @@ import {
   ArticleEntity,
   ArticleEntityResponse,
   ArticleEntityResponseCollection,
+  ArtPageEntityResponse,
   AuthorEntity,
+  FindMeOnLinkListEntityResponse,
+  IdeasPageEntityResponse,
   LandingPageEntityResponse,
+  LinkEntity,
   Maybe,
   PostEntity,
   PostEntityResponseCollection,
@@ -23,7 +32,6 @@ import {
   UploadFileEntity,
 } from "../strapi/graphql/codegen/graphql";
 import {
-  GET_ARTICLE_BY_ID,
   GET_ARTICLE_BY_SLUG,
   GET_ARTICLES_QUERY,
 } from "../strapi/graphql/queries/articles";
@@ -34,6 +42,9 @@ import {
   GET_POSTS_QUERY,
 } from "../strapi/graphql/queries/posts";
 import { GET_LANDING_PAGE_QUERY } from "../strapi/graphql/queries/landingPage";
+import { GET_ART_PAGE_QUERY } from "../strapi/graphql/queries/artPage";
+import { GET_IDEAS_PAGE_QUERY } from "../strapi/graphql/queries/ideaPage";
+import { GET_FIND_ME_ON_LINK_LIST_QUERY } from "../strapi/graphql/queries/findMeOnLinkList";
 
 /*****************************************************************
  * NextJS image loader for strapi-hosted resources & blurhash formatter
@@ -88,6 +99,14 @@ const postBySlugFetcher = (query: string, slug: string) =>
   });
 const landingPageFetcher = (query: string) =>
   graphQLClient.request<{ landingPage: LandingPageEntityResponse }>(query);
+const artPageFetcher = (query: string) =>
+  graphQLClient.request<{ artPage: ArtPageEntityResponse }>(query);
+const ideasPageFetcher = (query: string) =>
+  graphQLClient.request<{ ideasPage: IdeasPageEntityResponse }>(query);
+const findMeOnLinkListFetcher = (query: string) =>
+  graphQLClient.request<{ findMeOnLinkList: FindMeOnLinkListEntityResponse }>(
+    query
+  );
 
 /******************************************************************
  * Content APIs -- Landing Page
@@ -99,6 +118,42 @@ export const getLandingPage = async (): Promise<LandingPageDTO> => {
   }
   return mapLandingPage(landingPageRaw.landingPage);
 };
+
+/******************************************************************
+ * Content APIs -- Art Page
+ *****************************************************************/
+export const getArtPage = async (): Promise<ArtPageDTO> => {
+  const artPageRaw = await artPageFetcher(GET_ART_PAGE_QUERY);
+  if (!artPageRaw.artPage || !artPageRaw.artPage.data) {
+    throw new Error("Fetching landing page returned nothing...");
+  }
+  return mapArtPage(artPageRaw.artPage);
+};
+
+/******************************************************************
+ * Content APIs -- Ideas Page
+ *****************************************************************/
+export const getIdeasPage = async (): Promise<IdeasPageDTO> => {
+  const ideasPageRaw = await ideasPageFetcher(GET_IDEAS_PAGE_QUERY);
+  if (!ideasPageRaw.ideasPage || !ideasPageRaw.ideasPage.data) {
+    throw new Error("Fetching landing page returned nothing...");
+  }
+  return mapIdeasPage(ideasPageRaw.ideasPage);
+};
+
+/******************************************************************
+ * Content APIs -- Find me on links
+ *****************************************************************/
+export const getFindMeOnLinks = async (): Promise<FindMeOnLinkListDTO> => {
+  const linkListRaw = await findMeOnLinkListFetcher(
+    GET_FIND_ME_ON_LINK_LIST_QUERY
+  );
+  if (!linkListRaw.findMeOnLinkList || !linkListRaw.findMeOnLinkList.data) {
+    throw new Error("Fetching find me on links returned nothing...");
+  }
+  return mapFindMeOnLinkList(linkListRaw.findMeOnLinkList);
+};
+
 /******************************************************************
  * Content APIs -- Articles
  *****************************************************************/
@@ -108,14 +163,6 @@ export const getAllArticles = async (): Promise<ArticleDTO[]> => {
     throw Error("Fetching articles returned nothing...");
   }
   return articlesRaw.articles.data.map(mapArticle);
-};
-
-export const getArticleById = async (id: ID): Promise<ArticleDTO> => {
-  const articleRaw = await articleByIdFetcher(GET_ARTICLE_BY_ID, id);
-  if (!articleRaw.article || !articleRaw.article.data) {
-    throw Error("No article available for id " + id);
-  }
-  return mapArticle(articleRaw.article.data);
 };
 
 export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
@@ -131,9 +178,8 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
 };
 
 /******************************************************************
- * Content APIs -- Articles
+ * Content APIs -- Posts
  *****************************************************************/
-
 export const getAllPosts = async (): Promise<PostDTO[]> => {
   const postsRaw = await postsFetcher(GET_POSTS_QUERY);
   if (!postsRaw.posts || !postsRaw.posts.data) {
@@ -221,6 +267,22 @@ const mapTag = (tagRaw: Maybe<TagEntity> | undefined): TagDTO => {
   };
 };
 
+const mapLinks = (linksRaw: Maybe<LinkEntity[]> | undefined): LinkDTO[] => {
+  if (!linksRaw) return [];
+  return linksRaw.map(mapLink);
+};
+
+const mapLink = (linkRaw: Maybe<LinkEntity> | undefined): LinkDTO => {
+  if (!linkRaw) return defaultLink();
+  return {
+    title: linkRaw.attributes?.title || "",
+    description: linkRaw.attributes?.description || "",
+    link: linkRaw.attributes?.link || "",
+    icon: mapMedia(linkRaw.attributes?.icon?.data),
+    tags: mapTags(linkRaw.attributes?.tags?.data),
+  };
+};
+
 const mapLandingPage = (
   landingPageRaw: Maybe<LandingPageEntityResponse>
 ): LandingPageDTO => {
@@ -241,5 +303,31 @@ const mapLandingPage = (
     author: mapAuthor(
       landingPageRaw?.data?.attributes?.author?.data || undefined
     ),
+  };
+};
+
+const mapArtPage = (artPageRaw: Maybe<ArtPageEntityResponse>): ArtPageDTO => {
+  return {
+    title: artPageRaw?.data?.attributes?.title || "",
+    description: artPageRaw?.data?.attributes?.description || "",
+    author: mapAuthor(artPageRaw?.data?.attributes?.author?.data),
+  };
+};
+
+const mapIdeasPage = (
+  ideasPageRaw: Maybe<IdeasPageEntityResponse>
+): IdeasPageDTO => {
+  return {
+    title: ideasPageRaw?.data?.attributes?.title || "",
+    description: ideasPageRaw?.data?.attributes?.description || "",
+    author: mapAuthor(ideasPageRaw?.data?.attributes?.author?.data),
+  };
+};
+
+const mapFindMeOnLinkList = (
+  linkListRaw: Maybe<FindMeOnLinkListEntityResponse>
+): FindMeOnLinkListDTO => {
+  return {
+    links: mapLinks(linkListRaw?.data?.attributes?.links?.data),
   };
 };
