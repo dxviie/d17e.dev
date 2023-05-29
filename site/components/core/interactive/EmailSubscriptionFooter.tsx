@@ -6,7 +6,7 @@ export default function EmailSubscriptionFooter() {
     <>
       <VStack padding={"2rem"}>
         <Text>
-          Don't miss out on any future content and drop your email below!
+          Don&apos;t miss out on any future content and drop your email below!
         </Text>
         <EmailSubscriptionForm />
       </VStack>
