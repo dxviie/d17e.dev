@@ -41,7 +41,7 @@ export default function Markdown({ markdown }: { markdown: string }) {
             style={{
               wordWrap: "break-word",
               whiteSpace: "pre-line",
-              lineHeight: "1.9rem",
+              lineHeight: "1.5rem",
             }}
           >
             {children}

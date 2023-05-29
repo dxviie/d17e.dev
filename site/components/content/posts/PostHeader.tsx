@@ -18,7 +18,7 @@ export default function PostHeader({ post }: { post: PostDTO }) {
           <Text
             fontFamily={headerFont.style.fontFamily}
             fontSize={["large", "x-large"]}
-            lineHeight={["1rem", "1.9rem"]}
+            lineHeight={["1.5rem", "1.9rem"]}
             marginTop={"3rem"}
             marginLeft={"-1rem"}
             padding={"2px .5rem"}
