@@ -21,7 +21,6 @@ export default function Navigation() {
   const colors = useThemeColors();
   const isPhone = useIsPhone();
   const router = useRouter();
-  console.log("yow", router.asPath, isAtHomePage(router.asPath));
   const menu = (
     <>
       {/*  HOME BUTTON */}

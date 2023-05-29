@@ -46,10 +46,16 @@ export default function EmailSubscriptionForm() {
         },
         body: JSON.stringify({ email: inputData }),
       });
+      const interval = setInterval(() => {
+        setWorking(false);
+        setInputData("");
+        setResponse("");
+      }, 15000);
       const json = await response.json();
       setWorking(false);
       setInputData("");
       setResponse(json.message);
+      clearInterval(interval);
     } catch (error) {
       console.error("Error calling API:", error);
     } finally {
