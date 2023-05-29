@@ -35,6 +35,52 @@ export type Scalars = {
   Upload: any;
 };
 
+export type ArtPage = {
+  author?: Maybe<AuthorEntityResponse>;
+  createdAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  publishedAt?: Maybe<Scalars["DateTime"]>;
+  title: Scalars["String"];
+  updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type ArtPageEntity = {
+  attributes?: Maybe<ArtPage>;
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type ArtPageEntityResponse = {
+  data?: Maybe<ArtPageEntity>;
+};
+
+export type ArtPageEntityResponseCollection = {
+  data: Array<ArtPageEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type ArtPageFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ArtPageFiltersInput>>>;
+  author?: InputMaybe<AuthorFiltersInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ArtPageFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ArtPageFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ArtPageInput = {
+  author?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]>;
+  title?: InputMaybe<Scalars["String"]>;
+};
+
+export type ArtPageRelationResponseCollection = {
+  data: Array<ArtPageEntity>;
+};
+
 export type Article = {
   author?: Maybe<AuthorEntityResponse>;
   body: Scalars["String"];
@@ -309,6 +355,49 @@ export type FileInfoInput = {
   name?: InputMaybe<Scalars["String"]>;
 };
 
+export type FindMeOnLinkList = {
+  createdAt?: Maybe<Scalars["DateTime"]>;
+  links?: Maybe<LinkRelationResponseCollection>;
+  updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type FindMeOnLinkListLinksArgs = {
+  filters?: InputMaybe<LinkFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type FindMeOnLinkListEntity = {
+  attributes?: Maybe<FindMeOnLinkList>;
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type FindMeOnLinkListEntityResponse = {
+  data?: Maybe<FindMeOnLinkListEntity>;
+};
+
+export type FindMeOnLinkListEntityResponseCollection = {
+  data: Array<FindMeOnLinkListEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type FindMeOnLinkListFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<FindMeOnLinkListFiltersInput>>>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  links?: InputMaybe<LinkFiltersInput>;
+  not?: InputMaybe<FindMeOnLinkListFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<FindMeOnLinkListFiltersInput>>>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type FindMeOnLinkListInput = {
+  links?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+};
+
+export type FindMeOnLinkListRelationResponseCollection = {
+  data: Array<FindMeOnLinkListEntity>;
+};
+
 export type FloatFilterInput = {
   and?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
   between?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
@@ -334,11 +423,14 @@ export type FloatFilterInput = {
 };
 
 export type GenericMorph =
+  | ArtPage
   | Article
   | Author
   | ComponentSharedMetaSocial
   | ComponentSharedSeo
+  | FindMeOnLinkList
   | I18NLocale
+  | IdeasPage
   | LandingPage
   | Link
   | Post
@@ -413,6 +505,52 @@ export type IdFilterInput = {
   null?: InputMaybe<Scalars["Boolean"]>;
   or?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   startsWith?: InputMaybe<Scalars["ID"]>;
+};
+
+export type IdeasPage = {
+  author?: Maybe<AuthorEntityResponse>;
+  createdAt?: Maybe<Scalars["DateTime"]>;
+  description: Scalars["String"];
+  publishedAt?: Maybe<Scalars["DateTime"]>;
+  title: Scalars["String"];
+  updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type IdeasPageEntity = {
+  attributes?: Maybe<IdeasPage>;
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type IdeasPageEntityResponse = {
+  data?: Maybe<IdeasPageEntity>;
+};
+
+export type IdeasPageEntityResponseCollection = {
+  data: Array<IdeasPageEntity>;
+  meta: ResponseCollectionMeta;
+};
+
+export type IdeasPageFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<IdeasPageFiltersInput>>>;
+  author?: InputMaybe<AuthorFiltersInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  description?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<IdeasPageFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<IdeasPageFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  title?: InputMaybe<StringFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type IdeasPageInput = {
+  author?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  publishedAt?: InputMaybe<Scalars["DateTime"]>;
+  title?: InputMaybe<Scalars["String"]>;
+};
+
+export type IdeasPageRelationResponseCollection = {
+  data: Array<IdeasPageEntity>;
 };
 
 export type IntFilterInput = {
@@ -538,8 +676,8 @@ export type LandingPageRelationResponseCollection = {
 export type Link = {
   createdAt?: Maybe<Scalars["DateTime"]>;
   description?: Maybe<Scalars["String"]>;
-  image?: Maybe<UploadFileEntityResponse>;
-  link?: Maybe<Scalars["String"]>;
+  icon?: Maybe<UploadFileEntityResponse>;
+  link: Scalars["String"];
   tags?: Maybe<TagRelationResponseCollection>;
   title: Scalars["String"];
   updatedAt?: Maybe<Scalars["DateTime"]>;
@@ -580,7 +718,7 @@ export type LinkFiltersInput = {
 
 export type LinkInput = {
   description?: InputMaybe<Scalars["String"]>;
-  image?: InputMaybe<Scalars["ID"]>;
+  icon?: InputMaybe<Scalars["ID"]>;
   link?: InputMaybe<Scalars["String"]>;
   tags?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   title?: InputMaybe<Scalars["String"]>;
@@ -629,8 +767,11 @@ export type Mutation = {
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
+  deleteArtPage?: Maybe<ArtPageEntityResponse>;
   deleteArticle?: Maybe<ArticleEntityResponse>;
   deleteAuthor?: Maybe<AuthorEntityResponse>;
+  deleteFindMeOnLinkList?: Maybe<FindMeOnLinkListEntityResponse>;
+  deleteIdeasPage?: Maybe<IdeasPageEntityResponse>;
   deleteLandingPage?: Maybe<LandingPageEntityResponse>;
   deleteLink?: Maybe<LinkEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
@@ -653,9 +794,12 @@ export type Mutation = {
   removeFile?: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
+  updateArtPage?: Maybe<ArtPageEntityResponse>;
   updateArticle?: Maybe<ArticleEntityResponse>;
   updateAuthor?: Maybe<AuthorEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
+  updateFindMeOnLinkList?: Maybe<FindMeOnLinkListEntityResponse>;
+  updateIdeasPage?: Maybe<IdeasPageEntityResponse>;
   updateLandingPage?: Maybe<LandingPageEntityResponse>;
   updateLink?: Maybe<LinkEntityResponse>;
   updatePost?: Maybe<PostEntityResponse>;
@@ -789,6 +933,10 @@ export type MutationResetPasswordArgs = {
   passwordConfirmation: Scalars["String"];
 };
 
+export type MutationUpdateArtPageArgs = {
+  data: ArtPageInput;
+};
+
 export type MutationUpdateArticleArgs = {
   data: ArticleInput;
   id: Scalars["ID"];
@@ -802,6 +950,14 @@ export type MutationUpdateAuthorArgs = {
 export type MutationUpdateFileInfoArgs = {
   id: Scalars["ID"];
   info?: InputMaybe<FileInfoInput>;
+};
+
+export type MutationUpdateFindMeOnLinkListArgs = {
+  data: FindMeOnLinkListInput;
+};
+
+export type MutationUpdateIdeasPageArgs = {
+  data: IdeasPageInput;
 };
 
 export type MutationUpdateLandingPageArgs = {
@@ -874,6 +1030,7 @@ export type Post = {
   author?: Maybe<AuthorEntityResponse>;
   content?: Maybe<UploadFileEntityResponse>;
   createdAt?: Maybe<Scalars["DateTime"]>;
+  gallery?: Maybe<UploadFileRelationResponseCollection>;
   link?: Maybe<Scalars["String"]>;
   message?: Maybe<Scalars["String"]>;
   publishedAt?: Maybe<Scalars["DateTime"]>;
@@ -881,6 +1038,12 @@ export type Post = {
   tags?: Maybe<TagRelationResponseCollection>;
   title: Scalars["String"];
   updatedAt?: Maybe<Scalars["DateTime"]>;
+};
+
+export type PostGalleryArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
 };
 
 export type PostTagsArgs = {
@@ -922,6 +1085,7 @@ export type PostFiltersInput = {
 export type PostInput = {
   author?: InputMaybe<Scalars["ID"]>;
   content?: InputMaybe<Scalars["ID"]>;
+  gallery?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   link?: InputMaybe<Scalars["String"]>;
   message?: InputMaybe<Scalars["String"]>;
   publishedAt?: InputMaybe<Scalars["DateTime"]>;
@@ -940,12 +1104,15 @@ export enum PublicationState {
 }
 
 export type Query = {
+  artPage?: Maybe<ArtPageEntityResponse>;
   article?: Maybe<ArticleEntityResponse>;
   articles?: Maybe<ArticleEntityResponseCollection>;
   author?: Maybe<AuthorEntityResponse>;
   authors?: Maybe<AuthorEntityResponseCollection>;
+  findMeOnLinkList?: Maybe<FindMeOnLinkListEntityResponse>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+  ideasPage?: Maybe<IdeasPageEntityResponse>;
   landingPage?: Maybe<LandingPageEntityResponse>;
   link?: Maybe<LinkEntityResponse>;
   links?: Maybe<LinkEntityResponseCollection>;
@@ -964,6 +1131,10 @@ export type Query = {
   usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
   usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
   usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+export type QueryArtPageArgs = {
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 export type QueryArticleArgs = {
@@ -995,6 +1166,10 @@ export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export type QueryIdeasPageArgs = {
+  publicationState?: InputMaybe<PublicationState>;
 };
 
 export type QueryLandingPageArgs = {
@@ -1811,6 +1986,7 @@ export type GetLandingPageQuery = {
         codeDescription?: string | null;
         artDescription?: string | null;
         ideasDescription?: string | null;
+        contactDescription?: string | null;
         featuredArtPosts?: {
           data: Array<{ attributes?: { slug?: string | null } | null }>;
         } | null;
@@ -2990,6 +3166,13 @@ export const GetLandingPageDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "ideasDescription" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "contactDescription",
+                              },
                             },
                             {
                               kind: "Field",
