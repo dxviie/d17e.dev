@@ -33,11 +33,11 @@ export default function Footer() {
             fontSize={"small"}
           >
             <LinkWrapper
-              link={"https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+              link={"https://creativecommons.org/licenses/by-sa/4.0/"}
               color={colors.bgColor}
               target={"_blank"}
             >
-              © CC BY-NC-SA 4.0
+              © CC BY-SA 4.0
             </LinkWrapper>
             <Text marginLeft={".5rem"}>| 2022 - present</Text>
           </Box>
