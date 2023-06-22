@@ -19,6 +19,9 @@ export const ACCENT_COLOR_DARK = "orange";
 export const BUTTON_BG_COLOR_LIGHT = "#efefef";
 export const BUTTON_BG_COLOR_DARK = "#202020";
 
+// TODO : fix dark mode flicker
+// this guy know how : https://paco.me/  >>  https://github.com/pacocoursey/next-themes
+
 const Button = defineStyleConfig({
   // The styles all button have in common
   baseStyle: {

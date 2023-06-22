@@ -13,7 +13,45 @@ import CodeBlock from "../components/content/home/CodeBlock";
 import ContactBlock from "../components/content/home/ContactBlock";
 import IntroBlock from "../components/content/home/IntroBlock";
 import ArtBlock from "../components/content/home/ArtBlock";
-import WritingBlock from "../components/content/home/WritingBlock";
+import WritingBlock from "../components/content/home/WritingBlock"; /*
+   _ ___ ___         _
+ _| |_  |_  |___   _| |___ _ _
+| . |_| |_| | -_|_| . | -_| | |
+|___|_____|_|___|_|___|___|\_/
+
+     _ _ _____         _
+  __| / |___  |__   __| | _____   __
+ / _` | |  / / _ \ / _` |/ _ \ \ / /
+| (_| | | / /  __/| (_| |  __/\ V /
+ \__,_|_|/_/ \___(_)__,_|\___| \_/
+
+       _ __ ______        _
+     | /_ |____  |      | |
+   __| || |   / /__   __| | _____   __
+  / _` || |  / / _ \ / _` |/ _ \ \ / /
+ | (_| || | / /  __/| (_| |  __/\ V /
+  \__,_||_|/_/ \___(_)__,_|\___| \_/
+ */
+
+/*
+   _ ___ ___         _
+ _| |_  |_  |___   _| |___ _ _
+| . |_| |_| | -_|_| . | -_| | |
+|___|_____|_|___|_|___|___|\_/
+
+     _ _ _____         _
+  __| / |___  |__   __| | _____   __
+ / _` | |  / / _ \ / _` |/ _ \ \ / /
+| (_| | | / /  __/| (_| |  __/\ V /
+ \__,_|_|/_/ \___(_)__,_|\___| \_/
+
+       _ __ ______        _
+     | /_ |____  |      | |
+   __| || |   / /__   __| | _____   __
+  / _` || |  / / _ \ / _` |/ _ \ \ / /
+ | (_| || | / /  __/| (_| |  __/\ V /
+  \__,_||_|/_/ \___(_)__,_|\___| \_/
+ */
 
 export default function Home({
   landingPage,
