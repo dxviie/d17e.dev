@@ -15,19 +15,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const scrollSnapping = isAtHomePage(router.asPath) ? "start" : "none";
   const [isConsoleInfoPrinted, setISConsoleInfoPrinted] = useState(false);
-  setTimeout(() => {
-    if (isConsoleInfoPrinted) {
-      return;
-    }
-    console.log("Welcome to...");
-    console.log(
-      "   _ ___ ___         _\n" +
-        " _| |_  |_  |___   _| |___ _ _\n" +
-        "| . |_| |_| | -_|_| . | -_| | |\n" +
-        "|___|_____|_|___|_|___|___|\\_/"
-    );
-    setISConsoleInfoPrinted(true);
-  }, 1000);
+  if (!isConsoleInfoPrinted) {
+    setTimeout(() => {
+      // console.clear();
+      console.log("Welcome to...");
+      console.log(
+        "   _ ___ ___         _\n" +
+          " _| |_  |_  |___   _| |___ _ _\n" +
+          "| . |_| |_| | -_|_| . | -_| | |\n" +
+          "|___|_____|_|___|_|___|___|\\_/"
+      );
+      setISConsoleInfoPrinted(true);
+    }, 1000);
+  }
   return (
     <>
       {/* umami anonymous traffic tracker */}
