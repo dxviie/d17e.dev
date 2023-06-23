@@ -7,7 +7,9 @@
 }
 
 .tumbleweed {
-    animation: twirl 1s;
+    animation: twirl 2s;
+    width: 100%;
+    height: 100%;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
@@ -15,19 +17,19 @@
 .bouncingBall {
     width: 140px;
     height: 140px;
-    border-radius: 100%;
-    background: #CCC;
+    /*border-radius: 100%;*/
+    /*background: #CCC;*/
     animation: bounce 1s;
     transform: translateY(0px);
     animation-iteration-count: infinite;
     position: relative;
-    margin: 50px;
+    /*margin: 50px;*/
 }
 
 .traveller {
     left: -100vw;
     position: relative;
-    animation: travel 10s;
+    animation: travel 20s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
@@ -54,6 +56,7 @@
 @keyframes bounce {
     0% {
         top: 0;
+        /*transform: rotate(0deg);*/
         -webkit-animation-timing-function: ease-in;
     }
     40% {
@@ -79,6 +82,7 @@
     }
     100% {
         top: 0;
+        /*transform: rotate(360deg);*/
         -webkit-animation-timing-function: ease-in;
     }
 }
