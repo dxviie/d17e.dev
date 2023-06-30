@@ -1,9 +1,6 @@
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { headerFont } from "../../../styles/fonts";
-import { LinkedInIcon } from "../../icons/LinkedInIcon";
-import { GitHubIcon } from "../../icons/GitHubIcon";
-import LinkWrapper from "../../core/hocs/LinkWrapper";
 import Markdown from "../../core/elements/Markdown";
 import Avatar from "../../core/elements/Avatar";
 import { AuthorDTO } from "../../../services/ContentTypes";
@@ -45,31 +42,19 @@ export default function CodeBlock({
             >
               code.
             </Text>
-            <Avatar author={author} />
+            <Box
+              paddingLeft={["10rem", "15rem"]}
+              paddingBottom={["3rem", "0"]}
+              position={"absolute"}
+            >
+              <Avatar
+                author={author}
+                size={["8rem", "10rem"]}
+                invertedColors={true}
+              />
+            </Box>
           </HStack>
-
-          <Markdown markdown={description} />
-          <Flex
-            width={"100%"}
-            alignItems={"center"}
-            justifyContent={"space-evenly"}
-            fontSize={"1.5rem"}
-            paddingTop={"1rem"}
-          >
-            <LinkWrapper
-              link={"https://www.linkedin.com/in/d16de/"}
-              color={colors.bgColor}
-            >
-              <LinkedInIcon /> LinkedIn
-            </LinkWrapper>
-
-            <LinkWrapper
-              link={"https://github.com/dxviie"}
-              color={colors.bgColor}
-            >
-              <GitHubIcon ml={".3rem"} /> GitHub
-            </LinkWrapper>
-          </Flex>
+          <Markdown markdown={description} invertedColors={true} />
         </VStack>
       </VStack>
     </>

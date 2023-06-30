@@ -8,11 +8,13 @@ export default function LinkWrapper({
   children,
   target,
   color,
+  invertedColors = false,
 }: {
   link: string;
   children?: React.ReactNode;
   target?: string | "_self";
   color?: string;
+  invertedColors?: boolean;
 }) {
   const colors = useThemeColors();
   return (
@@ -22,10 +24,12 @@ export default function LinkWrapper({
           cursor={"pointer"}
           display={"inline"}
           textDecoration={"dashed"}
-          color={color || colors.accentColor}
+          color={color || (invertedColors ? colors.bgColor : colors.color)}
           borderBottomWidth={"1px"}
           borderStyle={"dashed"}
-          borderColor={colors.bgColor}
+          borderColor={
+            color || (invertedColors ? colors.bgColor : colors.color)
+          }
           sx={{
             _hover: {
               color: colors.accentColor,

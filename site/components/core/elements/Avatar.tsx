@@ -9,10 +9,12 @@ export default function Avatar({
   author,
   size = "4rem",
   withName = false,
+  invertedColors = false,
 }: {
   author?: AuthorDTO;
-  size?: string;
+  size?: string | object;
   withName?: boolean;
+  invertedColors?: boolean;
 }) {
   const colors = useThemeColors();
   return (
@@ -28,7 +30,7 @@ export default function Avatar({
               overflow={"hidden"}
               filter={"grayscale(50%)"}
               borderWidth={"1px"}
-              borderColor={colors.color}
+              borderColor={invertedColors ? colors.bgColor : colors.color}
               borderStyle={"dashed"}
             >
               <Image

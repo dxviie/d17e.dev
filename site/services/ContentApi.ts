@@ -58,7 +58,6 @@ export const imageLoader = ({
   width: number;
   quality?: number;
 }): string => {
-  console.debug("unused parameter quality: ", quality);
   let filePath = src.startsWith("/")
     ? src.toLowerCase()
     : "/" + src.toLowerCase();

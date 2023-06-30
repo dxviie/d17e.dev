@@ -5,7 +5,13 @@ import LinkWrapper from "../hocs/LinkWrapper";
 import Header from "./Header";
 import ReactMarkdown from "react-markdown";
 
-export default function Markdown({ markdown }: { markdown: string }) {
+export default function Markdown({
+  markdown,
+  invertedColors = false,
+}: {
+  markdown: string;
+  invertedColors?: boolean;
+}) {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     setHydrated(true);
@@ -16,7 +22,9 @@ export default function Markdown({ markdown }: { markdown: string }) {
           <BlockQuote>{children}</BlockQuote>
         ),
         a: ({ children, href, ...props }) => (
-          <LinkWrapper link={href || ""}>{children}</LinkWrapper>
+          <LinkWrapper link={href || ""} invertedColors={invertedColors}>
+            {children}
+          </LinkWrapper>
         ),
         h1: ({ level, children, ...props }) => (
           <Header level={level}>{children}</Header>
@@ -37,15 +45,17 @@ export default function Markdown({ markdown }: { markdown: string }) {
           <Header level={level}>{children}</Header>
         ),
         p: ({ children, ...props }) => (
-          <p
+          //   modified lineHeight based on https://www.thegoodlineheight.com/
+          <div
             style={{
               wordWrap: "break-word",
               whiteSpace: "pre-line",
-              lineHeight: "1.5rem",
+              lineHeight: "22pt",
+              marginTop: "1rem",
             }}
           >
             {children}
-          </p>
+          </div>
         ),
       }
     : {};
