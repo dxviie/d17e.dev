@@ -14,7 +14,7 @@ export default function Custom500() {
             Computer says no... :(
           </Box>
           <Box fontFamily={headerFont.style.fontFamily} paddingBottom={"2rem"}>
-            Don't worry. I'm on it!
+            Don&apos;t worry. I&apos;m on it!
           </Box>
           <Box height={"1rem"} />
           <ArrowLink
