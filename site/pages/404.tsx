@@ -12,7 +12,7 @@ export default function Custom404() {
   return (
     <>
       <Center>
-        <VStack width={"100vw"} height={"50vh"}>
+        <VStack width={"100vw"} height={"36rem"}>
           <VStack>
             <Box fontFamily={bodyFont.style.fontFamily} fontSize={"6rem"}>
               404
