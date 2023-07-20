@@ -7,6 +7,7 @@ import { headerFont } from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
 import Avatar from "../../components/core/elements/Avatar";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
+import {sortArticlesNewestFirst} from "../../services/ContentUtils";
 
 export default function BlogOverview(props: {
   articles: ArticleDTO[];
@@ -61,6 +62,7 @@ export default function BlogOverview(props: {
 
 export const getStaticProps: GetStaticProps = async () => {
   const articles = await getAllArticles();
+  let soredArticles = articles.sort(sortArticlesNewestFirst);
   const ideasPage = await getIdeasPage();
-  return { props: { articles: articles, page: ideasPage } };
+  return { props: { articles: soredArticles, page: ideasPage } };
 };

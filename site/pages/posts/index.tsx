@@ -62,6 +62,7 @@ export default function PostOverview(props: {
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
+  let sortedPosts = posts.sort(sortPostsNewestFirst);
   const artPage = await getArtPage();
-  return { props: { posts: posts, page: artPage } };
+  return { props: { posts: sortedPosts, page: artPage } };
 };

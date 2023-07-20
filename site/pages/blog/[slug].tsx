@@ -5,7 +5,6 @@ import { ArticleDTO } from "../../services/ContentTypes";
 import ArticleCover from "../../components/content/blog/ArticleCover";
 import ArticleHeader from "../../components/content/blog/ArticleHeader";
 import { Stack } from "@chakra-ui/react";
-import ArticleFooter from "../../components/content/blog/ArticleFooter";
 import ArticleBody from "../../components/content/blog/ArticleBody";
 import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
 import { sortArticlesNewestFirst } from "../../services/ContentUtils";
@@ -24,7 +23,6 @@ const Blog = (props: {
       <ArticleCover article={article} />
       <ArticleHeader article={article} />
       <ArticleBody article={article} />
-      <ArticleFooter article={article} />
       <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle} />
       <EmailSubscriptionFooter />
     </Stack>

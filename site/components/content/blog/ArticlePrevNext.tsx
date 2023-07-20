@@ -31,6 +31,7 @@ export default function ArticlePrevNext({
                   <PlainTextLink
                     link={nextArticle.slug}
                     description={nextArticle.title}
+                    textAlign={"end"}
                   />
                 </VStack>
               ) : (

@@ -31,6 +31,7 @@ export default function PostPrevNext({
                   <PlainTextLink
                     link={nextPost.slug}
                     description={nextPost.title}
+                    textAlign={"end"}
                   />
                 </VStack>
               ) : (
