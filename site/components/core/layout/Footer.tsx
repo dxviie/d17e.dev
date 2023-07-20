@@ -22,7 +22,7 @@ export default function Footer() {
         alignItems={"center"}
       >
         <Flex direction={"column"} alignItems={["center", "flex-start"]}>
-          <Text>
+          <Text textAlign={"center"}>
             made with{" "}
             <HeartIcon color={colors.accentColor} ml={".2rem"} mr={".2rem"} />{" "}
             by David Vandenbogaerde

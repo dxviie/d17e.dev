@@ -8,6 +8,7 @@ import { headerFont } from "../../styles/fonts";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
 import Avatar from "../../components/core/elements/Avatar";
 import Markdown from "../../components/core/elements/Markdown";
+import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 
 export default function PostOverview(props: {
   posts: PostDTO[];
@@ -22,16 +23,16 @@ export default function PostOverview(props: {
           <Text
             fontFamily={headerFont.style.fontFamily}
             fontSize={"xx-large"}
-            margin={"1rem"}
+            paddingX={["1rem", "2.5rem"]}
           >
             {page.title}
           </Text>
-          <Avatar author={page.author} size={"5rem"} />
         </HStack>
         <Flex
           fontFamily={headerFont.style.fontFamily}
           fontSize={"large"}
-          margin={"1rem"}
+          paddingX={["1rem", "2.5rem"]}
+          maxWidth={"45rem"}
         >
           <Markdown markdown={page.description} />
         </Flex>
@@ -39,7 +40,7 @@ export default function PostOverview(props: {
           columns={[1, 1, 2, 3]}
           spacing={"2.3rem"}
           paddingY={"1.7rem"}
-          paddingX={"2.5rem"}
+          paddingX={["1rem", "2.5rem"]}
         >
           {posts.map((post) => (
             <WithLink key={post.slug} link={"/posts/" + post.slug}>
@@ -47,6 +48,13 @@ export default function PostOverview(props: {
             </WithLink>
           ))}
         </SimpleGrid>
+        <HStack>
+          <Text fontFamily={headerFont.style.fontFamily}>
+            all content by {page.author.name}
+          </Text>
+          <Avatar author={page.author} size={"5rem"} />
+        </HStack>
+        <EmailSubscriptionFooter />
       </VStack>
     </>
   );

@@ -1,10 +1,8 @@
-import { VStack } from "@chakra-ui/react";
-import useThemeColors from "../../core/hooks/useThemeColors";
+import {Box, VStack} from "@chakra-ui/react";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
 import Markdown from "../../core/elements/Markdown";
 
 export default function ContactBlock({ description }: { description: string }) {
-  const colors = useThemeColors();
   return (
     <>
       <VStack
@@ -21,6 +19,7 @@ export default function ContactBlock({ description }: { description: string }) {
           alignItems={"flex-start"}
         >
           <Markdown markdown={description} />
+            <Box height={"2rem"} />
           <EmailSubscriptionForm />
         </VStack>
       </VStack>

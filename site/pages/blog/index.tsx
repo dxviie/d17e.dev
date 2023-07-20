@@ -6,6 +6,7 @@ import ArticleListItem from "../../components/content/blog/ArticleListItem";
 import { headerFont } from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
 import Avatar from "../../components/core/elements/Avatar";
+import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 
 export default function BlogOverview(props: {
   articles: ArticleDTO[];
@@ -20,16 +21,16 @@ export default function BlogOverview(props: {
           <Text
             fontFamily={headerFont.style.fontFamily}
             fontSize={"xx-large"}
-            margin={"1rem"}
+            paddingX={["1rem", "2.5rem"]}
           >
             {page.title}
           </Text>
-          <Avatar author={page.author} size={"5rem"} />
         </HStack>
         <Flex
           fontFamily={headerFont.style.fontFamily}
           fontSize={"large"}
-          margin={"1rem"}
+          paddingX={["1rem", "2.5rem"]}
+          maxWidth={"45rem"}
         >
           <Markdown markdown={page.description} />
         </Flex>
@@ -46,6 +47,13 @@ export default function BlogOverview(props: {
             ></ArticleListItem>
           ))}
         </SimpleGrid>
+        <HStack>
+          <Text fontFamily={headerFont.style.fontFamily}>
+            all content by {page.author.name}
+          </Text>
+          <Avatar author={page.author} size={"5rem"} />
+        </HStack>
+        <EmailSubscriptionFooter />
       </VStack>
     </>
   );
