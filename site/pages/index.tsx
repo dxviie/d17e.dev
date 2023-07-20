@@ -15,6 +15,8 @@ import IntroBlock from "../components/content/home/IntroBlock";
 import ArtBlock from "../components/content/home/ArtBlock";
 import WritingBlock from "../components/content/home/WritingBlock";
 /*
+// TODO get rid of SVGs in our JS bundles: https://kurtextrem.de/posts/svg-in-js
+
    _ ___ ___         _
  _| |_  |_  |___   _| |___ _ _
 | . |_| |_| | -_|_| . | -_| | |
