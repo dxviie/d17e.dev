@@ -21,5 +21,5 @@ export const formatPublishedDetails = (
 
 export const formatReadingTime = (content: string): string => {
   const stats = readingTime(content);
-  return "" + (stats.minutes < 1 ? "< 1" : stats.minutes) + " minute read";
+  return "" + (stats.minutes < 1 ? "< 1" : stats.minutes.toFixed(0)) + " minute read";
 };

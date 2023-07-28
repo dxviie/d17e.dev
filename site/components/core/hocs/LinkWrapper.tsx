@@ -37,6 +37,12 @@ export default function LinkWrapper({
               borderStyle: "dashed",
               borderColor: colors.accentColor,
             },
+            _visited: {
+              color: colors.accentColor,
+              borderBottomWidth: "1px",
+              borderStyle: "dashed",
+              borderColor: colors.accentColor,
+            },
           }}
         >
           {children}
