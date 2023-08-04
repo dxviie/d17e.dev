@@ -31,11 +31,6 @@ input:focus-visible {
     box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.5) !important;
 }
 
-*:active {
-    border-color: rgba(255, 165, 0, 0.5) !important;
-    box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.5) !important;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
