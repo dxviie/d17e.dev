@@ -22,8 +22,9 @@ export default function LinkWrapper({
       <WithLink link={link} target={target}>
         <Box
           cursor={"pointer"}
-          display={"inline"}
+          display={"inline-block"}
           textDecoration={"dashed"}
+          className={"push-button"}
           color={color || (invertedColors ? colors.bgColor : colors.color)}
           borderBottomWidth={"1px"}
           borderStyle={"dashed"}

@@ -25,7 +25,7 @@ export default function Navigation() {
     <>
       {/*  HOME BUTTON */}
       <Link href={HOME_PATH}>
-        <Flex padding={"1rem"}>
+        <Flex padding={"1rem"} className={"push-button"}>
           <Box width={"24px"} height={"24px"}>
             <D17eIcon
               color={
@@ -40,7 +40,7 @@ export default function Navigation() {
 
       {/*  POSTS BUTTON */}
       <Link href={POSTS_PATH}>
-        <Flex padding={"1rem"}>
+        <Flex padding={"1rem"} className={"push-button"}>
           <Box width={"24px"} height={"24px"}>
             <PostsIcon
               color={
@@ -65,7 +65,7 @@ export default function Navigation() {
 
       {/*  BLOG BUTTON */}
       <Link href={BLOG_PATH}>
-        <Flex padding={"1rem"}>
+        <Flex padding={"1rem"} className={"push-button"}>
           <Box
             width={"24px"}
             height={"24px"}
@@ -110,6 +110,7 @@ export default function Navigation() {
       bg={colors.bgColor}
       padding={"0 .5rem 0 .5rem"}
       opacity={0.9}
+      as={"nav"}
     >
       {menu}
     </HStack>

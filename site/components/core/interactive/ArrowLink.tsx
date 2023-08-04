@@ -19,7 +19,10 @@ export default function ArrowLink({
   const colors = useThemeColors();
   return (
     <>
-      <HStack fontFamily={headerFont.style.fontFamily}>
+      <HStack
+        fontFamily={headerFont.style.fontFamily}
+        className={"push-button"}
+      >
         {arrow && arrow === "left" ? <ArrowLeftIcon /> : <></>}
         <Box
           borderBottomWidth={"1px"}

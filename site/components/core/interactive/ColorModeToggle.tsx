@@ -11,6 +11,7 @@ export default function ColorModeToggle() {
         onClick={() => colorModeContext.toggleColorMode()}
         padding={"1rem"}
         cursor={"pointer"}
+        className={"push-button"}
       >
         {colorModeContext.colorMode === "light" ? <SunIcon /> : <MoonIcon />}
       </Flex>
