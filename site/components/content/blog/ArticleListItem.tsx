@@ -56,6 +56,7 @@ export default function ArticleListItem({ article }: { article: ArticleDTO }) {
         >
           <HStack
             width={"100%"}
+            className={"push-button"}
             sx={{
               _hover: {
                 textDecoration: "underline",

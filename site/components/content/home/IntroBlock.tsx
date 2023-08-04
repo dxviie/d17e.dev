@@ -85,7 +85,7 @@ const IntroBox = (
   text: string,
   colors: ThemeColors,
   index: number,
-  isPhone: boolean
+  isPhone: boolean,
 ) => {
   const [visible, setVisible] = useState(false);
 
@@ -110,6 +110,7 @@ const IntroBox = (
       borderBottomStyle={"dashed"}
       color={colors.color}
       borderBottomColor={colors.color}
+      className={"push-button"}
       sx={
         isPhone
           ? {}

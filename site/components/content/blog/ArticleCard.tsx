@@ -29,6 +29,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
+          className={"push-button"}
           size={"lg"}
           borderRadius={"0"}
           borderWidth={"1px"}

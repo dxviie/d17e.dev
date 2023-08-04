@@ -13,6 +13,7 @@ export default function PostCard({ post }: { post: PostDTO }) {
       <Card
         size={"lg"}
         style={{ aspectRatio: "1/1" }}
+        className={"push-button"}
         overflow={"hidden"}
         position={"relative"}
         borderRadius={"0"}
