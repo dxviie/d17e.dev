@@ -1,11 +1,11 @@
 import readingTime from "reading-time";
 import { useFormattedDate } from "./useFormattedDate";
 
-export const formatPublishedDetails = (
+export const usePublishedDetails = (
   createdAt: string,
   updatedAt: string,
   publishedAt: string,
-  compact?: boolean | false
+  compact?: boolean | false,
 ): string => {
   const formattedCreationDate = useFormattedDate(publishedAt || createdAt);
   const formattedUpdateDate = useFormattedDate(updatedAt);
@@ -21,5 +21,7 @@ export const formatPublishedDetails = (
 
 export const formatReadingTime = (content: string): string => {
   const stats = readingTime(content);
-  return "" + (stats.minutes < 1 ? "< 1" : stats.minutes.toFixed(0)) + " minute read";
+  return (
+    "" + (stats.minutes < 1 ? "< 1" : stats.minutes.toFixed(0)) + " minute read"
+  );
 };

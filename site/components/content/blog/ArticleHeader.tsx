@@ -1,8 +1,8 @@
 import { Box, HStack, Text, useMediaQuery, VStack } from "@chakra-ui/react";
 import { ArticleDTO } from "../../../services/ContentTypes";
 import {
-  formatPublishedDetails,
   formatReadingTime,
+  usePublishedDetails,
 } from "../../../services/ContentDetailFormatter";
 import { headerFont } from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
@@ -10,6 +10,12 @@ import useThemeColors from "../../core/hooks/useThemeColors";
 export default function ArticleHeader({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
   const [isSmallerThan500] = useMediaQuery("(max-width: 500px)");
+  const publishedDetails = usePublishedDetails(
+    article.createdAt,
+    article.updatedAt,
+    article.publishDtm,
+    isSmallerThan500,
+  );
   if (!article) {
     // don't try to render missing article
     return <></>;
@@ -46,12 +52,7 @@ export default function ArticleHeader({ article }: { article: ArticleDTO }) {
           </Text>
           <Text>{" - "}</Text>
           <Text fontSize={"small"} noOfLines={1} overflow={"visible"}>
-            {formatPublishedDetails(
-              article.createdAt,
-              article.updatedAt,
-              article.publishDtm,
-              isSmallerThan500
-            )}
+            {publishedDetails}
           </Text>
         </HStack>
       </VStack>
