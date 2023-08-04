@@ -49,10 +49,11 @@ export default function PostOverview(props: {
           ))}
         </SimpleGrid>
         <HStack>
-          <Text fontFamily={headerFont.style.fontFamily}>
-            all content by {page.author.name}
-          </Text>
+          <Text fontFamily={headerFont.style.fontFamily}>Content</Text>
           <Avatar author={page.author} size={"5rem"} />
+          <Text fontFamily={headerFont.style.fontFamily}>
+            by {page.author.name}
+          </Text>
         </HStack>
         <EmailSubscriptionFooter />
       </VStack>

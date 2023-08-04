@@ -13,7 +13,6 @@ export default function ArticleHeader({ article }: { article: ArticleDTO }) {
   const publishedDetails = usePublishedDetails(
     article.createdAt,
     article.updatedAt,
-    article.publishDtm,
     isSmallerThan500,
   );
   if (!article) {

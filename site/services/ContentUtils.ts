@@ -9,9 +9,9 @@ export const sortPostsNewestFirst = (a: PostDTO, b: PostDTO): number => {
 
 export const sortArticlesNewestFirst = (
   a: ArticleDTO,
-  b: ArticleDTO
+  b: ArticleDTO,
 ): number => {
-  const ma = moment(a.publishDtm ? a.publishDtm : a.createdAt);
-  const mb = moment(b.publishDtm ? b.publishDtm : b.createdAt);
+  const ma = moment(a.createdAt);
+  const mb = moment(b.createdAt);
   return ma.isBefore(mb) ? 1 : ma.isSame(mb) ? 0 : -1;
 };

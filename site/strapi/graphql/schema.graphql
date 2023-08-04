@@ -775,6 +775,7 @@ type Post {
   gallery(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
   link: String
   message: String
+  publishDtm: Date
   publishedAt: DateTime
   slug: String
   tags(filters: TagFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): TagRelationResponseCollection
@@ -805,6 +806,7 @@ input PostFiltersInput {
   message: StringFilterInput
   not: PostFiltersInput
   or: [PostFiltersInput]
+  publishDtm: DateFilterInput
   publishedAt: DateTimeFilterInput
   slug: StringFilterInput
   tags: TagFiltersInput
@@ -818,6 +820,7 @@ input PostInput {
   gallery: [ID]
   link: String
   message: String
+  publishDtm: Date
   publishedAt: DateTime
   slug: String
   tags: [ID]

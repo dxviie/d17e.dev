@@ -64,7 +64,6 @@ export declare type ArticleDTO = {
   author: AuthorDTO;
   createdAt: string;
   updatedAt: string;
-  publishDtm: string;
 };
 
 export declare type PostDTO = {
@@ -126,7 +125,6 @@ export const defaultArticle = (): ArticleDTO => {
     tags: [],
     createdAt: "",
     updatedAt: "",
-    publishDtm: "",
   };
 };
 

@@ -104,7 +104,7 @@ const ideasPageFetcher = (query: string) =>
   graphQLClient.request<{ ideasPage: IdeasPageEntityResponse }>(query);
 const findMeOnLinkListFetcher = (query: string) =>
   graphQLClient.request<{ findMeOnLinkList: FindMeOnLinkListEntityResponse }>(
-    query
+    query,
   );
 
 /******************************************************************
@@ -145,7 +145,7 @@ export const getIdeasPage = async (): Promise<IdeasPageDTO> => {
  *****************************************************************/
 export const getFindMeOnLinks = async (): Promise<FindMeOnLinkListDTO> => {
   const linkListRaw = await findMeOnLinkListFetcher(
-    GET_FIND_ME_ON_LINK_LIST_QUERY
+    GET_FIND_ME_ON_LINK_LIST_QUERY,
   );
   if (!linkListRaw.findMeOnLinkList || !linkListRaw.findMeOnLinkList.data) {
     throw new Error("Fetching find me on links returned nothing...");
@@ -209,9 +209,9 @@ const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     cover: mapMedia(articleRaw.attributes?.cover?.data),
     gallery: mapMedias(articleRaw.attributes?.gallery?.data),
     tags: mapTags(articleRaw.attributes?.tags?.data),
-    createdAt: articleRaw.attributes?.createdAt,
+    createdAt:
+      articleRaw.attributes?.publishDtm || articleRaw.attributes?.createdAt,
     updatedAt: articleRaw.attributes?.updatedAt,
-    publishDtm: articleRaw.attributes?.publishDtm,
   };
 };
 
@@ -223,7 +223,7 @@ const mapPost = (postRaw: PostEntity): PostDTO => {
     message: postRaw.attributes?.message || "",
     link: postRaw.attributes?.link || "",
     author: mapAuthor(postRaw.attributes?.author?.data),
-    createdAt: postRaw.attributes?.createdAt,
+    createdAt: postRaw.attributes?.publishDtm || postRaw.attributes?.createdAt,
     content: mapMedia(postRaw.attributes?.content?.data),
   };
 };
@@ -237,7 +237,7 @@ const mapAuthor = (authorRaw: Maybe<AuthorEntity> | undefined): AuthorDTO => {
 };
 
 const mapMedias = (
-  galleryRaw: Maybe<UploadFileEntity[]> | undefined
+  galleryRaw: Maybe<UploadFileEntity[]> | undefined,
 ): MediaDTO[] => {
   if (!galleryRaw) return [];
   return galleryRaw.map(mapMedia);
@@ -283,7 +283,7 @@ const mapLink = (linkRaw: Maybe<LinkEntity> | undefined): LinkDTO => {
 };
 
 const mapLandingPage = (
-  landingPageRaw: Maybe<LandingPageEntityResponse>
+  landingPageRaw: Maybe<LandingPageEntityResponse>,
 ): LandingPageDTO => {
   return {
     codeDescription: landingPageRaw?.data?.attributes?.codeDescription || "",
@@ -293,14 +293,14 @@ const mapLandingPage = (
       landingPageRaw?.data?.attributes?.contactDescription || "",
     featuredArtPostSlugs:
       landingPageRaw?.data?.attributes?.featuredArtPosts?.data.map(
-        (value) => value.attributes?.slug || ""
+        (value) => value.attributes?.slug || "",
       ) || [],
     featuredIdeaArticleSlugs:
       landingPageRaw?.data?.attributes?.featuredIdeaArticles?.data.map(
-        (value) => value.attributes?.slug || ""
+        (value) => value.attributes?.slug || "",
       ) || [],
     author: mapAuthor(
-      landingPageRaw?.data?.attributes?.author?.data || undefined
+      landingPageRaw?.data?.attributes?.author?.data || undefined,
     ),
   };
 };
@@ -314,7 +314,7 @@ const mapArtPage = (artPageRaw: Maybe<ArtPageEntityResponse>): ArtPageDTO => {
 };
 
 const mapIdeasPage = (
-  ideasPageRaw: Maybe<IdeasPageEntityResponse>
+  ideasPageRaw: Maybe<IdeasPageEntityResponse>,
 ): IdeasPageDTO => {
   return {
     title: ideasPageRaw?.data?.attributes?.title || "",
@@ -324,7 +324,7 @@ const mapIdeasPage = (
 };
 
 const mapFindMeOnLinkList = (
-  linkListRaw: Maybe<FindMeOnLinkListEntityResponse>
+  linkListRaw: Maybe<FindMeOnLinkListEntityResponse>,
 ): FindMeOnLinkListDTO => {
   return {
     links: mapLinks(linkListRaw?.data?.attributes?.links?.data),

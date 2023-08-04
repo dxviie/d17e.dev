@@ -7,7 +7,7 @@ import { headerFont } from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
 import Avatar from "../../components/core/elements/Avatar";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
-import {sortArticlesNewestFirst} from "../../services/ContentUtils";
+import { sortArticlesNewestFirst } from "../../services/ContentUtils";
 
 export default function BlogOverview(props: {
   articles: ArticleDTO[];
@@ -49,10 +49,11 @@ export default function BlogOverview(props: {
           ))}
         </SimpleGrid>
         <HStack>
-          <Text fontFamily={headerFont.style.fontFamily}>
-            all content by {page.author.name}
-          </Text>
+          <Text fontFamily={headerFont.style.fontFamily}>Content</Text>
           <Avatar author={page.author} size={"5rem"} />
+          <Text fontFamily={headerFont.style.fontFamily}>
+            by {page.author.name}
+          </Text>
         </HStack>
         <EmailSubscriptionFooter />
       </VStack>

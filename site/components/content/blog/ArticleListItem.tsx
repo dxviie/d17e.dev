@@ -9,9 +9,7 @@ import { useFormattedDate } from "../../../services/useFormattedDate";
 
 export default function ArticleListItem({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
-  const formattedDate = useFormattedDate(
-    article.publishDtm || article.createdAt
-  );
+  const formattedDate = useFormattedDate(article.createdAt);
   return (
     <>
       <VStack

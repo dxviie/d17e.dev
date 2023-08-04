@@ -4,10 +4,9 @@ import { useFormattedDate } from "./useFormattedDate";
 export const usePublishedDetails = (
   createdAt: string,
   updatedAt: string,
-  publishedAt: string,
   compact?: boolean | false,
 ): string => {
-  const formattedCreationDate = useFormattedDate(publishedAt || createdAt);
+  const formattedCreationDate = useFormattedDate(createdAt);
   const formattedUpdateDate = useFormattedDate(updatedAt);
   if (compact) {
     return formattedCreationDate;
