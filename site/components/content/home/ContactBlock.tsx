@@ -2,7 +2,7 @@ import {Box, VStack} from "@chakra-ui/react";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
 import Markdown from "../../core/elements/Markdown";
 
-export default function ContactBlock({ description }: { description: string }) {
+export default function ContactBlock({description}: { description: string }) {
   return (
     <>
       <VStack
@@ -18,9 +18,9 @@ export default function ContactBlock({ description }: { description: string }) {
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          <Markdown markdown={description} />
-            <Box height={"2rem"} />
-          <EmailSubscriptionForm />
+          <Markdown markdown={description}/>
+          <Box height={"2rem"}/>
+          <EmailSubscriptionForm/>
         </VStack>
       </VStack>
     </>

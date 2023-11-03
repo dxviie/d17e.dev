@@ -42,6 +42,7 @@ export default function Custom404() {
             arrow={"right"}
             description={"Let's go home?"}
           />
+          {/*  add some spacing here. on mobile the let's go home link is sticking to the footer*/}
         </VStack>
       </Center>
 

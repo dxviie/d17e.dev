@@ -39,6 +39,7 @@ export const GET_POSTS_QUERY = gql`
           }
           createdAt
           publishDtm
+          publishedAt
         }
       }
     }
@@ -82,6 +83,7 @@ export const GET_POST_BY_SLUG = gql`
           }
           createdAt
           publishDtm
+          publishedAt
         }
       }
     }

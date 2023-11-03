@@ -14,7 +14,7 @@ import {
   PostDTO,
   TagDTO,
 } from "./ContentTypes";
-import { GraphQLClient } from "graphql-request";
+import {GraphQLClient} from "graphql-request";
 import {
   ArticleEntity,
   ArticleEntityResponse,
@@ -31,29 +31,24 @@ import {
   TagEntity,
   UploadFileEntity,
 } from "../strapi/graphql/codegen/graphql";
-import {
-  GET_ARTICLE_BY_SLUG,
-  GET_ARTICLES_QUERY,
-} from "../strapi/graphql/queries/articles";
-import { ID } from "graphql-ws";
-import { CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT } from "./Constants";
-import {
-  GET_POST_BY_SLUG,
-  GET_POSTS_QUERY,
-} from "../strapi/graphql/queries/posts";
-import { GET_LANDING_PAGE_QUERY } from "../strapi/graphql/queries/landingPage";
-import { GET_ART_PAGE_QUERY } from "../strapi/graphql/queries/artPage";
-import { GET_IDEAS_PAGE_QUERY } from "../strapi/graphql/queries/ideaPage";
-import { GET_FIND_ME_ON_LINK_LIST_QUERY } from "../strapi/graphql/queries/findMeOnLinkList";
+import {GET_ARTICLE_BY_SLUG, GET_ARTICLES_QUERY,} from "../strapi/graphql/queries/articles";
+import {ID} from "graphql-ws";
+import {CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT} from "./Constants";
+import {GET_POST_BY_SLUG, GET_POSTS_QUERY,} from "../strapi/graphql/queries/posts";
+import {GET_LANDING_PAGE_QUERY} from "../strapi/graphql/queries/landingPage";
+import {GET_ART_PAGE_QUERY} from "../strapi/graphql/queries/artPage";
+import {GET_IDEAS_PAGE_QUERY} from "../strapi/graphql/queries/ideaPage";
+import {GET_FIND_ME_ON_LINK_LIST_QUERY} from "../strapi/graphql/queries/findMeOnLinkList";
 
+// noinspection JSUnusedLocalSymbols
 /*****************************************************************
  * NextJS image loader for strapi-hosted resources & blurhash formatter
  *****************************************************************/
 export const imageLoader = ({
-  src,
-  width,
-  quality,
-}: {
+                              src,
+                              width,
+                              quality,
+                            }: {
   src: string;
   width: number;
   quality?: number;
@@ -66,10 +61,10 @@ export const imageLoader = ({
       width <= 155
         ? "thumbnail_"
         : width <= 500
-        ? "small_"
-        : width <= 750
-        ? "medium_"
-        : "";
+          ? "small_"
+          : width <= 750
+            ? "medium_"
+            : "";
     const lastPathIndex = filePath.lastIndexOf("/");
     const path = filePath.slice(0, lastPathIndex);
     const file = filePath.slice(lastPathIndex + 1);
@@ -84,8 +79,9 @@ export const imageLoader = ({
 const graphQLClient = new GraphQLClient(GRAPHQL_API_ENDPOINT);
 const articlesFetcher = (query: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query);
+// noinspection JSUnusedLocalSymbols
 const articleByIdFetcher = (query: string, id: ID) =>
-  graphQLClient.request<{ article: ArticleEntityResponse }>(query, { id: id });
+  graphQLClient.request<{ article: ArticleEntityResponse }>(query, {id: id});
 const articleBySlugFetcher = (query: string, slug: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
     slug: slug,
@@ -210,7 +206,7 @@ const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     gallery: mapMedias(articleRaw.attributes?.gallery?.data),
     tags: mapTags(articleRaw.attributes?.tags?.data),
     createdAt:
-      articleRaw.attributes?.publishDtm || articleRaw.attributes?.createdAt,
+      articleRaw.attributes?.publishDtm || articleRaw.attributes?.publishedAt,
     updatedAt: articleRaw.attributes?.updatedAt,
   };
 };
@@ -223,7 +219,7 @@ const mapPost = (postRaw: PostEntity): PostDTO => {
     message: postRaw.attributes?.message || "",
     link: postRaw.attributes?.link || "",
     author: mapAuthor(postRaw.attributes?.author?.data),
-    createdAt: postRaw.attributes?.publishDtm || postRaw.attributes?.createdAt,
+    createdAt: postRaw.attributes?.publishDtm || postRaw.attributes?.publishedAt,
     content: mapMedia(postRaw.attributes?.content?.data),
   };
 };

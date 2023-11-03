@@ -6,9 +6,9 @@ import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
 import { headerFont } from "../../styles/fonts";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
-import Avatar from "../../components/core/elements/Avatar";
 import Markdown from "../../components/core/elements/Markdown";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
+import AuthorFooter from "../../components/content/AuthorFooter";
 
 export default function PostOverview(props: {
   posts: PostDTO[];
@@ -48,13 +48,7 @@ export default function PostOverview(props: {
             </WithLink>
           ))}
         </SimpleGrid>
-        <HStack>
-          <Text fontFamily={headerFont.style.fontFamily}>Content</Text>
-          <Avatar author={page.author} size={"5rem"} />
-          <Text fontFamily={headerFont.style.fontFamily}>
-            by {page.author.name}
-          </Text>
-        </HStack>
+        <AuthorFooter author={page.author} />
         <EmailSubscriptionFooter />
       </VStack>
     </>

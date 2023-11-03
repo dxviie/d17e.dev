@@ -22,6 +22,7 @@ const Blog = (props: {
     <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
       <ArticleCover article={article} />
       <ArticleHeader article={article} />
+      {/*start with the description again!*/}
       <ArticleBody article={article} />
       <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle} />
       <EmailSubscriptionFooter />

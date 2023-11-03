@@ -5,9 +5,9 @@ import { Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import ArticleListItem from "../../components/content/blog/ArticleListItem";
 import { headerFont } from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
-import Avatar from "../../components/core/elements/Avatar";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import { sortArticlesNewestFirst } from "../../services/ContentUtils";
+import AuthorFooter from "../../components/content/AuthorFooter";
 
 export default function BlogOverview(props: {
   articles: ArticleDTO[];
@@ -48,13 +48,7 @@ export default function BlogOverview(props: {
             ></ArticleListItem>
           ))}
         </SimpleGrid>
-        <HStack>
-          <Text fontFamily={headerFont.style.fontFamily}>Content</Text>
-          <Avatar author={page.author} size={"5rem"} />
-          <Text fontFamily={headerFont.style.fontFamily}>
-            by {page.author.name}
-          </Text>
-        </HStack>
+        <AuthorFooter author={page.author} />
         <EmailSubscriptionFooter />
       </VStack>
     </>
