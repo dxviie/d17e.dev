@@ -1,8 +1,6 @@
-import {Box, ResponsiveValue, Text} from "@chakra-ui/react";
+import {Box, Text} from "@chakra-ui/react";
 import Link from "next/link";
 import useThemeColors from "../hooks/useThemeColors";
-import {Property} from "csstype";
-import TextAlign = Property.TextAlign;
 
 export default function PlainTextLink({
                                         link,
@@ -11,7 +9,7 @@ export default function PlainTextLink({
                                       }: {
   link: string;
   description: string;
-  textAlign?: ResponsiveValue<TextAlign>;
+  textAlign?: string;
 }) {
   const colors = useThemeColors();
   return (
@@ -30,6 +28,7 @@ export default function PlainTextLink({
         }}
       >
         <Link href={link}>
+          {/*@ts-ignore*/}
           <Text noOfLines={1} textAlign={textAlign}>
             {description ? description : link}
           </Text>
