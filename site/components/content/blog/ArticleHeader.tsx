@@ -1,13 +1,10 @@
-import { Box, HStack, Text, useMediaQuery, VStack } from "@chakra-ui/react";
-import { ArticleDTO } from "../../../services/ContentTypes";
-import {
-  formatReadingTime,
-  usePublishedDetails,
-} from "../../../services/ContentDetailFormatter";
-import { headerFont } from "../../../styles/fonts";
+import {Box, HStack, Text, useMediaQuery, VStack} from "@chakra-ui/react";
+import {ArticleDTO} from "../../../services/ContentTypes";
+import {formatReadingTime, usePublishedDetails,} from "../../../services/ContentDetailFormatter";
+import {headerFont} from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
 
-export default function ArticleHeader({ article }: { article: ArticleDTO }) {
+export default function ArticleHeader({article}: { article: ArticleDTO }) {
   const colors = useThemeColors();
   const [isSmallerThan500] = useMediaQuery("(max-width: 500px)");
   const publishedDetails = usePublishedDetails(
@@ -26,7 +23,7 @@ export default function ArticleHeader({ article }: { article: ArticleDTO }) {
         alignItems={"flex-start"}
         fontFamily={headerFont.style.fontFamily}
       >
-        <Box marginBottom={"-.5rem"}>
+        <Box marginBottom={"1rem"}>
           <Text
             fontSize={["xx-large", "xxx-large"]}
             lineHeight={["2.3rem", "3.5rem"]}

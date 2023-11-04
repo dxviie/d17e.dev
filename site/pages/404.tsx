@@ -1,6 +1,6 @@
 import styles from "./404.module.css";
-import { Box, Center, Spacer, useColorMode, VStack } from "@chakra-ui/react";
-import { bodyFont, headerFont } from "../styles/fonts";
+import {Box, Center, Spacer, useColorMode, VStack} from "@chakra-ui/react";
+import {bodyFont, headerFont} from "../styles/fonts";
 import ArrowLink from "../components/core/interactive/ArrowLink";
 
 export default function Custom404() {
@@ -24,7 +24,7 @@ export default function Custom404() {
               Nothing to see here...
             </Box>
           </VStack>
-          <Box height={"1rem"} />
+          <Box height={"1rem"}/>
           <div className={styles.container}>
             <div className={styles.traveller}>
               <div className={styles.bouncingBall}>
@@ -36,17 +36,17 @@ export default function Custom404() {
               </div>
             </div>
           </div>
-          <Box height={"1rem"} />
+          <Box height={"1rem"}/>
           <ArrowLink
             link={"/"}
             arrow={"right"}
             description={"Let's go home?"}
           />
-          {/*  add some spacing here. on mobile the let's go home link is sticking to the footer*/}
+          <Box height={"2rem"}/>
         </VStack>
       </Center>
 
-      <Spacer />
+      <Spacer/>
     </>
   );
 }
