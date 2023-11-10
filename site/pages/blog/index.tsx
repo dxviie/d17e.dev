@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { getAllArticles, getIdeasPage } from "../../services/ContentApi";
 import { ArticleDTO, IdeasPageDTO } from "../../services/ContentTypes";
-import { Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import ArticleListItem from "../../components/content/blog/ArticleListItem";
 import { headerFont } from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
@@ -31,6 +31,7 @@ export default function BlogOverview(props: {
           fontFamily={headerFont.style.fontFamily}
           fontSize={"large"}
           paddingX={["1rem", "2.5rem"]}
+          paddingY={"2rem"}
           maxWidth={"45rem"}
         >
           <Markdown markdown={page.description} />
@@ -48,6 +49,7 @@ export default function BlogOverview(props: {
             ></ArticleListItem>
           ))}
         </SimpleGrid>
+        <Box height={"2rem"}></Box>
         <AuthorFooter author={page.author} />
         <EmailSubscriptionFooter />
       </VStack>

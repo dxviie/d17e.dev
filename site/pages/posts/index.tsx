@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { getAllPosts, getArtPage } from "../../services/ContentApi";
 import { ArtPageDTO, PostDTO } from "../../services/ContentTypes";
-import { Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
 import { headerFont } from "../../styles/fonts";
@@ -32,6 +32,7 @@ export default function PostOverview(props: {
           fontFamily={headerFont.style.fontFamily}
           fontSize={"large"}
           paddingX={["1rem", "2.5rem"]}
+          paddingY={"2rem"}
           maxWidth={"45rem"}
         >
           <Markdown markdown={page.description} />
@@ -48,6 +49,7 @@ export default function PostOverview(props: {
             </WithLink>
           ))}
         </SimpleGrid>
+        <Box height={"2rem"}></Box>
         <AuthorFooter author={page.author} />
         <EmailSubscriptionFooter />
       </VStack>
