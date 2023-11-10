@@ -21,6 +21,7 @@ export default function BlockQuote({
           paddingBottom={"10px"}
           borderLeftWidth={"5px"}
           textAlign={"center"}
+          marginY={"2.5rem"}
           borderColor={colors.buttonBgColor}
         >
           {children}
