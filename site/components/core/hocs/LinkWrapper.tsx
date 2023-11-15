@@ -12,7 +12,7 @@ export default function LinkWrapper({
 }: {
   link: string;
   children?: React.ReactNode;
-  target?: string | "_self";
+  target?: string | "_self"; // TODO internal links -> self, external links -> blank
   color?: string;
   invertedColors?: boolean;
 }) {

@@ -10,7 +10,7 @@ export default function WithLink({
 }: {
   link: string;
   children?: React.ReactNode;
-  target?: string | "_self";
+  target?: string | "_self"; // TODO internal links -> self, external links -> blank
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   style?: React.CSSProperties;
 }) {
