@@ -49,7 +49,7 @@ export default function Footer() {
           alignItems={["center", "flex-start"]}
           marginTop={["1rem", "0"]}
         >
-          <span>KVK - 87650770</span>
+          <span>KvK - 87650770</span>
           <span>BTW - NL004463884B92</span>
         </Flex>
       </Flex>
