@@ -1,9 +1,11 @@
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -13,6 +15,24 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+blockquote div {
+  line-height: 1.2rem !important;
+}
+
+::selection {
+    /* orange RGB color (= dark accent color), with alpha */
+    background: rgba(255, 165, 0, 0.5);
+}
+input:focus-visible {
+    z-index: 1;
+    border-color: rgba(255, 165, 0, 0.5) !important;
+    box-shadow: 0 0 0 1px rgba(255, 165, 0, 0.5) !important;
+}
+
+.push-button:active, button:active {
+    transform: translate(2px, 2px);
 }
 
 @media (prefers-color-scheme: dark) {

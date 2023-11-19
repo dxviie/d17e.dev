@@ -1,0 +1,62 @@
+.d17e-markdown {
+    width: 100%;
+}
+
+.d17e-markdown h1, .d17e-markdown h2, .d17e-markdown h3, .d17e-markdown h4, .d17e-markdown h5, .d17e-markdown h6 {
+    font-family: var(--header-font-family);
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+.d17e-markdown h1 {
+    font-size: xx-large;
+}
+
+.d17e-markdown .iframe-container {
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.d17e-markdown .p-with-id-container {
+}
+
+.d17e-markdown iframe {
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.d17e-markdown h2 {
+    font-size: x-large;
+}
+
+.d17e-markdown h3 {
+    font-size: large;
+}
+
+.d17e-markdown p {
+    margin-top: 1rem;
+}
+
+.d17e-markdown ol, .d17e-markdown ul {
+    margin-left: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.d17e-markdown pre {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--button-bg-color);
+    color: var(--color);
+    border-width: 1px;
+    border-style: dashed;
+    border-color: var(--color);
+    font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
+
+.d17e-markdown code {
+    color: var(--color);
+    background-color: var(--button-bg-color);
+    font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
