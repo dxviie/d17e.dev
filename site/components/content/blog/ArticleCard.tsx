@@ -1,15 +1,22 @@
-import {ArticleDTO} from "../../../services/ContentTypes";
+import { ArticleDTO } from "../../../services/ContentTypes";
 import Image from "next/image";
-import {Card, CardBody, CardHeader, Heading, Stack, Text,} from "@chakra-ui/react";
-import {imageLoader} from "../../../services/ContentApi";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import { imageLoader } from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../core/hooks/useThemeColors";
-import {bodyFont, headerFont} from "../../../styles/fonts";
-import {formatReadingTime} from "../../../services/ContentDetailFormatter";
-import {useFormattedDate} from "../../../services/useFormattedDate";
+import { bodyFont, headerFont } from "../../../styles/fonts";
+import { formatReadingTime } from "../../../services/ContentDetailFormatter";
+import { useFormattedDate } from "../../../services/useFormattedDate";
 
-export default function ArticleCard({article}: { article: ArticleDTO }) {
+export default function ArticleCard({ article }: { article: ArticleDTO }) {
   const colors = useThemeColors();
   const formattedDate = useFormattedDate(article.createdAt);
   return (
@@ -43,7 +50,7 @@ export default function ArticleCard({article}: { article: ArticleDTO }) {
               loader={imageLoader}
               fill={true}
               sizes={"100%"}
-              style={{objectFit: "cover"}}
+              style={{ objectFit: "cover" }}
               placeholder={"blur"}
               blurDataURL={blurHashToDataURL(article.cover.blurhash)}
             ></Image>
@@ -52,9 +59,13 @@ export default function ArticleCard({article}: { article: ArticleDTO }) {
             fontFamily={bodyFont.style.fontFamily}
             bg={colors.buttonColor}
             color={colors.bgColor}
+            padding={["0.5rem", "1.3rem"]}
           >
-            <Stack spacing="3">
-              <Heading size="lg" fontFamily={headerFont.style.fontFamily}>
+            <Stack spacing={"3"}>
+              <Heading
+                size={["sm", "lg"]}
+                fontFamily={headerFont.style.fontFamily}
+              >
                 {article.title}
                 <Text fontSize={"small"} marginTop={".5rem"}>
                   {formatReadingTime(article.body)}

@@ -52,11 +52,11 @@ export default function PostCard({ post }: { post: PostDTO }) {
             >
               <Text
                 fontFamily={headerFont.style.fontFamily}
-                fontSize={"large"}
+                fontSize={["small", "large", "large"]}
                 color={colors.bgColor}
                 background={colors.color}
                 display={"inline"}
-                lineHeight={"1.9rem"}
+                lineHeight={["0rem", "1.9rem", "1.9rem"]}
                 padding={".2rem"}
                 borderWidth={".15rem"}
                 borderColor={colors.color}

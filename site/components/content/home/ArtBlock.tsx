@@ -48,24 +48,26 @@ export default function ArtBlock({
           <Markdown markdown={description} />
         </VStack>
 
-        {/* Slider */}
-        <SliderWrapper>
-          {posts.map((post, index) => (
-            <Box key={post.slug} height={"100%"} position="relative">
-              <VStack
-                justifyContent={"center"}
-                height={"100%"}
-                padding={"1rem"}
-              >
-                <Container>
-                  <WithLink link={"posts/" + post.slug}>
-                    <PostCard post={post} />
-                  </WithLink>
-                </Container>
-              </VStack>
-            </Box>
-          ))}
-        </SliderWrapper>
+        <Box width={["75vw", "100%"]}>
+          {/* Slider */}
+          <SliderWrapper>
+            {posts.map((post, index) => (
+              <Box key={post.slug} height={"100%"} position="relative">
+                <VStack
+                  justifyContent={"center"}
+                  height={"100%"}
+                  padding={["0rem", "1rem"]}
+                >
+                  <Container>
+                    <WithLink link={"posts/" + post.slug}>
+                      <PostCard post={post} />
+                    </WithLink>
+                  </Container>
+                </VStack>
+              </Box>
+            ))}
+          </SliderWrapper>
+        </Box>
 
         <HStack paddingTop={"2rem"} paddingBottom={"3rem"}>
           <ArrowLink

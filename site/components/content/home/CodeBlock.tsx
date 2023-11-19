@@ -27,7 +27,7 @@ export default function CodeBlock({
         <VStack
           width={"80vw"}
           maxWidth={"30rem"}
-          fontSize={"large"}
+          fontSize={["medium", "large"]}
           alignItems={"flex-start"}
         >
           <HStack>
@@ -44,12 +44,13 @@ export default function CodeBlock({
             </Text>
             <Box
               paddingLeft={["10rem", "15rem"]}
-              paddingBottom={["3rem", "0"]}
+              paddingBottom={["0", "3rem", "0"]}
+              paddingTop={["2rem", "0", "0"]}
               position={"absolute"}
             >
               <Avatar
                 author={author}
-                size={["8rem", "10rem"]}
+                size={["6rem", "8rem", "10rem"]}
                 invertedColors={true}
               />
             </Box>

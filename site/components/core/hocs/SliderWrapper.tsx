@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, HStack, IconButton } from "@chakra-ui/react";
-import { ArrowLeftIcon } from "../../icons/ArrowLeftIcon";
-import { ArrowRightIcon } from "../../icons/ArrowRightIcon";
+import {Box, HStack, IconButton} from "@chakra-ui/react";
+import {ArrowLeftIcon} from "../../icons/ArrowLeftIcon";
+import {ArrowRightIcon} from "../../icons/ArrowRightIcon";
 import useThemeColors from "../hooks/useThemeColors";
 // @ts-ignore
 import Slider from "react-slick";
@@ -46,7 +46,7 @@ export default function SliderWrapper({
           {children}
         </Slider>
       </Box>
-      <HStack paddingTop={"1rem"}>
+      <HStack paddingTop={"1rem"} justifyContent={"center"}>
         <IconButton
           aria-label="left-arrow"
           onClick={() => slider?.slickPrev()}
