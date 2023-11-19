@@ -53,10 +53,11 @@ export const imageLoader = ({
   width: number;
   quality?: number;
 }): string => {
-  let filePath = src.startsWith("/")
-    ? src.toLowerCase()
-    : "/" + src.toLowerCase();
-  if (filePath.endsWith(".jpg") || filePath.endsWith(".png")) {
+  let filePath = src.startsWith("/") ? src : "/" + src;
+  if (
+    filePath.toLowerCase().endsWith(".jpg") ||
+    filePath.toLowerCase().endsWith(".png")
+  ) {
     const sizePrefix =
       width <= 155
         ? "thumbnail_"

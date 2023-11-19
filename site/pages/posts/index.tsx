@@ -51,7 +51,9 @@ export default function PostOverview(props: {
         </SimpleGrid>
         <Box height={"2rem"}></Box>
         <AuthorFooter author={page.author} />
-        <EmailSubscriptionFooter />
+        <Box padding={"1.7rem"}>
+          <EmailSubscriptionFooter />
+        </Box>
       </VStack>
     </>
   );
