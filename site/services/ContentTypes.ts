@@ -71,6 +71,7 @@ export declare type PostDTO = {
   slug: string;
   title: string;
   link: string;
+  linkDescription: string;
   author: AuthorDTO;
   message: string;
   content: MediaDTO;
@@ -134,6 +135,7 @@ export const defaultPost = (): PostDTO => {
     slug: "",
     title: "",
     link: "",
+    linkDescription: "",
     author: defaultAuthor(),
     message: "",
     content: defaultMedia(),

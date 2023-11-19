@@ -9,6 +9,7 @@ import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
 import { sortPostsNewestFirst } from "../../services/ContentUtils";
 import PostPrevNext from "../../components/content/posts/PostPrevNext";
+import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 
 const Post = (props: {
   post: PostDTO;
@@ -32,6 +33,7 @@ const Post = (props: {
       <PostBody post={post} />
       <Spacer />
       <PostPrevNext nextPost={nextPost} prevPost={prevPost} />
+      <EmailSubscriptionFooter />
     </Stack>
   );
 };

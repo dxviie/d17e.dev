@@ -11,7 +11,11 @@ export default function PostBody({ post }: { post: PostDTO }) {
         {post.link ? (
           <>
             <Box marginTop={"1rem"}>
-              <ArrowLink link={post.link} arrow={"right"}></ArrowLink>
+              <ArrowLink
+                link={post.link}
+                description={post.linkDescription}
+                arrow={"right"}
+              ></ArrowLink>
             </Box>
           </>
         ) : (

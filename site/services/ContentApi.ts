@@ -217,8 +217,10 @@ const mapPost = (postRaw: PostEntity): PostDTO => {
     id: postRaw.id || "",
     slug: postRaw.attributes?.slug || "",
     title: postRaw.attributes?.title || "",
-    message: postRaw.attributes?.message || "",
+    message:
+      postRaw.attributes?.richMessage || postRaw.attributes?.message || "",
     link: postRaw.attributes?.link || "",
+    linkDescription: postRaw.attributes?.linkDescription || "",
     author: mapAuthor(postRaw.attributes?.author?.data),
     createdAt:
       postRaw.attributes?.publishDtm || postRaw.attributes?.publishedAt,
