@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
 import { getAllPosts, getPostBySlug } from "../../services/ContentApi";
 import { ParsedUrlQuery } from "querystring";
 import { PostDTO } from "../../services/ContentTypes";
@@ -19,7 +18,6 @@ const Post = (props: {
   const post = props.post as PostDTO;
   const prevPost = props.prevPost as PostDTO;
   const nextPost = props.nextPost as PostDTO;
-  const router = useRouter();
   return (
     <Stack
       width={"100vw"}
