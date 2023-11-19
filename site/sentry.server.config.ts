@@ -5,7 +5,7 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: "https://9b27730c95b14e41b9b077b8fa93d719@o4504983358603264.ingest.sentry.io/4504983361552384",
+  dsn: process.env.SENTRY_WEBHOOK_URL,
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1,
