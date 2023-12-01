@@ -35,9 +35,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       {/* umami anonymous traffic tracker */}
       <Script
+        async={true}
         strategy="afterInteractive"
         data-website-id="fefcc6cd-205e-4632-940b-cdea83a38ac8"
-        src={"https://umami.d17e.dev/umami.js"}
+        src={"https://umami.d17e.dev/script.js"}
       />
       <React.StrictMode>
         <ChakraProvider theme={d17eTheme} resetCSS={true}>
