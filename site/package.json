@@ -35,7 +35,7 @@
     "@graphql-codegen/client-preset": "3.0.0",
     "@graphql-codegen/introspection": "3.0.1",
     "@types/node": "18.11.3",
-    "@types/react": "18.0.21",
+    "@types/react": "18.2.47",
     "@types/react-dom": "18.0.6",
     "eslint": "8.26.0",
     "eslint-config-next": "12.3.1",
