@@ -1,10 +1,13 @@
 // noinspection GraphQLUnresolvedReference
 
 import {gql} from "graphql-request";
+import {PublicationState} from "../codegen/graphql";
+
+const publicationState = process.env.NODE_ENV === "development" ? PublicationState.Preview : PublicationState.Live;
 
 export const GET_ARTICLES_QUERY = gql`
     query GetArticles {
-        articles {
+        articles(publicationState: ${publicationState}) {
             data {
                 id
                 attributes {
@@ -130,7 +133,7 @@ export const GET_ARTICLE_BY_ID = gql`
 
 export const GET_ARTICLE_BY_SLUG = gql`
     query GetArticleBySlug($slug: String!) {
-        articles(filters: { slug: { eq: $slug } }) {
+        articles(filters: { slug: { eq: $slug } }, publicationState: ${publicationState}) {
             data {
                 id
                 attributes {
