@@ -10,6 +10,8 @@ import ArticlePrevNext from "../../components/content/blog/ArticlePrevNext";
 import {sortArticlesNewestFirst} from "../../services/ContentUtils";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import {bodyFont} from "../../styles/fonts";
+import Head from "next/head";
+import {CONTENT_BASE_URL} from "../../services/Constants";
 
 const Blog = (props: {
   article: ArticleDTO;
@@ -20,23 +22,34 @@ const Blog = (props: {
   const prevArticle = props.prevArticle as ArticleDTO;
   const nextArticle = props.nextArticle as ArticleDTO;
   return (
-    <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
-      <ArticleCover article={article}/>
-      <ArticleHeader article={article}/>
-      <Box height={".5rem"}/>
-      <hr/>
-      <Text alignItems={"flex-start"}
-            fontFamily={bodyFont.style.fontFamily}
-            style={{wordWrap: "break-word"}}
-            fontStyle={"italic"}>
-        {article.description}
-      </Text>
-      <hr/>
-      {/*<Box height={"0.3rem"}/>*/}
-      <ArticleBody article={article}/>
-      <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle}/>
-      <EmailSubscriptionFooter/>
-    </Stack>
+    <>
+      <Head>
+        <title>{article.title}</title>
+        <meta name="description" content={article.description}/>
+        <meta property="og:title" content={article.title}/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:description" content={article.description}/>
+        <meta property="og:image" content={CONTENT_BASE_URL + article.cover.url}/>
+        <meta property="og:url" content={`https://www.d17e.dev/blog/${article.slug}`}/>
+      </Head>
+      <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
+        <ArticleCover article={article}/>
+        <ArticleHeader article={article}/>
+        <Box height={".5rem"}/>
+        <hr/>
+        <Text alignItems={"flex-start"}
+              fontFamily={bodyFont.style.fontFamily}
+              style={{wordWrap: "break-word"}}
+              fontStyle={"italic"}>
+          {article.description}
+        </Text>
+        <hr/>
+        {/*<Box height={"0.3rem"}/>*/}
+        <ArticleBody article={article}/>
+        <ArticlePrevNext nextArticle={nextArticle} prevArticle={prevArticle}/>
+        <EmailSubscriptionFooter/>
+      </Stack>
+    </>
   );
 };
 
