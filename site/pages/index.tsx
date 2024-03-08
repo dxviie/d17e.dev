@@ -1,19 +1,13 @@
-import { GetStaticProps } from "next";
-import {
-  getAllArticles,
-  getAllPosts,
-  getLandingPage,
-} from "../services/ContentApi";
-import {
-  sortArticlesNewestFirst,
-  sortPostsNewestFirst,
-} from "../services/ContentUtils";
-import { ArticleDTO, LandingPageDTO, PostDTO } from "../services/ContentTypes";
+import {GetStaticProps} from "next";
+import {getAllArticles, getAllPosts, getLandingPage,} from "../services/ContentApi";
+import {sortArticlesNewestFirst, sortPostsNewestFirst,} from "../services/ContentUtils";
+import {ArticleDTO, LandingPageDTO, PostDTO} from "../services/ContentTypes";
 import CodeBlock from "../components/content/home/CodeBlock";
 import ContactBlock from "../components/content/home/ContactBlock";
 import IntroBlock from "../components/content/home/IntroBlock";
 import ArtBlock from "../components/content/home/ArtBlock";
 import WritingBlock from "../components/content/home/WritingBlock";
+import Head from "next/head";
 /*
 // TODO get rid of SVGs in our JS bundles: https://kurtextrem.de/posts/svg-in-js
 
@@ -37,27 +31,33 @@ import WritingBlock from "../components/content/home/WritingBlock";
  */
 
 export default function Home({
-  landingPage,
-  posts,
-  articles,
-}: {
+                               landingPage,
+                               posts,
+                               articles,
+                             }: {
   landingPage: LandingPageDTO;
   posts: PostDTO[];
   articles: ArticleDTO[];
 }) {
   return (
     <>
-      <IntroBlock />
+      <Head>
+        <meta property="og:title" content="d17e.dev - code. art. ideas."/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="https://www.d17e.dev/avatar_me_vera_round.png"/>
+        <meta property="og:url" content={`https://www.d17e.dev`}/>
+      </Head>
+      <IntroBlock/>
       <CodeBlock
         description={landingPage.codeDescription}
         author={landingPage.author}
       />
-      <ArtBlock description={landingPage.artDescription} posts={posts} />
+      <ArtBlock description={landingPage.artDescription} posts={posts}/>
       <WritingBlock
         description={landingPage.ideasDescription}
         articles={articles}
       />
-      <ContactBlock description={landingPage.contactDescription} />
+      <ContactBlock description={landingPage.contactDescription}/>
     </>
   );
 }

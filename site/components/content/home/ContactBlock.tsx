@@ -1,6 +1,7 @@
 import {Box, VStack} from "@chakra-ui/react";
 import EmailSubscriptionForm from "../../core/interactive/EmailSubscriptionForm";
 import Markdown from "../../core/elements/Markdown";
+import FindMeOn from "../../core/FindMeOn";
 
 export default function ContactBlock({description}: { description: string }) {
   return (
@@ -21,6 +22,7 @@ export default function ContactBlock({description}: { description: string }) {
           <Markdown markdown={description}/>
           <Box height={"2rem"}/>
           <EmailSubscriptionForm/>
+          <FindMeOn title={""}/>
         </VStack>
       </VStack>
     </>

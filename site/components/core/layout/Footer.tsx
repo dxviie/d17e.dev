@@ -1,14 +1,15 @@
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
-import { HeartIcon } from "../../icons/HeartIcon";
-import { useRouter } from "next/router";
+import {Box, Flex, Spacer, Text} from "@chakra-ui/react";
+import {HeartIcon} from "../../icons/HeartIcon";
+import {useRouter} from "next/router";
 import useThemeColors from "../hooks/useThemeColors";
-import { isAtHomePage } from "../../../services/RouterUtils";
+import {isAtHomePage} from "../../../services/RouterUtils";
 import LinkWrapper from "../hocs/LinkWrapper";
 
 export default function Footer() {
   const colors = useThemeColors();
   const router = useRouter();
   const scrollSnapping = isAtHomePage(router.asPath) ? "end" : "none";
+  const year = new Date().getFullYear();
   return (
     <>
       <Flex
@@ -24,7 +25,7 @@ export default function Footer() {
         <Flex direction={"column"} alignItems={["center", "flex-start"]}>
           <Text textAlign={"center"}>
             made with{" "}
-            <HeartIcon color={colors.accentColor} ml={".2rem"} mr={".2rem"} />{" "}
+            <HeartIcon color={colors.accentColor} ml={".2rem"} mr={".2rem"}/>{" "}
             by David Vandenbogaerde
           </Text>
           <Box
@@ -39,11 +40,11 @@ export default function Footer() {
             >
               © CC BY-NC 4.0
             </LinkWrapper>
-            <Text marginLeft={".5rem"}>| 2022 - present</Text>
+            <Text marginLeft={".5rem"}>| 2022 - {year}</Text>
           </Box>
         </Flex>
 
-        <Spacer />
+        <Spacer/>
         <Flex
           direction={"column"}
           alignItems={["center", "flex-start"]}
