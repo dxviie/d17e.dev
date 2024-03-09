@@ -45,10 +45,10 @@ import {GET_FIND_ME_ON_LINK_LIST_QUERY} from "../strapi/graphql/queries/findMeOn
  * NextJS image loader for strapi-hosted resources & blurhash formatter
  *****************************************************************/
 export const imageLoader = ({
-  src,
-  width,
-  quality,
-}: {
+                              src,
+                              width,
+                              quality,
+                            }: {
   src: string;
   width: number;
   quality?: number;
@@ -62,10 +62,10 @@ export const imageLoader = ({
       width <= 155
         ? "thumbnail_"
         : width <= 500
-        ? "small_"
-        : width <= 750
-        ? "medium_"
-        : "";
+          ? "small_"
+          : width <= 750
+            ? "medium_"
+            : "";
     const lastPathIndex = filePath.lastIndexOf("/");
     const path = filePath.slice(0, lastPathIndex);
     const file = filePath.slice(lastPathIndex + 1);
@@ -82,7 +82,7 @@ const articlesFetcher = (query: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query);
 // noinspection JSUnusedLocalSymbols
 const articleByIdFetcher = (query: string, id: ID) =>
-  graphQLClient.request<{ article: ArticleEntityResponse }>(query, { id: id });
+  graphQLClient.request<{ article: ArticleEntityResponse }>(query, {id: id});
 const articleBySlugFetcher = (query: string, slug: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
     slug: slug,
