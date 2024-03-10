@@ -9,6 +9,7 @@ import Navigation from "../components/core/interactive/Navigation";
 import React from "react";
 import {isAtHomePage} from "../services/RouterUtils";
 import {useRouter} from "next/router";
+import Script from "next/script";
 
 function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter();
@@ -33,12 +34,12 @@ function MyApp({Component, pageProps}: AppProps) {
   return (
     <>
       {/* umami anonymous traffic tracker */}
-      {/*<Script*/}
-      {/*  async={true}*/}
-      {/*  strategy="afterInteractive"*/}
-      {/*  data-website-id="fefcc6cd-205e-4632-940b-cdea83a38ac8"*/}
-      {/*  src={"https://umami.d17e.dev/script.js"}*/}
-      {/*/>*/}
+      <Script
+        async={true}
+        strategy="afterInteractive"
+        data-website-id="fefcc6cd-205e-4632-940b-cdea83a38ac8"
+        src={"https://umami.d17e.dev/script.js"}
+      />
       <React.StrictMode>
         <ChakraProvider theme={d17eTheme} resetCSS={true}>
           {/* headers */}
