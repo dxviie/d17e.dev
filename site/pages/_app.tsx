@@ -42,7 +42,7 @@ function MyApp({Component, pageProps}: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=12"
         />
-        <link rel="icon" href="/d17e-favicon.ico"/>
+        <link rel="icon" href="/favicon.ico"/>
       </Head>
       {/* umami anonymous traffic tracker */}
       {dev ? <></> :
