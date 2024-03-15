@@ -3,8 +3,8 @@ import {LinkedInIcon} from "../icons/LinkedInIcon";
 import {GitHubIcon} from "../icons/GitHubIcon";
 import InstaIcon from "../icons/InstaIcon";
 import {TwitterIcon} from "../icons/TwitterIcon";
-import PlainTextLink from "./interactive/PlainTextLink";
 import useIsPhone from "./hooks/useIsPhone";
+import LinkWrapper from "./hocs/LinkWrapper";
 
 export default function FindMeOn({title = "Find me on"}: { title?: string }) {
   const listDirection = "row";
@@ -14,21 +14,17 @@ export default function FindMeOn({title = "Find me on"}: { title?: string }) {
   let isPhone = useIsPhone();
   return (
     <>
-      <Flex direction={"column"} alignItems={"center"}>
+      <Flex direction={"column"} alignItems={"center"} width={"100%"}>
         <Box marginBottom={".5rem"}>
           {title}
         </Box>
         {isPhone ?
           <>
-            <Flex direction={"row"} gap={"2rem"}>
-              <Flex direction={"column"} justifyContent={"center"} alignItems={"flex-start"} gap={gap}>
-                {buildItem(itemDirection, <GitHubIcon/>, "dxviie", "https://github.com/dxviie")}
-                {buildItem(itemDirection, <TwitterIcon/>, "david_d17e", "https://twitter.com/david_d17e")}
-              </Flex>
-              <Flex direction={"column"} justifyContent={"center"} alignItems={"flex-start"} gap={gap}>
-                {buildItem(itemDirection, <InstaIcon/>, "d17e.dev", "https://www.instagram.com/d17e.dev/")}
-                {buildItem(itemDirection, <LinkedInIcon/>, "d16de", "https://www.linkedin.com/in/d16de/")}
-              </Flex>
+            <Flex direction={"row"} gap={"2rem"} justifyContent={"center"} alignItems={"center"}>
+              {buildItem(itemDirection, <GitHubIcon/>, "", "https://github.com/dxviie")}
+              {buildItem(itemDirection, <TwitterIcon/>, "", "https://twitter.com/david_d17e")}
+              {buildItem(itemDirection, <InstaIcon/>, "", "https://www.instagram.com/d17e.dev/")}
+              {buildItem(itemDirection, <LinkedInIcon/>, "", "https://www.linkedin.com/in/d16de/")}
             </Flex>
           </>
           :
@@ -51,11 +47,12 @@ export default function FindMeOn({title = "Find me on"}: { title?: string }) {
 function buildItem(direction: "column" | "row", icon: React.ReactElement, label: string, url: string) {
   console.log("direction", direction);
   return (
-    <Flex direction={direction} alignItems={"center"}>
-      {icon}
-      <Spacer width={".5rem"}/>
-      <PlainTextLink link={url} description={label}/>
-      {/*<Spacer width={"10rem"}/>*/}
-    </Flex>
+    <LinkWrapper link={url} underline={label !== ""}>
+      <Flex direction={direction} alignItems={"center"}>
+        {icon}
+        <Spacer width={".5rem"}/>
+        {label}
+      </Flex>
+    </LinkWrapper>
   );
 }

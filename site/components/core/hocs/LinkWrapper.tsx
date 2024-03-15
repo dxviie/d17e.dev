@@ -1,20 +1,22 @@
-import { Box } from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import useThemeColors from "../hooks/useThemeColors";
 import WithLink from "./WithLink";
 import React from "react";
 
 export default function LinkWrapper({
-  link,
-  children,
-  target,
-  color,
-  invertedColors = false,
-}: {
+                                      link,
+                                      children,
+                                      target,
+                                      color,
+                                      invertedColors = false,
+                                      underline = true,
+                                    }: {
   link: string;
   children?: React.ReactNode;
   target?: string | "_self"; // TODO internal links -> self, external links -> blank
   color?: string;
   invertedColors?: boolean;
+  underline?: boolean;
 }) {
   const colors = useThemeColors();
   return (
@@ -27,7 +29,7 @@ export default function LinkWrapper({
           className={"push-button"}
           color={color || (invertedColors ? colors.bgColor : colors.color)}
           borderBottomWidth={"1px"}
-          borderStyle={"dashed"}
+          borderStyle={underline ? "dashed" : "none"}
           borderColor={
             color || (invertedColors ? colors.bgColor : colors.color)
           }
