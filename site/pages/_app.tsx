@@ -40,7 +40,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <meta name="description" content="d17e.dev - code. art. ideas."/>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=12"
+          content="width=device-width, initial-scale=1"
         />
         <link rel="icon" href="/favicon.ico"/>
       </Head>
