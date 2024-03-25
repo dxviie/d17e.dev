@@ -45,7 +45,6 @@ export default function FindMeOn({title = "Find me on"}: { title?: string }) {
 }
 
 function buildItem(direction: "column" | "row", icon: React.ReactElement, label: string, url: string) {
-  console.log("direction", direction);
   return (
     <LinkWrapper link={url} underline={label !== ""}>
       <Flex direction={direction} alignItems={"center"}>
