@@ -1,14 +1,14 @@
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { Box, HStack, Text, VStack } from "@chakra-ui/react";
-import { headerFont } from "../../../styles/fonts";
+import {Box, HStack, Text, VStack} from "@chakra-ui/react";
+import {headerFont} from "../../../styles/fonts";
 import Markdown from "../../core/elements/Markdown";
 import Avatar from "../../core/elements/Avatar";
-import { AuthorDTO } from "../../../services/ContentTypes";
+import {AuthorDTO} from "../../../services/ContentTypes";
 
 export default function CodeBlock({
-  description,
-  author,
-}: {
+                                    description,
+                                    author,
+                                  }: {
   description: string;
   author: AuthorDTO;
 }) {
@@ -21,7 +21,6 @@ export default function CodeBlock({
         justifyContent={"center"}
         bg={colors.color}
         color={colors.bgColor}
-        scrollSnapAlign={"start"}
         id={"code"}
       >
         <VStack
@@ -55,7 +54,7 @@ export default function CodeBlock({
               />
             </Box>
           </HStack>
-          <Markdown markdown={description} invertedColors={true} />
+          <Markdown markdown={description} invertedColors={true}/>
         </VStack>
       </VStack>
     </>

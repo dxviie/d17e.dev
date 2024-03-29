@@ -6,7 +6,6 @@ import Footer from "../components/core/layout/Footer";
 import d17eTheme from "../styles/d17eTheme";
 import Navigation from "../components/core/interactive/Navigation";
 import React from "react";
-import {isAtHomePage} from "../services/RouterUtils";
 import {useRouter} from "next/router";
 import Script from "next/script";
 import Head from "next/head";
@@ -15,7 +14,6 @@ import useIsPhone from "../components/core/hooks/useIsPhone";
 function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter();
   const isPhone = useIsPhone();
-  const scrollSnapping = (isAtHomePage(router.asPath) && !isPhone) ? "start" : "none";
   const dev = process.env.NODE_ENV === "development";
   setTimeout(() => {
     // console.clear();
@@ -60,7 +58,6 @@ function MyApp({Component, pageProps}: AppProps) {
           <Flex
             width={"100%"}
             height={"3.5rem"}
-            scrollSnapAlign={scrollSnapping}
           >
             <Navigation></Navigation>
           </Flex>

@@ -2,13 +2,11 @@ import {Box, Flex, Spacer, Text} from "@chakra-ui/react";
 import {HeartIcon} from "../../icons/HeartIcon";
 import {useRouter} from "next/router";
 import useThemeColors from "../hooks/useThemeColors";
-import {isAtHomePage} from "../../../services/RouterUtils";
 import LinkWrapper from "../hocs/LinkWrapper";
 
 export default function Footer() {
   const colors = useThemeColors();
   const router = useRouter();
-  const scrollSnapping = isAtHomePage(router.asPath) ? "end" : "none";
   const year = new Date().getFullYear();
   return (
     <>
@@ -18,7 +16,6 @@ export default function Footer() {
         color={colors.bgColor}
         padding={"1rem"}
         fontSize={"sm"}
-        scrollSnapAlign={scrollSnapping}
         direction={["column", "row"]}
         alignItems={"center"}
       >

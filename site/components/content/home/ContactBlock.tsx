@@ -10,7 +10,6 @@ export default function ContactBlock({description}: { description: string }) {
         height={"100vh"}
         width={"100%"}
         justifyContent={"center"}
-        scrollSnapAlign={"start"}
         id={"contact"}
       >
         <VStack

@@ -1,8 +1,8 @@
-import { Box, Container, HStack, Text, VStack } from "@chakra-ui/react";
-import { PostDTO } from "../../../services/ContentTypes";
+import {Box, Container, HStack, Text, VStack} from "@chakra-ui/react";
+import {PostDTO} from "../../../services/ContentTypes";
 import React from "react";
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { headerFont } from "../../../styles/fonts";
+import {headerFont} from "../../../styles/fonts";
 import ArrowLink from "../../core/interactive/ArrowLink";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
 import PostCard from "../posts/PostCard";
@@ -10,9 +10,9 @@ import WithLink from "../../core/hocs/WithLink";
 import Markdown from "../../core/elements/Markdown";
 
 export default function ArtBlock({
-  description,
-  posts,
-}: {
+                                   description,
+                                   posts,
+                                 }: {
   description: string;
   posts: PostDTO[];
 }) {
@@ -25,7 +25,6 @@ export default function ArtBlock({
         justifyContent={"center"}
         bg={colors.bgColor}
         color={colors.color}
-        scrollSnapAlign={"start"}
         id={"art"}
       >
         <VStack
@@ -45,7 +44,7 @@ export default function ArtBlock({
           >
             art.
           </Text>
-          <Markdown markdown={description} />
+          <Markdown markdown={description}/>
         </VStack>
 
         <Box width={["75vw", "100%"]}>
@@ -60,7 +59,7 @@ export default function ArtBlock({
                 >
                   <Container>
                     <WithLink link={"posts/" + post.slug}>
-                      <PostCard post={post} />
+                      <PostCard post={post}/>
                     </WithLink>
                   </Container>
                 </VStack>
