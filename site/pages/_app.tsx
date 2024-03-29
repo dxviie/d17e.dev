@@ -10,10 +10,12 @@ import {isAtHomePage} from "../services/RouterUtils";
 import {useRouter} from "next/router";
 import Script from "next/script";
 import Head from "next/head";
+import useIsPhone from "../components/core/hooks/useIsPhone";
 
 function MyApp({Component, pageProps}: AppProps) {
   const router = useRouter();
-  const scrollSnapping = isAtHomePage(router.asPath) ? "start" : "none";
+  const isPhone = useIsPhone();
+  const scrollSnapping = (isAtHomePage(router.asPath) && !isPhone) ? "start" : "none";
   const dev = process.env.NODE_ENV === "development";
   setTimeout(() => {
     // console.clear();
