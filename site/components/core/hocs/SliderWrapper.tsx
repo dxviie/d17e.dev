@@ -14,16 +14,16 @@ const settings = {
   infinite: true,
   autoplay: true,
   speed: 500,
-  autoplaySpeed: 5000,
+  autoplaySpeed: 7000,
   slidesToShow: 1,
   slidesToScroll: 1,
   pauseOnDotsHover: true,
 };
 
 export default function SliderWrapper({
-  children,
-  invertedColors = false,
-}: {
+                                        children,
+                                        invertedColors = false,
+                                      }: {
   children?: React.ReactNode;
   invertedColors?: boolean;
 }) {

@@ -1,22 +1,13 @@
-import { ArticleDTO } from "../../../services/ContentTypes";
-import Image from "next/image";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { imageLoader } from "../../../services/ContentApi";
-import blurHashToDataURL from "../../../services/BlurHashTransformer";
+import {ArticleDTO} from "../../../services/ContentTypes";
+import {Card, CardBody, CardHeader, Heading, Stack, Text,} from "@chakra-ui/react";
 import WithLink from "../../core/hocs/WithLink";
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { bodyFont, headerFont } from "../../../styles/fonts";
-import { formatReadingTime } from "../../../services/ContentDetailFormatter";
-import { useFormattedDate } from "../../../services/useFormattedDate";
+import {bodyFont, headerFont} from "../../../styles/fonts";
+import {formatReadingTime} from "../../../services/ContentDetailFormatter";
+import {useFormattedDate} from "../../../services/useFormattedDate";
+import {imageLoader} from "../../../services/ContentApi";
 
-export default function ArticleCard({ article }: { article: ArticleDTO }) {
+export default function ArticleCard({article}: { article: ArticleDTO }) {
   const colors = useThemeColors();
   const formattedDate = useFormattedDate(article.createdAt);
   return (
@@ -26,6 +17,7 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
         link={"/blog/" + encodeURIComponent(article.slug)}
       >
         <Card
+
           maxW="max"
           cursor={"pointer"}
           variant={"elevated"}
@@ -35,6 +27,12 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
           borderWidth={"1px"}
           borderColor={colors.color}
           borderStyle={"none"}
+          style={{
+            backgroundImage: `url(${imageLoader({src: article.cover.url, width: 300, quality: 75})})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
           sx={{
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)",
             transition: "box-shadow 0.2s ease-in-out",
@@ -43,37 +41,23 @@ export default function ArticleCard({ article }: { article: ArticleDTO }) {
             },
           }}
         >
-          <CardHeader position={"relative"}>
-            <Image
-              src={article.cover.url}
-              alt={article.cover.alternativeText}
-              loader={imageLoader}
-              fill={true}
-              sizes={"100%"}
-              style={{ objectFit: "cover" }}
-              placeholder={"blur"}
-              blurDataURL={blurHashToDataURL(article.cover.blurhash)}
-            ></Image>
+          <CardHeader position={"relative"} height={"4rem"}>
           </CardHeader>
           <CardBody
             fontFamily={bodyFont.style.fontFamily}
-            bg={colors.buttonColor}
-            color={colors.bgColor}
-            padding={["0.5rem", "1.3rem"]}
           >
             <Stack spacing={"3"}>
               <Heading
                 size={["sm", "lg"]}
                 fontFamily={headerFont.style.fontFamily}
+                padding={[".2rem", ".5rem"]}
+                bg={colors.bgColor}
               >
                 {article.title}
-                <Text fontSize={"small"} marginTop={".5rem"}>
-                  {formatReadingTime(article.body)}
-                </Text>
               </Heading>
-              <Text noOfLines={3}>{article.description}</Text>
-              <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"}>
-                {formattedDate}
+              <Text noOfLines={3} bg={colors.bgColor} padding={".3rem"}>{article.description}</Text>
+              <Text fontSize={"small"} display={"flex"} alignSelf={"flex-end"} bg={colors.bgColor} padding={".2rem"}>
+                {formatReadingTime(article.body)} - {formattedDate}
               </Text>
             </Stack>
           </CardBody>
