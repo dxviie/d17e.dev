@@ -78,6 +78,7 @@ export type Article = {
   author?: Maybe<AuthorEntityResponse>;
   body: Scalars['String'];
   cover?: Maybe<UploadFileEntityResponse>;
+  coverUrl?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   description: Scalars['String'];
   gallery?: Maybe<UploadFileRelationResponseCollection>;
@@ -87,6 +88,7 @@ export type Article = {
   tags?: Maybe<TagRelationResponseCollection>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
+  uuid?: Maybe<Scalars['String']>;
 };
 
 
@@ -121,6 +123,7 @@ export type ArticleFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<ArticleFiltersInput>>>;
   author?: InputMaybe<AuthorFiltersInput>;
   body?: InputMaybe<StringFilterInput>;
+  coverUrl?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
   id?: InputMaybe<IdFilterInput>;
@@ -132,12 +135,14 @@ export type ArticleFiltersInput = {
   tags?: InputMaybe<TagFiltersInput>;
   title?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
+  uuid?: InputMaybe<StringFilterInput>;
 };
 
 export type ArticleInput = {
   author?: InputMaybe<Scalars['ID']>;
   body?: InputMaybe<Scalars['String']>;
   cover?: InputMaybe<Scalars['ID']>;
+  coverUrl?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   gallery?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   publishDtm?: InputMaybe<Scalars['DateTime']>;
@@ -145,6 +150,7 @@ export type ArticleInput = {
   slug?: InputMaybe<Scalars['String']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   title?: InputMaybe<Scalars['String']>;
+  uuid?: InputMaybe<Scalars['String']>;
 };
 
 export type ArticleRelationResponseCollection = {
@@ -1063,6 +1069,7 @@ export type PaginationArg = {
 export type Post = {
   author?: Maybe<AuthorEntityResponse>;
   content?: Maybe<UploadFileEntityResponse>;
+  contentUrl?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   gallery?: Maybe<UploadFileRelationResponseCollection>;
   link?: Maybe<Scalars['String']>;
@@ -1075,6 +1082,7 @@ export type Post = {
   tags?: Maybe<TagRelationResponseCollection>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
+  uuid?: Maybe<Scalars['String']>;
 };
 
 
@@ -1108,6 +1116,7 @@ export type PostEntityResponseCollection = {
 export type PostFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<PostFiltersInput>>>;
   author?: InputMaybe<AuthorFiltersInput>;
+  contentUrl?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   id?: InputMaybe<IdFilterInput>;
   link?: InputMaybe<StringFilterInput>;
@@ -1122,11 +1131,13 @@ export type PostFiltersInput = {
   tags?: InputMaybe<TagFiltersInput>;
   title?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
+  uuid?: InputMaybe<StringFilterInput>;
 };
 
 export type PostInput = {
   author?: InputMaybe<Scalars['ID']>;
   content?: InputMaybe<Scalars['ID']>;
+  contentUrl?: InputMaybe<Scalars['String']>;
   gallery?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   link?: InputMaybe<Scalars['String']>;
   linkDescription?: InputMaybe<Scalars['String']>;
@@ -1137,6 +1148,7 @@ export type PostInput = {
   slug?: InputMaybe<Scalars['String']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   title?: InputMaybe<Scalars['String']>;
+  uuid?: InputMaybe<Scalars['String']>;
 };
 
 export type PostRelationResponseCollection = {

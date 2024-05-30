@@ -1,10 +1,10 @@
-import { PostDTO } from "../../../services/ContentTypes";
-import { Box, Text, VStack } from "@chakra-ui/react";
-import { headerFont } from "../../../styles/fonts";
+import {PostDTO} from "../../../services/ContentTypes";
+import {Box, Text, VStack} from "@chakra-ui/react";
+import {headerFont} from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
-import { useFormattedDate } from "../../../services/useFormattedDate";
+import {useFormattedDate} from "../../../services/useFormattedDate";
 
-export default function PostHeader({ post }: { post: PostDTO }) {
+export default function PostHeader({post}: { post: PostDTO }) {
   const colors = useThemeColors();
   const formattedDate = useFormattedDate(post.createdAt);
   return (
@@ -19,7 +19,6 @@ export default function PostHeader({ post }: { post: PostDTO }) {
             fontFamily={headerFont.style.fontFamily}
             fontSize={["large", "x-large"]}
             lineHeight={["1.5rem", "1.9rem"]}
-            marginTop={"3rem"}
             marginLeft={"-1rem"}
             padding={"2px .5rem"}
             display={"inline"}

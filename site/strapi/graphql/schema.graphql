@@ -52,6 +52,7 @@ type Article {
   author: AuthorEntityResponse
   body: String!
   cover: UploadFileEntityResponse
+  coverUrl: String
   createdAt: DateTime
   description: String!
   gallery(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
@@ -61,6 +62,7 @@ type Article {
   tags(filters: TagFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): TagRelationResponseCollection
   title: String!
   updatedAt: DateTime
+  uuid: String
 }
 
 type ArticleEntity {
@@ -81,6 +83,7 @@ input ArticleFiltersInput {
   and: [ArticleFiltersInput]
   author: AuthorFiltersInput
   body: StringFilterInput
+  coverUrl: StringFilterInput
   createdAt: DateTimeFilterInput
   description: StringFilterInput
   id: IDFilterInput
@@ -92,12 +95,14 @@ input ArticleFiltersInput {
   tags: TagFiltersInput
   title: StringFilterInput
   updatedAt: DateTimeFilterInput
+  uuid: StringFilterInput
 }
 
 input ArticleInput {
   author: ID
   body: String
   cover: ID
+  coverUrl: String
   description: String
   gallery: [ID]
   publishDtm: DateTime
@@ -105,6 +110,7 @@ input ArticleInput {
   slug: String
   tags: [ID]
   title: String
+  uuid: String
 }
 
 type ArticleRelationResponseCollection {
@@ -779,6 +785,7 @@ input PaginationArg {
 type Post {
   author: AuthorEntityResponse
   content: UploadFileEntityResponse
+  contentUrl: String
   createdAt: DateTime
   gallery(filters: UploadFileFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): UploadFileRelationResponseCollection
   link: String
@@ -791,6 +798,7 @@ type Post {
   tags(filters: TagFiltersInput, pagination: PaginationArg = {}, sort: [String] = []): TagRelationResponseCollection
   title: String!
   updatedAt: DateTime
+  uuid: String
 }
 
 type PostEntity {
@@ -810,6 +818,7 @@ type PostEntityResponseCollection {
 input PostFiltersInput {
   and: [PostFiltersInput]
   author: AuthorFiltersInput
+  contentUrl: StringFilterInput
   createdAt: DateTimeFilterInput
   id: IDFilterInput
   link: StringFilterInput
@@ -824,11 +833,13 @@ input PostFiltersInput {
   tags: TagFiltersInput
   title: StringFilterInput
   updatedAt: DateTimeFilterInput
+  uuid: StringFilterInput
 }
 
 input PostInput {
   author: ID
   content: ID
+  contentUrl: String
   gallery: [ID]
   link: String
   linkDescription: String
@@ -839,6 +850,7 @@ input PostInput {
   slug: String
   tags: [ID]
   title: String
+  uuid: String
 }
 
 type PostRelationResponseCollection {

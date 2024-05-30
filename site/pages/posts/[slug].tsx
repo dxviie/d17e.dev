@@ -2,7 +2,7 @@ import {GetStaticPaths, GetStaticProps} from "next";
 import {getAllPosts, getPostBySlug} from "../../services/ContentApi";
 import {ParsedUrlQuery} from "querystring";
 import {PostDTO} from "../../services/ContentTypes";
-import {Spacer, Stack} from "@chakra-ui/react";
+import {HStack, Spacer, Stack} from "@chakra-ui/react";
 import PostCover from "../../components/content/posts/PostCover";
 import PostHeader from "../../components/content/posts/PostHeader";
 import PostBody from "../../components/content/posts/PostBody";
@@ -11,6 +11,7 @@ import PostPrevNext from "../../components/content/posts/PostPrevNext";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import Head from "next/head";
 import {CONTENT_BASE_URL} from "../../services/Constants";
+import ArrowLink from "../../components/core/interactive/ArrowLink";
 
 const Post = (props: {
   post: PostDTO;
@@ -44,8 +45,13 @@ const Post = (props: {
         minH={"50vh"}
       >
         <Spacer/>
-        <PostCover post={post}/>
         <PostHeader post={post}/>
+        <Spacer minH={"1rem"}/>
+        <HStack>
+          {nextPost ? <ArrowLink link={nextPost.slug} arrowOnly={true} arrow={"left"}/> : <></>}
+          <PostCover post={post}/>
+          {prevPost ? <ArrowLink link={prevPost.slug} arrowOnly={true} arrow={"right"}/> : <></>}
+        </HStack>
         <PostBody post={post}/>
         <Spacer/>
         <PostPrevNext nextPost={nextPost} prevPost={prevPost}/>
