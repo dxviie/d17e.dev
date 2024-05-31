@@ -1,23 +1,36 @@
-import { PostDTO } from "../../../services/ContentTypes";
+import {PostDTO} from "../../../services/ContentTypes";
 import Image from "next/image";
-import { imageLoader } from "../../../services/ContentApi";
+import {imageLoader} from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
-import { Box } from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
+import {CONTENT_BASE_URL} from "../../../services/Constants";
 
-export default function PostCover({ post }: { post: PostDTO }) {
+export default function PostCover({post}: { post: PostDTO }) {
+  let media = <Image
+    loader={imageLoader}
+    src={post.content.url}
+    fill={true}
+    sizes={"100%"}
+    style={{objectFit: "contain"}}
+    alt={post.content.alternativeText}
+    placeholder={"blur"}
+    blurDataURL={blurHashToDataURL(post.content.blurhash)}
+  />;
+  if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
+    media = <video
+      autoPlay={true}
+      muted={true}
+      loop={true}
+      playsInline={true}
+      style={{width: "100%", height: "100%"}}
+    >
+      <source src={CONTENT_BASE_URL + post.content.url} type={"video/mp4"}/>
+    </video>;
+  }
   return (
     <>
-      <Box position={"relative"} width={"100%"} style={{ aspectRatio: "1/1" }}>
-        <Image
-          loader={imageLoader}
-          src={post.content.url}
-          fill={true}
-          sizes={"100%"}
-          style={{ objectFit: "contain" }}
-          alt={post.content.alternativeText}
-          placeholder={"blur"}
-          blurDataURL={blurHashToDataURL(post.content.blurhash)}
-        />
+      <Box position={"relative"} width={"100%"} style={{aspectRatio: "1/1"}}>
+        {media}
       </Box>
     </>
   );

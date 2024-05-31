@@ -1,13 +1,37 @@
-import { PostDTO } from "../../../services/ContentTypes";
-import { Box, Card, HStack, Text, VStack } from "@chakra-ui/react";
-import { imageLoader } from "../../../services/ContentApi";
+import {PostDTO} from "../../../services/ContentTypes";
+import {Box, Card, HStack, Text, VStack} from "@chakra-ui/react";
+import {imageLoader} from "../../../services/ContentApi";
 import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import Image from "next/image";
-import { headerFont } from "../../../styles/fonts";
+import {headerFont} from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
+import {CONTENT_BASE_URL} from "../../../services/Constants";
 
-export default function PostCard({ post }: { post: PostDTO }) {
+export default function PostCard({post}: { post: PostDTO }) {
   const colors = useThemeColors();
+  let media = <Image
+    src={post.content.url}
+    alt={post.content.alternativeText}
+    loader={imageLoader}
+    fill={true}
+    sizes={"100%"}
+    style={{objectFit: "cover", transform: "scale(1.5)"}}
+    placeholder={"blur"}
+    blurDataURL={blurHashToDataURL(post.content.blurhash)}
+  ></Image>;
+  if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
+    media = //<Box>
+      <video
+        autoPlay={false}
+        muted={true}
+        loop={true}
+        playsInline={true}
+        style={{objectFit: "cover", position: "absolute"}}
+      >
+        <source src={CONTENT_BASE_URL + post.content.url} type={"video/mp4"}/>
+      </video>;
+    //</Box>;
+  }
   return (
     <>
       <Card
@@ -27,17 +51,9 @@ export default function PostCard({ post }: { post: PostDTO }) {
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)",
           },
         }}
+        justifyContent={"center"}
       >
-        <Image
-          src={post.content.url}
-          alt={post.content.alternativeText}
-          loader={imageLoader}
-          fill={true}
-          sizes={"100%"}
-          style={{ objectFit: "cover", transform: "scale(1.5)" }}
-          placeholder={"blur"}
-          blurDataURL={blurHashToDataURL(post.content.blurhash)}
-        ></Image>
+        {media}
         <VStack
           alignItems={"flex-start"}
           justifyContent={"flex-end"}
