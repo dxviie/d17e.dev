@@ -7,7 +7,7 @@ const publicationState = process.env.NODE_ENV === "development" ? PublicationSta
 
 export const GET_POSTS_QUERY = gql`
     query GetPosts {
-        posts (publicationState: ${publicationState}, pagination: {limit:50}) {
+        posts (publicationState: ${publicationState}, pagination: {limit:5000}) {
             data {
                 id
                 attributes {
