@@ -6,18 +6,12 @@ import {Box} from "@chakra-ui/react";
 import {CONTENT_BASE_URL} from "../../../services/Constants";
 
 export default function PostCover({post}: { post: PostDTO }) {
-  let media = <Image
-    loader={imageLoader}
-    src={post.content.url}
-    fill={true}
-    sizes={"100%"}
-    style={{objectFit: "contain"}}
-    alt={post.content.alternativeText}
-    placeholder={"blur"}
-    blurDataURL={blurHashToDataURL(post.content.blurhash)}
-  />;
+  let media;
+  let aspect;
+  console.log("-------------", post);
   if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
     media = <video
+      key={post.slug}
       autoPlay={true}
       muted={true}
       loop={true}
@@ -26,10 +20,23 @@ export default function PostCover({post}: { post: PostDTO }) {
     >
       <source src={CONTENT_BASE_URL + post.content.url} type={"video/mp4"}/>
     </video>;
+    aspect = undefined;
+  } else {
+    media = <Image
+      loader={imageLoader}
+      src={post.content.url}
+      fill={true}
+      sizes={"100%"}
+      style={{objectFit: "contain"}}
+      alt={post.content.alternativeText}
+      placeholder={"blur"}
+      blurDataURL={blurHashToDataURL(post.content.blurhash)}
+    />;
+    aspect = "1/1";
   }
   return (
     <>
-      <Box position={"relative"} width={"100%"} style={{aspectRatio: "1/1"}}>
+      <Box position={"relative"} width={"100%"} style={{aspectRatio: aspect}}>
         {media}
       </Box>
     </>
