@@ -28,7 +28,7 @@ export default function PostCard({post}: { post: PostDTO }) {
         playsInline={true}
         style={{objectFit: "cover", position: "absolute"}}
       >
-        <source src={CONTENT_BASE_URL + post.content.url} type={"video/mp4"}/>
+        <source src={CONTENT_BASE_URL + post.content.url + "#t=5"} type={"video/mp4"}/>
       </video>;
     //</Box>;
   }
