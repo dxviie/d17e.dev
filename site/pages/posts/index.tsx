@@ -1,11 +1,11 @@
-import { GetStaticProps } from "next";
-import { getAllPosts, getArtPage } from "../../services/ContentApi";
-import { ArtPageDTO, PostDTO } from "../../services/ContentTypes";
-import { Box, Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import {GetStaticProps} from "next";
+import {getAllPosts, getArtPage} from "../../services/ContentApi";
+import {ArtPageDTO, PostDTO} from "../../services/ContentTypes";
+import {Box, Flex, HStack, SimpleGrid, Text, VStack} from "@chakra-ui/react";
 import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
-import { headerFont } from "../../styles/fonts";
-import { sortPostsNewestFirst } from "../../services/ContentUtils";
+import {headerFont} from "../../styles/fonts";
+import {sortPostsNewestFirst} from "../../services/ContentUtils";
 import Markdown from "../../components/core/elements/Markdown";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import AuthorFooter from "../../components/content/AuthorFooter";
@@ -35,7 +35,7 @@ export default function PostOverview(props: {
           paddingY={"2rem"}
           maxWidth={"45rem"}
         >
-          <Markdown markdown={page.description} />
+          <Markdown markdown={page.description}/>
         </Flex>
         <SimpleGrid
           columns={[1, 1, 2, 3]}
@@ -50,9 +50,9 @@ export default function PostOverview(props: {
           ))}
         </SimpleGrid>
         <Box height={"2rem"}></Box>
-        <AuthorFooter author={page.author} />
+        <AuthorFooter author={page.author}/>
         <Box padding={"1.7rem"}>
-          <EmailSubscriptionFooter />
+          <EmailSubscriptionFooter/>
         </Box>
       </VStack>
     </>
@@ -61,7 +61,8 @@ export default function PostOverview(props: {
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
+  console.log('wwwwwwwwwwwwwwwwwwwwwwwwww', posts);
   let sortedPosts = posts.sort(sortPostsNewestFirst);
   const artPage = await getArtPage();
-  return { props: { posts: sortedPosts, page: artPage } };
+  return {props: {posts: sortedPosts, page: artPage}};
 };

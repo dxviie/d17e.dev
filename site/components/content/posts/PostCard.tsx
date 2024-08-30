@@ -1,7 +1,6 @@
 import {PostDTO} from "../../../services/ContentTypes";
 import {Box, Card, HStack, Text, VStack} from "@chakra-ui/react";
 import {imageLoader} from "../../../services/ContentApi";
-import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import Image from "next/image";
 import {headerFont} from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
@@ -14,10 +13,7 @@ export default function PostCard({post}: { post: PostDTO }) {
     alt={post.content.alternativeText}
     loader={imageLoader}
     fill={true}
-    sizes={"100%"}
     style={{objectFit: "cover", transform: "scale(1.5)"}}
-    placeholder={"blur"}
-    blurDataURL={blurHashToDataURL(post.content.blurhash)}
   ></Image>;
   if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
     media = //<Box>
@@ -28,7 +24,7 @@ export default function PostCard({post}: { post: PostDTO }) {
         playsInline={true}
         style={{objectFit: "cover", position: "absolute"}}
       >
-        <source src={CONTENT_BASE_URL + post.content.url + "#t=5"} type={"video/mp4"}/>
+        <source src={CONTENT_BASE_URL + "/assets/" + post.content.url + "#t=0.1"} type={"video/mp4"}/>
       </video>;
     //</Box>;
   }

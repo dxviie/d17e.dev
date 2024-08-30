@@ -13,6 +13,7 @@
   "dependencies": {
     "@chakra-ui/icons": "2.1.1",
     "@chakra-ui/react": "2.8.2",
+    "@directus/sdk": "^17.0.0",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
     "@sentry/nextjs": "7.80.0",

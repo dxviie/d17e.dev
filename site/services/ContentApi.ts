@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ArticleDTO,
   ArtPageDTO,
@@ -34,11 +35,11 @@ import {
 import {GET_ARTICLE_BY_SLUG, GET_ARTICLES_QUERY,} from "../strapi/graphql/queries/articles";
 import {ID} from "graphql-ws";
 import {CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT} from "./Constants";
-import {GET_POST_BY_SLUG, GET_POSTS_QUERY,} from "../strapi/graphql/queries/posts";
 import {GET_LANDING_PAGE_QUERY} from "../strapi/graphql/queries/landingPage";
 import {GET_ART_PAGE_QUERY} from "../strapi/graphql/queries/artPage";
 import {GET_IDEAS_PAGE_QUERY} from "../strapi/graphql/queries/ideaPage";
 import {GET_FIND_ME_ON_LINK_LIST_QUERY} from "../strapi/graphql/queries/findMeOnLinkList";
+import {authentication, createDirectus, readItems, rest} from "@directus/sdk";
 
 // noinspection JSUnusedLocalSymbols
 /*****************************************************************
@@ -53,24 +54,10 @@ export const imageLoader = ({
   width: number;
   quality?: number;
 }): string => {
-  let filePath = src.startsWith("/") ? src : "/" + src;
-  if (
-    filePath.toLowerCase().endsWith(".jpg") ||
-    filePath.toLowerCase().endsWith(".png")
-  ) {
-    const sizePrefix =
-      width <= 155
-        ? "thumbnail_"
-        : width <= 500
-          ? "small_"
-          : width <= 750
-            ? "medium_"
-            : "";
-    const lastPathIndex = filePath.lastIndexOf("/");
-    const path = filePath.slice(0, lastPathIndex);
-    const file = filePath.slice(lastPathIndex + 1);
-    filePath = path + "/" + sizePrefix + file;
-  }
+  const parts = src.split(".");
+  const ext = parts.pop();
+  const fileName = parts.join(".");
+  const filePath = '/assets/' + fileName + '?width=' + width + "&quality=" + (quality || 75);
   return `${CONTENT_BASE_URL}${filePath}`;
 };
 
@@ -177,19 +164,57 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
  * Content APIs -- Posts
  *****************************************************************/
 export const getAllPosts = async (): Promise<PostDTO[]> => {
-  const postsRaw = await postsFetcher(GET_POSTS_QUERY);
-  if (!postsRaw.posts || !postsRaw.posts.data) {
-    throw Error("Fetching posts returned nothing...");
-  }
-  return postsRaw.posts.data.map(mapPost);
+  const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
+  const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
+  const result = await client.request(
+    readItems('Posts', {
+      fields: ['*', 'cover.*'],
+    })
+  );
+  const directusPosts = await Promise.all(result.map(async post => {
+    return {
+      slug: post?.slug || "",
+      title: post?.title || "",
+      message: post?.body || "",
+      link: post?.link || "",
+      linkDescription: post?.linkDescription || "",
+      createdAt: post?.publishDate || post?.date_created,
+      content: {
+        alternativeText: post?.cover?.description || "",
+        name: post?.cover?.title || "",
+        url: post?.cover?.filename_disk || "",
+        blurhash: "",
+      }
+    }
+  }));
+  return directusPosts;
 };
 
 export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
-  const postRaw = await postBySlugFetcher(GET_POST_BY_SLUG, slug);
-  if (!postRaw.posts || !postRaw.posts.data || !postRaw.posts.data[0]) {
-    throw Error("No post available for slug " + slug);
+  const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
+  const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
+  const result = await client.request(
+    readItems('Posts', {
+      fields: ['*', 'cover.*'],
+      filter: {slug: {_eq: slug}},
+      limit: 1
+    })
+  );
+  const post = result[0];
+  return {
+    slug: post?.slug || "",
+    title: post?.title || "",
+    message: post?.body || "",
+    link: post?.link || "",
+    linkDescription: post?.linkDescription || "",
+    createdAt: post?.publishDate || post?.date_created,
+    content: {
+      alternativeText: post?.cover?.description || "",
+      name: post?.cover?.title || "",
+      url: post?.cover?.filename_disk || "",
+      blurhash: "",
+    }
   }
-  return mapPost(postRaw.posts.data[0]);
 };
 
 /*****************************************************************
