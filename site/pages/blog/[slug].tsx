@@ -11,7 +11,7 @@ import {sortArticlesNewestFirst} from "../../services/ContentUtils";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import {bodyFont} from "../../styles/fonts";
 import Head from "next/head";
-import {CONTENT_BASE_URL} from "../../services/Constants";
+import {DIRECTUS_URL} from "../../services/Constants";
 
 const Blog = (props: {
   article: ArticleDTO;
@@ -29,7 +29,7 @@ const Blog = (props: {
         <meta property="og:title" content={article.title}/>
         <meta property="og:type" content="article"/>
         <meta property="og:description" content={article.description}/>
-        <meta property="og:image" content={CONTENT_BASE_URL + article.cover.url}/>
+        <meta property="og:image" content={DIRECTUS_URL + article.cover.url}/>
         <meta property="og:url" content={`https://www.d17e.dev/blog/${article.slug}`}/>
       </Head>
       <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>

@@ -10,7 +10,6 @@ import {sortPostsNewestFirst} from "../../services/ContentUtils";
 import PostPrevNext from "../../components/content/posts/PostPrevNext";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
 import Head from "next/head";
-import {CONTENT_BASE_URL} from "../../services/Constants";
 import ArrowLink from "../../components/core/interactive/ArrowLink";
 
 const Post = (props: {
@@ -31,7 +30,7 @@ const Post = (props: {
         <meta property="og:description" content={post.message}/>
         <meta
           property="og:image"
-          content={CONTENT_BASE_URL + post.content.url}
+          content={post.content.url}
         />
         <meta
           property="og:url"
@@ -81,7 +80,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const posts = await getAllPosts();
   if (posts) {
     const sortedPosts = posts.sort(sortPostsNewestFirst);
-    const index = sortedPosts.findIndex((value) => value.id === post.id);
+    const index = sortedPosts.findIndex((value) => value.slug === post.slug);
     if (index >= 1) {
       next = posts[index - 1];
     }
@@ -89,7 +88,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       prev = posts[index + 1];
     }
   }
-
   return {props: {post: post, prevPost: prev, nextPost: next}};
 };
 

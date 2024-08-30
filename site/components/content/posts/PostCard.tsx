@@ -12,6 +12,7 @@ export default function PostCard({post}: { post: PostDTO }) {
     alt={post.content.alternativeText}
     loader={imageLoader}
     fill={true}
+    sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
     style={{objectFit: "cover", transform: "scale(1.5)"}}
   ></Image>;
   if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {

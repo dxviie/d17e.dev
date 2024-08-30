@@ -27,14 +27,12 @@ import {
   LandingPageEntityResponse,
   LinkEntity,
   Maybe,
-  PostEntity,
-  PostEntityResponseCollection,
   TagEntity,
   UploadFileEntity,
 } from "../strapi/graphql/codegen/graphql";
 import {GET_ARTICLE_BY_SLUG, GET_ARTICLES_QUERY,} from "../strapi/graphql/queries/articles";
 import {ID} from "graphql-ws";
-import {GRAPHQL_API_ENDPOINT} from "./Constants";
+import {ASSETS_ROOT_URL, DIRECTUS_URL, GRAPHQL_API_ENDPOINT} from "./Constants";
 import {GET_LANDING_PAGE_QUERY} from "../strapi/graphql/queries/landingPage";
 import {GET_ART_PAGE_QUERY} from "../strapi/graphql/queries/artPage";
 import {GET_IDEAS_PAGE_QUERY} from "../strapi/graphql/queries/ideaPage";
@@ -72,12 +70,6 @@ const articleByIdFetcher = (query: string, id: ID) =>
   graphQLClient.request<{ article: ArticleEntityResponse }>(query, {id: id});
 const articleBySlugFetcher = (query: string, slug: string) =>
   graphQLClient.request<{ articles: ArticleEntityResponseCollection }>(query, {
-    slug: slug,
-  });
-const postsFetcher = (query: string) =>
-  graphQLClient.request<{ posts: PostEntityResponseCollection }>(query);
-const postBySlugFetcher = (query: string, slug: string) =>
-  graphQLClient.request<{ posts: PostEntityResponseCollection }>(query, {
     slug: slug,
   });
 const landingPageFetcher = (query: string) =>
@@ -159,64 +151,28 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
   }
   return mapArticle(articleRaw.articles.data[0]);
 };
-
+/******************************************************************
+ * Directus Client
+ *****************************************************************/
+const createDirectusClient = async () => {
+  const client = new Directus(DIRECTUS_URL);
+  // Authenticate
+  await client.auth.login({
+    email: process.env.DIRECTUS_EMAIL,
+    password: process.env.DIRECTUS_PASS
+  });
+  return client;
+}
 /******************************************************************
  * Content APIs -- Posts
  *****************************************************************/
 export const getAllPosts = async (): Promise<PostDTO[]> => {
-  // const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
-  // const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
-  // const result = await client.request(
-  //   readItems('Posts', {
-  //     fields: ['*', 'cover.*'],
-  //   })
-  // );
-  // const directusPosts = await Promise.all(result.map(async post => {
-  //   return {
-  //     slug: post?.slug || "",
-  //     title: post?.title || "",
-  //     message: post?.body || "",
-  //     link: post?.link || "",
-  //     linkDescription: post?.linkDescription || "",
-  //     createdAt: post?.publishDate || post?.date_created,
-  //     content: {
-  //       alternativeText: post?.cover?.description || "",
-  //       name: post?.cover?.title || "",
-  //       url: post?.cover?.filename_disk || "",
-  //       blurhash: "",
-  //     }
-  //   }
-  // }));
-  // return directusPosts;
-  const client = new Directus('https://directus.d17e.dev');
   try {
-    // Authenticate
-    await client.auth.login({
-      email: process.env.DIRECTUS_EMAIL,
-      password: process.env.DIRECTUS_PASS
-    });
-
-    // Fetch posts
+    const client = await createDirectusClient();
     const result = await client.items('Posts').readByQuery({
       fields: ['*', 'cover.*'],
     });
-
-    const directusPosts = result.data.map(post => ({
-      slug: post?.slug || "",
-      title: post?.title || "",
-      message: post?.body || "",
-      link: post?.link || "",
-      linkDescription: post?.linkDescription || "",
-      createdAt: post?.publishDate || post?.date_created || 'null',
-      content: {
-        alternativeText: post?.cover?.description || "",
-        name: post?.cover?.title || "",
-        url: post?.cover?.filename_disk ? `https://directus.d17e.dev/assets/${post.cover.filename_disk}` : "",
-        blurhash: "",
-      }
-    }));
-
-    return directusPosts;
+    return result.data.map(mapPost);
   } catch (error) {
     console.error('Error fetching posts:', error);
     throw error;
@@ -224,60 +180,14 @@ export const getAllPosts = async (): Promise<PostDTO[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
-  // const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
-  // const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
-  // const result = await client.request(
-  //   readItems('Posts', {
-  //     fields: ['*', 'cover.*'],
-  //     filter: {slug: {_eq: slug}},
-  //     limit: 1
-  //   })
-  // );
-  // const post = result[0];
-  // return {
-  //   slug: post?.slug || "",
-  //   title: post?.title || "",
-  //   message: post?.body || "",
-  //   link: post?.link || "",
-  //   linkDescription: post?.linkDescription || "",
-  //   createdAt: post?.publishDate || post?.date_created,
-  //   content: {
-  //     alternativeText: post?.cover?.description || "",
-  //     name: post?.cover?.title || "",
-  //     url: post?.cover?.filename_disk || "",
-  //     blurhash: "",
-  //   }
-  // }
-  const client = new Directus('https://directus.d17e.dev');
-  try {
-    // Authenticate
-    await client.auth.login({
-      email: process.env.DIRECTUS_EMAIL,
-      password: process.env.DIRECTUS_PASS
-    });
 
-    // Fetch posts
+  try {
+    const client = await createDirectusClient();
     const result = await client.items('Posts').readByQuery({
       fields: ['*', 'cover.*'],
     });
     const post = result.data?.find(post => post.slug === slug);
-
-    console.log('ppppppppppppppppppppppppost', post, result);
-    return {
-      slug: post?.slug || "",
-      title: post?.title || "",
-      message: post?.body || "",
-      link: post?.link || "",
-      linkDescription: post?.linkDescription || "",
-      createdAt: post?.publishDate || post?.date_created || 'null',
-      content: {
-        alternativeText: post?.cover?.description || "",
-        name: post?.cover?.title || "",
-        url: post?.cover?.filename_disk ? `https://directus.d17e.dev/assets/${post.cover.filename_disk}` : "",
-        blurhash: "",
-      }
-    }
-
+    return mapPost(post);
   } catch (error) {
     console.error('Error fetching posts:', error);
     throw error;
@@ -287,6 +197,23 @@ export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
 /*****************************************************************
  * Object mappers
  *****************************************************************/
+const mapPost = (directusPost: any): PostDTO => {
+  return {
+    slug: directusPost?.slug || "",
+    title: directusPost?.title || "",
+    message: directusPost?.body || "",
+    link: directusPost?.link || "",
+    linkDescription: directusPost?.linkDescription || "",
+    createdAt: directusPost?.publishDate || directusPost?.date_created || 'null',
+    content: {
+      alternativeText: directusPost?.cover?.description || "",
+      name: directusPost?.cover?.title || "",
+      url: directusPost?.cover?.filename_disk ? `${ASSETS_ROOT_URL}${directusPost.cover.filename_disk}` : "",
+      blurhash: "",
+    }
+  }
+}
+
 const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
   return {
     id: articleRaw.id || "",
@@ -301,22 +228,6 @@ const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
     createdAt:
       articleRaw.attributes?.publishDtm || articleRaw.attributes?.publishedAt,
     updatedAt: articleRaw.attributes?.updatedAt,
-  };
-};
-
-const mapPost = (postRaw: PostEntity): PostDTO => {
-  return {
-    id: postRaw.id || "",
-    slug: postRaw.attributes?.slug || "",
-    title: postRaw.attributes?.title || "",
-    message:
-      postRaw.attributes?.richMessage || postRaw.attributes?.message || "",
-    link: postRaw.attributes?.link || "",
-    linkDescription: postRaw.attributes?.linkDescription || "",
-    author: mapAuthor(postRaw.attributes?.author?.data),
-    createdAt:
-      postRaw.attributes?.publishDtm || postRaw.attributes?.publishedAt,
-    content: mapMedia(postRaw.attributes?.content?.data),
   };
 };
 

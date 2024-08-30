@@ -2,12 +2,10 @@ import {PostDTO} from "../../../services/ContentTypes";
 import Image from "next/image";
 import {imageLoader} from "../../../services/ContentApi";
 import {Box} from "@chakra-ui/react";
-import {CONTENT_BASE_URL} from "../../../services/Constants";
 
 export default function PostCover({post}: { post: PostDTO }) {
   let media;
   let aspect;
-  console.log("-------------", post);
   if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
     media = <video
       key={post.slug}
@@ -17,7 +15,7 @@ export default function PostCover({post}: { post: PostDTO }) {
       playsInline={true}
       style={{width: "100%", height: "100%"}}
     >
-      <source src={CONTENT_BASE_URL + "/assets/" + post.content.url} type={"video/mp4"}/>
+      <source src={post.content.url} type={"video/mp4"}/>
     </video>;
     aspect = undefined;
   } else {
