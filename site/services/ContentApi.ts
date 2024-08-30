@@ -34,12 +34,12 @@ import {
 } from "../strapi/graphql/codegen/graphql";
 import {GET_ARTICLE_BY_SLUG, GET_ARTICLES_QUERY,} from "../strapi/graphql/queries/articles";
 import {ID} from "graphql-ws";
-import {CONTENT_BASE_URL, GRAPHQL_API_ENDPOINT} from "./Constants";
+import {GRAPHQL_API_ENDPOINT} from "./Constants";
 import {GET_LANDING_PAGE_QUERY} from "../strapi/graphql/queries/landingPage";
 import {GET_ART_PAGE_QUERY} from "../strapi/graphql/queries/artPage";
 import {GET_IDEAS_PAGE_QUERY} from "../strapi/graphql/queries/ideaPage";
 import {GET_FIND_ME_ON_LINK_LIST_QUERY} from "../strapi/graphql/queries/findMeOnLinkList";
-import {authentication, createDirectus, readItems, rest} from "@directus/sdk";
+import {Directus} from "@directus/sdk";
 
 // noinspection JSUnusedLocalSymbols
 /*****************************************************************
@@ -57,8 +57,8 @@ export const imageLoader = ({
   const parts = src.split(".");
   const ext = parts.pop();
   const fileName = parts.join(".");
-  const filePath = '/assets/' + fileName + '?width=' + width + "&quality=" + (quality || 75);
-  return `${CONTENT_BASE_URL}${filePath}`;
+  const filePath = fileName + '?width=' + width + "&quality=" + (quality || 75);
+  return filePath;
 };
 
 /*****************************************************************
@@ -164,56 +164,123 @@ export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
  * Content APIs -- Posts
  *****************************************************************/
 export const getAllPosts = async (): Promise<PostDTO[]> => {
-  const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
-  const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
-  const result = await client.request(
-    readItems('Posts', {
+  // const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
+  // const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
+  // const result = await client.request(
+  //   readItems('Posts', {
+  //     fields: ['*', 'cover.*'],
+  //   })
+  // );
+  // const directusPosts = await Promise.all(result.map(async post => {
+  //   return {
+  //     slug: post?.slug || "",
+  //     title: post?.title || "",
+  //     message: post?.body || "",
+  //     link: post?.link || "",
+  //     linkDescription: post?.linkDescription || "",
+  //     createdAt: post?.publishDate || post?.date_created,
+  //     content: {
+  //       alternativeText: post?.cover?.description || "",
+  //       name: post?.cover?.title || "",
+  //       url: post?.cover?.filename_disk || "",
+  //       blurhash: "",
+  //     }
+  //   }
+  // }));
+  // return directusPosts;
+  const client = new Directus('https://directus.d17e.dev');
+  try {
+    // Authenticate
+    await client.auth.login({
+      email: process.env.DIRECTUS_EMAIL,
+      password: process.env.DIRECTUS_PASS
+    });
+
+    // Fetch posts
+    const result = await client.items('Posts').readByQuery({
       fields: ['*', 'cover.*'],
-    })
-  );
-  const directusPosts = await Promise.all(result.map(async post => {
+    });
+
+    const directusPosts = result.data.map(post => ({
+      slug: post?.slug || "",
+      title: post?.title || "",
+      message: post?.body || "",
+      link: post?.link || "",
+      linkDescription: post?.linkDescription || "",
+      createdAt: post?.publishDate || post?.date_created || 'null',
+      content: {
+        alternativeText: post?.cover?.description || "",
+        name: post?.cover?.title || "",
+        url: post?.cover?.filename_disk ? `https://directus.d17e.dev/assets/${post.cover.filename_disk}` : "",
+        blurhash: "",
+      }
+    }));
+
+    return directusPosts;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
+
+export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
+  // const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
+  // const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
+  // const result = await client.request(
+  //   readItems('Posts', {
+  //     fields: ['*', 'cover.*'],
+  //     filter: {slug: {_eq: slug}},
+  //     limit: 1
+  //   })
+  // );
+  // const post = result[0];
+  // return {
+  //   slug: post?.slug || "",
+  //   title: post?.title || "",
+  //   message: post?.body || "",
+  //   link: post?.link || "",
+  //   linkDescription: post?.linkDescription || "",
+  //   createdAt: post?.publishDate || post?.date_created,
+  //   content: {
+  //     alternativeText: post?.cover?.description || "",
+  //     name: post?.cover?.title || "",
+  //     url: post?.cover?.filename_disk || "",
+  //     blurhash: "",
+  //   }
+  // }
+  const client = new Directus('https://directus.d17e.dev');
+  try {
+    // Authenticate
+    await client.auth.login({
+      email: process.env.DIRECTUS_EMAIL,
+      password: process.env.DIRECTUS_PASS
+    });
+
+    // Fetch posts
+    const result = await client.items('Posts').readByQuery({
+      fields: ['*', 'cover.*'],
+    });
+    const post = result.data?.find(post => post.slug === slug);
+
+    console.log('ppppppppppppppppppppppppost', post, result);
     return {
       slug: post?.slug || "",
       title: post?.title || "",
       message: post?.body || "",
       link: post?.link || "",
       linkDescription: post?.linkDescription || "",
-      createdAt: post?.publishDate || post?.date_created,
+      createdAt: post?.publishDate || post?.date_created || 'null',
       content: {
         alternativeText: post?.cover?.description || "",
         name: post?.cover?.title || "",
-        url: post?.cover?.filename_disk || "",
+        url: post?.cover?.filename_disk ? `https://directus.d17e.dev/assets/${post.cover.filename_disk}` : "",
         blurhash: "",
       }
     }
-  }));
-  return directusPosts;
-};
 
-export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
-  const client = createDirectus('https://directus.d17e.dev').with(authentication()).with(rest());
-  const response = await client.login(process.env.DIRECTUS_EMAIL, process.env.DIRECTUS_PASS);
-  const result = await client.request(
-    readItems('Posts', {
-      fields: ['*', 'cover.*'],
-      filter: {slug: {_eq: slug}},
-      limit: 1
-    })
-  );
-  const post = result[0];
-  return {
-    slug: post?.slug || "",
-    title: post?.title || "",
-    message: post?.body || "",
-    link: post?.link || "",
-    linkDescription: post?.linkDescription || "",
-    createdAt: post?.publishDate || post?.date_created,
-    content: {
-      alternativeText: post?.cover?.description || "",
-      name: post?.cover?.title || "",
-      url: post?.cover?.filename_disk || "",
-      blurhash: "",
-    }
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
   }
 };
 

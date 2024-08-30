@@ -4,7 +4,6 @@ import {imageLoader} from "../../../services/ContentApi";
 import Image from "next/image";
 import {headerFont} from "../../../styles/fonts";
 import useThemeColors from "../../core/hooks/useThemeColors";
-import {CONTENT_BASE_URL} from "../../../services/Constants";
 
 export default function PostCard({post}: { post: PostDTO }) {
   const colors = useThemeColors();
@@ -24,7 +23,7 @@ export default function PostCard({post}: { post: PostDTO }) {
         playsInline={true}
         style={{objectFit: "cover", position: "absolute"}}
       >
-        <source src={CONTENT_BASE_URL + "/assets/" + post.content.url + "#t=0.1"} type={"video/mp4"}/>
+        <source src={post.content.url + "#t=0.1"} type={"video/mp4"}/>
       </video>;
     //</Box>;
   }
