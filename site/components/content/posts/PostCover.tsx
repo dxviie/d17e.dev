@@ -23,6 +23,7 @@ export default function PostCover({post}: { post: PostDTO }) {
       loader={imageLoader}
       src={post.content.url}
       fill={true}
+      sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
       style={{objectFit: "contain"}}
       alt={post.content.alternativeText}
     />;

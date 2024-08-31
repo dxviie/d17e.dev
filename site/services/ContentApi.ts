@@ -17,7 +17,6 @@ import {
 } from "./ContentTypes";
 import {GraphQLClient} from "graphql-request";
 import {
-  ArticleEntity,
   ArticleEntityResponse,
   ArticleEntityResponseCollection,
   ArtPageEntityResponse,
@@ -30,7 +29,6 @@ import {
   TagEntity,
   UploadFileEntity,
 } from "../strapi/graphql/codegen/graphql";
-import {GET_ARTICLE_BY_SLUG, GET_ARTICLES_QUERY,} from "../strapi/graphql/queries/articles";
 import {ID} from "graphql-ws";
 import {ASSETS_ROOT_URL, DIRECTUS_URL, GRAPHQL_API_ENDPOINT} from "./Constants";
 import {GET_LANDING_PAGE_QUERY} from "../strapi/graphql/queries/landingPage";
@@ -55,7 +53,7 @@ export const imageLoader = ({
   const parts = src.split(".");
   const ext = parts.pop();
   const fileName = parts.join(".");
-  const filePath = fileName + '?width=' + width + "&quality=" + (quality || 75);
+  const filePath = fileName + '?width=' + width + "&quality=" + (quality || 75) + "&format=webp";
   return filePath;
 };
 
@@ -133,23 +131,20 @@ export const getFindMeOnLinks = async (): Promise<FindMeOnLinkListDTO> => {
  * Content APIs -- Articles
  *****************************************************************/
 export const getAllArticles = async (): Promise<ArticleDTO[]> => {
-  const articlesRaw = await articlesFetcher(GET_ARTICLES_QUERY);
-  if (!articlesRaw.articles || !articlesRaw.articles.data) {
-    throw Error("Fetching articles returned nothing...");
+  try {
+    const client = await createDirectusClient();
+    const result = await client.items('Articles').readByQuery({
+      fields: ['*', 'cover.*'],
+    });
+    return result.data.map(mapArticle);
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    throw error;
   }
-  return articlesRaw.articles.data.map(mapArticle);
 };
 
 export const getArticleBySlug = async (slug: string): Promise<ArticleDTO> => {
-  const articleRaw = await articleBySlugFetcher(GET_ARTICLE_BY_SLUG, slug);
-  if (
-    !articleRaw.articles ||
-    !articleRaw.articles.data ||
-    !articleRaw.articles.data[0]
-  ) {
-    throw Error("No article available for slug " + slug);
-  }
-  return mapArticle(articleRaw.articles.data[0]);
+  return getAllArticles().then(articles => articles.find(article => article.slug === slug));
 };
 /******************************************************************
  * Directus Client
@@ -180,18 +175,7 @@ export const getAllPosts = async (): Promise<PostDTO[]> => {
 };
 
 export const getPostBySlug = async (slug: string): Promise<PostDTO> => {
-
-  try {
-    const client = await createDirectusClient();
-    const result = await client.items('Posts').readByQuery({
-      fields: ['*', 'cover.*'],
-    });
-    const post = result.data?.find(post => post.slug === slug);
-    return mapPost(post);
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    throw error;
-  }
+  return getAllPosts().then(posts => posts.find(post => post.slug === slug));
 };
 
 /*****************************************************************
@@ -214,20 +198,21 @@ const mapPost = (directusPost: any): PostDTO => {
   }
 }
 
-const mapArticle = (articleRaw: ArticleEntity): ArticleDTO => {
+const mapArticle = (directusArticle: any): ArticleDTO => {
   return {
-    id: articleRaw.id || "",
-    slug: articleRaw.attributes?.slug || "",
-    title: articleRaw.attributes?.title || "",
-    description: articleRaw.attributes?.description || "",
-    body: articleRaw.attributes?.body || "",
-    author: mapAuthor(articleRaw.attributes?.author?.data),
-    cover: mapMedia(articleRaw.attributes?.cover?.data),
-    gallery: mapMedias(articleRaw.attributes?.gallery?.data),
-    tags: mapTags(articleRaw.attributes?.tags?.data),
+    slug: directusArticle?.slug || "",
+    title: directusArticle?.title || "",
+    description: directusArticle?.description || "",
+    body: directusArticle?.body || "",
+    cover: {
+      alternativeText: directusArticle?.cover?.description || "",
+      name: directusArticle?.cover?.title || "",
+      url: directusArticle?.cover?.filename_disk ? `${ASSETS_ROOT_URL}${directusArticle.cover.filename_disk}` : "",
+      blurhash: "",
+    },
     createdAt:
-      articleRaw.attributes?.publishDtm || articleRaw.attributes?.publishedAt,
-    updatedAt: articleRaw.attributes?.updatedAt,
+      directusArticle?.publishDate || directusArticle?.date_created,
+    updatedAt: directusArticle?.date_updated,
   };
 };
 

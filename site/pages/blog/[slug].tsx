@@ -73,7 +73,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const articles = await getAllArticles();
   if (articles) {
     const sortedArticles = articles.sort(sortArticlesNewestFirst);
-    const index = sortedArticles.findIndex((value) => value.id === article.id);
+    const index = sortedArticles.findIndex((value) => value.slug === article.slug);
     if (index >= 1) {
       next = articles[index - 1];
     }

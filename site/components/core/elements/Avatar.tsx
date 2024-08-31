@@ -1,16 +1,14 @@
-import { AuthorDTO } from "../../../services/ContentTypes";
-import { Box, Text, VStack } from "@chakra-ui/react";
+import {AuthorDTO} from "../../../services/ContentTypes";
+import {Box, Text, VStack} from "@chakra-ui/react";
 import Image from "next/image";
-import { imageLoader } from "../../../services/ContentApi";
-import blurHashToDataURL from "../../../services/BlurHashTransformer";
 import useThemeColors from "../hooks/useThemeColors";
 
 export default function Avatar({
-  author,
-  size = "4rem",
-  withName = false,
-  invertedColors = false,
-}: {
+                                 author,
+                                 size = "4rem",
+                                 withName = false,
+                                 invertedColors = false,
+                               }: {
   author?: AuthorDTO;
   size?: string | object;
   withName?: boolean;
@@ -34,14 +32,11 @@ export default function Avatar({
               borderStyle={"dashed"}
             >
               <Image
-                loader={imageLoader}
-                src={author.avatar.url}
-                alt={author.avatar.alternativeText}
+                src={'/avatar_me_vera_round.png'}
+                alt={'stylized selfie'}
                 fill={true}
                 sizes={"100%"}
-                style={{ objectFit: "cover" }}
-                placeholder={"blur"}
-                blurDataURL={blurHashToDataURL(author.avatar.blurhash)}
+                style={{objectFit: "cover"}}
               />
             </Box>
             {withName ? (

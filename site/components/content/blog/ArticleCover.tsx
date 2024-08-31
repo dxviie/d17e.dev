@@ -1,11 +1,10 @@
 import Image from "next/image";
-import { imageLoader } from "../../../services/ContentApi";
-import { Box } from "@chakra-ui/react";
-import { ArticleDTO } from "../../../services/ContentTypes";
-import blurHashToDataURL from "../../../services/BlurHashTransformer";
+import {imageLoader} from "../../../services/ContentApi";
+import {Box} from "@chakra-ui/react";
+import {ArticleDTO} from "../../../services/ContentTypes";
 import useThemeColors from "../../core/hooks/useThemeColors";
 
-export default function ArticleCover({ article }: { article: ArticleDTO }) {
+export default function ArticleCover({article}: { article: ArticleDTO }) {
   const colors = useThemeColors();
   if (!article || !article.cover || !article.cover.url) {
     // don't try to render non-images
@@ -26,10 +25,8 @@ export default function ArticleCover({ article }: { article: ArticleDTO }) {
           alt={article.cover.alternativeText}
           loader={imageLoader}
           fill={true}
-          sizes={"100%"}
-          style={{ objectFit: "cover" }}
-          placeholder={"blur"}
-          blurDataURL={blurHashToDataURL(article.cover.blurhash)}
+          sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+          style={{objectFit: "cover"}}
         ></Image>
       </Box>
     </>
