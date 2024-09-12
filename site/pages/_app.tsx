@@ -6,17 +6,15 @@ import Footer from "../components/core/layout/Footer";
 import d17eTheme from "../styles/d17eTheme";
 import Navigation from "../components/core/interactive/Navigation";
 import React from "react";
-import {useRouter} from "next/router";
 import Script from "next/script";
 import Head from "next/head";
-import useIsPhone from "../components/core/hooks/useIsPhone";
+
+let count = 0;
 
 function MyApp({Component, pageProps}: AppProps) {
-  const router = useRouter();
-  const isPhone = useIsPhone();
   const dev = process.env.NODE_ENV === "development";
   setTimeout(() => {
-    // console.clear();
+    if (count > 0) return;
     console.log(
       "   _ ___ ___         _\n" +
       " _| |_  |_  |___   _| |___ _ _\n" +
@@ -31,6 +29,7 @@ function MyApp({Component, pageProps}: AppProps) {
     console.log(
       "Feel free to reach out to me at https://forms.d17e.dev/contact",
     );
+    count++;
   }, 1000);
   return (
     <>
