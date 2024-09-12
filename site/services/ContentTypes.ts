@@ -11,6 +11,7 @@ export declare type MediaDTO = {
   alternativeText: string;
   url: string;
   blurhash: string;
+  ratio: number;
 };
 
 export declare type ArticleDTO = {

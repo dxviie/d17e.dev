@@ -39,14 +39,14 @@ const Post = (props: {
       </Head>
       <Stack
         width={"100vw"}
-        padding={"0 1.7rem"}
+        padding={["0 1.2rem", "0 1.7rem"]}
         maxWidth={"45rem"}
         minH={"50vh"}
       >
         <Spacer/>
         <PostHeader post={post}/>
         <Spacer minH={"1rem"}/>
-        <HStack>
+        <HStack position={"relative"} width={"110%"} left={"-5%"}>
           {nextPost ? <ArrowLink link={nextPost.slug} arrowOnly={true} arrow={"left"}/> : <></>}
           <PostCover post={post}/>
           {prevPost ? <ArrowLink link={prevPost.slug} arrowOnly={true} arrow={"right"}/> : <></>}
