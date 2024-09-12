@@ -198,7 +198,7 @@ const mapArticle = (directusArticle: any): ArticleDTO => {
       name: directusArticle?.cover?.title || "",
       url: directusArticle?.cover?.filename_disk ? `${ASSETS_ROOT_URL}${directusArticle.cover.filename_disk}` : "",
       blurhash: base64,
-      ratio: directusPost?.cover?.width / directusPost?.cover?.height || 1,
+      ratio: directusArticle?.cover?.width / directusArticle?.cover?.height || 1,
     },
     createdAt:
       directusArticle?.publishDate || directusArticle?.date_created,
