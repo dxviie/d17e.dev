@@ -133,8 +133,17 @@ export const getFindMeOnLinks = async (): Promise<FindMeOnLinkListDTO> => {
 export const getAllArticles = async (): Promise<ArticleDTO[]> => {
   try {
     const client = await createDirectusClient();
+    let filter = {
+      status: {
+        _eq: 'published'
+      }
+    };
+    if (process.env.NODE_ENV === 'development') {
+      filter = {};
+    }
     const result = await client.items('Articles').readByQuery({
       fields: ['*', 'cover.*'],
+      filter: filter
     });
     return result.data.map(mapArticle);
   } catch (error) {
@@ -164,8 +173,17 @@ const createDirectusClient = async () => {
 export const getAllPosts = async (): Promise<PostDTO[]> => {
   try {
     const client = await createDirectusClient();
+    let filter = {
+      status: {
+        _eq: 'published'
+      }
+    };
+    if (process.env.NODE_ENV === 'development') {
+      filter = {};
+    }
     const result = await client.items('Posts').readByQuery({
       fields: ['*', 'cover.*'],
+      filter: filter
     });
     return result.data.map(mapPost);
   } catch (error) {

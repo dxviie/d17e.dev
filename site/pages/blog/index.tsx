@@ -1,12 +1,12 @@
-import { GetStaticProps } from "next";
-import { getAllArticles, getIdeasPage } from "../../services/ContentApi";
-import { ArticleDTO, IdeasPageDTO } from "../../services/ContentTypes";
-import { Box, Flex, HStack, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import {GetStaticProps} from "next";
+import {getAllArticles, getIdeasPage} from "../../services/ContentApi";
+import {ArticleDTO, IdeasPageDTO} from "../../services/ContentTypes";
+import {Box, Flex, HStack, SimpleGrid, Text, VStack} from "@chakra-ui/react";
 import ArticleListItem from "../../components/content/blog/ArticleListItem";
-import { headerFont } from "../../styles/fonts";
+import {headerFont} from "../../styles/fonts";
 import Markdown from "../../components/core/elements/Markdown";
 import EmailSubscriptionFooter from "../../components/core/interactive/EmailSubscriptionFooter";
-import { sortArticlesNewestFirst } from "../../services/ContentUtils";
+import {sortArticlesNewestFirst} from "../../services/ContentUtils";
 import AuthorFooter from "../../components/content/AuthorFooter";
 
 export default function BlogOverview(props: {
@@ -34,7 +34,7 @@ export default function BlogOverview(props: {
           paddingY={"2rem"}
           maxWidth={"45rem"}
         >
-          <Markdown markdown={page.description} />
+          <Markdown markdown={page.description}/>
         </Flex>
         <SimpleGrid
           columns={1}
@@ -50,9 +50,9 @@ export default function BlogOverview(props: {
           ))}
         </SimpleGrid>
         <Box height={"2rem"}></Box>
-        <AuthorFooter author={page.author} />
+        <AuthorFooter author={page.author}/>
         <Box padding={"1.7rem"}>
-          <EmailSubscriptionFooter />
+          <EmailSubscriptionFooter/>
         </Box>
       </VStack>
     </>
@@ -61,7 +61,7 @@ export default function BlogOverview(props: {
 
 export const getStaticProps: GetStaticProps = async () => {
   const articles = await getAllArticles();
-  let soredArticles = articles.sort(sortArticlesNewestFirst);
+  let sortedArticles = articles.sort(sortArticlesNewestFirst);
   const ideasPage = await getIdeasPage();
-  return { props: { articles: soredArticles, page: ideasPage } };
+  return {props: {articles: sortedArticles, page: ideasPage}};
 };
