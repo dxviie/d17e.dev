@@ -61,14 +61,16 @@ export default function PostCard({post}: { post: PostDTO }) {
               flexShrink={"1"}
               maxWidth={"100%"}
               margin={"1rem"}
+              lineHeight={["1rem", "1rem", "1.9rem"]}
             >
               <Text
+                opacity={[0, 1, 1]}
                 fontFamily={headerFont.style.fontFamily}
-                fontSize={["small", "large", "large"]}
+                fontSize={["x-small", "small", "large"]}
                 color={colors.bgColor}
                 background={colors.color}
                 display={"inline"}
-                lineHeight={["0rem", "1.9rem", "1.9rem"]}
+                lineHeight={["1px", "1rem", "1.9rem"]}
                 padding={".2rem"}
                 borderWidth={".15rem"}
                 borderColor={colors.color}

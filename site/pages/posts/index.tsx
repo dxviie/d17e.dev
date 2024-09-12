@@ -38,8 +38,8 @@ export default function PostOverview(props: {
           <Markdown markdown={page.description}/>
         </Flex>
         <SimpleGrid
-          columns={[1, 1, 2, 3]}
-          spacing={"2.3rem"}
+          columns={[3]}
+          spacing={[".5rem", "1rem", "2.3rem"]}
           paddingY={"1.7rem"}
           paddingX={["1rem", "2.5rem"]}
         >
