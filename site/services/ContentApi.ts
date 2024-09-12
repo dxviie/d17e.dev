@@ -19,9 +19,7 @@ export const imageLoader = ({
   const parts = src.split(".");
   const ext = parts.pop();
   const fileName = parts.join(".");
-  const filePath = fileName + '?width=' + width + "&quality=" + (quality || 75) + "&format=jpg";
-  console.debug("imageLoader: IN:", src, width, quality, "stripped ext:", ext, "OUT:", filePath);
-  return filePath;
+  return fileName + '?width=' + width + "&quality=" + (quality || 75) + "&format=jpg";
 };
 
 /******************************************************************
@@ -170,6 +168,7 @@ export const getPageByTitle = async (title: string): Promise<PageDTO> => {
  * Object mappers
  *****************************************************************/
 const mapPost = (directusPost: any): PostDTO => {
+  const base64 = "";//await getBlurHashFromImage(`${ASSETS_ROOT_URL}${directusPost.cover.filename_disk}`);
   return {
     slug: directusPost?.slug || "",
     title: directusPost?.title || "",
@@ -181,12 +180,13 @@ const mapPost = (directusPost: any): PostDTO => {
       alternativeText: directusPost?.cover?.description || "",
       name: directusPost?.cover?.title || "",
       url: directusPost?.cover?.filename_disk ? `${ASSETS_ROOT_URL}${directusPost.cover.filename_disk}` : "",
-      blurhash: "",
+      blurhash: base64,
     }
   }
 }
 
 const mapArticle = (directusArticle: any): ArticleDTO => {
+  const base64 = "";//await getBlurHashFromImage(`${ASSETS_ROOT_URL}${directusArticle.cover.filename_disk}`);
   return {
     slug: directusArticle?.slug || "",
     title: directusArticle?.title || "",
@@ -196,7 +196,7 @@ const mapArticle = (directusArticle: any): ArticleDTO => {
       alternativeText: directusArticle?.cover?.description || "",
       name: directusArticle?.cover?.title || "",
       url: directusArticle?.cover?.filename_disk ? `${ASSETS_ROOT_URL}${directusArticle.cover.filename_disk}` : "",
-      blurhash: "",
+      blurhash: base64,
     },
     createdAt:
       directusArticle?.publishDate || directusArticle?.date_created,

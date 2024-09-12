@@ -7,16 +7,9 @@ import useThemeColors from "../../core/hooks/useThemeColors";
 
 export default function PostCard({post}: { post: PostDTO }) {
   const colors = useThemeColors();
-  let media = <Image
-    src={post.content.url}
-    alt={post.content.alternativeText}
-    loader={imageLoader}
-    fill={true}
-    sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
-    style={{objectFit: "cover", transform: "scale(1.5)"}}
-  ></Image>;
+  let media;
   if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
-    media = //<Box>
+    media =
       <video
         autoPlay={false}
         muted={true}
@@ -26,7 +19,16 @@ export default function PostCard({post}: { post: PostDTO }) {
       >
         <source src={post.content.url + "#t=0.1"} type={"video/mp4"}/>
       </video>;
-    //</Box>;
+  } else {
+    media = <Image
+      src={post.content.url}
+      alt={post.content.alternativeText}
+      loader={imageLoader}
+      fill={true}
+      sizes={"33vw"}
+      style={{objectFit: "cover", transform: "scale(1.5)"}}
+      blurDataURL={post.content.blurhash}
+    ></Image>;
   }
   return (
     <>

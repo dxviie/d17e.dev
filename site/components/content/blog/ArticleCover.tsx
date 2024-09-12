@@ -27,6 +27,7 @@ export default function ArticleCover({article}: { article: ArticleDTO }) {
           fill={true}
           sizes={"(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
           style={{objectFit: "cover"}}
+          blurDataURL={article.cover.blurhash}
         ></Image>
       </Box>
     </>

@@ -29,7 +29,7 @@ export default function Avatar({
           src={'/avatar_me_vera_round.png'}
           alt={'stylized selfie'}
           fill={true}
-          sizes={"100%"}
+          sizes={"10rem"}
           style={{objectFit: "cover"}}
         />
       </Box>
