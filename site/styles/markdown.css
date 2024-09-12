@@ -59,4 +59,7 @@
     color: var(--color);
     background-color: var(--button-bg-color);
     font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: scroll;
 }
