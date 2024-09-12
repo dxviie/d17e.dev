@@ -3,14 +3,11 @@ import {Box, HStack, Text, VStack} from "@chakra-ui/react";
 import {headerFont} from "../../../styles/fonts";
 import Markdown from "../../core/elements/Markdown";
 import Avatar from "../../core/elements/Avatar";
-import {AuthorDTO} from "../../../services/ContentTypes";
 
 export default function CodeBlock({
-                                    description,
-                                    author,
+                                    description
                                   }: {
   description: string;
-  author: AuthorDTO;
 }) {
   const colors = useThemeColors();
   return (
@@ -48,7 +45,6 @@ export default function CodeBlock({
               position={"absolute"}
             >
               <Avatar
-                author={author}
                 size={["6rem", "8rem", "10rem"]}
                 invertedColors={true}
               />

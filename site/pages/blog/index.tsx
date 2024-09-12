@@ -1,6 +1,6 @@
 import {GetStaticProps} from "next";
-import {getAllArticles, getIdeasPage} from "../../services/ContentApi";
-import {ArticleDTO, IdeasPageDTO} from "../../services/ContentTypes";
+import {getAllArticles, getPageByTitle} from "../../services/ContentApi";
+import {ArticleDTO, PageDTO} from "../../services/ContentTypes";
 import {Box, Flex, HStack, SimpleGrid, Text, VStack} from "@chakra-ui/react";
 import ArticleListItem from "../../components/content/blog/ArticleListItem";
 import {headerFont} from "../../styles/fonts";
@@ -11,10 +11,10 @@ import AuthorFooter from "../../components/content/AuthorFooter";
 
 export default function BlogOverview(props: {
   articles: ArticleDTO[];
-  page: IdeasPageDTO;
+  page: PageDTO;
 }) {
   const articles = props.articles as ArticleDTO[];
-  const page = props.page as IdeasPageDTO;
+  const page = props.page as PageDTO;
   return (
     <>
       <VStack>
@@ -50,7 +50,7 @@ export default function BlogOverview(props: {
           ))}
         </SimpleGrid>
         <Box height={"2rem"}></Box>
-        <AuthorFooter author={page.author}/>
+        <AuthorFooter/>
         <Box padding={"1.7rem"}>
           <EmailSubscriptionFooter/>
         </Box>
@@ -62,6 +62,6 @@ export default function BlogOverview(props: {
 export const getStaticProps: GetStaticProps = async () => {
   const articles = await getAllArticles();
   let sortedArticles = articles.sort(sortArticlesNewestFirst);
-  const ideasPage = await getIdeasPage();
+  const ideasPage = await getPageByTitle("Blog");
   return {props: {articles: sortedArticles, page: ideasPage}};
 };

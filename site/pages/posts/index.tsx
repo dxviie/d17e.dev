@@ -1,6 +1,6 @@
 import {GetStaticProps} from "next";
-import {getAllPosts, getArtPage} from "../../services/ContentApi";
-import {ArtPageDTO, PostDTO} from "../../services/ContentTypes";
+import {getAllPosts, getPageByTitle} from "../../services/ContentApi";
+import {PageDTO, PostDTO} from "../../services/ContentTypes";
 import {Box, Flex, HStack, SimpleGrid, Text, VStack} from "@chakra-ui/react";
 import WithLink from "../../components/core/hocs/WithLink";
 import PostCard from "../../components/content/posts/PostCard";
@@ -12,10 +12,10 @@ import AuthorFooter from "../../components/content/AuthorFooter";
 
 export default function PostOverview(props: {
   posts: PostDTO[];
-  page: ArtPageDTO;
+  page: PageDTO;
 }) {
   const posts = props.posts.sort(sortPostsNewestFirst) as PostDTO[];
-  const page = props.page as ArtPageDTO;
+  const page = props.page as PageDTO;
   return (
     <>
       <VStack>
@@ -50,7 +50,7 @@ export default function PostOverview(props: {
           ))}
         </SimpleGrid>
         <Box height={"2rem"}></Box>
-        <AuthorFooter author={page.author}/>
+        <AuthorFooter/>
         <Box padding={"1.7rem"}>
           <EmailSubscriptionFooter/>
         </Box>
@@ -62,6 +62,6 @@ export default function PostOverview(props: {
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
   let sortedPosts = posts.sort(sortPostsNewestFirst);
-  const artPage = await getArtPage();
+  const artPage = await getPageByTitle("Posts");
   return {props: {posts: sortedPosts, page: artPage}};
 };

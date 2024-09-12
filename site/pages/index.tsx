@@ -1,7 +1,7 @@
 import {GetStaticProps} from "next";
-import {getAllArticles, getAllPosts, getLandingPage,} from "../services/ContentApi";
+import {getAllArticles, getAllPosts, getPageByTitle,} from "../services/ContentApi";
 import {sortArticlesNewestFirst, sortPostsNewestFirst,} from "../services/ContentUtils";
-import {ArticleDTO, LandingPageDTO, PostDTO} from "../services/ContentTypes";
+import {ArticleDTO, PageDTO, PostDTO} from "../services/ContentTypes";
 import CodeBlock from "../components/content/home/CodeBlock";
 import ContactBlock from "../components/content/home/ContactBlock";
 import IntroBlock from "../components/content/home/IntroBlock";
@@ -31,11 +31,17 @@ import Head from "next/head";
  */
 
 export default function Home({
-                               landingPage,
+                               landingPageCode,
+                               landingPageArt,
+                               landingPageIdeas,
+                               landingPageContact,
                                posts,
                                articles,
                              }: {
-  landingPage: LandingPageDTO;
+  landingPageCode: PageDTO;
+  landingPageArt: PageDTO;
+  landingPageIdeas: PageDTO;
+  landingPageContact: PageDTO;
   posts: PostDTO[];
   articles: ArticleDTO[];
 }) {
@@ -49,20 +55,19 @@ export default function Home({
       </Head>
       <IntroBlock/>
       <CodeBlock
-        description={landingPage.codeDescription}
-        author={landingPage.author}
+        description={landingPageCode.description}
       />
-      <ArtBlock description={landingPage.artDescription} posts={posts}/>
+      <ArtBlock description={landingPageArt.description} posts={posts}/>
       <WritingBlock
-        description={landingPage.ideasDescription}
+        description={landingPageIdeas.description}
         articles={articles}
       />
-      <ContactBlock description={landingPage.contactDescription}/>
+      <ContactBlock description={landingPageContact.description}/>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const articles = await getAllArticles();
   let featuredArticles = null;
   if (articles) {
@@ -73,11 +78,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (posts) {
     featuredPosts = posts.sort(sortPostsNewestFirst).slice(0, 3);
   }
-  const landingPage = await getLandingPage();
-  // TODO support for the featured posts/articles from the landing page
+  const landingPageCode = await getPageByTitle("Landing-code");
+  const landingPageArt = await getPageByTitle("Landing-art");
+  const landingPageIdeas = await getPageByTitle("Landing-ideas");
+  const landingPageContact = await getPageByTitle("Landing-contact");
   return {
     props: {
-      landingPage: landingPage,
+      landingPageCode,
+      landingPageArt,
+      landingPageIdeas,
+      landingPageContact,
       articles: featuredArticles,
       posts: featuredPosts,
     },
