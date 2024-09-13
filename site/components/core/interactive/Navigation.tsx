@@ -1,19 +1,12 @@
-import { Box, Flex, HStack, Spacer, Text } from "@chakra-ui/react";
+import {Box, Flex, HStack, Spacer, Text} from "@chakra-ui/react";
 import ColorModeToggle from "./ColorModeToggle";
-import { useRouter } from "next/router";
-import {
-  BLOG_PATH,
-  HOME_PATH,
-  isAtBlogPage,
-  isAtHomePage,
-  isAtPostsPage,
-  POSTS_PATH,
-} from "../../../services/RouterUtils";
+import {useRouter} from "next/router";
+import {BLOG_PATH, HOME_PATH, isAtBlogPage, isAtHomePage, isAtPostsPage, POSTS_PATH,} from "../../../services/RouterUtils";
 import useThemeColors from "../hooks/useThemeColors";
 import useIsPhone from "../hooks/useIsPhone";
 import Link from "next/link";
 import D17eIcon from "../../icons/D17eIcon";
-import { headerFont } from "../../../styles/fonts";
+import {headerFont} from "../../../styles/fonts";
 import PostsIcon from "../../icons/PostsIcon";
 import BlogIcon from "../../icons/BlogIcon";
 
@@ -36,7 +29,7 @@ export default function Navigation() {
         </Flex>
       </Link>
 
-      <Spacer />
+      <Spacer/>
 
       {/*  POSTS BUTTON */}
       <Link href={POSTS_PATH}>
@@ -107,7 +100,7 @@ export default function Navigation() {
     <HStack
       fontFamily={headerFont.style.fontFamily}
       width={"100%"}
-      bg={colors.bgColor}
+      // bg={colors.bgColor}
       padding={"0 .5rem 0 .5rem"}
       opacity={0.9}
       as={"nav"}

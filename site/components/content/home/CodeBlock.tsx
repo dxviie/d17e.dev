@@ -1,8 +1,8 @@
 import useThemeColors from "../../core/hooks/useThemeColors";
 import {Box, HStack, Text, VStack} from "@chakra-ui/react";
-import {headerFont} from "../../../styles/fonts";
 import Markdown from "../../core/elements/Markdown";
 import Avatar from "../../core/elements/Avatar";
+import {headerFont} from "../../../styles/fonts";
 
 export default function CodeBlock({
                                     description
@@ -13,7 +13,9 @@ export default function CodeBlock({
   return (
     <>
       <VStack
-        height={"100vh"}
+        paddingTop={"4rem"}
+        paddingBottom={"4rem"}
+        minHeight={"110vh"}
         width={"100%"}
         justifyContent={"center"}
         bg={colors.color}
@@ -36,16 +38,15 @@ export default function CodeBlock({
               marginLeft={"-1rem"}
               marginBottom={"2rem"}
             >
-              code.
+              Hi!&nbsp;&nbsp;&nbsp;&nbsp;:)&nbsp;
             </Text>
             <Box
-              paddingLeft={["10rem", "15rem"]}
-              paddingBottom={["0", "3rem", "0"]}
-              paddingTop={["2rem", "0", "0"]}
+              paddingLeft={["12rem", "16rem", "17rem"]}
+              paddingBottom={["2rem", "3rem", "4rem"]}
               position={"absolute"}
             >
               <Avatar
-                size={["6rem", "8rem", "10rem"]}
+                size={["6rem", "9rem", "10rem"]}
                 invertedColors={true}
               />
             </Box>

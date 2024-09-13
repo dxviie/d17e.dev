@@ -8,6 +8,8 @@ import SliderWrapper from "../../core/hocs/SliderWrapper";
 import PostCard from "../posts/PostCard";
 import WithLink from "../../core/hocs/WithLink";
 import Markdown from "../../core/elements/Markdown";
+import PostsIcon from "../../icons/PostsIcon";
+import {motion} from "framer-motion";
 
 export default function ArtBlock({
                                    description,
@@ -17,10 +19,13 @@ export default function ArtBlock({
   posts: PostDTO[];
 }) {
   const colors = useThemeColors();
+  const MotionBox = motion(Box);
   return (
     <>
       <VStack
-        height={"100vh"}
+        paddingTop={"4rem"}
+        paddingBottom={"4rem"}
+        minHeight={"110vh"}
         width={"100%"}
         justifyContent={"center"}
         bg={colors.bgColor}
@@ -33,17 +38,32 @@ export default function ArtBlock({
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          <Text
-            fontFamily={headerFont.style.fontFamily}
-            fontSize={"3rem"}
-            bgColor={colors.color}
-            color={colors.bgColor}
-            padding={"0 1rem"}
-            marginLeft={"-1rem"}
-            marginBottom={"1rem"}
-          >
-            art.
-          </Text>
+          <HStack marginLeft={"-1rem"} marginBottom={"1rem"}>
+            <MotionBox animate={{
+              rotate: [0, 15, -15, 10, -10, 5, -5, 0],
+            }}
+                       transition={{
+                         duration: 15,
+                         ease: "easeInOut",
+                         repeat: Infinity,
+                         repeatType: "reverse",
+                       }} width={"7rem"} aspectRatio={"1"} transform={"rotateX(12)"}>
+              <PostsIcon color={colors.color}/>
+            </MotionBox>
+            <Text
+              fontFamily={headerFont.style.fontFamily}
+              fontSize={"3rem"}
+              bgColor={colors.color}
+              color={colors.bgColor}
+              padding={"0 1rem"}
+
+
+            >
+              Posts
+            </Text>
+          </HStack>
+
+
           <Markdown markdown={description}/>
         </VStack>
 

@@ -19,7 +19,7 @@ export default function WritingBlock({
   return (
     <>
       <VStack
-        height={"100vh"}
+        minHeight={"110vh"}
         width={"100%"}
         justifyContent={"center"}
         color={colors.bgColor}

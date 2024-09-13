@@ -7,7 +7,7 @@ export default function ContactBlock({description}: { description: string }) {
   return (
     <>
       <VStack
-        height={"100vh"}
+        minHeight={"110vh"}
         width={"100%"}
         justifyContent={"center"}
         id={"contact"}

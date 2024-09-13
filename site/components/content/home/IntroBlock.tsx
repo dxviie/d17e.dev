@@ -1,9 +1,9 @@
-import { Box, Flex, keyframes, VStack } from "@chakra-ui/react";
-import { bodyFont, headerFont } from "../../../styles/fonts";
+import {Box, Flex, keyframes, VStack} from "@chakra-ui/react";
+import {bodyFont, headerFont} from "../../../styles/fonts";
 import D17eLogo from "../../icons/D17eLogo";
-import useThemeColors, { ThemeColors } from "../../core/hooks/useThemeColors";
-import { useEffect, useState } from "react";
-import { ArrowDownIcon } from "../../icons/ArrowDownIcon";
+import useThemeColors, {ThemeColors} from "../../core/hooks/useThemeColors";
+import {useEffect, useState} from "react";
+import {ArrowDownIcon} from "../../icons/ArrowDownIcon";
 import WithLink from "../../core/hocs/WithLink";
 import useIsPhone from "../../core/hooks/useIsPhone";
 
@@ -12,12 +12,12 @@ const DELAY_MILLIS = 700;
 export default function IntroBlock() {
   const colors = useThemeColors();
   const bounce = keyframes`
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(15px)
-    }
+      from {
+          transform: translateY(0);
+      }
+      to {
+          transform: translateY(15px)
+      }
   `;
   const bounceAnimation = `${bounce} infinite .8s ease-in-out alternate`;
   const [visible, setVisible] = useState(false);
@@ -32,7 +32,8 @@ export default function IntroBlock() {
   const isPhone = useIsPhone();
   return (
     <>
-      <VStack height={"calc(100vh - 3.5rem)"} justifyContent={"center"}>
+      <VStack height={"calc(100vh - 3.5rem)"} justifyContent={"center"} paddingTop={"7rem"}
+              paddingBottom={"4rem"}>
         <Flex
           width={"80vw"}
           maxWidth={["20rem", "25rem", "35rem"]}
@@ -40,7 +41,7 @@ export default function IntroBlock() {
           align={"center"}
           fontFamily={bodyFont.style.fontFamily}
         >
-          <D17eLogo />
+          <D17eLogo/>
           <Box
             fontSize={["xx-large", "xx-large", "xxx-large"]}
             fontFamily={headerFont.style.fontFamily}
@@ -72,9 +73,9 @@ export default function IntroBlock() {
             opacity={visible ? 1 : 0}
             transition="opacity 0.8s"
           >
-            <ArrowDownIcon />
+            <ArrowDownIcon/>
           </Box>
-          <Box height={"7rem"} />
+          <Box height={"7rem"}/>
         </Flex>
       </VStack>
     </>
@@ -115,13 +116,13 @@ const IntroBox = (
         isPhone
           ? {}
           : {
-              _hover: {
-                borderBottomWidth: "1px",
-                borderBottomStyle: "dashed",
-                borderBottomColor: colors.accentColor,
-                color: colors.accentColor,
-              },
-            }
+            _hover: {
+              borderBottomWidth: "1px",
+              borderBottomStyle: "dashed",
+              borderBottomColor: colors.accentColor,
+              color: colors.accentColor,
+            },
+          }
       }
     >
       {text}
