@@ -49,7 +49,7 @@ export default function PostCard({post}: { post: PostDTO }) {
             boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.4)",
           },
         }}
-        justifyContent={"center"}
+        justifyContent={"flex-end"}
       >
         {media}
         <VStack
