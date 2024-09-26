@@ -24,9 +24,11 @@ export default function ArrowLink({
       <HStack
         fontFamily={headerFont.style.fontFamily}
         className={"push-button"}
+        color={link !== "#" ? colors.color : colors.bgColor}
       >
         {arrow && arrow === "left" ?
-          <Link href={link}>{arrowOnly ? <ArrowLeftIcon height={"20rem"} width={"1.5rem"}/> : <ArrowLeftIcon/>}</Link> : <></>}
+          <Link href={link}>{arrowOnly ? <ArrowLeftIcon height={"20rem"} width={"1.5rem"}/> :
+            <ArrowLeftIcon/>}</Link> : <></>}
         {arrowOnly ?
           <></>
           :
@@ -45,7 +47,8 @@ export default function ArrowLink({
             <Link href={link}>{description ? description : link}</Link>
           </Box>}
         {arrow && arrow === "right" ?
-          <Link href={link}>{arrowOnly ? <ArrowRightIcon height={"20rem"} width={"1.5rem"}/> : <ArrowRightIcon/>}</Link> : <></>}
+          <Link href={link}>{arrowOnly ? <ArrowRightIcon height={"20rem"} width={"1.5rem"}/> :
+            <ArrowRightIcon/>}</Link> : <></>}
       </HStack>
     </>
   );

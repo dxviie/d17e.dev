@@ -47,9 +47,9 @@ const Post = (props: {
         <PostHeader post={post}/>
         <Spacer minH={"1rem"}/>
         <HStack position={"relative"} width={"110%"} left={"-5%"}>
-          {nextPost ? <ArrowLink link={nextPost.slug} arrowOnly={true} arrow={"left"}/> : <></>}
+          <ArrowLink link={nextPost ? nextPost.slug : "#"} arrowOnly={true} arrow={"left"}/> : <></>
           <PostCover post={post}/>
-          {prevPost ? <ArrowLink link={prevPost.slug} arrowOnly={true} arrow={"right"}/> : <></>}
+          <ArrowLink link={prevPost ? prevPost.slug : "#"} arrowOnly={true} arrow={"right"}/> : <></>
         </HStack>
         <PostBody post={post}/>
         <Spacer/>
