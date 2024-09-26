@@ -15,7 +15,7 @@ export default function CodeBlock({
       <VStack
         paddingTop={"4rem"}
         paddingBottom={"4rem"}
-        minHeight={"110vh"}
+        minHeight={"110svh"}
         width={"100%"}
         justifyContent={"center"}
         bg={colors.color}

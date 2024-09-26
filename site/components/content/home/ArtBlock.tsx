@@ -25,7 +25,7 @@ export default function ArtBlock({
       <VStack
         paddingTop={"4rem"}
         paddingBottom={"4rem"}
-        minHeight={"110vh"}
+        minHeight={"110svh"}
         width={"100%"}
         justifyContent={"center"}
         bg={colors.bgColor}
@@ -38,16 +38,20 @@ export default function ArtBlock({
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          <HStack marginLeft={"-1rem"} marginBottom={"1rem"}>
-            <MotionBox animate={{
-              rotate: [0, 15, -15, 10, -10, 5, -5, 0],
-            }}
-                       transition={{
-                         duration: 15,
-                         ease: "easeInOut",
-                         repeat: Infinity,
-                         repeatType: "reverse",
-                       }} width={"7rem"} aspectRatio={"1"} transform={"rotateX(12)"}>
+          <HStack marginLeft={"-1rem"} marginBottom={"1rem"} width={"75%"} justifyContent={"center"} position={"relative"}>
+            <MotionBox
+              position={"absolute"}
+              left={["-2.5rem", "3%", "15%"]}
+              top={"-1.5rem"}
+              animate={{
+                rotate: [0, 15, -15, 10, -10, 5, -5, 0],
+              }}
+              transition={{
+                duration: 15,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
+              }} width={"7rem"} aspectRatio={"1"} transform={"rotateX(12)"}>
               <PostsIcon color={colors.color}/>
             </MotionBox>
             <Text
@@ -56,8 +60,7 @@ export default function ArtBlock({
               bgColor={colors.color}
               color={colors.bgColor}
               padding={"0 1rem"}
-
-
+              marginLeft={"4rem"}
             >
               Posts
             </Text>
@@ -71,10 +74,9 @@ export default function ArtBlock({
           {/* Slider */}
           <SliderWrapper>
             {posts.map((post, index) => (
-              <Box key={post.slug} height={"100%"} position="relative">
+              <Box key={post.slug} position="relative">
                 <VStack
                   justifyContent={"center"}
-                  height={"100%"}
                   padding={["0rem", "1rem"]}
                 >
                   <Container>

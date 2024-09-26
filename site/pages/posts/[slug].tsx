@@ -41,7 +41,7 @@ const Post = (props: {
         width={"100vw"}
         padding={["0 1.2rem", "0 1.7rem"]}
         maxWidth={"45rem"}
-        minH={"50vh"}
+        minH={"50svh"}
       >
         <Spacer/>
         <PostHeader post={post}/>

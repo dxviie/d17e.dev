@@ -7,6 +7,8 @@ import React from "react";
 import SliderWrapper from "../../core/hocs/SliderWrapper";
 import ArticleCard from "../blog/ArticleCard";
 import Markdown from "../../core/elements/Markdown";
+import {motion} from "framer-motion";
+import BlogIcon from "../../icons/BlogIcon";
 
 export default function WritingBlock({
                                        description,
@@ -16,10 +18,13 @@ export default function WritingBlock({
   articles: ArticleDTO[];
 }) {
   const colors = useThemeColors();
+  const MotionBox = motion(Box);
   return (
     <>
       <VStack
-        minHeight={"110vh"}
+        paddingTop={"4rem"}
+        paddingBottom={"4rem"}
+        minHeight={"110svh"}
         width={"100%"}
         justifyContent={"center"}
         color={colors.bgColor}
@@ -32,17 +37,33 @@ export default function WritingBlock({
           fontSize={"large"}
           alignItems={"flex-start"}
         >
-          <Text
-            fontFamily={headerFont.style.fontFamily}
-            fontSize={"3rem"}
-            bgColor={colors.bgColor}
-            color={colors.color}
-            padding={"0 1rem"}
-            marginLeft={"-1rem"}
-            marginBottom={"1rem"}
-          >
-            ideas.
-          </Text>
+          <HStack marginLeft={"-1rem"} marginBottom={"1rem"} width={"75%"} justifyContent={"center"} position={"relative"}>
+            <MotionBox
+              position={"absolute"}
+              left={["-2.5rem", "3%", "15%"]}
+              top={"-1.5rem"}
+              animate={{
+                rotate: [0, 15, -15, 10, -10, 5, -5, 0],
+              }}
+              transition={{
+                duration: 15,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
+              }} width={"7rem"} aspectRatio={"1"} transform={"rotateX(12)"}>
+              <BlogIcon color={colors.bgColor}/>
+            </MotionBox>
+            <Text
+              fontFamily={headerFont.style.fontFamily}
+              fontSize={"3rem"}
+              bgColor={colors.bgColor}
+              color={colors.color}
+              padding={"0 1rem"}
+              marginLeft={"4rem"}
+            >
+              ideas.
+            </Text>
+          </HStack>
           <Markdown markdown={description}/>
         </VStack>
 
@@ -51,11 +72,10 @@ export default function WritingBlock({
           {articles.map((article, index) => (
             <Box
               key={article.slug}
-              height={"100%"}
               position="relative"
               padding={"1rem"}
             >
-              <VStack justifyContent={"center"} height={"100%"}>
+              <VStack justifyContent={"center"}>
                 <Container>
                   <ArticleCard article={article}/>
                 </Container>

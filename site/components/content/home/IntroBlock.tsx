@@ -7,7 +7,7 @@ import {ArrowDownIcon} from "../../icons/ArrowDownIcon";
 import WithLink from "../../core/hocs/WithLink";
 import useIsPhone from "../../core/hooks/useIsPhone";
 
-const DELAY_MILLIS = 700;
+const DELAY_MILLIS = 500;
 
 export default function IntroBlock() {
   const colors = useThemeColors();
@@ -19,7 +19,7 @@ export default function IntroBlock() {
           transform: translateY(15px)
       }
   `;
-  const bounceAnimation = `${bounce} infinite .8s ease-in-out alternate`;
+  const bounceAnimation = `${bounce} infinite .5s ease-in-out alternate`;
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,7 +32,7 @@ export default function IntroBlock() {
   const isPhone = useIsPhone();
   return (
     <>
-      <VStack height={"calc(100vh - 3.5rem)"} justifyContent={"center"} paddingTop={"7rem"}
+      <VStack height={"110svh"} justifyContent={"center"} paddingTop={"7rem"}
               paddingBottom={"4rem"}>
         <Flex
           width={"80vw"}

@@ -55,7 +55,6 @@ export default function PostCard({post}: { post: PostDTO }) {
         <VStack
           alignItems={"flex-start"}
           justifyContent={"flex-end"}
-          height={"100%"}
         >
           <HStack>
             <Box

@@ -63,7 +63,7 @@ function MyApp({Component, pageProps}: AppProps) {
           <Flex
             direction={"column"}
             align={"center"}
-            minH={"calc(100vh - 3.5rem)"}
+            minH={"calc(100svh - 3.5rem)"}
             width={"100%"}
           >
             <Component {...pageProps} />
