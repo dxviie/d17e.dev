@@ -61,7 +61,7 @@ export default function WritingBlock({
               padding={"0 1rem"}
               marginLeft={"4rem"}
             >
-              ideas.
+              Blog
             </Text>
           </HStack>
           <Markdown markdown={description}/>

@@ -24,7 +24,7 @@ export default function ArrowLink({
       <HStack
         fontFamily={headerFont.style.fontFamily}
         className={"push-button"}
-        color={link !== "#" ? colors.color : colors.bgColor}
+        color={link !== "#" ? (invertColors ? colors.bgColor : colors.color) : (invertColors ? colors.color : colors.bgColor)}
       >
         {arrow && arrow === "left" ?
           <Link href={link}>{arrowOnly ? <ArrowLeftIcon height={"20rem"} width={"1.5rem"}/> :
