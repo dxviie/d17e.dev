@@ -51,7 +51,8 @@ export const getAllArticles = async (): Promise<ArticleDTO[]> => {
     }
     const result = await client.items('Articles').readByQuery({
       fields: ['*', 'cover.*'],
-      filter: filter
+      filter: filter,
+      limit: -1
     });
     return result.data.map(mapArticle);
   } catch (error) {
@@ -94,7 +95,8 @@ export const getAllPosts = async (): Promise<PostDTO[]> => {
     }
     const result = await client.items('Posts').readByQuery({
       fields: ['*', 'cover.*'],
-      filter: filter
+      filter: filter,
+      limit: -1
     });
     return result.data.map(mapPost);
   } catch (error) {
@@ -137,7 +139,8 @@ export const getAllPages = async (): Promise<PageDTO[]> => {
     }
     const result = await client.items('Pages').readByQuery({
       fields: ['*'],
-      filter: filter
+      filter: filter,
+      limit: -1
     });
     return result.data.map(mapPage);
   } catch (error) {
