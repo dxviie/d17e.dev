@@ -6,7 +6,8 @@ import {Box} from "@chakra-ui/react";
 export default function PostCover({post}: { post: PostDTO }) {
   let media;
   let boxStyle: object = {aspectRatio: post.content.ratio};
-  if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
+  if (post.content && post.content.url && (post.content.url.endsWith(".mp4") || post.content.url.endsWith(".mov"))) {
+    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/mov";
     boxStyle = {};
     media = <video
       key={post.slug}
@@ -16,7 +17,7 @@ export default function PostCover({post}: { post: PostDTO }) {
       playsInline={true}
       style={{width: "100%", height: "100%"}}
     >
-      <source src={post.content.url} type={"video/mp4"}/>
+      <source src={post.content.url} type={mediaType}/>
     </video>;
   } else {
     media = <Image

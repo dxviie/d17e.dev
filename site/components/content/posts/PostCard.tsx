@@ -8,7 +8,8 @@ import useThemeColors from "../../core/hooks/useThemeColors";
 export default function PostCard({post}: { post: PostDTO }) {
   const colors = useThemeColors();
   let media;
-  if (post.content && post.content.url && post.content.url.endsWith(".mp4")) {
+  if (post.content && post.content.url && (post.content.url.endsWith(".mp4") || post.content.url.endsWith(".mov"))) {
+    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/mov";
     media =
       <video
         autoPlay={false}
@@ -17,7 +18,7 @@ export default function PostCard({post}: { post: PostDTO }) {
         playsInline={true}
         style={{objectFit: "cover", position: "absolute"}}
       >
-        <source src={post.content.url + "#t=0.1"} type={"video/mp4"}/>
+        <source src={post.content.url + "#t=0.1"} type={mediaType}/>
       </video>;
   } else {
     media = <Image
