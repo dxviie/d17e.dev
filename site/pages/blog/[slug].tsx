@@ -28,6 +28,7 @@ const Blog = (props: {
         <title>{article.title}</title>
         <meta name="description" content={friendlyDescription}/>
         <meta property="og:title" content={article.title}/>
+        <meta property="og:site_name" content="d17e.dev - code. art. ideas."/>
         <meta property="og:type" content="article"/>
         <meta property="og:description" content={friendlyDescription}/>
         <meta property="og:image" content={DIRECTUS_URL + article.cover.url}/>

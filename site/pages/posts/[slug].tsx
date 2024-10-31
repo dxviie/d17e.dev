@@ -27,6 +27,7 @@ const Post = (props: {
         <title>{post.title}</title>
         <meta name="description" content={friendlyDescription}/>
         <meta property="og:title" content={post.title}/>
+        <meta property="og:site_name" content="d17e.dev - code. art. ideas."/>
         <meta property="og:type" content={"article"}/>
         <meta property="og:description" content={friendlyDescription}/>
         <meta

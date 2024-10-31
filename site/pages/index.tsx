@@ -49,6 +49,7 @@ export default function Home({
     <>
       <Head>
         <meta property="og:title" content="d17e.dev - code. art. ideas."/>
+        <meta property="og:site_name" content="d17e.dev"/>
         <meta property="og:type" content="website"/>
         <meta property="og:image" content="https://www.d17e.dev/avatar_me_vera_round.png"/>
         <meta property="og:url" content={`https://www.d17e.dev`}/>
