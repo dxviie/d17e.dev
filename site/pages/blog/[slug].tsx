@@ -21,16 +21,21 @@ const Blog = (props: {
   const article = props.article as ArticleDTO;
   const prevArticle = props.prevArticle as ArticleDTO;
   const nextArticle = props.nextArticle as ArticleDTO;
+  const friendlyDescription = article.description ? article.description.replace(/\n+/g, ' ') : '';
   return (
     <>
       <Head>
         <title>{article.title}</title>
-        <meta name="description" content={article.description}/>
+        <meta name="description" content={friendlyDescription}/>
         <meta property="og:title" content={article.title}/>
         <meta property="og:type" content="article"/>
-        <meta property="og:description" content={article.description}/>
+        <meta property="og:description" content={friendlyDescription}/>
         <meta property="og:image" content={DIRECTUS_URL + article.cover.url}/>
         <meta property="og:url" content={`https://www.d17e.dev/blog/${article.slug}`}/>
+        <meta property="twitter:image" content={article.cover.url}/>
+        <meta property="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:title" content={article.title}/>
+        <meta property="twitter:description" content={friendlyDescription}/>
       </Head>
       <Stack width={"100vw"} padding={"0 1.7rem"} maxWidth={"45rem"}>
         <ArticleCover article={article}/>

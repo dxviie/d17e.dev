@@ -20,14 +20,15 @@ const Post = (props: {
   const post = props.post as PostDTO;
   const prevPost = props.prevPost as PostDTO;
   const nextPost = props.nextPost as PostDTO;
+  const friendlyDescription = post.message ? post.message.replace(/\n+/g, ' ') : '';
   return (
     <>
       <Head>
         <title>{post.title}</title>
-        <meta name="description" content={post.message}/>
+        <meta name="description" content={friendlyDescription}/>
         <meta property="og:title" content={post.title}/>
         <meta property="og:type" content={"article"}/>
-        <meta property="og:description" content={post.message}/>
+        <meta property="og:description" content={friendlyDescription}/>
         <meta
           property="og:image"
           content={post.content.url}
@@ -36,6 +37,10 @@ const Post = (props: {
           property="og:url"
           content={`https://www.d17e.dev/posts/${post.slug}`}
         />
+        <meta property="twitter:image" content={post.content.url}/>
+        <meta property="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:title" content={post.title}/>
+        <meta property="twitter:description" content={friendlyDescription}/>
       </Head>
       <Stack
         width={"100vw"}

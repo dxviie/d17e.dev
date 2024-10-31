@@ -52,6 +52,9 @@ export default function Home({
         <meta property="og:type" content="website"/>
         <meta property="og:image" content="https://www.d17e.dev/avatar_me_vera_round.png"/>
         <meta property="og:url" content={`https://www.d17e.dev`}/>
+        <meta property="twitter:image" content="https://www.d17e.dev/avatar_me_vera_round.png"/>
+        <meta property="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:title" content="d17e.dev - code. art. ideas."/>
       </Head>
       <IntroBlock/>
       <CodeBlock
