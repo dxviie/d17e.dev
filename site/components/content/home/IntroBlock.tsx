@@ -32,8 +32,7 @@ export default function IntroBlock() {
   const isPhone = useIsPhone();
   return (
     <>
-      <VStack height={"110svh"} justifyContent={"center"} paddingTop={"7rem"}
-              paddingBottom={"4rem"}>
+      <VStack height={"110svh"} justifyContent={"center"} paddingBottom={"4rem"}>
         <Flex
           width={"80vw"}
           maxWidth={["20rem", "25rem", "35rem"]}

@@ -52,6 +52,9 @@ function MyApp({Component, pageProps}: AppProps) {
           src={"https://umami.d17e.dev/script.js"}
         />}
       <React.StrictMode>
+        <div className={"scanlines"}></div>
+        <div className={"scanline"}></div>
+        <div className={"flicker"}></div>
         <ChakraProvider theme={d17eTheme} resetCSS={true}>
 
           <Flex
