@@ -9,7 +9,7 @@ export default function PostCard({post}: { post: PostDTO }) {
   const colors = useThemeColors();
   let media;
   if (post.content && post.content.url && (post.content.url.endsWith(".mp4") || post.content.url.endsWith(".mov"))) {
-    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/mov";
+    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/quicktime";
     media =
       <video
         autoPlay={false}

@@ -7,7 +7,7 @@ export default function PostCover({post}: { post: PostDTO }) {
   let media;
   let boxStyle: object = {aspectRatio: post.content.ratio};
   if (post.content && post.content.url && (post.content.url.endsWith(".mp4") || post.content.url.endsWith(".mov"))) {
-    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/mov";
+    const mediaType = post.content.url.endsWith(".mp4") ? "video/mp4" : "video/quicktime";
     boxStyle = {};
     media = <video
       key={post.slug}
