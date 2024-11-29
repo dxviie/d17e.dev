@@ -60,10 +60,19 @@
                     .item-description {
                     margin: 1rem 0;
                     }
+                    .media-container {
+                    position: relative;
+                    width: 100%;
+                    margin: 1rem 0;
+                    }
                     .item-image {
                     max-width: 100%;
                     height: auto;
-                    margin: 1rem 0;
+                    border-radius: 4px;
+                    }
+                    .item-video {
+                    width: 100%;
+                    max-width: 100%;
                     border-radius: 4px;
                     }
                     @media (max-width: 600px) {
@@ -103,7 +112,28 @@
                                 <xsl:value-of select="pubDate"/>
                             </div>
                             <xsl:if test="enclosure">
-                                <img class="item-image" src="{enclosure/@url}" alt="{title}"/>
+                                <div class="media-container">
+                                    <xsl:choose>
+                                        <!-- Handle video content -->
+                                        <xsl:when test="contains(enclosure/@type, 'video')">
+                                            <video class="item-video" controls="controls">
+                                                <source src="{enclosure/@url}" type="{enclosure/@type}"/>
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </xsl:when>
+                                        <!-- Handle image content -->
+                                        <xsl:when test="contains(enclosure/@type, 'image')">
+                                            <img class="item-image" src="{enclosure/@url}" alt="{title}"/>
+                                        </xsl:when>
+                                        <!-- Handle audio content -->
+                                        <xsl:when test="contains(enclosure/@type, 'audio')">
+                                            <audio controls="controls">
+                                                <source src="{enclosure/@url}" type="{enclosure/@type}"/>
+                                                Your browser does not support the audio tag.
+                                            </audio>
+                                        </xsl:when>
+                                    </xsl:choose>
+                                </div>
                             </xsl:if>
                             <div class="item-description">
                                 <xsl:value-of select="description"/>
