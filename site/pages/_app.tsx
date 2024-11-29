@@ -42,6 +42,7 @@ function MyApp({Component, pageProps}: AppProps) {
           content="width=device-width, initial-scale=1"
         />
         <link rel="icon" href="/favicon.ico"/>
+        <link rel="alternate" type="application/rss+xml" title="d17e's RSS feed" href="/rss.xml"/>
       </Head>
       {/* umami anonymous traffic tracker */}
       {dev ? <></> :

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
-    "build": "next build",
+    "build": "node --experimental-modules --loader ts-node/esm scripts/rssGenerator.mjs && next build",
+    "rss": "node --experimental-modules --loader ts-node/esm scripts/rssGenerator.mjs",
     "start": "next start",
     "lint": "next lint"
   },
@@ -32,8 +33,10 @@
     "@types/node": "18.11.3",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.2.19",
+    "dotenv": "^16.4.5",
     "eslint": "8.26.0",
     "eslint-config-next": "14.2.3",
+    "ts-node": "^10.9.2",
     "typescript": "4.8.4"
   }
 }
