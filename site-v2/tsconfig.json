@@ -1,8 +1,19 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist"
+  ],
   "compilerOptions": {
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "paths": {
+      "astro/loaders": [
+        "./node_modules/astro/dist/content/loaders"
+      ]
+    }
   }
 }
