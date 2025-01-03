@@ -9,10 +9,14 @@
   ],
   "compilerOptions": {
     "strictNullChecks": true,
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "paths": {
       "astro/loaders": [
         "./node_modules/astro/dist/content/loaders"
+      ],
+      "astro/config": [
+        "./node_modules/astro/dist/config"
       ]
     }
   }

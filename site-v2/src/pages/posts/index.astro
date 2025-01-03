@@ -1,0 +1,24 @@
+---
+import {SITE_TITLE, SITE_DESCRIPTION} from '../../consts';
+import {getCollection} from 'astro:content';
+
+const posts = (await getCollection('posts'));
+---
+
+<!doctype html>
+<html lang="en">
+<body>
+<main>
+  <section>
+    <ul>
+      {
+        posts.map((post) => (
+                <li>{post.id}
+                </li>
+        ))
+      }
+    </ul>
+  </section>
+</main>
+</body>
+</html>
