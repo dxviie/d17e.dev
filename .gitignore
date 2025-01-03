@@ -43,3 +43,4 @@ blog/next-env.d.ts
 # astro
 .astro/
 /site-v2/.astro/
+/site-v2/dist/

@@ -11,7 +11,11 @@
     "strictNullChecks": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
+    "baseUrl": ".",
     "paths": {
+      "$root/*": [
+        "./*"
+      ],
       "astro/loaders": [
         "./node_modules/astro/dist/content/loaders"
       ],

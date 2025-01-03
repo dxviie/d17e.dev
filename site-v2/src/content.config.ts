@@ -18,12 +18,13 @@ const blog = defineCollection({
 });
 
 const directus = createDirectus(getSecret('DIRECTUS_URL') || '').with(authentication('json')).with(rest());
+
 const posts = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      const login = await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
-      console.debug('Logged in', login);
+      await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
+      console.debug('Logged in');
       let posts = await directus.request(readItems('Posts', {
         fields: ['*', 'cover.*'],
         filter: {
@@ -64,4 +65,48 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = {blog, posts};
+const articles = defineCollection({
+  // @ts-ignore
+  loader: async () => {
+    try {
+      await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
+      console.debug('Logged in');
+      let articles = await directus.request(readItems('Articles', {
+        fields: ['*', 'cover.*'],
+        filter: {
+          status: {
+            _eq: 'published'
+          }
+        },
+        limit: -1
+      })) || [{id: '1'}];
+      articles = articles.map(a => ({...a, id: a.uuid}));
+      console.debug('Loaded Article', articles.length, 'First Article: ', articles[0]);
+      return articles;
+    } catch (error) {
+      console.error('Directus error:', error);
+      return [{id: '1'}];
+    }
+  },
+  schema: z.object({
+    id: z.string(),
+    status: z.string(),
+    dateCreated: z.coerce.date().optional(),
+    dateUpdated: z.coerce.date().optional(),
+    publishedDate: z.coerce.date().optional(),
+    title: z.string(),
+    body: z.string(),
+    slug: z.string(),
+    cover: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable().optional(),
+      filenameDownload: z.string().nullable().optional(),
+      type: z.string(),
+      width: z.number().nullable().optional(),
+      height: z.number().nullable().optional(),
+    }),
+  }),
+});
+
+export const collections = {blog, posts, articles};
