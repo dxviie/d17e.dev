@@ -14,6 +14,7 @@ const posts = (await getCollection('posts'));
       {
         posts.map((post) => (
                 <li>{post.id}
+                  {post.data.cover.title}
                 </li>
         ))
       }

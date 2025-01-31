@@ -3,6 +3,8 @@ import {defineCollection, z} from 'astro:content';
 import {authentication, createDirectus, readItems, rest} from "@directus/sdk";
 import {getSecret} from "astro:env/server";
 
+const directus = createDirectus(getSecret('DIRECTUS_URL') || '').with(authentication('json')).with(rest());
+
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
   loader: glob({base: './src/content/blog', pattern: '**/*.{md,mdx}'}),
@@ -16,8 +18,6 @@ const blog = defineCollection({
     heroImage: z.string().optional(),
   }),
 });
-
-const directus = createDirectus(getSecret('DIRECTUS_URL') || '').with(authentication('json')).with(rest());
 
 const posts = defineCollection({
   // @ts-ignore
