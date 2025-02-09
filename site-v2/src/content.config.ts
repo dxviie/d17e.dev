@@ -96,6 +96,7 @@ const articles = defineCollection({
     publishedDate: z.coerce.date().optional(),
     title: z.string(),
     body: z.string(),
+    description: z.string().nullable().optional(),
     slug: z.string(),
     cover: z.object({
       id: z.string(),
