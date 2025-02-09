@@ -8,14 +8,14 @@ const getRssEntries = async () => {
         ...posts.map(post => ({
             ...post.data,
             type: 'posts',
-            description: sanitizeXML(post.data.body),
-            title: sanitizeXML(post.data.title)
+            description: post.data.body,
+            title: post.data.title
         })),
         ...articles.map(article => ({
             ...article.data,
             type: 'blog',
-            description: sanitizeXML(article.data.description),
-            title: sanitizeXML(article.data.title)
+            description: article.data.description,
+            title: article.data.title
         }))
     ];
     // Sort by publish date, newest first
@@ -73,7 +73,7 @@ export async function GET(context) {
         items: entries.map((post) => ({
             ...post,
             link: `/${post.type}/${post.slug}/`,
-            pubDate: post.publishedDate,
+            pubDate: new Date(post.publishedDate).toUTCString(),
         })),
         stylesheet: '/rss.xsl',
         customData: `
