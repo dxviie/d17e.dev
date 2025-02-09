@@ -1,5 +1,6 @@
 import rss from '@astrojs/rss';
 import {getCollection} from 'astro:content';
+import {getSecret} from "astro:env/server";
 
 const getRssEntries = async () => {
     const posts = await getCollection('posts');
@@ -73,7 +74,14 @@ export async function GET(context) {
         items: entries.map((post) => ({
             ...post,
             link: `/${post.type}/${post.slug}/`,
-            pubDate: new Date(post.publishedDate).toUTCString(),
+            pubDate: post.publishedDate,
+            customData: post.cover ?
+                `<enclosure
+                        url="${getSecret('DIRECTUS_URL')}/assets/${post.cover.id}"
+                        length="${post.cover.filesize}"
+                        type="${post.cover.type}"
+                    />
+                ` : undefined
         })),
         stylesheet: '/rss.xsl',
         customData: `
