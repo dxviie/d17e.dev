@@ -88,6 +88,11 @@
       gridTiles = buildTileGrid(columns, rows, tileSize, tileSize);
       setTimeout(() => {
         gridDimensions = {columns, rows, tileSize};
+        bentoTiles = [];
+        contentTiles = [];
+        bentoPaths = [];
+        usedTileIndices.clear();
+        animationId = requestAnimationFrame(animate);
       }, 0);
     }
   }
