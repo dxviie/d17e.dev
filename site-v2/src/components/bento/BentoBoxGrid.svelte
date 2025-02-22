@@ -20,7 +20,7 @@
   let usedTileIndices = new Set<number>();
   let translateX = $state(0);
   let translateY = $state(0);
-  let gridDimensions = $state({columns: 0, rows: 0, tileSize: 0});
+  let gridDimensions = $state({columns: 0, rows: 0, tileWidth: 0, tileHeight: 0});
 
   let animationId: number;
   let frameCount = 0;
@@ -42,7 +42,7 @@
     if (shape.length > 0) {
       shape.forEach(tile => usedTileIndices.add(tile.index));
       const path = generatePathFromTiles(shape);
-      const roundedPath = roundAndInsetPath(shape, path, 10, 10);
+      const roundedPath = roundAndInsetPath(shape, path, 0, 5);
       const content = getContentTiles(shape);
       bentoPaths = [...bentoPaths, roundedPath];
       bentoTiles = [...bentoTiles, ...shape];
@@ -57,7 +57,7 @@
         for (let i = 0; i < connectedShapes.length; i++) {
           // console.log("CONNNNN", connectedShapes[i].map(t => t.index));
           const path = generatePathFromTiles(connectedShapes[i]);
-          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 0, 5);
+          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20, 10);
           // const content = getContentTiles(connectedShapes[i]);
           bentoPaths = [...bentoPaths, roundedPath];
           bentoTiles = [...bentoTiles, ...connectedShapes[i]];
@@ -78,16 +78,16 @@
 
   function setupGrid() {
     if (containerElement) {
-      const {columns, rows, tileSize} = calculateSquareGridDimensions(
+      const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
         containerElement.clientWidth - 20,
         containerElement.clientHeight - 20,
         100
       );
-      translateX = (containerElement.clientWidth - (columns * tileSize)) / 2;
-      translateY = (containerElement.clientHeight - (rows * tileSize)) / 2;
-      gridTiles = buildTileGrid(columns, rows, tileSize, tileSize);
+      translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
+      translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
+      gridTiles = buildTileGrid(columns, rows, tileWidth, tileHeight);
       setTimeout(() => {
-        gridDimensions = {columns, rows, tileSize};
+        gridDimensions = {columns, rows, tileWidth, tileHeight};
         bentoTiles = [];
         contentTiles = [];
         bentoPaths = [];
@@ -123,7 +123,7 @@
       {/each}
 
       {#each bentoPaths as path}
-        <path d={path} fill="darkorange" stroke="none" stroke-width="5" opacity=".5"/>
+        <path d={path} fill="black" stroke="none" stroke-width="5" opacity="1"/>
       {/each}
 
       {#each contentTiles as tile}
@@ -132,9 +132,9 @@
                 y={tile.y + 20}
                 width={tile.width - 40}
                 height={tile.height - 40}
-                fill={'none'}
+                fill='none'
                 stroke="none"
-                opacity=".7"
+                opacity="1"
         />
         <foreignObject xmlns="http://www.w3.org/1999/xhtml" x={tile.x + 20} y={tile.y + 20} width={tile.width - 40}
                        height={tile.height - 40}>
@@ -167,12 +167,13 @@
     }
 
     .bento-content {
-        font-size: .8rem;
-        color: black;
-        padding: 5px;
-        background-color: rgba(255, 255, 255, .33);
+        font-size: 2rem;
+        color: white;
+        background-color: none;
+        padding: .5rem;
+        word-break: break-all;
         border-radius: 5px;
-        text-decoration: underline;
         height: 100%;
+        font-family: 'nudica_monobold';
     }
 </style>

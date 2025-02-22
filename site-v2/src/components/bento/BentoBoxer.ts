@@ -26,7 +26,8 @@ export function calculateSquareGridDimensions(
 ): {
   columns: number;
   rows: number;
-  tileSize: number;
+  tileWidth: number;
+  tileHeight: number;
 } {
   // Try fitting tiles at target size
   const initialCols = Math.floor(width / targetTileSize);
@@ -38,11 +39,14 @@ export function calculateSquareGridDimensions(
   const actualTileSize = Math.min(maxTileSizeForCols, maxTileSizeForRows);
   const actualCols = Math.floor(width / actualTileSize);
   const actualRows = Math.floor(height / actualTileSize);
+  const tileWidth = width / actualCols;
+  const tileHeight = height / actualRows;
 
   return {
     columns: actualCols,
     rows: actualRows,
-    tileSize: actualTileSize
+    tileWidth,
+    tileHeight
   };
 }
 
