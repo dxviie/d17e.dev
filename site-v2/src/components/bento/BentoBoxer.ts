@@ -9,12 +9,13 @@ export type Tile = {
 type Point = { x: number; y: number };
 type Edge = { start: Point; end: Point };
 
-type BentoBox = {
+export type BentoBox = {
   shape: Tile[];
   path: string;
-  pathAlt: string;
+  pathAlt?: string;
   color: string;
   contentTiles: Tile[];
+  inset: number;
 };
 
 /******** GRID HELPERS ********/
@@ -330,7 +331,7 @@ export function roundAndInsetPath(
 
 /****** BENTO BOX FUNCTIONALITY ******/
 
-export function getContentTiles(tiles: Tile[]): Tile[] {
+export function getContentTiles(tiles: Tile[], minimumTileSize: number = 1): Tile[] {
   if (tiles.length === 0) return [];
 
   const result: Tile[] = [];
@@ -342,6 +343,9 @@ export function getContentTiles(tiles: Tile[]): Tile[] {
     count++;
 
     const unusedTiles = tiles.filter((t) => !used.has(t.index));
+    if (unusedTiles.length < minimumTileSize) {
+      break;
+    }
 
     // First check if all tiles form a rectangle
     if (isRectangle(unusedTiles)) {
@@ -350,7 +354,7 @@ export function getContentTiles(tiles: Tile[]): Tile[] {
       break;
     }
 
-    const n = calculateMaxSearchDepth(unusedTiles.length);
+    const n = Math.min(calculateMaxSearchDepth(unusedTiles.length), unusedTiles.length - minimumTileSize);
     const allRectangles: Tile[][] = [];
     for (let i = 1; i <= n; i++) {
       allRectangles.push(...findRectangleWithMissingTiles(unusedTiles, i));
