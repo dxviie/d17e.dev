@@ -46,7 +46,7 @@
     if (shape.length > 0) {
       shape.forEach(tile => usedTileIndices.add(tile.index));
       const path = generatePathFromTiles(shape);
-      const roundedPath = roundAndInsetPath(shape, path, 0, INSET);
+      const roundedPath = roundAndInsetPath(shape, path, 0, INSET / window.devicePixelRatio || 1);
       const content = getContentTiles(shape, 3);
       const bento = {
         shape: shape,
@@ -65,7 +65,7 @@
         let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows);
         for (let i = 0; i < connectedShapes.length; i++) {
           const path = generatePathFromTiles(connectedShapes[i]);
-          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20, 10);
+          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20 / window.devicePixelRatio || 1, 10 / window.devicePixelRatio || 1);
           const bento = {
             shape: connectedShapes[i],
             path: roundedPath,
@@ -87,9 +87,9 @@
   function setupGrid() {
     if (containerElement) {
       const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
-        containerElement.clientWidth - 20,
-        containerElement.clientHeight - 20,
-        100
+        containerElement.clientWidth - 20 / window.devicePixelRatio || 1,
+        containerElement.clientHeight - 20 / window.devicePixelRatio || 1,
+        100 / window.devicePixelRatio || 1
       );
       translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
       translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
@@ -252,7 +252,7 @@
                          y={tile.y + box.inset}
                          width={tile.width - box.inset * 2}
                          height={tile.height - box.inset * 2 }>
-            <div class="bento-content">
+            <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
               lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Quisquam, quod.
             </div>
           </foreignObject>
@@ -282,7 +282,7 @@
     }
 
     .bento-content {
-        font-size: 2rem;
+        /*font-size: 2rem;*/
         color: white;
         background-color: transparent;
         padding: .5rem;
