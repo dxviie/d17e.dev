@@ -16,107 +16,6 @@ const posts = (await getCollection('posts')).sort(
 <head>
   <title>{SITE_TITLE} | Posts</title>
   <BaseHead title={`${SITE_TITLE} | Posts`} description={SITE_DESCRIPTION}/>
-  <style>
-      main {
-          width: 960px;
-          max-width: calc(100% - 2rem);
-          margin: 0 auto;
-          padding: 2rem 0;
-      }
-
-      ul {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-      }
-
-      ul li {
-          width: calc(50% - 1rem);
-          background: rgba(var(--gray-light), 0.05);
-          border-radius: 12px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-      }
-
-      ul li:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--box-shadow);
-      }
-
-      ul li:first-child {
-          width: 100%;
-          margin-bottom: 1rem;
-      }
-
-      .media-container {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 16/9;
-          overflow: hidden;
-      }
-
-      ul li img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-      }
-
-      ul li video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-      }
-
-      .video-indicator {
-          position: absolute;
-          bottom: 10px;
-          right: 10px;
-          background: rgba(0, 0, 0, 0.5);
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 0.8rem;
-      }
-
-      ul li a {
-          display: block;
-          text-decoration: none;
-      }
-
-      .content {
-          padding: 1rem;
-      }
-
-      .title {
-          margin: 0;
-          color: rgb(var(--black));
-          line-height: 1.2;
-          font-size: 1.5rem;
-      }
-
-      ul li:first-child .title {
-          font-size: 2rem;
-      }
-
-      .date {
-          margin: 0.5rem 0 0;
-          color: rgb(var(--gray));
-          font-size: 0.9rem;
-      }
-
-      @media (max-width: 768px) {
-          ul {
-              gap: 1rem;
-          }
-
-          ul li {
-              width: 100%;
-          }
-      }
-  </style>
 </head>
 <body>
 <Header/>
@@ -208,3 +107,105 @@ const posts = (await getCollection('posts')).sort(
 </script>
 </body>
 </html>
+
+<style>
+    main {
+        margin: 3rem auto 0;
+        width: 960px;
+        max-width: calc(100% - 2rem);
+        padding: 2rem 0;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    ul li {
+        width: calc(50% - 1rem);
+        background: rgba(var(--gray-light), 0.05);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    ul li:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--box-shadow);
+    }
+
+    ul li:first-child {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .media-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+    }
+
+    ul li img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    ul li video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-indicator {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    ul li a {
+        display: block;
+        text-decoration: none;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+
+    .title {
+        margin: 0;
+        color: var(--color);
+        line-height: 1.2;
+        font-size: 1.5rem;
+    }
+
+    ul li:first-child .title {
+        font-size: 2rem;
+    }
+
+    .date {
+        margin: 0.5rem 0 0;
+        color: rgb(var(--gray));
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        ul {
+            gap: 1rem;
+        }
+
+        ul li {
+            width: 100%;
+        }
+    }
+</style>

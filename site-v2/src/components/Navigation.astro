@@ -1,0 +1,100 @@
+---
+import ColorModeToggle from './ColorModeToggle.astro';
+import D17eIcon from './icons/D17eIcon.astro';
+import PostsIcon from './icons/PostsIcon.astro';
+import BlogIcon from './icons/BlogIcon.astro';
+
+const pathname = Astro.url.pathname;
+const isHomePage = pathname === '/' || pathname === '';
+const isPostsPage = pathname.startsWith('/posts');
+const isBlogPage = pathname.startsWith('/blog');
+---
+
+<nav>
+  <!-- HOME BUTTON -->
+  <a href="/" class="nav-item">
+    <div class="icon-box">
+      <D17eIcon color={isHomePage ? "var(--button-bg-color)" : undefined} />
+    </div>
+  </a>
+  
+  <div class="spacer"></div>
+  
+  <!-- POSTS BUTTON -->
+  <a href="/posts" class="nav-item">
+    <div class="icon-box">
+      <PostsIcon color={isPostsPage ? "var(--button-bg-color)" : undefined} />
+    </div>
+    <span class="nav-text" data-active={isPostsPage}>posts</span>
+  </a>
+  
+  <!-- BLOG BUTTON -->
+  <a href="/blog" class="nav-item">
+    <div class="icon-box">
+      <BlogIcon color={isBlogPage ? "var(--button-bg-color)" : undefined} />
+    </div>
+    <span class="nav-text" data-active={isBlogPage}>blog</span>
+  </a>
+  
+  <!-- COLOR MODE TOGGLE -->
+  <ColorModeToggle />
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    width: 100%;
+    padding: 0 0.5rem;
+    opacity: 0.9;
+    align-items: center;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--color);
+    transition: all 0.2s ease;
+    border-radius: 4px;
+  }
+  
+  .nav-item:hover {
+    opacity: 0.8;
+  }
+  
+  .icon-box {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-text {
+    margin-left: 0.5rem;
+  }
+  
+  .nav-text[data-active="true"] {
+    color: var(--button-bg-color);
+  }
+  
+  .spacer {
+    flex: 1;
+  }
+  
+  .push-button {
+    transition: all 0.1s ease;
+  }
+  
+  .push-button:active {
+    transform: scale(0.95);
+  }
+  
+  /* Hide text on mobile */
+  @media (max-width: 600px) {
+    .nav-text {
+      display: none;
+    }
+  }
+</style>
