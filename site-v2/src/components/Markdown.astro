@@ -17,25 +17,19 @@ const originalHtml = renderer.html.bind(renderer);
 // Process HTML specifically
 renderer.html = (html) => {
   // Wrap iframes in container
-  console.log('..........body', html);
   if (html.raw.trim().startsWith('<iframe')) {
     const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
-    const innerResult = `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
-    console.log('innnerResult', innerResult);
-    return innerResult;
+    return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
   }
 
-  const r = originalHtml(html);
-  console.log('RRESSult', r)
-  return r;
+  return originalHtml(html);
 };
 
 marked.setOptions({
   renderer: renderer,
   breaks: false,
   pedantic: false,
-  gfm: true,
-  smartypants: true
+  gfm: true
 });
 
 const htmlContent = content ? marked.parse(content) : '';
