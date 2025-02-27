@@ -113,15 +113,7 @@
     border-top: 1px solid var(--border-color);
 }
 
-/* For embedded iframes */
-.markdown-content .iframe-container {
-    width: 100%;
-    margin: 1.5rem 0;
-}
-
+/* For embedded iframes - basic styling (enhanced in Markdown.astro) */
 .markdown-content iframe {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border: none;
-    border-radius: 8px;
+    max-width: 100%;
 }

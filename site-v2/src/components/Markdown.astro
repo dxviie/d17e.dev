@@ -1,13 +1,80 @@
 ---
-import { marked } from 'marked';
+import {marked} from 'marked';
 import '../styles/markdown.css';
 
 interface Props {
   content: string;
 }
 
-const { content } = Astro.props;
+const {content} = Astro.props;
+
+// Configure marked to allow HTML and handle iframes specially
+const renderer = new marked.Renderer();
+
+// Keep the default HTML renderer which simply passes through HTML
+const originalHtml = renderer.html.bind(renderer);
+
+// Process HTML specifically
+renderer.html = (html) => {
+  // Wrap iframes in container
+  console.log('..........body', html);
+  if (html.raw.trim().startsWith('<iframe')) {
+    const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
+    const innerResult = `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
+    console.log('innnerResult', innerResult);
+    return innerResult;
+  }
+
+  const r = originalHtml(html);
+  console.log('RRESSult', r)
+  return r;
+};
+
+marked.setOptions({
+  renderer: renderer,
+  breaks: false,
+  pedantic: false,
+  gfm: true,
+  smartypants: true
+});
+
 const htmlContent = content ? marked.parse(content) : '';
 ---
 
-<div class="markdown-content" set:html={htmlContent} />
+<div class="markdown-content" set:html={htmlContent}/>
+
+<style is:global>
+    /* Additional iframe styling */
+    .markdown-content iframe {
+        width: 100%;
+        aspect-ratio: 16/9;
+        border: none;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        max-width: 100%;
+    }
+
+    .markdown-content .open-processing {
+        aspect-ratio: 1 !important;
+        padding-bottom: 100% !important;
+    }
+
+    /* Fix for the iframe container if used */
+    .markdown-content .iframe-container {
+        position: relative;
+        width: 100%;
+        margin: 1.5rem 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+    }
+
+    .markdown-content .iframe-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+</style>
