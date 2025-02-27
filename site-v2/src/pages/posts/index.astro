@@ -18,11 +18,22 @@ const posts = (await getCollection('posts')).sort(
   <BaseHead title={`${SITE_TITLE} | Posts`} description={SITE_DESCRIPTION}/>
   <style>
       main {
+          display: flex;
+          flex-direction: column;
           margin: 3rem auto 0;
           width: 1960px;
           max-width: calc(100% - 2rem);
-
           padding: 2rem 0;
+      }
+
+      .page-title {
+          width: 100%;
+          max-width: 960px;
+          align-self: center;
+          font-family: 'nudica_monobold', serif;
+          margin-bottom: 2rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
       }
 
       ul {
@@ -136,6 +147,7 @@ const posts = (await getCollection('posts')).sort(
 <body>
 <Header/>
 <main>
+  <h1 class="page-title">Posts</h1>
   <section>
     <ul>
       {

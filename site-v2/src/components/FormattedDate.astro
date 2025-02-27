@@ -1,17 +1,55 @@
 ---
 interface Props {
 	date: Date;
+	format?: string;
 }
 
-const { date } = Astro.props;
+const { date, format } = Astro.props;
+
+function formatDate(date: Date, format?: string): string {
+  if (!format) {
+    return date.toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+  
+  // Simple format string to options mapper
+  if (format === 'MMM DD') {
+    return date.toLocaleDateString('en-us', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+  
+  if (format === 'MMM DD, YYYY') {
+    return date.toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+  
+  if (format === 'YYYY-MM-DD') {
+    return date.toLocaleDateString('en-us', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).split('/').reverse().join('-');
+  }
+  
+  // Default fallback
+  return date.toLocaleDateString('en-us', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+const formattedDateString = formatDate(date, format);
 ---
 
 <time datetime={date.toISOString()}>
-	{
-		date.toLocaleDateString('en-us', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		})
-	}
+	{formattedDateString}
 </time>

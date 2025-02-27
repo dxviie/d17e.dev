@@ -9,6 +9,24 @@ import BaseHead from "../../components/BaseHead.astro";
 const articles = (await getCollection('articles')).sort(
   (a, b) => (b.data.publishDate?.valueOf() || 0) - (a.data.publishDate?.valueOf() || 0),
 );
+
+// Group articles by year
+const articlesByYear = articles.reduce((acc, article) => {
+  if (!article.data.publishDate) return acc;
+
+  const year = article.data.publishDate.getFullYear();
+  if (!acc[year]) {
+    acc[year] = [];
+  }
+
+  acc[year].push(article);
+  return acc;
+}, {} as Record<number, typeof articles>);
+
+// Sort years in descending order
+const sortedYears = Object.keys(articlesByYear)
+  .map(year => parseInt(year))
+  .sort((a, b) => b - a);
 ---
 
 <!doctype html>
@@ -18,223 +36,134 @@ const articles = (await getCollection('articles')).sort(
   <BaseHead title={`${SITE_TITLE} | Articles`} description={SITE_DESCRIPTION}/>
   <style>
       main {
+          margin: 3rem auto;
           width: 960px;
           max-width: calc(100% - 2rem);
-          margin: 0 auto;
           padding: 2rem 0;
       }
 
-      .articles-grid {
-          display: grid;
-          grid-template-columns: repeat(1, 1fr);
-          gap: 2rem;
-          margin: 0;
-          padding: 0;
-          list-style-type: none;
+      .page-title {
+          font-family: 'nudica_monobold', serif;
+          margin-bottom: 2rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
       }
 
-      .article-card {
-          background: rgba(var(--gray-light), 0.05);
-          border-radius: 12px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          display: flex;
-          flex-direction: column;
-          height: 100%;
-          box-shadow: var(--box-shadow);
+      .year-section {
+          margin-bottom: 3rem;
       }
 
-      .article-card:hover {
-          transform: translateY(-5px);
-      }
-
-      .media-container {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 16/9;
-          overflow: hidden;
-      }
-
-      .article-card img, .article-card video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-      }
-      
-      .title-overlay {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 1rem;
-          background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-          color: white;
-          z-index: 1;
-      }
-      
-      .title-overlay h2 {
-          margin: 0;
-          color: white;
+      .year-heading {
+          font-family: 'nudica_monobold', serif;
           font-size: 1.8rem;
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-      }
-      
-      .title-overlay .date {
-          margin: 0.5rem 0 0;
-          color: rgba(255, 255, 255, 0.85);
-          font-size: 0.9rem;
-      }
-
-      .video-indicator {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: rgba(0, 0, 0, 0.5);
-          color: white;
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 0.8rem;
-          z-index: 1;
+          margin-bottom: 1rem;
+          color: var(--color);
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
+          position: sticky;
+          top: 0;
+          background-color: var(--bg-color);
+          z-index: 10;
+          transition: background-color 0.3s ease;
       }
 
-      .article-card a {
-          display: block;
+      .article-list {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+      }
+
+      .article-item {
+          padding: 1rem 0;
+          border-bottom: 1px solid rgba(var(--gray-light), 0.2);
+          transition: all 0.3s ease;
+      }
+
+      .article-item:last-child {
+          border-bottom: none;
+      }
+
+      .article-item:hover {
+          background-color: rgba(var(--gray-light), 0.05);
+          transform: translateX(5px);
+      }
+
+      .article-link {
+          display: grid;
+          grid-template-columns: 120px 1fr;
+          gap: 1.5rem;
           text-decoration: none;
           color: var(--color);
-          height: 100%;
       }
 
-      .card-content {
-          padding: 1.5rem;
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
+      @media (max-width: 600px) {
+          .article-link {
+              grid-template-columns: 100px 1fr;
+              gap: 1rem;
+          }
       }
-      
-      .card-description {
-          margin-top: 1rem;
+
+      .article-date {
+          font-family: 'nudica_monolight', serif;
+          font-size: 0.9rem;
+          background-color: var(--color);
+          color: var(--bg-color);
+          padding: 0.2rem 0.5rem;
+      }
+
+      .article-title {
+          font-family: 'nudica_monobold', serif;
+          margin: 0 0 0.5rem 0;
+          font-size: 1.5rem;
+          line-height: 1.3;
           color: var(--color);
-          font-size: 1rem;
-          line-height: 1.5;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
       }
 
-      @media (min-width: 768px) {
-          .articles-grid {
-              grid-template-columns: repeat(2, 1fr);
-          }
-      }
-      
-      @media (min-width: 1024px) {
-          .article-featured {
-              grid-column: 1 / -1;
-          }
-          
-          .article-featured .title-overlay h2 {
-              font-size: 2.5rem;
-          }
-          
-          .article-featured .card-description {
-              -webkit-line-clamp: 4;
-          }
+      .article-description {
+          margin: 0;
+          color: var(--color);
+          opacity: 0.8;
+          font-size: 1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
       }
   </style>
 </head>
 <body>
 <Header/>
 <main>
-  <section>
-    <ul class="articles-grid">
-      {
-        articles.map((article, index) => {
-          // Determine if the cover is a video 
-          const isVideo = article.data.cover?.type?.startsWith('video/') || 
-                          article.data.cover?.filenameDownload?.endsWith('.mp4') || 
-                          article.data.cover?.filenameDownload?.endsWith('.mov');
-          
-          // Get the appropriate media type
-          const mediaType = article.data.cover?.type || 
-                           (article.data.cover?.filenameDownload?.endsWith('.mp4') ? 'video/mp4' : 
-                            article.data.cover?.filenameDownload?.endsWith('.mov') ? 'video/quicktime' : '');
-          
-          return (
-            <li class={index === 0 ? 'article-card article-featured' : 'article-card'}>
-              <a href={`/articles/${article.data.slug}/`}>
-                {article.data.cover && (
-                  <div class="media-container">
-                    {isVideo ? (
-                      <>
-                        <video 
-                          muted
-                          loop
-                          playsinline
-                          preload="metadata"
-                          poster={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}?fit=cover&width=800&height=450&format=webp&t=1`}
-                        >
-                          <source 
-                            src={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}#t=0.1`} 
-                            type={mediaType} 
-                          />
-                        </video>
-                        <div class="video-indicator">Video</div>
-                      </>
-                    ) : (
-                      <img
-                        src={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}?width=800&height=450&fit=cover&format=webp`}
-                        alt={article.data.cover.title || article.data.title}
-                      />
-                    )}
-                    
-                    <div class="title-overlay">
-                      <h2>{article.data.title}</h2>
-                      {article.data.publishDate && (
-                        <p class="date">
-                          <FormattedDate date={article.data.publishDate}/>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-                
-                {article.data.description && (
-                  <div class="card-content">
-                    <p class="card-description">{article.data.description}</p>
-                  </div>
-                )}
-              </a>
-            </li>
-          )
-        })
-      }
-    </ul>
-  </section>
+  <h1 class="page-title">Articles</h1>
+
+  {sortedYears.map(year => (
+          <section class="year-section">
+            <h2 class="year-heading">{year}</h2>
+            <ul class="article-list">
+              {articlesByYear[year].map(article => (
+                      <li class="article-item">
+                        <a href={`/articles/${article.data.slug}/`} class="article-link">
+                          <div>
+                            <span class="article-date">
+                            {article.data.publishDate && (
+                                    <FormattedDate date={article.data.publishDate} format="MMM DD"/>
+                            )}
+                          </span>
+                          </div>
+                          <div>
+                            <h3 class="article-title">{article.data.title}</h3>
+                            {article.data.description && (
+                                    <p class="article-description">{article.data.description}</p>
+                            )}
+                          </div>
+                        </a>
+                      </li>
+              ))}
+            </ul>
+          </section>
+  ))}
 </main>
 <Footer/>
-
-<script>
-  // Add event listeners to start videos on hover
-  document.addEventListener('DOMContentLoaded', () => {
-    const videos = document.querySelectorAll('video');
-    
-    videos.forEach(video => {
-      const listItem = video.closest('li');
-      
-      if (listItem) {
-        listItem.addEventListener('mouseenter', () => {
-          video.play();
-        });
-        
-        listItem.addEventListener('mouseleave', () => {
-          video.pause();
-          // Reset to first frame
-          video.currentTime = 0.1;
-        });
-      }
-    });
-  });
-</script>
 </body>
 </html>
