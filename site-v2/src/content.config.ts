@@ -35,7 +35,7 @@ const posts = defineCollection({
         limit: -1
       })) || [{id: '1'}];
       posts = posts.map(p => ({...p, id: p.uuid}));
-      console.debug('Loaded Posts', posts.length, 'First Post: ', posts[0]);
+      console.debug('Loaded Posts: ', posts.length);
       return posts;
     } catch (error) {
       console.error('Directus error:', error);
@@ -81,7 +81,7 @@ const articles = defineCollection({
         limit: -1
       })) || [{id: '1'}];
       articles = articles.map(a => ({...a, id: a.uuid}));
-      console.debug('Loaded Article', articles.length, 'First Article: ', articles[0]);
+      console.debug('Loaded Articles:', articles.length);
       return articles;
     } catch (error) {
       console.error('Directus error:', error);

@@ -1,0 +1,171 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+type Props = CollectionEntry<'posts'>['data'];
+
+const {title, publishDate, dateUpdated, cover, body, link, linkDescription} = Astro.props;
+
+// Determine if the cover is a video by checking the file type
+const isVideo = cover?.type?.startsWith('video/') || 
+                cover?.filenameDownload?.endsWith('.mp4') || 
+                cover?.filenameDownload?.endsWith('.mov');
+
+// Get the appropriate media type
+const mediaType = cover?.type || 
+                 (cover?.filenameDownload?.endsWith('.mp4') ? 'video/mp4' : 
+                  cover?.filenameDownload?.endsWith('.mov') ? 'video/quicktime' : '');
+---
+
+<html lang="en">
+<head>
+  <BaseHead title={title} description={linkDescription || ''}/>
+  <style>
+      main {
+          width: 100%;
+          max-width: 960px;
+          margin: 0 auto;
+          padding: 2rem 1rem;
+      }
+      
+      .hero-media {
+          width: 100%;
+          margin-bottom: 2rem;
+      }
+      
+      .hero-image img {
+          display: block;
+          width: 100%;
+          max-height: 500px;
+          object-fit: cover;
+          border-radius: 12px;
+          box-shadow: var(--box-shadow);
+      }
+      
+      .hero-video {
+          width: 100%;
+          border-radius: 12px;
+          box-shadow: var(--box-shadow);
+          overflow: hidden;
+      }
+      
+      .hero-video video {
+          display: block;
+          width: 100%;
+          border-radius: 12px;
+      }
+
+      .post-content {
+          color: rgb(var(--gray-dark));
+      }
+
+      .title-section {
+          margin-bottom: 2rem;
+      }
+
+      .title-section h1 {
+          margin: 0.5rem 0;
+          font-size: 2.5rem;
+          line-height: 1.2;
+      }
+
+      .date {
+          color: rgb(var(--gray));
+          font-size: 0.9rem;
+      }
+
+      .last-updated {
+          font-style: italic;
+          font-size: 0.85rem;
+      }
+
+      .link-section {
+          margin: 2rem 0;
+          padding: 1rem;
+          background: rgba(var(--accent), 0.05);
+          border-left: 4px solid rgb(var(--accent));
+          border-radius: 4px;
+      }
+
+      .link-section a {
+          color: rgb(var(--accent));
+          font-weight: bold;
+          text-decoration: none;
+      }
+
+      .link-section a:hover {
+          text-decoration: underline;
+      }
+
+      .content {
+          line-height: 1.6;
+          font-size: 1.1rem;
+      }
+  </style>
+</head>
+
+<body>
+<Header/>
+<main>
+  <article>
+    {cover && (
+      <div class="hero-media">
+        {isVideo ? (
+          <div class="hero-video">
+            <video 
+              autoplay
+              muted
+              loop
+              playsinline
+              controls={false}
+            >
+              <source 
+                src={`${import.meta.env.DIRECTUS_URL}/assets/${cover.id}`} 
+                type={mediaType} 
+              />
+            </video>
+          </div>
+        ) : (
+          <div class="hero-image">
+            <img
+              src={`${import.meta.env.DIRECTUS_URL}/assets/${cover.id}?width=1200&height=600&fit=cover`}
+              alt={cover.title || title}
+            />
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="post-content">
+      <div class="title-section">
+        <div class="date">
+          {publishDate &&
+                  <FormattedDate date={publishDate}/>}
+          {dateUpdated && (
+                  <span class="last-updated">
+                  · Last updated: <FormattedDate date={dateUpdated}/>
+                </span>
+          )}
+        </div>
+        <h1>{title}</h1>
+
+        {link && (
+                <div class="link-section">
+                  <p>{linkDescription || "Related link"}</p>
+                  <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                </div>
+        )}
+      </div>
+
+      <div class="content" set:html={body}/>
+    </div>
+  </article>
+
+  <slot/>
+</main>
+<Footer/>
+</body>
+</html>
