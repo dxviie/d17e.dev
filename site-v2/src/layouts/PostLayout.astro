@@ -4,6 +4,8 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import Markdown from '../components/Markdown.astro';
+import '../styles/markdown.css';
 
 type Props = CollectionEntry<'posts'>['data'];
 
@@ -71,13 +73,14 @@ const mediaType = cover?.type ||
         <h1>{title}</h1>
       </div>
 
-      <div class="content" set:html={body}/>
+      {/* Parse Markdown content */}
+      <Markdown content={body}/>
 
       {link && (
-              <div class="link-section">
-                <p>{linkDescription || "Related link:"}</p>
+              <span class="link-section">
+                {(linkDescription || "Related link") + ": "}
                 <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
-              </div>
+              </span>
       )}
     </div>
   </article>
@@ -125,7 +128,7 @@ const mediaType = cover?.type ||
     }
 
     .post-content {
-        color: rgb(var(--gray-dark));
+        color: var(--color);
     }
 
     .title-section {
@@ -149,25 +152,44 @@ const mediaType = cover?.type ||
     }
 
     .link-section {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 1rem;
-        margin: 1rem 0;
+        display: inline-block;
+        margin: 1.5rem 0;
         padding: 1rem;
-        color: var(--color);
+        background-color: var(--bg-code);
+        border-radius: 8px;
     }
 
     .link-section a {
-        color: var(--color);
+        color: var(--accent-color);
+        text-decoration: none;
+        word-break: break-all;
     }
 
     .link-section a:hover {
+        text-decoration: underline;
     }
 
-    .content {
-        color: var(--color);
-        line-height: 1.6;
-        font-size: 1.1rem;
+    @media (max-width: 768px) {
+        .link-section {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .title-section h1 {
+            font-size: 2rem;
+        }
     }
 </style>
+
+<script>
+  // Add click handler to make video controls appear when clicking on video
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video');
+
+    videos.forEach(video => {
+      video.addEventListener('click', () => {
+        video.controls = !video.controls;
+      });
+    });
+  });
+</script>

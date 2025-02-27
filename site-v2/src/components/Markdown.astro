@@ -1,0 +1,13 @@
+---
+import { marked } from 'marked';
+import '../styles/markdown.css';
+
+interface Props {
+  content: string;
+}
+
+const { content } = Astro.props;
+const htmlContent = content ? marked.parse(content) : '';
+---
+
+<div class="markdown-content" set:html={htmlContent} />

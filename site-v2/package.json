@@ -16,6 +16,7 @@
     "@astrojs/svelte": "^7.0.4",
     "@directus/sdk": "^18.0.3",
     "astro": "^5.1.0",
+    "marked": "^15.0.7",
     "svelte": "^5.20.2",
     "typescript": "^5.7.3"
   }
