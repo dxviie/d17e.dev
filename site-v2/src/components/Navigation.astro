@@ -44,9 +44,11 @@ const isBlogPage = pathname.startsWith('/blog');
 <style>
     nav {
         position: fixed;
+        top: 0;
+        left: 0;
         z-index: 999;
         display: flex;
-        width: 100%;
+        width: calc(100% - 1rem);
         padding: 0 0.5rem;
         opacity: 0.9;
         align-items: center;
