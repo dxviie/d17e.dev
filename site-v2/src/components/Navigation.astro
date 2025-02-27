@@ -30,7 +30,7 @@ const isBlogPage = pathname.startsWith('/blog');
   </a>
 
   <!-- BLOG BUTTON -->
-  <a href="/blog" class="nav-item">
+  <a href="/articles" class="nav-item">
     <div class="icon-box">
       <BlogIcon color={isBlogPage ? "var(--button-bg-color)" : undefined}/>
     </div>
@@ -43,7 +43,8 @@ const isBlogPage = pathname.startsWith('/blog');
 
 <style>
     nav {
-        z-index: 99;
+        position: fixed;
+        z-index: 999;
         display: flex;
         width: 100%;
         padding: 0 0.5rem;

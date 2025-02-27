@@ -1,25 +1,240 @@
 ---
-import {SITE_TITLE, SITE_DESCRIPTION} from '$root/src/consts';
+import {SITE_TITLE, SITE_DESCRIPTION} from '../../consts';
 import {getCollection} from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import BaseHead from "../../components/BaseHead.astro";
 
-const articles = (await getCollection('articles'));
+const articles = (await getCollection('articles')).sort(
+  (a, b) => (b.data.publishDate?.valueOf() || 0) - (a.data.publishDate?.valueOf() || 0),
+);
 ---
 
 <!doctype html>
 <html lang="en">
+<head>
+  <title>{SITE_TITLE} | Articles</title>
+  <BaseHead title={`${SITE_TITLE} | Articles`} description={SITE_DESCRIPTION}/>
+  <style>
+      main {
+          width: 960px;
+          max-width: calc(100% - 2rem);
+          margin: 0 auto;
+          padding: 2rem 0;
+      }
+
+      .articles-grid {
+          display: grid;
+          grid-template-columns: repeat(1, 1fr);
+          gap: 2rem;
+          margin: 0;
+          padding: 0;
+          list-style-type: none;
+      }
+
+      .article-card {
+          background: rgba(var(--gray-light), 0.05);
+          border-radius: 12px;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          box-shadow: var(--box-shadow);
+      }
+
+      .article-card:hover {
+          transform: translateY(-5px);
+      }
+
+      .media-container {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16/9;
+          overflow: hidden;
+      }
+
+      .article-card img, .article-card video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+      
+      .title-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 1rem;
+          background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+          color: white;
+          z-index: 1;
+      }
+      
+      .title-overlay h2 {
+          margin: 0;
+          color: white;
+          font-size: 1.8rem;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      }
+      
+      .title-overlay .date {
+          margin: 0.5rem 0 0;
+          color: rgba(255, 255, 255, 0.85);
+          font-size: 0.9rem;
+      }
+
+      .video-indicator {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(0, 0, 0, 0.5);
+          color: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          z-index: 1;
+      }
+
+      .article-card a {
+          display: block;
+          text-decoration: none;
+          color: var(--color);
+          height: 100%;
+      }
+
+      .card-content {
+          padding: 1.5rem;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+      }
+      
+      .card-description {
+          margin-top: 1rem;
+          color: var(--color);
+          font-size: 1rem;
+          line-height: 1.5;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+      }
+
+      @media (min-width: 768px) {
+          .articles-grid {
+              grid-template-columns: repeat(2, 1fr);
+          }
+      }
+      
+      @media (min-width: 1024px) {
+          .article-featured {
+              grid-column: 1 / -1;
+          }
+          
+          .article-featured .title-overlay h2 {
+              font-size: 2.5rem;
+          }
+          
+          .article-featured .card-description {
+              -webkit-line-clamp: 4;
+          }
+      }
+  </style>
+</head>
 <body>
+<Header/>
 <main>
   <section>
-    <ul>
+    <ul class="articles-grid">
       {
-        articles.map((article) => (
-                <li>{article.id}
-                  {article.data.cover.title}
-                </li>
-        ))
+        articles.map((article, index) => {
+          // Determine if the cover is a video 
+          const isVideo = article.data.cover?.type?.startsWith('video/') || 
+                          article.data.cover?.filenameDownload?.endsWith('.mp4') || 
+                          article.data.cover?.filenameDownload?.endsWith('.mov');
+          
+          // Get the appropriate media type
+          const mediaType = article.data.cover?.type || 
+                           (article.data.cover?.filenameDownload?.endsWith('.mp4') ? 'video/mp4' : 
+                            article.data.cover?.filenameDownload?.endsWith('.mov') ? 'video/quicktime' : '');
+          
+          return (
+            <li class={index === 0 ? 'article-card article-featured' : 'article-card'}>
+              <a href={`/articles/${article.data.slug}/`}>
+                {article.data.cover && (
+                  <div class="media-container">
+                    {isVideo ? (
+                      <>
+                        <video 
+                          muted
+                          loop
+                          playsinline
+                          preload="metadata"
+                          poster={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}?fit=cover&width=800&height=450&format=webp&t=1`}
+                        >
+                          <source 
+                            src={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}#t=0.1`} 
+                            type={mediaType} 
+                          />
+                        </video>
+                        <div class="video-indicator">Video</div>
+                      </>
+                    ) : (
+                      <img
+                        src={`${import.meta.env.DIRECTUS_URL}/assets/${article.data.cover.id}?width=800&height=450&fit=cover&format=webp`}
+                        alt={article.data.cover.title || article.data.title}
+                      />
+                    )}
+                    
+                    <div class="title-overlay">
+                      <h2>{article.data.title}</h2>
+                      {article.data.publishDate && (
+                        <p class="date">
+                          <FormattedDate date={article.data.publishDate}/>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {article.data.description && (
+                  <div class="card-content">
+                    <p class="card-description">{article.data.description}</p>
+                  </div>
+                )}
+              </a>
+            </li>
+          )
+        })
       }
     </ul>
   </section>
 </main>
+<Footer/>
+
+<script>
+  // Add event listeners to start videos on hover
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video');
+    
+    videos.forEach(video => {
+      const listItem = video.closest('li');
+      
+      if (listItem) {
+        listItem.addEventListener('mouseenter', () => {
+          video.play();
+        });
+        
+        listItem.addEventListener('mouseleave', () => {
+          video.pause();
+          // Reset to first frame
+          video.currentTime = 0.1;
+        });
+      }
+    });
+  });
+</script>
 </body>
 </html>

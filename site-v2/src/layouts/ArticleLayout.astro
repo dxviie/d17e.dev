@@ -1,0 +1,183 @@
+---
+import type {CollectionEntry} from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Markdown from '../components/Markdown.astro';
+import '../styles/markdown.css';
+
+type Props = CollectionEntry<'articles'>['data'];
+
+const {title, publishDate, dateUpdated, cover, body, description} = Astro.props;
+
+// Determine if the cover is a video by checking the file type
+const isVideo = cover?.type?.startsWith('video/') ||
+  cover?.filenameDownload?.endsWith('.mp4') ||
+  cover?.filenameDownload?.endsWith('.mov');
+
+// Get the appropriate media type
+const mediaType = cover?.type ||
+  (cover?.filenameDownload?.endsWith('.mp4') ? 'video/mp4' :
+    cover?.filenameDownload?.endsWith('.mov') ? 'video/quicktime' : '');
+---
+
+<html lang="en">
+<head>
+  <BaseHead title={title} description={description || ''}/>
+</head>
+
+<body>
+<Header/>
+<main>
+  <article>
+    {cover && (
+            <div class="hero-media">
+              {isVideo ? (
+                      <div class="hero-video">
+                        <video
+                                autoplay
+                                muted
+                                loop
+                                playsinline
+                                controls={false}
+                        >
+                          <source
+                                  src={`${import.meta.env.DIRECTUS_URL}/assets/${cover.id}`}
+                                  type={mediaType}
+                          />
+                        </video>
+                      </div>
+              ) : (
+                      <div class="hero-image">
+                        <img
+                                src={`${import.meta.env.DIRECTUS_URL}/assets/${cover.id}?width=1200&height=600&fit=cover`}
+                                alt={cover.title || title}
+                        />
+                      </div>
+              )}
+            </div>
+    )}
+
+    <div class="article-content">
+      <div class="title-section">
+        <div class="date">
+          {publishDate &&
+                  <FormattedDate date={publishDate}/>}
+          {dateUpdated && (
+                  <span class="last-updated">
+                  · Last updated: <FormattedDate date={dateUpdated}/>
+                </span>
+          )}
+        </div>
+        <h1>{title}</h1>
+        
+        {description && (
+          <div class="description">
+            <p>{description}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Parse Markdown content */}
+      <Markdown content={body} />
+    </div>
+  </article>
+
+  <slot/>
+</main>
+<Footer/>
+</body>
+</html>
+
+<style>
+    main {
+        width: 90%;
+        max-width: 960px;
+        margin: 3rem auto 0;
+        padding: 2rem 1rem;
+        min-height: calc(100vh - 12.5rem);
+    }
+
+    .hero-media {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .hero-image img {
+        display: block;
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+    }
+
+    .hero-video {
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+    }
+
+    .hero-video video {
+        display: block;
+        width: 100%;
+        border-radius: 12px;
+    }
+
+    .article-content {
+        color: var(--color);
+    }
+
+    .title-section {
+        margin-bottom: 2rem;
+    }
+
+    .title-section h1 {
+        margin: 0.5rem 0;
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+
+    .date {
+        color: rgb(var(--gray));
+        font-size: 0.9rem;
+    }
+
+    .last-updated {
+        font-style: italic;
+        font-size: 0.85rem;
+    }
+    
+    .description {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: var(--bg-code);
+        border-radius: 8px;
+        font-style: italic;
+    }
+    
+    .description p {
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .title-section h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<script>
+  // Add click handler to make video controls appear when clicking on video
+  document.addEventListener('DOMContentLoaded', () => {
+    const videos = document.querySelectorAll('video');
+    
+    videos.forEach(video => {
+      video.addEventListener('click', () => {
+        video.controls = !video.controls;
+      });
+    });
+  });
+</script>

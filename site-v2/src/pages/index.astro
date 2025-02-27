@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import BentoBoxGrid from '../components/bento/BentoBoxGrid.svelte';
 import {SITE_TITLE, SITE_DESCRIPTION} from '../consts';
+import Navigation from "../components/Navigation.astro";
 ---
 
 <!doctype html>
@@ -10,6 +11,7 @@ import {SITE_TITLE, SITE_DESCRIPTION} from '../consts';
   <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}/>
 </head>
 <body>
+<Navigation/>
 <main>
   <BentoBoxGrid svgId="bento-landing" client:load/>
 </main>
