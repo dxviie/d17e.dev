@@ -16,6 +16,7 @@ const isBlogPage = pathname.startsWith('/blog');
     <div class="icon-box">
       <D17eIcon color={isHomePage ? "var(--button-bg-color)" : undefined}/>
     </div>
+    <span class="nav-text" data-active={isHomePage}>home</span>
   </a>
 
   <div class="spacer"></div>
@@ -73,6 +74,7 @@ const isBlogPage = pathname.startsWith('/blog');
     }
 
     .nav-text {
+        font-family: 'nudica_monobold', serif;
         margin-left: 0.5rem;
     }
 
