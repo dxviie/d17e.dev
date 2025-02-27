@@ -61,7 +61,7 @@ const mediaType = cover?.type ||
 
     <div class="article-content">
       <div class="title-section">
-        <div class="date">
+        <span class="date">
           {publishDate &&
                   <FormattedDate date={publishDate}/>}
           {dateUpdated && (
@@ -69,18 +69,18 @@ const mediaType = cover?.type ||
                   · Last updated: <FormattedDate date={dateUpdated}/>
                 </span>
           )}
-        </div>
+        </span>
         <h1>{title}</h1>
-        
+
         {description && (
-          <div class="description">
-            <p>{description}</p>
-          </div>
+                <div class="description">
+                  <p>{description}</p>
+                </div>
         )}
       </div>
 
       {/* Parse Markdown content */}
-      <Markdown content={body} />
+      <Markdown content={body}/>
     </div>
   </article>
 
@@ -135,13 +135,17 @@ const mediaType = cover?.type ||
     }
 
     .title-section h1 {
+        font-family: 'nudica_monobold', serif;
         margin: 0.5rem 0;
         font-size: 2.5rem;
         line-height: 1.2;
     }
 
     .date {
-        color: rgb(var(--gray));
+        font-family: 'nudica_monolight', serif;
+        background-color: var(--color);
+        color: var(--bg-color);
+        padding: 0.2rem 0.5rem;
         font-size: 0.9rem;
     }
 
@@ -149,15 +153,15 @@ const mediaType = cover?.type ||
         font-style: italic;
         font-size: 0.85rem;
     }
-    
+
     .description {
+        font-family: 'nudica_monolight', serif;
         margin-top: 1rem;
         padding: 1rem;
         background-color: var(--bg-code);
         border-radius: 8px;
-        font-style: italic;
     }
-    
+
     .description p {
         margin: 0;
     }
@@ -173,7 +177,7 @@ const mediaType = cover?.type ||
   // Add click handler to make video controls appear when clicking on video
   document.addEventListener('DOMContentLoaded', () => {
     const videos = document.querySelectorAll('video');
-    
+
     videos.forEach(video => {
       video.addEventListener('click', () => {
         video.controls = !video.controls;
