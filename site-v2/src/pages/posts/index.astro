@@ -98,11 +98,11 @@ const posts = (await getCollection('posts')).sort(
           position: absolute;
           top: 10px;
           right: 10px;
-          background: rgba(0, 0, 0, 0.5);
+          background: transparent;
           color: white;
           padding: 4px 8px;
           border-radius: 4px;
-          font-size: 0.8rem;
+          font-size: 1rem;
           z-index: 1;
       }
 
@@ -171,7 +171,7 @@ const posts = (await getCollection('posts')).sort(
                                                     type={mediaType}
                                             />
                                           </video>
-                                          <div class="video-indicator">Video</div>
+                                          <div class="video-indicator">🎬</div>
                                         </>
                                 ) : (
                                         <img
