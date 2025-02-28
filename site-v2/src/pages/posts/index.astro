@@ -14,7 +14,7 @@ const posts = (await getCollection('posts')).sort(
 <!doctype html>
 <html lang="en">
 <head>
-  <title>{SITE_TITLE} | Posts</title>
+  <title>{SITE_TITLE} | d17e.dev - Posts</title>
   <BaseHead title={`${SITE_TITLE} | Posts`} description={SITE_DESCRIPTION}/>
   <style>
       main {
@@ -127,6 +127,20 @@ const posts = (await getCollection('posts')).sort(
       .content {
           padding: 1rem;
           display: none; /* Hide the original content area since we're using overlay */
+      }
+
+      @media (max-width: 1650px) {
+          ul li {
+              width: calc(50% - 1rem);
+          }
+
+          ul {
+              gap: 1rem;
+          }
+
+          .title-overlay h2 {
+              font-size: 1.2rem;
+          }
       }
 
       @media (max-width: 768px) {
