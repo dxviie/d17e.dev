@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
         font-family: 'nudica_monolight', serif;
         width: calc(100% - 4rem);
         padding: 1rem 2rem;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
     }
 
     .footer-container {
@@ -48,6 +48,7 @@ const year = new Date().getFullYear();
     }
 
     .made-with {
+        font-family: 'nudica_monolight', serif;
         display: flex;
         align-items: center;
         gap: 0.2rem;
@@ -97,6 +98,11 @@ const year = new Date().getFullYear();
 
         .footer-left {
             align-items: center;
+        }
+
+        .footer-left > p {
+            display: flex;
+            flex-direction: column;
         }
 
         .footer-right {
