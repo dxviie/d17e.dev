@@ -159,6 +159,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         z-index: 9999;
         overflow: hidden;
         visibility: hidden;
+        background-color: var(--bg-color);
     }
 
     .swipe-page {
@@ -314,12 +315,23 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const contentClone = mainContent.cloneNode(true);
 
     // Remove non-essential elements from the clone to improve performance
-    const elementsToRemove = contentClone.querySelectorAll('.post-navigation, script, iframe');
+    const elementsToRemove = contentClone.querySelectorAll('.post-navigation, script, iframe, .swipe-indicator');
     elementsToRemove.forEach(el => el.remove());
 
     // Clean up the element before adding new content
     element.innerHTML = '';
     element.appendChild(contentClone);
+    
+    // Also capture the header and add it to make the page look more complete
+    const header = document.querySelector('header');
+    if (header) {
+      const headerClone = header.cloneNode(true);
+      element.insertBefore(headerClone, contentClone);
+    }
+    
+    // Add inline styles to ensure good appearance
+    element.style.backgroundColor = getComputedStyle(document.body).backgroundColor;
+    element.style.color = getComputedStyle(document.body).color;
   }
 
   function createPagePreview(url, direction) {
@@ -342,6 +354,31 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const container = document.getElementById('swipe-feedback-container');
     if (container) {
       container.style.visibility = 'visible';
+      
+      // Add a class to the body to hide the original content
+      document.body.classList.add('swipe-in-progress');
+      
+      // Add a style element if it doesn't exist yet
+      if (!document.getElementById('swipe-styles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'swipe-styles';
+        styleEl.textContent = `
+          body.swipe-in-progress > *:not(#swipe-feedback-container) {
+            visibility: hidden;
+          }
+          body.swipe-in-progress {
+            background-color: var(--bg-color);
+          }
+          body.swipe-transitioning {
+            animation: fadeOut 0.3s forwards;
+          }
+          @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+          }
+        `;
+        document.head.appendChild(styleEl);
+      }
     }
   }
 
@@ -394,7 +431,11 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
       nextPage.style.transform = 'translateX(0)';
     }
 
-    // The actual navigation will be handled by swipeNavigation.js
+    // The body class will remain until the page is fully unloaded
+    // Navigation will be handled by swipeNavigation.js
+    
+    // For better effect, let's add a transition class to the body
+    document.body.classList.add('swipe-transitioning');
   }
 
   function handleSwipeCancel() {
@@ -413,6 +454,8 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     // Hide the container after animation completes
     setTimeout(() => {
       container.style.visibility = 'hidden';
+      // Remove the class that hides the original content
+      document.body.classList.remove('swipe-in-progress');
     }, 300);
   }
 </script>
