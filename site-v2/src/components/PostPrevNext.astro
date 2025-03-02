@@ -1,0 +1,129 @@
+---
+import {getCollection} from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+  currentSlug: string;
+}
+
+const {currentSlug} = Astro.props;
+
+// Get all posts and sort them by publish date (newest first)
+const allPosts = await getCollection('posts');
+const sortedPosts = allPosts
+  .filter(post => post.data.publishDate)
+  .sort((a, b) => {
+    return new Date(b.data.publishDate || 0).getTime() - new Date(a.data.publishDate || 0).getTime();
+  });
+
+// Find the index of the current post
+const currentIndex = sortedPosts.findIndex(post => post.data.slug === currentSlug);
+const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+---
+
+{(prevPost || nextPost) && (
+<nav class="post-navigation">
+  <div class="nav-links">
+    {prevPost && (
+            <a href={`/posts/${prevPost.data.slug}`} class="nav-link prev-link">
+              <div class="arrow">←</div>
+              <div class="nav-content">
+                <span class="nav-label">Next</span>
+                <span class="nav-title">{prevPost.data.title}</span>
+                {prevPost.data.publishDate && <span class="nav-date"><FormattedDate date={prevPost.data.publishDate}/></span>}
+              </div>
+            </a>
+    )}
+
+    {nextPost && (
+            <a href={`/posts/${nextPost.data.slug}`} class="nav-link next-link">
+              <div class="nav-content">
+                <span class="nav-label">Prev</span>
+                <span class="nav-title">{nextPost.data.title}</span>
+                {nextPost.data.publishDate && <span class="nav-date"><FormattedDate date={nextPost.data.publishDate}/></span>}
+              </div>
+              <div class="arrow">→</div>
+            </a>
+    )}
+  </div>
+</nav>
+  )}
+
+<style>
+    .post-navigation {
+        font-family: 'nudica_monobold', serif;
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color, #ddd);
+    }
+
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        max-width: 45%;
+        padding: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--color);
+        background-color: var(--bg-color);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .prev-link {
+        margin-right: auto;
+    }
+
+    .next-link {
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .arrow {
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+    }
+
+    .nav-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        opacity: 0.7;
+    }
+
+    .nav-title {
+        font-weight: bold;
+        margin: 0.25rem 0;
+    }
+
+    .nav-date {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            flex-direction: column;
+        }
+
+        .nav-link {
+            max-width: 100%;
+        }
+    }
+</style>

@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostLayout from "../../layouts/PostLayout.astro";
+import PostPrevNext from "../../components/PostPrevNext.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
@@ -16,8 +17,5 @@ const post = Astro.props;
 ---
 
 <PostLayout {...post.data}>
-  <!-- 
-    You can add components here if needed,
-    like related posts, social sharing, etc.
-  -->
+  <PostPrevNext currentSlug={post.data.slug} />
 </PostLayout>
