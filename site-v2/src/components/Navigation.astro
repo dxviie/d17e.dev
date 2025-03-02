@@ -6,15 +6,16 @@ import BlogIcon from './icons/BlogIcon.astro';
 
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
-const isPostsPage = pathname.startsWith('/posts');
-const isBlogPage = pathname.startsWith('/blog');
+const isPostsIndex = pathname === '/posts';
+const isBlogIndex = pathname === ('/articles');
 ---
 
+{!isHomePage &&
 <nav id="main-nav">
   <!-- HOME BUTTON -->
   <a href="/" class="nav-item">
-    <div class="icon-box">
-      <D17eIcon color={isHomePage ? "var(--button-bg-color)" : undefined}/>
+    <div class={`icon-box ${isHomePage ? 'active' : ''}`}>
+      <D17eIcon color={isHomePage ? "var(--bg-color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isHomePage}>home</span>
   </a>
@@ -23,24 +24,24 @@ const isBlogPage = pathname.startsWith('/blog');
 
   <!-- POSTS BUTTON -->
   <a href="/posts" class="nav-item">
-    <div class="icon-box">
-      <PostsIcon color={isPostsPage ? "var(--button-bg-color)" : undefined}/>
+    <div class={`icon-box ${isPostsIndex ? 'active' : ''}`}>
+      <PostsIcon color={isPostsIndex ? "var(--bg-color)" : undefined}/>
     </div>
-    <span class="nav-text" data-active={isPostsPage}>posts</span>
+    <span class="nav-text" data-active={isPostsIndex}>posts</span>
   </a>
 
   <!-- BLOG BUTTON -->
   <a href="/articles" class="nav-item">
-    <div class="icon-box">
-      <BlogIcon color={isBlogPage ? "var(--button-bg-color)" : undefined}/>
+    <div class={`icon-box ${isBlogIndex ? 'active' : ''}`}>
+      <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined}/>
     </div>
-    <span class="nav-text" data-active={isBlogPage}>blog</span>
+    <span class="nav-text" data-active={isBlogIndex}>blog</span>
   </a>
 
   <!-- COLOR MODE TOGGLE -->
   <ColorModeToggle/>
 </nav>
-
+  }
 <style>
     nav {
         position: fixed;
@@ -71,11 +72,27 @@ const isBlogPage = pathname.startsWith('/blog');
     }
 
     .icon-box {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .icon-box.active {
+        background-color: var(--button-bg-color);
+        width: 28px;
+        height: 28px;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+    }
+
+    .icon-box.active :global(svg) {
+        transform: scale(0.85);
     }
 
     .nav-text {
@@ -103,6 +120,11 @@ const isBlogPage = pathname.startsWith('/blog');
     @media (max-width: 600px) {
         .nav-text {
             display: none;
+        }
+
+        .icon-box.active {
+            width: 30px;
+            height: 30px;
         }
     }
 </style>
