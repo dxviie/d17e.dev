@@ -7,6 +7,7 @@
 :root {
     --accent: #ffa801;
     --accent-color: #ff7e29;
+    --accent-rgb: 255, 126, 41; /* RGB values for accent-color */
     --accent-light: #ffbb22;
     --accent-dark: #ff8c00;
     --accent-darker: #ff6e00;
@@ -32,6 +33,7 @@
     --bg-color: #1A202C;
     --button-bg-color: #FFFFFF;
     --accent-color: #90CDF4;
+    --accent-rgb: 144, 205, 244; /* RGB values for dark mode accent-color */
     --bg-code: #2d333b;
     --color-code: #adbac7;
     --border-color: #444c56;
