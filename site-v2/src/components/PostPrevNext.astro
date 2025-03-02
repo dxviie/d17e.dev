@@ -279,23 +279,23 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         // Create and add a swipe indicator element
         const swipeIndicator = document.createElement('div');
         swipeIndicator.className = 'swipe-indicator';
-        swipeIndicator.innerHTML = '↔️';
+        swipeIndicator.innerHTML = '<span style="opacity: 0; margin-left:.15rem; margin-bottom:.2rem; animation: swipe-dot 3.6s 2 ease-in-out;">&#62037</span>';
         swipeIndicator.style.cssText = `
           position: absolute;
           bottom: 10px;
           right: 10px;
-          width: 30px;
-          height: 30px;
-          background-color: rgba(0, 0, 0, 0.6);
+          width: 35px;
+          height: 35px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 10;
           pointer-events: none;
-          opacity: 0.7;
-          font-size: 14px;
+          opacity: 1;
+          font-size: 1.7rem;
           color: white;
+          font-family: bariol_icons;
         `;
 
         // Only append if it doesn't already exist
@@ -321,14 +321,14 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     // Clean up the element before adding new content
     element.innerHTML = '';
     element.appendChild(contentClone);
-    
+
     // Also capture the header and add it to make the page look more complete
     const header = document.querySelector('header');
     if (header) {
       const headerClone = header.cloneNode(true);
       element.insertBefore(headerClone, contentClone);
     }
-    
+
     // Add inline styles to ensure good appearance
     element.style.backgroundColor = getComputedStyle(document.body).backgroundColor;
     element.style.color = getComputedStyle(document.body).color;
@@ -354,10 +354,10 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const container = document.getElementById('swipe-feedback-container');
     if (container) {
       container.style.visibility = 'visible';
-      
+
       // Add a class to the body to hide the original content
       document.body.classList.add('swipe-in-progress');
-      
+
       // Add a style element if it doesn't exist yet
       if (!document.getElementById('swipe-styles')) {
         const styleEl = document.createElement('style');
@@ -433,7 +433,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 
     // The body class will remain until the page is fully unloaded
     // Navigation will be handled by swipeNavigation.js
-    
+
     // For better effect, let's add a transition class to the body
     document.body.classList.add('swipe-transitioning');
   }
