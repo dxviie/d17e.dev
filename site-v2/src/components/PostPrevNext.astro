@@ -26,7 +26,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 <nav class="post-navigation">
   <div class="nav-links">
     {prevPost && (
-            <a href={`/posts/${prevPost.data.slug}`} class="nav-link prev-link">
+            <a href={`/posts/${prevPost.data.slug}`} class="nav-link prev-link" id="prev-post-link">
               <div class="arrow">←</div>
               <div class="nav-content">
                 <span class="nav-label">Next</span>
@@ -37,7 +37,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     )}
 
     {nextPost && (
-            <a href={`/posts/${nextPost.data.slug}`} class="nav-link next-link">
+            <a href={`/posts/${nextPost.data.slug}`} class="nav-link next-link" id="next-post-link">
               <div class="nav-content">
                 <span class="nav-label">Prev</span>
                 <span class="nav-title">{nextPost.data.title}</span>
@@ -46,6 +46,13 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
               <div class="arrow">→</div>
             </a>
     )}
+  </div>
+
+  <div class="swipe-hint">
+    <p>
+      <span class="swipe-icon">↔️</span>
+      Swipe to navigate
+    </p>
   </div>
 </nav>
   )}
@@ -117,6 +124,30 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         opacity: 0.7;
     }
 
+    .swipe-hint {
+        display: none;
+        margin-top: 1rem;
+        text-align: center;
+        color: var(--color);
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    .swipe-icon {
+        font-size: 1.2rem;
+        animation: swipe-animation 2s infinite alternate ease-in-out;
+        display: inline-block;
+    }
+
+    @keyframes swipe-animation {
+        0% {
+            transform: translateX(-8px);
+        }
+        100% {
+            transform: translateX(8px);
+        }
+    }
+
     @media (max-width: 768px) {
         .nav-links {
             flex-direction: column;
@@ -125,5 +156,25 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         .nav-link {
             max-width: 100%;
         }
+
+        .swipe-hint {
+            display: block;
+        }
     }
 </style>
+
+<script>
+  import {initSwipeNavigation} from '../scripts/swipeNavigation.js';
+
+  // Run after the DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const prevLink = document.getElementById('prev-post-link');
+    const nextLink = document.getElementById('next-post-link');
+
+    // Initialize swipe navigation with the URLs if they exist
+    initSwipeNavigation({
+      prevUrl: prevLink ? prevLink.getAttribute('href') : null,
+      nextUrl: nextLink ? nextLink.getAttribute('href') : null
+    });
+  });
+</script>
