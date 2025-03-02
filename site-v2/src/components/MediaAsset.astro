@@ -1,283 +1,283 @@
----
-// MediaAsset.astro
-import {Image} from "astro:assets";
-
-interface MediaAssetProps {
-  id: string;
-  alt?: string;
-  type?: string;
-  filenameDownload?: string;
-  width?: number;
-  height?: number;
-  isHero?: boolean;
-  cmsUrl?: string;  // Base CMS URL for media assets
-}
-
-const {
-  id,
-  alt = "Media asset",
-  type = "",
-  filenameDownload,
-  width = 800,
-  height = 450,
-  isHero = false,
-  cmsUrl = "https://directus.d17e.dev/assets" // Default CMS URL - replace with your actual CMS URL
-} = Astro.props;
-
-const isVideo = type?.startsWith("video/");
-const showVideo = isVideo && isHero;
-
-// Determine file extension and prepare image/video sources
-let imageUrl;
-let videoSrc;
-
-if (isVideo) {
-  // For videos, import the thumbnail image
-  try {
-    const thumbnailModule = await import(`../assets/${id}.jpg`);
-    imageUrl = thumbnailModule.default;
-  } catch (error) {
-    console.error(`Error importing thumbnail for ${id}:`, error);
-  }
-
-  // Always set up the video source for hover/touch functionality
-  videoSrc = `/assets/${id}.mp4`;
-} else {
-  // For images, determine extension from the type or filename
-  let ext = "jpg"; // default extension
-
-  if (type) {
-    if (type === "image/png") ext = "png";
-    else if (type === "image/gif") ext = "gif";
-    else if (type === "image/webp") ext = "webp";
-    else if (type === "image/svg+xml") ext = "svg";
-    else if (type === "image/avif") ext = "avif";
-    else if (type === "image/jpeg") ext = "jpeg";
-  } else if (filenameDownload) {
-    // Extract extension from filename if available
-    const fileExt = filenameDownload.split(".").pop()?.toLowerCase();
-    if (fileExt && ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif"].includes(fileExt)) {
-      ext = fileExt === "jpeg" ? "jpg" : fileExt;
-    }
-  }
-
-  try {
-    const imageModule = await import(`../assets/${id}.${ext}`);
-    imageUrl = imageModule.default;
-  } catch (error) {
-    // Try jpg as fallback if specified extension fails
-    try {
-      const fallbackModule = await import(`../assets/${id}.jpg`);
-      imageUrl = fallbackModule.default;
-    } catch (fallbackError) {
-      console.error(`Error importing image for ${id}:`, error);
-    }
-  }
-}
-
-// Format the CMS URL for the video
-const cmsVideoUrl = `${cmsUrl}/${id}`;
----
-
-<figure class="media-asset" data-is-video={isVideo.toString()} data-id={id}>
-  {showVideo ? (
-          <div class="video-container">
-            <video
-                    poster={imageUrl?.src}
-                    width={width}
-                    height={height}
-                    preload="none"
-                    autoplay
-                    loop
-                    muted
-                    playsinline
-            >
-              <!-- Local source first for faster loading if available -->
-              <source src={`/assets/${id}.mp4`} type={type}>
-
-              <!-- CMS fallback source -->
-              <source src={cmsVideoUrl} type={type}>
-
-              Your browser does not support the video tag.
-            </video>
-          </div>
-  ) : (
-          <div class="media-wrapper">
-            {imageUrl && (
-                    <Image
-                            src={imageUrl}
-                            width={width}
-                            height={height}
-                            alt={alt}
-                            format="webp"
-                            style={`object-fit: cover; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
-                    />
-            )}
-
-            {isVideo && !isHero && (
-                    <div class="video-hover-container">
-                      <video
-                              class="hover-video"
-                              poster={imageUrl?.src}
-                              width={width}
-                              height={height}
-                              preload="none"
-                              loop
-                              muted
-                              playsinline
-                      >
-                        <source src={videoSrc} type={type}>
-                        <source src={cmsVideoUrl} type={type}>
-                      </video>
-                      <div class="play-indicator"></div>
-                    </div>
-            )}
-          </div>
-  )}
-</figure>
-
-<style>
-    .media-asset {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        position: relative;
-    }
-
-    .media-wrapper {
-        position: relative;
-        overflow: hidden;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-    }
-
-    img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        border-radius: 4px;
-    }
-
-    .video-container {
-        position: relative;
-        width: 100%;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .video-hover-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 1;
-    }
-
-    .media-wrapper:hover .video-hover-container,
-    .media-wrapper:focus .video-hover-container {
-        opacity: 1;
-    }
-
-    .hover-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    video {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    .play-indicator {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 60px;
-        height: 60px;
-        background-color: rgba(0, 0, 0, 0.5);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-    }
-
-    .play-indicator::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-        border-left: 20px solid white;
-        margin-left: 4px;
-    }
-
-    .media-wrapper:hover .play-indicator {
-        opacity: 0;
-    }
-
-    figcaption {
-        font-size: 0.875rem;
-        margin-top: 0.5rem;
-        color: #666;
-        text-align: center;
-    }
-</style>
-
-<script>
-  document.addEventListener('astro:page-load', () => {
-    setupVideoHovers();
-  });
-
-  function setupVideoHovers() {
-    const mediaAssets = document.querySelectorAll('.media-asset[data-is-video="true"]:not([data-hero="true"])');
-
-    mediaAssets.forEach(asset => {
-      const wrapper = asset.querySelector('.media-wrapper');
-      const video = asset.querySelector<HTMLVideoElement>('.hover-video');
-
-      if (!wrapper || !video) return;
-
-      // For desktop: hover events
-      wrapper.addEventListener('mouseenter', () => {
-        video.play().catch(e => console.log('Autoplay prevented:', e));
-      });
-
-      wrapper.addEventListener('mouseleave', () => {
-        video.pause();
-        video.currentTime = 0;
-      });
-
-      // For mobile: touch events
-      let touchTimeout: NodeJS.Timeout;
-
-      wrapper.addEventListener('touchstart', () => {
-        touchTimeout = setTimeout(() => {
-          video.play().catch(e => console.log('Autoplay prevented:', e));
-        }, 200); // Small delay to differentiate from click/tap
-      });
-
-      wrapper.addEventListener('touchend', () => {
-        clearTimeout(touchTimeout);
-        // Don't pause immediately on touchend to allow viewing on mobile
-      });
-
-      wrapper.addEventListener('touchmove', () => {
-        clearTimeout(touchTimeout);
-      });
-    });
-  }
-
-  // Also run on initial page load
-  document.addEventListener('DOMContentLoaded', setupVideoHovers);
+---
+// MediaAsset.astro
+import {Image} from "astro:assets";
+
+interface MediaAssetProps {
+  id: string;
+  alt?: string;
+  type?: string;
+  filenameDownload?: string;
+  width?: number;
+  height?: number;
+  isHero?: boolean;
+  cmsUrl?: string;  // Base CMS URL for media assets
+}
+
+const {
+  id,
+  alt = "Media asset",
+  type = "",
+  filenameDownload,
+  width = 800,
+  height = 450,
+  isHero = false,
+  cmsUrl = "https://directus.d17e.dev/assets" // Default CMS URL - replace with your actual CMS URL
+} = Astro.props;
+
+const isVideo = type?.startsWith("video/");
+const showVideo = isVideo && isHero;
+
+// Determine file extension and prepare image/video sources
+let imageUrl;
+let videoSrc;
+
+if (isVideo) {
+  // For videos, import the thumbnail image
+  try {
+    const thumbnailModule = await import(`../assets/${id}.jpg`);
+    imageUrl = thumbnailModule.default;
+  } catch (error) {
+    console.error(`Error importing thumbnail for ${id}:`, error);
+  }
+
+  // Always set up the video source for hover/touch functionality
+  videoSrc = `/assets/${id}.mp4`;
+} else {
+  // For images, determine extension from the type or filename
+  let ext = "jpg"; // default extension
+
+  if (type) {
+    if (type === "image/png") ext = "png";
+    else if (type === "image/gif") ext = "gif";
+    else if (type === "image/webp") ext = "webp";
+    else if (type === "image/svg+xml") ext = "svg";
+    else if (type === "image/avif") ext = "avif";
+    else if (type === "image/jpeg") ext = "jpeg";
+  } else if (filenameDownload) {
+    // Extract extension from filename if available
+    const fileExt = filenameDownload.split(".").pop()?.toLowerCase();
+    if (fileExt && ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif"].includes(fileExt)) {
+      ext = fileExt === "jpeg" ? "jpg" : fileExt;
+    }
+  }
+
+  try {
+    const imageModule = await import(`../assets/${id}.${ext}`);
+    imageUrl = imageModule.default;
+  } catch (error) {
+    // Try jpg as fallback if specified extension fails
+    try {
+      const fallbackModule = await import(`../assets/${id}.jpg`);
+      imageUrl = fallbackModule.default;
+    } catch (fallbackError) {
+      console.error(`Error importing image for ${id}:`, error);
+    }
+  }
+}
+
+// Format the CMS URL for the video
+const cmsVideoUrl = `${cmsUrl}/${id}`;
+---
+
+<figure class="media-asset swipeable" data-is-video={isVideo.toString()} data-id={id}>
+  {showVideo ? (
+          <div class="video-container">
+            <video
+                    poster={imageUrl?.src}
+                    width={width}
+                    height={height}
+                    preload="none"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+            >
+              <!-- Local source first for faster loading if available -->
+              <source src={`/assets/${id}.mp4`} type={type}>
+
+              <!-- CMS fallback source -->
+              <source src={cmsVideoUrl} type={type}>
+
+              Your browser does not support the video tag.
+            </video>
+          </div>
+  ) : (
+          <div class="media-wrapper">
+            {imageUrl && (
+                    <Image
+                            src={imageUrl}
+                            width={width}
+                            height={height}
+                            alt={alt}
+                            format="webp"
+                            style={`object-fit: cover; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                    />
+            )}
+
+            {isVideo && !isHero && (
+                    <div class="video-hover-container">
+                      <video
+                              class="hover-video"
+                              poster={imageUrl?.src}
+                              width={width}
+                              height={height}
+                              preload="none"
+                              loop
+                              muted
+                              playsinline
+                      >
+                        <source src={videoSrc} type={type}>
+                        <source src={cmsVideoUrl} type={type}>
+                      </video>
+                      <div class="play-indicator"></div>
+                    </div>
+            )}
+          </div>
+  )}
+</figure>
+
+<style>
+    .media-asset {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .media-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 4px;
+    }
+
+    .video-container {
+        position: relative;
+        width: 100%;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .video-hover-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+    }
+
+    .media-wrapper:hover .video-hover-container,
+    .media-wrapper:focus .video-hover-container {
+        opacity: 1;
+    }
+
+    .hover-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .play-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .play-indicator::after {
+        content: '';
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-left: 20px solid white;
+        margin-left: 4px;
+    }
+
+    .media-wrapper:hover .play-indicator {
+        opacity: 0;
+    }
+
+    figcaption {
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        color: #666;
+        text-align: center;
+    }
+</style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    setupVideoHovers();
+  });
+
+  function setupVideoHovers() {
+    const mediaAssets = document.querySelectorAll('.media-asset[data-is-video="true"]:not([data-hero="true"])');
+
+    mediaAssets.forEach(asset => {
+      const wrapper = asset.querySelector('.media-wrapper');
+      const video = asset.querySelector<HTMLVideoElement>('.hover-video');
+
+      if (!wrapper || !video) return;
+
+      // For desktop: hover events
+      wrapper.addEventListener('mouseenter', () => {
+        video.play().catch(e => console.log('Autoplay prevented:', e));
+      });
+
+      wrapper.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+
+      // For mobile: touch events
+      let touchTimeout: NodeJS.Timeout;
+
+      wrapper.addEventListener('touchstart', () => {
+        touchTimeout = setTimeout(() => {
+          video.play().catch(e => console.log('Autoplay prevented:', e));
+        }, 200); // Small delay to differentiate from click/tap
+      });
+
+      wrapper.addEventListener('touchend', () => {
+        clearTimeout(touchTimeout);
+        // Don't pause immediately on touchend to allow viewing on mobile
+      });
+
+      wrapper.addEventListener('touchmove', () => {
+        clearTimeout(touchTimeout);
+      });
+    });
+  }
+
+  // Also run on initial page load
+  document.addEventListener('DOMContentLoaded', setupVideoHovers);
 </script>

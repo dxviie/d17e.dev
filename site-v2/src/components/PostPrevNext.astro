@@ -47,13 +47,6 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
             </a>
     )}
   </div>
-
-  <div class="swipe-hint">
-    <p>
-      <span class="swipe-icon">↔️</span>
-      Swipe to navigate
-    </p>
-  </div>
 </nav>
   )}
 
@@ -275,6 +268,40 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 
     if (nextUrl) {
       nextPage.innerHTML = createPagePreview(nextUrl, 'next');
+    }
+
+    // Add swipe-enabled class to all swipeable elements to show the swipe indicator
+    if (prevUrl || nextUrl) {
+      document.querySelectorAll('.media-asset.swipeable').forEach(element => {
+        element.classList.add('swipe-enabled');
+
+        // Create and add a swipe indicator element
+        const swipeIndicator = document.createElement('div');
+        swipeIndicator.className = 'swipe-indicator';
+        swipeIndicator.innerHTML = '↔️';
+        swipeIndicator.style.cssText = `
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+          width: 30px;
+          height: 30px;
+          background-color: rgba(0, 0, 0, 0.6);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+          pointer-events: none;
+          opacity: 0.7;
+          font-size: 14px;
+          color: white;
+        `;
+
+        // Only append if it doesn't already exist
+        if (!element.querySelector('.swipe-indicator')) {
+          element.appendChild(swipeIndicator);
+        }
+      });
     }
   }
 

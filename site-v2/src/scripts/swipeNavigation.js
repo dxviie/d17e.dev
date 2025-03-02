@@ -18,16 +18,31 @@ export function initSwipeNavigation(options) {
     // Threshold for considering a swipe
     const swipeThreshold = 100;
 
-    // Attach touch event listeners to the body
-    document.body.addEventListener('touchstart', handleTouchStart, {passive: true});
-    document.body.addEventListener('touchmove', handleTouchMove, {passive: false});
-    document.body.addEventListener('touchend', handleTouchEnd, {passive: true});
+    // Find all media assets that should support swipe navigation
+    const swipeElements = document.querySelectorAll('.media-asset.swipeable');
+    
+    // Attach touch event listeners to each media asset instead of the body
+    swipeElements.forEach(element => {
+        element.addEventListener('touchstart', handleTouchStart, {passive: true});
+        element.addEventListener('touchmove', handleTouchMove, {passive: false});
+        element.addEventListener('touchend', handleTouchEnd, {passive: true});
+        
+        // Add a visual indicator or class
+        element.classList.add('swipe-enabled');
+    });
+
+    let startY = 0;
+    let currentY = 0;
+    let isHorizontalSwipe = false;
 
     function handleTouchStart(e) {
         // Store the initial touch position
         startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
         currentX = startX;
+        currentY = startY;
         isSwiping = true;
+        isHorizontalSwipe = false;
 
         // Call the swipe start callback
         if (typeof onSwipeStart === 'function') {
@@ -40,11 +55,20 @@ export function initSwipeNavigation(options) {
 
         // Update the current position
         currentX = e.touches[0].clientX;
+        currentY = e.touches[0].clientY;
         const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
 
-        // Determine if we should prevent default scrolling
-        // Only prevent default if we have a page to navigate to in that direction
-        if ((deltaX > 0 && prevUrl) || (deltaX < 0 && nextUrl)) {
+        // Determine if this is primarily a horizontal swipe
+        // Only set this once per swipe gesture
+        if (!isHorizontalSwipe && Math.abs(deltaX) > 10) {
+            // If horizontal movement is greater than vertical and exceeds threshold
+            isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY) * 1.5;
+        }
+
+        // Only prevent default for intentional horizontal swipes
+        // and only if we have a page to navigate to in that direction
+        if (isHorizontalSwipe && ((deltaX > 10 && prevUrl) || (deltaX < -10 && nextUrl))) {
             e.preventDefault();
 
             // Call the swipe move callback with the delta values
@@ -60,9 +84,10 @@ export function initSwipeNavigation(options) {
 
         // Calculate the distance swiped
         const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
 
-        // Determine if the swipe was significant enough
-        if (Math.abs(deltaX) > swipeThreshold) {
+        // Only trigger navigation for intentional horizontal swipes
+        if (isHorizontalSwipe && Math.abs(deltaX) > swipeThreshold) {
             if (deltaX > 0 && prevUrl) {
                 // Swiped right, go to previous post
                 if (typeof onSwipeEnd === 'function') {
@@ -90,7 +115,7 @@ export function initSwipeNavigation(options) {
                 }
             }
         } else {
-            // Swipe wasn't significant enough
+            // Swipe wasn't significant enough or wasn't primarily horizontal
             if (typeof onSwipeCancel === 'function') {
                 onSwipeCancel();
             }
@@ -98,12 +123,16 @@ export function initSwipeNavigation(options) {
 
         // Reset state
         isSwiping = false;
+        isHorizontalSwipe = false;
     }
 
     // Clean up event listeners when the page is unloaded
     window.addEventListener('unload', () => {
-        document.body.removeEventListener('touchstart', handleTouchStart);
-        document.body.removeEventListener('touchmove', handleTouchMove);
-        document.body.removeEventListener('touchend', handleTouchEnd);
+        // Remove event listeners from all swipe-enabled elements
+        document.querySelectorAll('.swipe-enabled').forEach(element => {
+            element.removeEventListener('touchstart', handleTouchStart);
+            element.removeEventListener('touchmove', handleTouchMove);
+            element.removeEventListener('touchend', handleTouchEnd);
+        });
     });
 }
