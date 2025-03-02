@@ -232,14 +232,14 @@ hr {
 
 @keyframes swipe-dot {
     0%, 100% {
-        transform: translateX(-12px);
+        transform: translateX(12px);
         opacity: 0;
     }
     10% {
         opacity: 0.8;
     }
     30% {
-        transform: translateX(12px);
+        transform: translateX(-12px);
         opacity: 0.8;
     }
     40% {
@@ -249,7 +249,7 @@ hr {
         opacity: 0.8;
     }
     70% {
-        transform: translateX(-12px);
+        transform: translateX(12px);
         opacity: 0.8;
     }
     80% {
