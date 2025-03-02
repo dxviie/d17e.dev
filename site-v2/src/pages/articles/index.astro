@@ -5,6 +5,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import BaseHead from "../../components/BaseHead.astro";
+import MediaAsset from "../../components/MediaAsset.astro";
 
 const articles = (await getCollection('articles')).sort(
   (a, b) => (b.data.publishDate?.valueOf() || 0) - (a.data.publishDate?.valueOf() || 0),
@@ -94,6 +95,7 @@ const sortedYears = Object.keys(articlesByYear)
           gap: 1.5rem;
           text-decoration: none;
           color: var(--color);
+          position: relative;
       }
 
       @media (max-width: 600px) {
@@ -103,12 +105,57 @@ const sortedYears = Object.keys(articlesByYear)
           }
       }
 
+      .article-left {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          height: 100%;
+      }
+
+      .article-cover-background {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 0;
+          overflow: hidden;
+          border-radius: 8px;
+      }
+
+      .article-cover-background::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+      }
+
+      .article-cover-background :global(img),
+      .article-cover-background :global(figure) {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+      }
+
+      .article-cover-background :global(.media-asset) {
+          width: 100%;
+          height: 100%;
+      }
+
       .article-date {
           font-family: 'nudica_monolight', serif;
           font-size: 0.9rem;
           background-color: var(--color);
           color: var(--bg-color);
           padding: 0.2rem 0.5rem;
+          position: relative;
+          z-index: 2;
+          align-self: flex-start;
+          margin-bottom: 0.5rem;
       }
 
       .article-title {
@@ -144,12 +191,25 @@ const sortedYears = Object.keys(articlesByYear)
               {articlesByYear[year].map(article => (
                       <li class="article-item">
                         <a href={`/articles/${article.data.slug}/`} class="article-link">
-                          <div>
+                          <div class="article-left">
                             <span class="article-date">
-                            {article.data.publishDate && (
-                                    <FormattedDate date={article.data.publishDate} format="MMM DD"/>
+                              {article.data.publishDate && (
+                                      <FormattedDate date={article.data.publishDate} format="MMM DD"/>
+                              )}
+                            </span>
+                            {article.data.cover && (
+                                    <div class="article-cover-background">
+                                      <MediaAsset
+                                              id={article.data.cover.id}
+                                              title={article.data.cover.title}
+                                              alt={article.data.title}
+                                              type={article.data.cover.type}
+                                              filenameDownload={article.data.cover.filenameDownload}
+                                              isHero={false}
+
+                                      />
+                                    </div>
                             )}
-                          </span>
                           </div>
                           <div>
                             <h3 class="article-title">{article.data.title}</h3>
