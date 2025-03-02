@@ -57,6 +57,13 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 </nav>
   )}
 
+<!-- Swipe Visual Feedback Elements -->
+<div id="swipe-feedback-container">
+  <div id="swipe-prev-page" class="swipe-page"></div>
+  <div id="swipe-current-page" class="swipe-page"></div>
+  <div id="swipe-next-page" class="swipe-page"></div>
+</div>
+
 <style>
     .post-navigation {
         font-family: 'nudica_monobold', serif;
@@ -148,6 +155,43 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         }
     }
 
+    /* Swipe Visual Feedback Styles */
+    #swipe-feedback-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        overflow: hidden;
+        visibility: hidden;
+    }
+
+    .swipe-page {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-color);
+        transition: transform 0.3s ease-out;
+    }
+
+    #swipe-current-page {
+        left: 0;
+        z-index: 2;
+    }
+
+    #swipe-prev-page {
+        left: -100%;
+        z-index: 1;
+    }
+
+    #swipe-next-page {
+        left: 100%;
+        z-index: 1;
+    }
+
     @media (max-width: 768px) {
         .nav-links {
             flex-direction: column;
@@ -171,10 +215,177 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const prevLink = document.getElementById('prev-post-link');
     const nextLink = document.getElementById('next-post-link');
 
-    // Initialize swipe navigation with the URLs if they exist
+    // Get the URLs if they exist
+    const prevUrl = prevLink ? prevLink.getAttribute('href') : null;
+    const nextUrl = nextLink ? nextLink.getAttribute('href') : null;
+
+    // Set up the visual swipe feedback
+    setupSwipeVisualFeedback(prevUrl, nextUrl);
+
+    // Initialize swipe navigation with the URLs
     initSwipeNavigation({
-      prevUrl: prevLink ? prevLink.getAttribute('href') : null,
-      nextUrl: nextLink ? nextLink.getAttribute('href') : null
+      prevUrl,
+      nextUrl,
+      onSwipeStart: handleSwipeStart,
+      onSwipeMove: handleSwipeMove,
+      onSwipeEnd: handleSwipeEnd,
+      onSwipeCancel: handleSwipeCancel
     });
   });
+
+  // For Astro View Transitions
+  document.addEventListener('astro:page-load', () => {
+    const prevLink = document.getElementById('prev-post-link');
+    const nextLink = document.getElementById('next-post-link');
+
+    // Get the URLs if they exist
+    const prevUrl = prevLink ? prevLink.getAttribute('href') : null;
+    const nextUrl = nextLink ? nextLink.getAttribute('href') : null;
+
+    // Set up the visual swipe feedback
+    setupSwipeVisualFeedback(prevUrl, nextUrl);
+
+    // Initialize swipe navigation with the URLs
+    initSwipeNavigation({
+      prevUrl,
+      nextUrl,
+      onSwipeStart: handleSwipeStart,
+      onSwipeMove: handleSwipeMove,
+      onSwipeEnd: handleSwipeEnd,
+      onSwipeCancel: handleSwipeCancel
+    });
+  });
+
+  function setupSwipeVisualFeedback(prevUrl, nextUrl) {
+    // Elements
+    const container = document.getElementById('swipe-feedback-container');
+    const currentPage = document.getElementById('swipe-current-page');
+    const prevPage = document.getElementById('swipe-prev-page');
+    const nextPage = document.getElementById('swipe-next-page');
+
+    if (!container || !currentPage || !prevPage || !nextPage) return;
+
+    // Take a "screenshot" of the current page
+    capturePage(currentPage);
+
+    // If there are prev/next links, prepare their preview pages
+    if (prevUrl) {
+      prevPage.innerHTML = createPagePreview(prevUrl, 'prev');
+    }
+
+    if (nextUrl) {
+      nextPage.innerHTML = createPagePreview(nextUrl, 'next');
+    }
+  }
+
+  function capturePage(element) {
+    // Capture main content as a simplified representation
+    const mainContent = document.querySelector('main');
+    if (!mainContent) return;
+
+    // Clone the content for the swipe animation
+    const contentClone = mainContent.cloneNode(true);
+
+    // Remove non-essential elements from the clone to improve performance
+    const elementsToRemove = contentClone.querySelectorAll('.post-navigation, script, iframe');
+    elementsToRemove.forEach(el => el.remove());
+
+    // Clean up the element before adding new content
+    element.innerHTML = '';
+    element.appendChild(contentClone);
+  }
+
+  function createPagePreview(url, direction) {
+    // Create a simplified representation of the next/prev page
+    // This is a lightweight alternative to actually loading the page
+    const post = direction === 'prev' ? 'Next Post' : 'Previous Post';
+
+    return `
+      <div class="page-preview ${direction}-preview">
+        <div class="preview-header">
+          <h2>${post}</h2>
+          <div class="preview-gradient"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Swipe handlers
+  function handleSwipeStart() {
+    const container = document.getElementById('swipe-feedback-container');
+    if (container) {
+      container.style.visibility = 'visible';
+    }
+  }
+
+  function handleSwipeMove(deltaX, totalDeltaX) {
+    const currentPage = document.getElementById('swipe-current-page');
+    const prevPage = document.getElementById('swipe-prev-page');
+    const nextPage = document.getElementById('swipe-next-page');
+
+    if (!currentPage || !prevPage || !nextPage) return;
+
+    // Calculate how far to move the pages (max 80% of screen width)
+    const maxShift = window.innerWidth * 0.8;
+    const shift = Math.min(Math.abs(totalDeltaX), maxShift);
+    const direction = totalDeltaX > 0 ? 1 : -1;
+
+    // Apply transforms
+    currentPage.style.transform = `translateX(${totalDeltaX}px)`;
+
+    if (direction > 0) {
+      // Swiping right (to previous page)
+      prevPage.style.transform = `translateX(${shift}px)`;
+      nextPage.style.transform = 'translateX(100%)';
+    } else {
+      // Swiping left (to next page)
+      nextPage.style.transform = `translateX(-${shift}px)`;
+      prevPage.style.transform = 'translateX(-100%)';
+    }
+
+    // Add a subtle rotation effect for more natural feeling
+    const rotateAmount = (totalDeltaX / window.innerWidth) * 5; // max 5 degrees
+    currentPage.style.transform += ` rotate(${rotateAmount * 0.5}deg)`;
+  }
+
+  function handleSwipeEnd(direction) {
+    const container = document.getElementById('swipe-feedback-container');
+    const currentPage = document.getElementById('swipe-current-page');
+    const prevPage = document.getElementById('swipe-prev-page');
+    const nextPage = document.getElementById('swipe-next-page');
+
+    if (!container || !currentPage || !prevPage || !nextPage) return;
+
+    // Animate the pages to their final positions
+    if (direction === 'right') {
+      // Animating to previous page
+      currentPage.style.transform = 'translateX(100%) rotate(2deg)';
+      prevPage.style.transform = 'translateX(0)';
+    } else if (direction === 'left') {
+      // Animating to next page
+      currentPage.style.transform = 'translateX(-100%) rotate(-2deg)';
+      nextPage.style.transform = 'translateX(0)';
+    }
+
+    // The actual navigation will be handled by swipeNavigation.js
+  }
+
+  function handleSwipeCancel() {
+    const container = document.getElementById('swipe-feedback-container');
+    const currentPage = document.getElementById('swipe-current-page');
+    const prevPage = document.getElementById('swipe-prev-page');
+    const nextPage = document.getElementById('swipe-next-page');
+
+    if (!container || !currentPage || !prevPage || !nextPage) return;
+
+    // Reset positions with animation
+    currentPage.style.transform = 'translateX(0) rotate(0deg)';
+    prevPage.style.transform = 'translateX(-100%)';
+    nextPage.style.transform = 'translateX(100%)';
+
+    // Hide the container after animation completes
+    setTimeout(() => {
+      container.style.visibility = 'hidden';
+    }, 300);
+  }
 </script>

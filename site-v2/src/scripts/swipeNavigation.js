@@ -1,52 +1,109 @@
-/**
- * Adds swipe gesture support for navigation between posts/articles
- * @param {Object} options - Configuration options
- * @param {string} options.prevUrl - URL to navigate to on swipe right (previous)
- * @param {string} options.nextUrl - URL to navigate to on swipe left (next)
- */
+// swipeNavigation.js
 export function initSwipeNavigation(options) {
-  const { prevUrl, nextUrl } = options;
-  
-  // Skip if we're not in a browser environment or if neither prev nor next URL is available
-  if (typeof window === 'undefined' || (!prevUrl && !nextUrl)) {
-    return;
-  }
+    const {
+        prevUrl,
+        nextUrl,
+        onSwipeStart,
+        onSwipeMove,
+        onSwipeEnd,
+        onSwipeCancel
+    } = options;
 
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const minSwipeDistance = 80; // Minimum distance to recognize a swipe (in pixels)
-  
-  // Handle touch start
-  function handleTouchStart(event) {
-    touchStartX = event.changedTouches[0].screenX;
-  }
-  
-  // Handle touch end
-  function handleTouchEnd(event) {
-    touchEndX = event.changedTouches[0].screenX;
-    handleSwipe();
-  }
-  
-  // Calculate and handle swipe direction
-  function handleSwipe() {
-    const swipeDistance = touchEndX - touchStartX;
-    
-    // If swipe distance is less than minimum, ignore as it might be accidental
-    if (Math.abs(swipeDistance) < minSwipeDistance) {
-      return;
+    if (!prevUrl && !nextUrl) return;
+
+    let startX = 0;
+    let currentX = 0;
+    let isSwiping = false;
+
+    // Threshold for considering a swipe
+    const swipeThreshold = 100;
+
+    // Attach touch event listeners to the body
+    document.body.addEventListener('touchstart', handleTouchStart, {passive: true});
+    document.body.addEventListener('touchmove', handleTouchMove, {passive: false});
+    document.body.addEventListener('touchend', handleTouchEnd, {passive: true});
+
+    function handleTouchStart(e) {
+        // Store the initial touch position
+        startX = e.touches[0].clientX;
+        currentX = startX;
+        isSwiping = true;
+
+        // Call the swipe start callback
+        if (typeof onSwipeStart === 'function') {
+            onSwipeStart();
+        }
     }
-    
-    // Swipe right (to previous)
-    if (swipeDistance > 0 && prevUrl) {
-      window.location.href = prevUrl;
+
+    function handleTouchMove(e) {
+        if (!isSwiping) return;
+
+        // Update the current position
+        currentX = e.touches[0].clientX;
+        const deltaX = currentX - startX;
+
+        // Determine if we should prevent default scrolling
+        // Only prevent default if we have a page to navigate to in that direction
+        if ((deltaX > 0 && prevUrl) || (deltaX < 0 && nextUrl)) {
+            e.preventDefault();
+
+            // Call the swipe move callback with the delta values
+            if (typeof onSwipeMove === 'function') {
+                // Pass the delta for this move and the total delta from start
+                onSwipeMove(e.touches[0].clientX - currentX, deltaX);
+            }
+        }
     }
-    // Swipe left (to next)
-    else if (swipeDistance < 0 && nextUrl) {
-      window.location.href = nextUrl;
+
+    function handleTouchEnd() {
+        if (!isSwiping) return;
+
+        // Calculate the distance swiped
+        const deltaX = currentX - startX;
+
+        // Determine if the swipe was significant enough
+        if (Math.abs(deltaX) > swipeThreshold) {
+            if (deltaX > 0 && prevUrl) {
+                // Swiped right, go to previous post
+                if (typeof onSwipeEnd === 'function') {
+                    onSwipeEnd('right');
+                }
+
+                // Navigate after a short delay to allow for animation
+                setTimeout(() => {
+                    window.location.href = prevUrl;
+                }, 100);
+            } else if (deltaX < 0 && nextUrl) {
+                // Swiped left, go to next post
+                if (typeof onSwipeEnd === 'function') {
+                    onSwipeEnd('left');
+                }
+
+                // Navigate after a short delay to allow for animation
+                setTimeout(() => {
+                    window.location.href = nextUrl;
+                }, 100);
+            } else {
+                // Call cancel if we can't navigate
+                if (typeof onSwipeCancel === 'function') {
+                    onSwipeCancel();
+                }
+            }
+        } else {
+            // Swipe wasn't significant enough
+            if (typeof onSwipeCancel === 'function') {
+                onSwipeCancel();
+            }
+        }
+
+        // Reset state
+        isSwiping = false;
     }
-  }
-  
-  // Add event listeners
-  document.addEventListener('touchstart', handleTouchStart, { passive: true });
-  document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    // Clean up event listeners when the page is unloaded
+    window.addEventListener('unload', () => {
+        document.body.removeEventListener('touchstart', handleTouchStart);
+        document.body.removeEventListener('touchmove', handleTouchMove);
+        document.body.removeEventListener('touchend', handleTouchEnd);
+    });
 }
