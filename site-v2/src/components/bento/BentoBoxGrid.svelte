@@ -86,10 +86,11 @@
 
   function setupGrid() {
     if (containerElement) {
+      const tileSize = Math.min(containerElement.clientWidth / 5, 150);
       const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
-        containerElement.clientWidth - 20 / window.devicePixelRatio || 1,
-        containerElement.clientHeight - 20 / window.devicePixelRatio || 1,
-        100 / window.devicePixelRatio || 1
+        containerElement.clientWidth - 20 || 1,
+        containerElement.clientHeight - 20 || 1,
+        tileSize
       );
       translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
       translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
