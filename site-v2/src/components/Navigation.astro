@@ -10,7 +10,7 @@ const isPostsPage = pathname.startsWith('/posts');
 const isBlogPage = pathname.startsWith('/blog');
 ---
 
-<nav>
+<nav id="main-nav">
   <!-- HOME BUTTON -->
   <a href="/" class="nav-item">
     <div class="icon-box">
@@ -53,6 +53,7 @@ const isBlogPage = pathname.startsWith('/blog');
         opacity: 1;
         background-color: var(--bg-color);
         align-items: center;
+        transition: transform 0.3s ease;
     }
 
     .nav-item {
@@ -105,3 +106,59 @@ const isBlogPage = pathname.startsWith('/blog');
         }
     }
 </style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const setupNavScroll = () => {
+      const nav = document.getElementById('main-nav');
+      let lastScrollY = window.scrollY;
+      const navHeight = nav?.offsetHeight || 0;
+
+      // Threshold - how many pixels to scroll before hiding/showing the nav
+      const scrollThreshold = 10;
+
+      function handleScroll() {
+        if (!nav) return;
+
+        const currentScrollY = window.scrollY;
+        const scrollDifference = currentScrollY - lastScrollY;
+
+        // If we're at the very top, always show the nav
+        if (currentScrollY <= 0) {
+          nav.style.transform = 'translateY(0)';
+        }
+        // Scrolling down and past threshold, hide the nav
+        else if (scrollDifference > scrollThreshold) {
+          nav.style.transform = `translateY(-${navHeight}px)`;
+        }
+        // Scrolling up and past threshold, show the nav
+        else if (scrollDifference < -scrollThreshold) {
+          nav.style.transform = 'translateY(0)';
+        }
+
+        // Only update lastScrollY if we passed the threshold
+        if (Math.abs(scrollDifference) > scrollThreshold) {
+          lastScrollY = currentScrollY;
+        }
+      }
+
+      // Throttle scroll events for performance
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    };
+
+    // Initialize on page load
+    setupNavScroll();
+
+    // For Astro View Transitions, also handle setup after page changes
+    document.addEventListener('astro:page-load', setupNavScroll);
+  });
+</script>

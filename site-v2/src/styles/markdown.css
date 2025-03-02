@@ -2,7 +2,7 @@
     width: 100%;
 }
 
-.markdown-content h1, .markdown-content h2, .markdown-content h3, 
+.markdown-content h1, .markdown-content h2, .markdown-content h3,
 .markdown-content h4, .markdown-content h5, .markdown-content h6 {
     font-weight: bold;
     margin-top: 1.5rem;
@@ -11,18 +11,22 @@
 }
 
 .markdown-content h1 {
+    font-family: 'nudica_monobold', serif;
     font-size: 2.2rem;
 }
 
 .markdown-content h2 {
+    font-family: 'nudica_monobold', serif;
     font-size: 1.8rem;
 }
 
 .markdown-content h3 {
+    font-family: 'nudica_monobold', serif;
     font-size: 1.5rem;
 }
 
 .markdown-content h4 {
+    font-family: 'nudica_monobold', serif;
     font-size: 1.25rem;
 }
 
@@ -33,6 +37,7 @@
 }
 
 .markdown-content a {
+    font-family: 'nudica_monolight', serif;
     color: var(--accent-color);
     text-decoration: none;
 }
@@ -66,18 +71,17 @@
 }
 
 .markdown-content pre {
-    width: 100%;
     padding: 1rem;
     background-color: var(--bg-code);
     color: var(--color-code);
     border-radius: 6px;
     overflow-x: auto;
     margin: 1.5rem 0;
-    font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-family: 'nudica_monolight', serif;
 }
 
 .markdown-content code {
-    font-family: "Courier New", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-family: 'nudica_monolight', serif;
     background-color: var(--bg-code);
     color: var(--color-code);
     padding: 0.2rem 0.4rem;
