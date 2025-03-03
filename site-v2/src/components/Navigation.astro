@@ -6,8 +6,8 @@ import BlogIcon from './icons/BlogIcon.astro';
 
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
-const isPostsIndex = pathname === '/posts';
-const isBlogIndex = pathname === ('/articles');
+const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
+const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('articles');
 ---
 
 {!isHomePage &&
