@@ -58,13 +58,13 @@ const posts = (await getCollection('posts')).sort(
 
       .zoom-button {
           font-family: 'nudica_monolight', serif;
-          width: 32px;
-          height: 32px;
-          border-radius: 6px;
+          width: 28px;
+          height: 28px;
           background-color: var(--bg-color);
           color: var(--color);
-          font-size: 16px;
-          border: none;
+          font-size: 12px;
+          border: solid var(--bg-color);
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -83,8 +83,7 @@ const posts = (await getCollection('posts')).sort(
       }
 
       .zoom-button.active {
-          background-color: var(--color);
-          color: white;
+          border-color: var(--color);
       }
 
       ul {
@@ -318,14 +317,14 @@ const posts = (await getCollection('posts')).sort(
     if (!postsGrid || !zoomButtons.length) return;
 
     // Load zoom level from localStorage or use default (1)
-    let currentZoom = parseInt(localStorage.getItem('posts-zoom-level') || '1');
+    let currentZoom = parseInt(localStorage.getItem('posts-zoom-level') || '3');
 
     // Apply the initial zoom level
     updateZoomLevel(currentZoom);
 
     // Add click handlers to all zoom buttons
     zoomButtons.forEach(button => {
-      const level = parseInt(button.textContent || '1');
+      const level = parseInt(button.textContent || '3');
 
       button.addEventListener('click', () => {
         if (currentZoom !== level) {
@@ -335,9 +334,14 @@ const posts = (await getCollection('posts')).sort(
       });
     });
 
-    function updateZoomLevel(level) {
+    function updateZoomLevel(level: number) {
       // Ensure level is valid (1-3)
       level = Math.max(1, Math.min(3, level));
+
+      if (!postsGrid) {
+        console.warn('Posts grid not found');
+        return;
+      }
 
       // Remove all zoom classes
       postsGrid.classList.remove('zoom-level-1', 'zoom-level-2', 'zoom-level-3');
@@ -357,7 +361,7 @@ const posts = (await getCollection('posts')).sort(
 
       // Update active state for all buttons
       zoomButtons.forEach(button => {
-        const buttonLevel = parseInt(button.textContent || '1');
+        const buttonLevel = parseInt(button.textContent || '3');
         button.classList.toggle('active', buttonLevel === level);
       });
 
