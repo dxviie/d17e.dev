@@ -68,6 +68,7 @@ const posts = defineCollection({
 const articles = defineCollection({
   // @ts-ignore
   loader: async () => {
+    
     try {
       await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
       console.debug('Logged in');
