@@ -100,6 +100,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
           <div class="media-wrapper">
             {imageUrl && (
                     <Image
+                            class="astro-media"
                             src={imageUrl}
                             width={width}
                             height={height}
@@ -147,8 +148,8 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         height: 100%;
     }
 
-    @media (max-width: 768px) {
-        .media-wrapper {
+    @media (hover: none) and (pointer: coarse) {
+        .astro-media {
             max-height: 60vh;
         }
     }

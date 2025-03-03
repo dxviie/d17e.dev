@@ -187,6 +187,12 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 <script>
   import {initSwipeNavigation} from '../scripts/swipeNavigation.js';
 
+  const isTouchDevice = () => {
+    return (('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0) ||
+      (navigator.msMaxTouchPoints > 0));
+  };
+
   // Run after the DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
     const prevLink = document.getElementById('prev-post-link');
@@ -197,7 +203,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const nextUrl = nextLink ? nextLink.getAttribute('href') : null;
 
     // Set up the visual swipe feedback
-    setupSwipeVisualFeedback(prevUrl, nextUrl);
+    setupSwipeVisualFeedback(prevUrl, nextUrl, isTouchDevice());
 
     // Initialize swipe navigation with the URLs
     initSwipeNavigation({
@@ -220,7 +226,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     const nextUrl = nextLink ? nextLink.getAttribute('href') : null;
 
     // Set up the visual swipe feedback
-    setupSwipeVisualFeedback(prevUrl, nextUrl);
+    setupSwipeVisualFeedback(prevUrl, nextUrl, isTouchDevice());
 
     // Initialize swipe navigation with the URLs
     initSwipeNavigation({
@@ -233,7 +239,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     });
   });
 
-  function setupSwipeVisualFeedback(prevUrl, nextUrl) {
+  function setupSwipeVisualFeedback(prevUrl, nextUrl, isTouchDevice) {
     // Elements
     const container = document.getElementById('swipe-feedback-container');
     const currentPage = document.getElementById('swipe-current-page');
@@ -262,7 +268,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         // Create and add a swipe indicator element
         const swipeIndicator = document.createElement('div');
         // check the page width
-        if (window.innerWidth > 768) {
+        if (!isTouchDevice) {
           return;
         }
         swipeIndicator.className = 'swipe-indicator';
