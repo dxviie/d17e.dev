@@ -30,9 +30,9 @@
 
 :root.dark {
     --color: #FFFFFF;
-    --bg-color: #1A202C;
+    --bg-color: #1c1d20;
     --button-bg-color: #FFFFFF;
-    --accent-color: #90CDF4;
+    --accent-color: #ff9957;
     --accent-rgb: 144, 205, 244; /* RGB values for dark mode accent-color */
     --bg-code: #2d333b;
     --color-code: #adbac7;
