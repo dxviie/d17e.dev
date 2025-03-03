@@ -124,30 +124,6 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         opacity: 0.7;
     }
 
-    .swipe-hint {
-        display: none;
-        margin-top: 1rem;
-        text-align: center;
-        color: var(--color);
-        opacity: 0.7;
-        font-size: 0.9rem;
-    }
-
-    .swipe-icon {
-        font-size: 1.2rem;
-        animation: swipe-animation 2s infinite alternate ease-in-out;
-        display: inline-block;
-    }
-
-    @keyframes swipe-animation {
-        0% {
-            transform: translateX(-8px);
-        }
-        100% {
-            transform: translateX(8px);
-        }
-    }
-
     /* Swipe Visual Feedback Styles */
     #swipe-feedback-container {
         position: fixed;
@@ -197,6 +173,13 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 
         .swipe-hint {
             display: block;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .post-navigation {
+            max-width: 1400px;
+            width: 90vw;
         }
     }
 </style>
@@ -278,6 +261,10 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 
         // Create and add a swipe indicator element
         const swipeIndicator = document.createElement('div');
+        // check the page width
+        if (window.innerWidth > 768) {
+          return;
+        }
         swipeIndicator.className = 'swipe-indicator';
         swipeIndicator.innerHTML = '<span style="opacity: 0; margin-left:.15rem; margin-bottom:.2rem; animation: swipe-dot 3.6s 2 ease-in-out;">&#62037</span>';
         swipeIndicator.style.cssText = `
@@ -307,7 +294,7 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
     }
   }
 
-  function capturePage(element) {
+  function capturePage(element: HTMLElement) {
     // Capture main content as a simplified representation
     const mainContent = document.querySelector('main');
     if (!mainContent) return;

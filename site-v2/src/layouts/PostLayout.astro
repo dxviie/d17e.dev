@@ -138,6 +138,35 @@ const {title, publishDate, dateUpdated, cover, body, link, linkDescription} = As
             font-size: 2rem;
         }
     }
+
+    article {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 1200px) {
+        main {
+            max-width: 90vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-media {
+            max-width: 700px;
+        }
+
+        .post-content {
+            max-width: 700px;
+        }
+
+        article {
+            justify-content: center;
+            flex-direction: row;
+            gap: 2rem;
+        }
+    }
 </style>
 
 <script>
