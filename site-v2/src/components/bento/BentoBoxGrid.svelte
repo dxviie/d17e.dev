@@ -1,9 +1,9 @@
 <script lang="ts">
   import {
     type BentoBox,
+    type BentoContent,
     buildTileGrid,
     calculateSquareGridDimensions,
-    findAllConnectedShapes,
     generatePathFromTiles,
     getContentTiles,
     getShapeInTiles,
@@ -11,11 +11,15 @@
     type Tile
   } from "$root/src/components/bento/BentoBoxer.ts";
 
-  const {svgId} = $props();
+  const {svgId, bentoContent} = $props<{
+    svgId: string;
+    bentoContent: BentoContent[];
+  }>();
   let containerElement: HTMLDivElement;
 
   let gridTiles: Tile[] = $state([]);
   let bentoBoxes: BentoBox[] = $state([]);
+  let shownBentoContent = $state<number[]>([]);
   let usedTileIndices = $state(new Set<number>());
   let translateX = $state(0);
   let translateY = $state(0);
@@ -42,46 +46,42 @@
   function animate(time: DOMHighResTimeStamp) {
     let stop = false;
     const unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
-    const shape = getShapeInTiles(unusedTiles, Math.round(Math.random() * 2) + 2, Math.round(Math.random() * 2) + 2, gridDimensions.rows, gridDimensions.columns, Math.round(Math.random()));
-    if (shape.length > 0) {
-      shape.forEach(tile => usedTileIndices.add(tile.index));
-      const path = generatePathFromTiles(shape);
-      const roundedPath = roundAndInsetPath(shape, path, 0, INSET / window.devicePixelRatio || 1);
-      const content = getContentTiles(shape, 3);
-      const bento = {
-        shape: shape,
-        path: roundedPath,
-        pathAlt: path,
-        color: contentColors[Math.floor(Math.random() * contentColors.length)],
-        contentTiles: content,
-        inset: INSET
-      }
-      bentoBoxes = [...bentoBoxes, bento];
-      noAddCount = 0;
-    } else {
-      noAddCount++;
-      if (noAddCount > 10) {
-        console.log('STOPPING');
-        let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows);
-        for (let i = 0; i < connectedShapes.length; i++) {
-          const path = generatePathFromTiles(connectedShapes[i]);
-          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20 / window.devicePixelRatio || 1, 10 / window.devicePixelRatio || 1);
-          const bento = {
-            shape: connectedShapes[i],
-            path: roundedPath,
-            pathAlt: path,
-            color: fillColors[Math.floor(Math.random() * fillColors.length)],
-            contentTiles: [],
-            inset: 10
-          }
-          bentoBoxes = [...bentoBoxes, bento];
+
+    //@ts-ignore
+    bentoContent.forEach(content => {
+      if (shownBentoContent.includes(content.id)) return;
+      const shape = getShapeInTiles(unusedTiles, content.dimensions[0].width, content.dimensions[0].height, gridDimensions.rows, gridDimensions.columns, 0);//Math.round(Math.random()));
+
+      if (shape.length > 0) {
+        shape.forEach(tile => usedTileIndices.add(tile.index));
+        const path = generatePathFromTiles(shape);
+        const inset = content.id === 'logo' ? 0 : INSET / window.devicePixelRatio || 1;
+        const roundedPath = roundAndInsetPath(shape, path, 0, inset);
+        const contentTiles = getContentTiles(shape, 3);
+        const bentoContent = contentTiles.map(contentTile => {
+          return {
+            id: content.id,
+            dimensions: content.dimensions,
+            html: content.html,
+            required: content.required,
+            tile: contentTile
+          };
+        });
+
+        const bento = {
+          shape: shape,
+          path: roundedPath,
+          pathAlt: path,
+          color: 'green',
+          contentTiles: bentoContent,
+          inset: inset
         }
-        stop = true;
+        shownBentoContent = [...shownBentoContent, content.id];
+        bentoBoxes = [...bentoBoxes, bento];
+        noAddCount = 0;
       }
-    }
+    });
     frameCount++;
-    if (!stop)
-      animationId = requestAnimationFrame(animate);
   }
 
   function setupGrid() {
@@ -95,6 +95,10 @@
       translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
       translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
       gridTiles = buildTileGrid(columns, rows, tileWidth, tileHeight);
+      // set a css variable
+      const margin = 7 * window.devicePixelRatio || 1;
+      document.documentElement.style.setProperty('--tile-font-size', `${tileHeight - margin}px`);
+      document.documentElement.style.setProperty('--tile-font-size-small', (tileHeight - margin) / (10 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
       setTimeout(() => {
         gridDimensions = {columns, rows, tileWidth, tileHeight};
         bentoBoxes = [];
@@ -225,7 +229,7 @@
                 y={tile.y}
                 width={tile.width}
                 height={tile.height}
-                fill="white"
+                fill="darkgray"
                 stroke="black"
                 stroke-width={.5}
                 opacity={.4}
@@ -240,23 +244,25 @@
       {#each bentoBoxes as box}
         <path d={box.path} fill={box.color} stroke="none" stroke-width="5" opacity="1"/>
 
-        {#each box.contentTiles as tile}
-          <rect
-                  x={tile.x + box.inset}
-                  y={tile.y+ box.inset}
-                  width={tile.width - box.inset * 2}
-                  height={tile.height - box.inset * 2}
-                  fill="none"
-          />
-          <foreignObject xmlns="http://www.w3.org/1999/xhtml"
-                         x={tile.x + box.inset}
-                         y={tile.y + box.inset}
-                         width={tile.width - box.inset * 2}
-                         height={tile.height - box.inset * 2 }>
-            <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
-              lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. Quisquam, quod.
-            </div>
-          </foreignObject>
+        {#each box.contentTiles as bentoContent}
+          {#if bentoContent.tile}
+            <rect
+                    x={bentoContent.tile.x + box.inset}
+                    y={bentoContent.tile.y+ box.inset}
+                    width={bentoContent.tile.width - box.inset * 2}
+                    height={bentoContent.tile.height - box.inset * 2}
+                    fill="none"
+            />
+            <foreignObject xmlns="http://www.w3.org/1999/xhtml"
+                           x={bentoContent.tile.x + box.inset}
+                           y={bentoContent.tile.y + box.inset}
+                           width={bentoContent.tile.width - box.inset * 2}
+                           height={bentoContent.tile.height - box.inset * 2 }>
+              <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
+                {@html bentoContent.html}
+              </div>
+            </foreignObject>
+          {/if}
         {/each}
       {/each}
 
@@ -283,13 +289,8 @@
     }
 
     .bento-content {
-        /*font-size: 2rem;*/
-        color: white;
         background-color: transparent;
-        padding: .5rem;
-        word-break: break-all;
+        padding: 0;
         border-radius: 5px;
-        height: 100%;
-        font-family: 'nudica_monobold';
     }
 </style>

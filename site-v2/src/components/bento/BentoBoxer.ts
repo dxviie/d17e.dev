@@ -14,9 +14,17 @@ export type BentoBox = {
   path: string;
   pathAlt?: string;
   color: string;
-  contentTiles: Tile[];
+  contentTiles: BentoContent[];
   inset: number;
 };
+
+export type BentoContent = {
+  id: string;
+  dimensions: { width: number; height: number }[]
+  html: string
+  required: boolean
+  tile?: Tile
+}
 
 /******** GRID HELPERS ********/
 

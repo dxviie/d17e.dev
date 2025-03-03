@@ -1,23 +1,12 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import BentoBoxGrid from '../components/bento/BentoBoxGrid.svelte';
+import LandingBentoGrid from '../components/bento/LandingBentoGrid.svelte';
 import {SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 import Navigation from "../components/Navigation.astro";
 import {getCollection} from 'astro:content';
 
 const landingPageData = await getCollection('landingPage');
-// Get the Landing Page data
-
-// Since it's a singleton, we take the first item
 const landingPage = landingPageData[0];
-
-// Log the data to see the structure
-// console.log('Landing Page Data:', JSON.stringify(landingPage, null, 2));
-console.log('Featured Posts:', landingPage.data.Posts[0]);
-
-// Get the featured posts and articles
-// const featuredPosts = landingPage.data.Posts;
-// const featuredArticles = landingPage.data.Articles;
 ---
 
 <!doctype html>
@@ -28,7 +17,7 @@ console.log('Featured Posts:', landingPage.data.Posts[0]);
 <body>
 <Navigation/>
 <main>
-  <BentoBoxGrid svgId="bento-landing" client:load/>
+  <LandingBentoGrid {landingPage} client:only/>
 </main>
 </body>
 </html>
