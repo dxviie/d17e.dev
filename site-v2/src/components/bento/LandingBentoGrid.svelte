@@ -9,7 +9,24 @@
 
   const svgId = "bento-landing";
 
-  const isMobile = window ? window.innerWidth < 768 : false;
+  let isMobile = false;
+
+  $effect(() => {
+    isMobile = window ? window.innerWidth < 768 : false;
+  });
+
+  function getExtForType(type: string) {
+    let ext = "jpg"; // default extension
+    if (type) {
+      if (type === "image/png") ext = "png";
+      else if (type === "image/gif") ext = "gif";
+      else if (type === "image/webp") ext = "webp";
+      else if (type === "image/svg+xml") ext = "svg";
+      else if (type === "image/avif") ext = "avif";
+      else if (type === "image/jpeg") ext = "jpeg";
+    }
+    return ext;
+  }
 
   function createBentoGrid(landingPage: any): BentoContent[] {
     const bentoContent: BentoContent[] = [];
@@ -31,39 +48,49 @@
       required: true
     });
 
+    const usedPosts = new Set<number>();
+
     // Featured posts from landingPage.Posts
     if (landingPage.data.Posts && landingPage.data.Posts.length > 1) {
       // First featured post - medium size
-      const firstPost = landingPage.data.Posts[Math.floor(Math.random() * landingPage.data.Posts.length)];
+      const firstIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
+      const firstPost = landingPage.data.Posts[firstIndex];
+
       bentoContent.push({
         id: firstPost.id,
         dimensions: [{width: 2, height: 2}],
         html: `
         <div class="featured-post">
-          <img src="/assets/${firstPost.cover.id}.jpg" alt="${firstPost.title}"/>
+          <img src="/assets/${firstPost.cover.id}.${getExtForType(firstPost.cover.type)}" alt="${firstPost.title}"/>
         </div>
       `,
         required: true
       });
+      usedPosts.add(firstIndex);
 
       // Other posts - smaller tiles
-      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 4); i++) {
-        const post = landingPage.data.Posts[Math.floor(Math.random() * landingPage.data.Posts.length)];
+      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 8); i++) {
+        let postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
+        while (usedPosts.has(postIndex)) {
+          postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
+        }
+        const post = landingPage.data.Posts[postIndex];
+        const size = Math.random() > 0.7 ? 1 : 2;
         bentoContent.push({
-          id: post.id,
-          dimensions: [{width: 2, height: 2}],
+          id: `post-${post.id}-${i}`, // Ensure unique IDs
+          dimensions: [{width: size, height: size}],
           html: `
           <div class="featured-post">
-          <img src="/assets/${firstPost.cover.id}.jpg" alt="${firstPost.title}"/>
-        </div>
+            <img src="/assets/${post.cover.id}.${getExtForType(post.cover.type)}" alt="${post.title}"/>
+          </div>
         `,
           required: false
         });
+        usedPosts.add(postIndex);
       }
     }
 
     // Add more tiles based on Articles and other content...
-    console.log('bentoContent', bentoContent);
     return bentoContent;
   }
 

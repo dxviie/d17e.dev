@@ -4,6 +4,7 @@
     type BentoContent,
     buildTileGrid,
     calculateSquareGridDimensions,
+    findAllConnectedShapes,
     generatePathFromTiles,
     getContentTiles,
     getShapeInTiles,
@@ -19,7 +20,7 @@
 
   let gridTiles: Tile[] = $state([]);
   let bentoBoxes: BentoBox[] = $state([]);
-  let shownBentoContent = $state<number[]>([]);
+  let shownBentoContent = $state<string[]>([]);
   let usedTileIndices = $state(new Set<number>());
   let translateX = $state(0);
   let translateY = $state(0);
@@ -31,6 +32,7 @@
   let animationId: number;
   let frameCount = 0;
   let noAddCount = 0;
+  let isAnimating = $state(false);
 
   const INSET = 10;
 
@@ -39,73 +41,157 @@
       frameCount = 0;
       setupGrid();
     }
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   });
 
   function animate(time: DOMHighResTimeStamp) {
-    let stop = false;
+    if (!isAnimating) return;
+
+    // Create a snapshot of the current state at the beginning of the frame
+    const currentShownContent = new Set(shownBentoContent);
     const unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
 
-    //@ts-ignore
-    bentoContent.forEach(content => {
-      if (shownBentoContent.includes(content.id)) return;
-      const shape = getShapeInTiles(unusedTiles, content.dimensions[0].width, content.dimensions[0].height, gridDimensions.rows, gridDimensions.columns, 0);//Math.round(Math.random()));
+    // Track which content gets added this frame
+    const addedThisFrame = [];
+    const newBentoBoxes = [];
+    const newUsedTiles = new Set<number>();
 
+    // Process each content item that hasn't been shown yet
+    for (const content of bentoContent) {
+      // Skip if we already have this content
+      if (currentShownContent.has(content.id)) continue;
+
+      // Find tiles for this content
+      const shape = getShapeInTiles(
+        unusedTiles,
+        content.dimensions[0].width,
+        content.dimensions[0].height,
+        gridDimensions.rows,
+        gridDimensions.columns,
+        0
+      );
+
+      // If we found a valid shape
       if (shape.length > 0) {
-        shape.forEach(tile => usedTileIndices.add(tile.index));
+        // Mark these tiles as used for future iterations
+        shape.forEach(tile => newUsedTiles.add(tile.index));
+
+        // Generate the path
         const path = generatePathFromTiles(shape);
         const inset = content.id === 'logo' ? 0 : INSET / window.devicePixelRatio || 1;
         const roundedPath = roundAndInsetPath(shape, path, 0, inset);
-        const contentTiles = getContentTiles(shape, 3);
-        const bentoContent = contentTiles.map(contentTile => {
-          return {
-            id: content.id,
-            dimensions: content.dimensions,
-            html: content.html,
-            required: content.required,
-            tile: contentTile
-          };
-        });
 
-        const bento = {
+        // Find content tiles
+        const contentTiles = getContentTiles(shape, 1);
+        const bentoCotentTiles = contentTiles.map(contentTile => ({
+          id: content.id,
+          dimensions: content.dimensions,
+          html: content.html,
+          required: content.required,
+          tile: contentTile
+        }));
+
+        // Create bento box
+        newBentoBoxes.push({
           shape: shape,
           path: roundedPath,
           pathAlt: path,
-          color: 'green',
-          contentTiles: bentoContent,
+          color: fillColors[bentoBoxes.length % fillColors.length],
+          contentTiles: bentoCotentTiles,
           inset: inset
-        }
-        shownBentoContent = [...shownBentoContent, content.id];
-        bentoBoxes = [...bentoBoxes, bento];
-        noAddCount = 0;
+        });
+
+        // Mark this content as added
+        addedThisFrame.push(content.id);
+        break;
       }
-    });
+    }
+
+    // Apply all changes atomically
+    if (addedThisFrame.length > 0) {
+      // Update tracked state
+      newUsedTiles.forEach(index => usedTileIndices.add(index));
+      shownBentoContent = [...shownBentoContent, ...addedThisFrame];
+      bentoBoxes = [...bentoBoxes, ...newBentoBoxes];
+      noAddCount = 0;
+    } else {
+      // Nothing added this frame
+      noAddCount++;
+
+      // Stop animation if we've processed all content items or
+      // we've had many frames with no new content
+      if (shownBentoContent.length === bentoContent.length ||
+        noAddCount > 10) {
+
+        console.log('STOPPING');
+        let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows);
+        for (let i = 0; i < connectedShapes.length; i++) {
+          const path = generatePathFromTiles(connectedShapes[i]);
+          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20 / window.devicePixelRatio || 1, 10 / window.devicePixelRatio || 1);
+          const bento = {
+            shape: connectedShapes[i],
+            path: roundedPath,
+            pathAlt: path,
+            color: fillColors[Math.floor(Math.random() * fillColors.length)],
+            contentTiles: [],
+            inset: 10
+          }
+          bentoBoxes = [...bentoBoxes, bento];
+        }
+
+        isAnimating = false;
+        return;
+      }
+    }
+
+    // Continue animation
     frameCount++;
+    animationId = requestAnimationFrame(animate);
   }
 
   function setupGrid() {
-    if (containerElement) {
-      const tileSize = Math.min(containerElement.clientWidth / 5, 150);
-      const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
-        containerElement.clientWidth - 20 || 1,
-        containerElement.clientHeight - 20 || 1,
-        tileSize
-      );
-      translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
-      translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
-      gridTiles = buildTileGrid(columns, rows, tileWidth, tileHeight);
-      // set a css variable
-      const margin = 7 * window.devicePixelRatio || 1;
-      document.documentElement.style.setProperty('--tile-font-size', `${tileHeight - margin}px`);
-      document.documentElement.style.setProperty('--tile-font-size-small', (tileHeight - margin) / (10 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
-      setTimeout(() => {
-        gridDimensions = {columns, rows, tileWidth, tileHeight};
-        bentoBoxes = [];
-        usedTileIndices.clear();
-        animationId = requestAnimationFrame(animate);
-      }, 0);
-    }
+    if (!containerElement) return;
+
+    // Calculate grid dimensions
+    const tileSize = Math.min(containerElement.clientWidth / 5, 150);
+    const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
+      containerElement.clientWidth - 20 || 1,
+      containerElement.clientHeight - 20 || 1,
+      tileSize
+    );
+
+    // Position the grid
+    translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
+    translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
+
+    // Build the grid
+    gridTiles = buildTileGrid(columns, rows, tileWidth, tileHeight);
+
+    // Set CSS variables for styling
+    const margin = 7 * window.devicePixelRatio || 1;
+    document.documentElement.style.setProperty('--tile-font-size', `${tileHeight - margin}px`);
+    document.documentElement.style.setProperty('--tile-font-size-small',
+      (tileHeight - margin) / (10 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
+
+    // Reset state and start animation after a brief delay to ensure DOM is ready
+    setTimeout(() => {
+      gridDimensions = {columns, rows, tileWidth, tileHeight};
+      bentoBoxes = [];
+      shownBentoContent = [];
+      usedTileIndices.clear();
+
+      // Start animation
+      isAnimating = true;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      animationId = requestAnimationFrame(animate);
+    }, 0);
   }
 
   // Helper to keep number in range
@@ -145,53 +231,6 @@
       // a and b components (color) between -0.2 and 0.2 for balanced colors
       const a = -0.2 + Math.random() * 0.4;
       const b = -0.2 + Math.random() * 0.4;
-
-      palette.push(oklabToHex(L, a, b));
-    }
-
-    return palette;
-  }
-
-  // Example usage:
-  // Generate 5 colors
-  // const colors = generateOKLABPalette(5);
-
-  // For more harmonious palettes, you could modify the generation:
-  function generateHarmoniosOKLABPalette(numColors: number): string[] {
-    // Base hue angle in radians
-    const baseHue = Math.random() * Math.PI * 2;
-
-    const palette: string[] = [];
-
-    for (let i = 0; i < numColors; i++) {
-      // Distribute hues evenly around the circle
-      const hue = baseHue + (Math.PI * 2 * i / numColors);
-
-      // Convert polar coordinates to a/b coordinates
-      const radius = 0.1 + Math.random() * 0.1; // Chroma
-      const a = radius * Math.cos(hue);
-      const b = radius * Math.sin(hue);
-
-      // Vary lightness slightly
-      const L = 0.45 + Math.random() * 0.3;
-
-      palette.push(oklabToHex(L, a, b));
-    }
-
-    return palette;
-  }
-
-  // For pastel colors:
-  function generatePastelOKLABPalette(numColors: number): string[] {
-    const palette: string[] = [];
-    const baseHue = Math.random() * Math.PI * 2;
-
-    for (let i = 0; i < numColors; i++) {
-      const hue = baseHue + (Math.PI * 2 * i / numColors);
-      const radius = 0.05 + Math.random() * 0.05; // Lower chroma for pastels
-      const a = radius * Math.cos(hue);
-      const b = radius * Math.sin(hue);
-      const L = 0.7 + Math.random() * 0.2; // Higher lightness for pastels
 
       palette.push(oklabToHex(L, a, b));
     }
