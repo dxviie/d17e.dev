@@ -256,7 +256,7 @@
                   y1={tile.y}
                   x2={tile.x + tile.width}
                   y2={tile.y + tile.height}
-                  stroke="var(--color)"
+                  stroke={bentoConfig.color}
                   stroke-width={.1}
           />
           <line
@@ -264,7 +264,7 @@
                   y1={tile.y}
                   x2={tile.x}
                   y2={tile.y + tile.height}
-                  stroke="var(--color)"
+                  stroke={bentoConfig.color}
                   stroke-width={.1}
           />
           <circle r={tile.width/2} cx={tile.x + tile.width / 2} cy={tile.y + tile.height / 2} fill="none" stroke={bentoConfig.color}
@@ -273,7 +273,7 @@
       </g>
 
       {#each bentoBoxes as box}
-        <path d={box.path} fill="var(--color)" stroke="none" stroke-width="5" opacity="1"/>
+        <path d={box.path} fill={bentoConfig.color} stroke="none" stroke-width="5" opacity="1"/>
 
         {#each box.contentTiles as bentoContent}
           {#if bentoContent.tile}

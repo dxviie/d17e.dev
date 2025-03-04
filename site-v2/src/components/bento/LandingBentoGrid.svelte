@@ -24,6 +24,8 @@
 
   $effect(() => {
     isMobile = window ? window.innerWidth < 768 : false;
+    document.documentElement.style.setProperty('--ldp-color', bentoConfig.color);
+    document.documentElement.style.setProperty('--ldp-bg-color', bentoConfig.bgColor);
 
     if (landingPage) {
       landingPageBentoContent = createBentoGrid(landingPage);
@@ -138,7 +140,7 @@
     }
 
     :global(.logo-text) {
-        color: var(--bg-color);
+        color: var(--ldp-bg-color);
         animation: fadeDropIn 0.6s ease-out forwards;
         transform: translateY(-10px);
         padding: 1rem;
@@ -157,7 +159,8 @@
         flex-grow: 1;
         padding: 3rem 4.4rem;
         justify-content: center;
-        background-color: var(--bg-color);
+        background-color: var(--ldp-bg-color);
+        color: var(--ldp-color);
     }
 
     :global(.logo-subtext-line) {
@@ -217,6 +220,8 @@
 
     :global(.featured-post) {
         display: flex;
+        width: 100%;
+        height: 100%;
         justify-content: center;
         align-items: center;
         overflow: hidden;

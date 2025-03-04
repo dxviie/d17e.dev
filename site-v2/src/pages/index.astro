@@ -8,8 +8,9 @@ import {getCollection} from 'astro:content';
 const landingPagesData = await getCollection('landingPages');
 console.log('............................................', landingPagesData.length);
 
-// You can select a specific landing page by name or use the first one as default
-const landingPage = landingPagesData.find(page => page.data.name === 'Home') || landingPagesData[0];
+// Randomly select one of the available landing page configurations
+const randomIndex = Math.floor(Math.random() * landingPagesData.length);
+const landingPage = landingPagesData[randomIndex] || landingPagesData[0];
 ---
 
 <!doctype html>
