@@ -3,14 +3,16 @@
   import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
   import type {BentoContent} from "$root/src/components/bento/BentoBoxer.ts";
 
-  const {landingPage} = $props<{
-    landingPage: any;
+  const {landingPages} = $props<{
+    landingPages: any[];
   }>();
   let landingPageBentoContent: BentoContent[] = $state([]);
 
   const svgId = "bento-landing";
 
-  const bentoConfig = {
+  const landingPage = $state(landingPages[Math.floor(Math.random() * landingPages.length)]);
+
+  const bentoConfig = $state({
     insetMin: landingPage.data?.insetMin || 1,
     insetMax: landingPage.data?.insetMax || 4,
     radiusMin: landingPage.data?.radiusMin || 0,
@@ -18,7 +20,7 @@
     color: landingPage.data?.color || 'black',
     bgColor: landingPage.data?.bgColor || 'white',
     palette: ['darkorange', 'hotpink']
-  };
+  });
 
   let isMobile = true;
 
