@@ -26,6 +26,16 @@ export type BentoContent = {
   tile?: Tile
 }
 
+export type BentoConfig = {
+  insetMin: number;
+  insetMax: number;
+  radiusMin: number;
+  radiusMax: number;
+  color: string;
+  bgColor: string;
+  palette: string[];
+}
+
 /******** GRID HELPERS ********/
 
 export function calculateSquareGridDimensions(

@@ -6,13 +6,28 @@
   const {landingPage} = $props<{
     landingPage: any;
   }>();
+  let landingPageBentoContent: BentoContent[] = $state([]);
 
   const svgId = "bento-landing";
 
-  let isMobile = false;
+  const bentoConfig = {
+    insetMin: 1,
+    insetMax: 4,
+    radiusMin: 0,
+    radiusMax: 2,
+    color: 'black',
+    bgColor: 'white',
+    palette: ['darkorange', 'hotpink']
+  };
+
+  let isMobile = true;
 
   $effect(() => {
     isMobile = window ? window.innerWidth < 768 : false;
+
+    if (landingPage) {
+      landingPageBentoContent = createBentoGrid(landingPage);
+    }
   });
 
   function getExtForType(type: string) {
@@ -31,13 +46,19 @@
   function createBentoGrid(landingPage: any): BentoContent[] {
     const bentoContent: BentoContent[] = [];
 
+    if (isMobile) {
+      document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 1rem');
+    } else {
+      document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 5rem');
+    }
     // Hero section - full width
     bentoContent.push({
       id: 'logo',
-      dimensions: [{width: isMobile ? 3 : 4, height: 1}],
+      dimensions: [isMobile ? {width: 3, height: 1} : {width: 8, height: 2}],
       html: `
       <div class="logo-blip">
-        <span class="logo-text">D17E</span>
+        <div class="logo-text">D17E</div>
+
         <div class="logo-subtext">
           <span class="logo-subtext-line">I code.</span>
           <span class="logo-subtext-line">I art.</span>
@@ -47,6 +68,7 @@
     `,
       required: true
     });
+    console.log('LOGOGOG', bentoContent[bentoContent.length - 1]);
 
     const usedPosts = new Set<number>();
 
@@ -69,7 +91,7 @@
       usedPosts.add(firstIndex);
 
       // Other posts - smaller tiles
-      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 8); i++) {
+      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 3); i++) {
         let postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
         while (usedPosts.has(postIndex)) {
           postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
@@ -94,36 +116,41 @@
     return bentoContent;
   }
 
-  const bentoContent = createBentoGrid(landingPage);
-
 </script>
 
-<BentoBoxGrid {svgId} {bentoContent}/>
+<BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
 
 <style>
     :global(.logo-blip) {
         color: black;
         display: flex;
         flex-direction: row;
-        line-height: unset;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
     }
 
     :global(.logo-text) {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: var(--bg-color);
+        animation: fadeDropIn 0.6s ease-out forwards;
+        transform: translateY(-10px);
+        padding: 1rem;
+        margin: 0 2rem;
         font-weight: bold;
         font-family: 'nudica_monobold', serif;
         font-size: var(--tile-font-size, 2em);
-        line-height: 1.05;
-        background-color: var(--color);
-        color: var(--bg-color);
-        padding: 0 0.1em;
     }
 
     :global(.logo-subtext) {
-        font-family: 'nudica_monolight', serif;
+        font-family: 'nudica_monobold', serif;
+        gap: .8rem;
         display: flex;
         flex-direction: column;
-        padding: 0 .7rem 0 1rem;
-        margin-left: 1rem;
+        flex-grow: 1;
+        padding: var(--subtext-padding);
         justify-content: center;
         background-color: var(--bg-color);
     }
@@ -131,5 +158,35 @@
     :global(.logo-subtext-line) {
         font-size: calc(var(--tile-font-size-small, .7rem));
         line-height: 1.1;
+        /* Animation for logo-subtext-line with delay */
+        animation: fadeDropIn 0.6s ease-out forwards;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation-delay: 0.3s; /* Slight delay after the main text */
+    }
+
+    /* Define the animation */
+    @keyframes fadeDropIn {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* If you have multiple subtext lines and want them to appear sequentially */
+    :global(.logo-subtext-line:nth-child(1)) {
+        animation-delay: 0.3s;
+    }
+
+    :global(.logo-subtext-line:nth-child(2)) {
+        animation-delay: 0.4s;
+    }
+
+    :global(.logo-subtext-line:nth-child(3)) {
+        animation-delay: 0.5s;
     }
 </style>

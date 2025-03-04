@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     type BentoBox,
+    type BentoConfig,
     type BentoContent,
     buildTileGrid,
     calculateSquareGridDimensions,
@@ -12,9 +13,10 @@
     type Tile
   } from "$root/src/components/bento/BentoBoxer.ts";
 
-  const {svgId, bentoContent} = $props<{
+  const {svgId, bentoContent, bentoConfig} = $props<{
     svgId: string;
-    bentoContent: BentoContent[];
+    bentoContent: BentoContent[]
+    bentoConfig: BentoConfig
   }>();
   let containerElement: HTMLDivElement;
 
@@ -26,9 +28,6 @@
   let translateY = $state(0);
   let gridDimensions = $state({columns: 0, rows: 0, tileWidth: 0, tileHeight: 0});
 
-  let contentColors = generateOKLABPalette(3);
-  let fillColors = generateVibrantOKLABPalette(50);
-
   let animationId: number;
   let frameCount = 0;
   let noAddCount = 0;
@@ -39,7 +38,8 @@
   $effect(() => {
     if (containerElement) {
       frameCount = 0;
-      setupGrid();
+      const isMobile = window ? window.innerWidth < 768 : false;
+      setupGrid(isMobile);
     }
 
     return () => {
@@ -49,17 +49,20 @@
     };
   });
 
+  function getRandomValue(min: number, max: number, round: boolean = false): number {
+    const rand = (Math.random() * (max - min + 1)) + min;
+    return round ? Math.round(rand) : rand;
+  }
+
   function animate(time: DOMHighResTimeStamp) {
-    if (!isAnimating) return;
+    // if (!isAnimating) return;
 
     // Create a snapshot of the current state at the beginning of the frame
     const currentShownContent = new Set(shownBentoContent);
-    const unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
+    let unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
 
-    // Track which content gets added this frame
-    const addedThisFrame = [];
-    const newBentoBoxes = [];
-    const newUsedTiles = new Set<number>();
+    const inset = getRandomValue(bentoConfig.insetMin, bentoConfig.insetMax, true);
+    const radius = getRandomValue(bentoConfig.radiusMin, bentoConfig.radiusMax, true);
 
     // Process each content item that hasn't been shown yet
     for (const content of bentoContent) {
@@ -79,12 +82,11 @@
       // If we found a valid shape
       if (shape.length > 0) {
         // Mark these tiles as used for future iterations
-        shape.forEach(tile => newUsedTiles.add(tile.index));
+        shape.forEach(tile => usedTileIndices.add(tile.index));
 
         // Generate the path
         const path = generatePathFromTiles(shape);
-        const inset = content.id === 'logo' ? 0 : INSET / window.devicePixelRatio || 1;
-        const roundedPath = roundAndInsetPath(shape, path, 0, inset);
+        const roundedPath = roundAndInsetPath(shape, path, radius, inset);
 
         // Find content tiles
         const contentTiles = getContentTiles(shape, 1);
@@ -97,71 +99,42 @@
         }));
 
         // Create bento box
-        newBentoBoxes.push({
+        bentoBoxes.push({
           shape: shape,
           path: roundedPath,
           pathAlt: path,
-          color: fillColors[bentoBoxes.length % fillColors.length],
+          color: bentoConfig.color,
           contentTiles: bentoCotentTiles,
           inset: inset
         });
-
-        // Mark this content as added
-        addedThisFrame.push(content.id);
-        break;
       }
+      unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
     }
 
-    // Apply all changes atomically
-    if (addedThisFrame.length > 0) {
-      // Update tracked state
-      newUsedTiles.forEach(index => usedTileIndices.add(index));
-      shownBentoContent = [...shownBentoContent, ...addedThisFrame];
-      bentoBoxes = [...bentoBoxes, ...newBentoBoxes];
-      noAddCount = 0;
-    } else {
-      // Nothing added this frame
-      noAddCount++;
-
-      // Stop animation if we've processed all content items or
-      // we've had many frames with no new content
-      if (shownBentoContent.length === bentoContent.length ||
-        noAddCount > 10) {
-
-        console.log('STOPPING');
-        let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows);
-        for (let i = 0; i < connectedShapes.length; i++) {
-          const path = generatePathFromTiles(connectedShapes[i]);
-          const roundedPath = roundAndInsetPath(connectedShapes[i], path, 20 / window.devicePixelRatio || 1, 10 / window.devicePixelRatio || 1);
-          const bento = {
-            shape: connectedShapes[i],
-            path: roundedPath,
-            pathAlt: path,
-            color: fillColors[Math.floor(Math.random() * fillColors.length)],
-            contentTiles: [],
-            inset: 10
-          }
-          bentoBoxes = [...bentoBoxes, bento];
-        }
-
-        isAnimating = false;
-        return;
+    let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows);
+    for (let i = 0; i < connectedShapes.length; i++) {
+      const path = generatePathFromTiles(connectedShapes[i]);
+      const roundedPath = roundAndInsetPath(connectedShapes[i], path, radius, inset);
+      const bento = {
+        shape: connectedShapes[i],
+        path: roundedPath,
+        pathAlt: path,
+        color: bentoConfig.color,
+        contentTiles: [],
+        inset: 10
       }
+      bentoBoxes = [...bentoBoxes, bento];
     }
-
-    // Continue animation
-    frameCount++;
-    animationId = requestAnimationFrame(animate);
   }
 
-  function setupGrid() {
+  function setupGrid(isMobile: boolean = false) {
     if (!containerElement) return;
 
     // Calculate grid dimensions
     const tileSize = Math.min(containerElement.clientWidth / 5, 150);
     const {columns, rows, tileHeight, tileWidth} = calculateSquareGridDimensions(
-      containerElement.clientWidth - 20 || 1,
-      containerElement.clientHeight - 20 || 1,
+      containerElement.clientWidth /*- 20*/ || 1,
+      containerElement.clientHeight /*- 20*/ || 1,
       tileSize
     );
 
@@ -174,9 +147,10 @@
 
     // Set CSS variables for styling
     const margin = 7 * window.devicePixelRatio || 1;
-    document.documentElement.style.setProperty('--tile-font-size', `${tileHeight - margin}px`);
+    const factor = isMobile ? .95 : 2;
+    document.documentElement.style.setProperty('--tile-font-size', `${(tileHeight * factor) - margin}px`);
     document.documentElement.style.setProperty('--tile-font-size-small',
-      (tileHeight - margin) / (10 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
+      ((tileHeight * factor) - margin) / (8 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
 
     // Reset state and start animation after a brief delay to ensure DOM is ready
     setTimeout(() => {
@@ -262,26 +236,44 @@
   <svg id={svgId} xmlns="http://www.w3.org/2000/svg">
     <g id="bento-grid-root" transform={`translate(${translateX}, ${translateY})`}>
 
-      {#each gridTiles as tile}
-        <rect
-                x={tile.x}
-                y={tile.y}
-                width={tile.width}
-                height={tile.height}
-                fill="darkgray"
-                stroke="black"
-                stroke-width={.5}
-                opacity={.4}
-                tabindex={tile.index}
-                role="button"
-                aria-roledescription="tile selection"
-                data-index={tile.index}
-        />
-        <text x={tile.x + 5} y={tile.y + 15} font-size={10} fill="black">{tile.index}</text>
-      {/each}
+      <g id="grid-tile" opacity="0.7">
+        {#each gridTiles as tile}
+          <rect
+                  x={tile.x}
+                  y={tile.y}
+                  width={tile.width}
+                  height={tile.height}
+                  fill={bentoConfig.bgColor}
+                  stroke={bentoConfig.color}
+                  stroke-width={.1}
+                  tabindex={tile.index}
+                  role="button"
+                  aria-roledescription="tile selection"
+                  data-index={tile.index}
+          />
+          <line
+                  x1={tile.x}
+                  y1={tile.y}
+                  x2={tile.x + tile.width}
+                  y2={tile.y + tile.height}
+                  stroke="var(--color)"
+                  stroke-width={.1}
+          />
+          <line
+                  x1={tile.x + tile.width}
+                  y1={tile.y}
+                  x2={tile.x}
+                  y2={tile.y + tile.height}
+                  stroke="var(--color)"
+                  stroke-width={.1}
+          />
+          <circle r={tile.width/2} cx={tile.x + tile.width / 2} cy={tile.y + tile.height / 2} fill="none" stroke={bentoConfig.color}
+                  stroke-width="0.1"/>
+        {/each}
+      </g>
 
       {#each bentoBoxes as box}
-        <path d={box.path} fill={box.color} stroke="none" stroke-width="5" opacity="1"/>
+        <path d={box.path} fill="var(--color)" stroke="none" stroke-width="5" opacity="1"/>
 
         {#each box.contentTiles as bentoContent}
           {#if bentoContent.tile}
@@ -331,5 +323,9 @@
         background-color: transparent;
         padding: 0;
         border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
     }
 </style>
