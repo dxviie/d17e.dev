@@ -44,10 +44,10 @@
     }
     return ext;
   }
-  
+
   function createMediaHtml(media: any): string {
     const isVideo = media.cover.type?.startsWith("video/");
-    
+
     if (isVideo) {
       // Return video element for video content
       return `
@@ -119,7 +119,7 @@
       usedPosts.add(firstIndex);
 
       // Other posts - smaller tiles
-      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 5); i++) {
+      for (let i = 1; i < Math.min(landingPage.data.Posts.length, Math.round(2 + Math.random() * 5)); i++) {
         let postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
         while (usedPosts.has(postIndex)) {
           postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
@@ -257,13 +257,13 @@
         transform: scale(1.1);
         object-fit: cover;
     }
-    
+
     :global(.video-container) {
         width: 100%;
         height: 100%;
         overflow: hidden;
     }
-    
+
     :global(.video-container video) {
         width: 100%;
         height: 100%;
