@@ -57,7 +57,7 @@
       dimensions: [isMobile ? {width: 3, height: 1} : {width: 8, height: 2}],
       html: `
       <div class="logo-blip">
-        <div class="logo-text">D17E</div>
+        <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
           <span class="logo-subtext-line">I code.</span>
@@ -130,10 +130,14 @@
         justify-content: center;
     }
 
-    :global(.logo-text) {
+    :global(.logo-text-container) {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding-top: 1.7rem;
+    }
+
+    :global(.logo-text) {
         color: var(--bg-color);
         animation: fadeDropIn 0.6s ease-out forwards;
         transform: translateY(-10px);
@@ -141,28 +145,49 @@
         margin: 0 2rem;
         font-weight: bold;
         font-family: 'nudica_monobold', serif;
-        font-size: var(--tile-font-size, 2em);
+        font-size: 19.5rem;
     }
 
     :global(.logo-subtext) {
+        font-size: 3rem;
         font-family: 'nudica_monobold', serif;
         gap: .8rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        padding: var(--subtext-padding);
+        padding: 3rem 4.4rem;
         justify-content: center;
         background-color: var(--bg-color);
     }
 
     :global(.logo-subtext-line) {
-        font-size: calc(var(--tile-font-size-small, .7rem));
         line-height: 1.1;
-        /* Animation for logo-subtext-line with delay */
         animation: fadeDropIn 0.6s ease-out forwards;
         opacity: 0;
         transform: translateY(-10px);
-        animation-delay: 0.3s; /* Slight delay after the main text */
+        animation-delay: 0.3s;
+    }
+
+
+    @media (max-width: 420px) {
+
+        :global(.logo-text-container) {
+            padding: 0;
+        }
+
+        :global(.logo-text) {
+            margin: 0;
+            font-size: 2.1rem;
+        }
+
+        :global(.logo-subtext) {
+            gap: 0;
+            padding: 0 1rem;
+        }
+
+        :global(.logo-subtext-line) {
+            font-size: .8rem;
+        }
     }
 
     /* Define the animation */
