@@ -172,7 +172,7 @@
     @media (max-width: 420px) {
 
         :global(.logo-text-container) {
-            padding: 0;
+            padding: 0 .6rem;
         }
 
         :global(.logo-text) {
