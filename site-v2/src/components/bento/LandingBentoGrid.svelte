@@ -91,7 +91,7 @@
       usedPosts.add(firstIndex);
 
       // Other posts - smaller tiles
-      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 3); i++) {
+      for (let i = 1; i < Math.min(landingPage.data.Posts.length, 5); i++) {
         let postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
         while (usedPosts.has(postIndex)) {
           postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
@@ -213,5 +213,21 @@
 
     :global(.logo-subtext-line:nth-child(3)) {
         animation-delay: 0.5s;
+    }
+
+    :global(.featured-post) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    }
+
+    :global(.featured-post img) {
+        width: 100%;
+        height: 100%;
+        transform: scale(1.1);
+        object-fit: cover;
     }
 </style>

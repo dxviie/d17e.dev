@@ -89,8 +89,8 @@
         const roundedPath = roundAndInsetPath(shape, path, radius, inset);
 
         // Find content tiles
-        const contentTiles = getContentTiles(shape, 1);
-        const bentoCotentTiles = contentTiles.map(contentTile => ({
+        const contentTiles = getContentTiles(shape, 2);
+        const bentoContentTiles = contentTiles.map(contentTile => ({
           id: content.id,
           dimensions: content.dimensions,
           html: content.html,
@@ -104,7 +104,7 @@
           path: roundedPath,
           pathAlt: path,
           color: bentoConfig.color,
-          contentTiles: bentoCotentTiles,
+          contentTiles: bentoContentTiles,
           inset: inset
         });
       }
