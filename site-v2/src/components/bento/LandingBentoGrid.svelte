@@ -11,12 +11,12 @@
   const svgId = "bento-landing";
 
   const bentoConfig = {
-    insetMin: 1,
-    insetMax: 4,
-    radiusMin: 0,
-    radiusMax: 2,
-    color: 'black',
-    bgColor: 'white',
+    insetMin: landingPage.data?.insetMin || 1,
+    insetMax: landingPage.data?.insetMax || 4,
+    radiusMin: landingPage.data?.radiusMin || 0,
+    radiusMax: landingPage.data?.radiusMax || 2,
+    color: landingPage.data?.color || 'black',
+    bgColor: landingPage.data?.bgColor || 'white',
     palette: ['darkorange', 'hotpink']
   };
 

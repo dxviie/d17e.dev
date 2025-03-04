@@ -5,8 +5,11 @@ import {SITE_TITLE, SITE_DESCRIPTION} from '../consts';
 import Navigation from "../components/Navigation.astro";
 import {getCollection} from 'astro:content';
 
-const landingPageData = await getCollection('landingPage');
-const landingPage = landingPageData[0];
+const landingPagesData = await getCollection('landingPages');
+console.log('............................................', landingPagesData.length);
+
+// You can select a specific landing page by name or use the first one as default
+const landingPage = landingPagesData.find(page => page.data.name === 'Home') || landingPagesData[0];
 ---
 
 <!doctype html>

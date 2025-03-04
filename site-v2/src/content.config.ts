@@ -96,7 +96,7 @@ const articles = defineCollection({
   }),
 });
 
-const landingPage = defineCollection({
+const landingPages = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
@@ -106,66 +106,107 @@ const landingPage = defineCollection({
       // Get landing page data with related posts and articles
       const pageData = await directus.request(readItems('LandingPage', {
         fields: [
-          '*'
+          '*',
+          'color',
+          'bgColor',
+          'insetMin',
+          'insetMax',
+          'radiusMin',
+          'radiusMax',
+          'name'
         ],
-        limit: 1
+        limit: -1
       })) || [{id: '1'}];
+      console.debug('Loaded LandingPages:', pageData.length);
 
-      // Fetch the actual Posts based on IDs
-      // @ts-ignore
-      let featuredPosts = [];
-      // @ts-ignore
-      if (pageData.Posts && pageData.Posts.length > 0) {
-        featuredPosts = await directus.request(readItems('Posts', {
-          fields: ['*', 'cover.*'],
-          filter: {
-            id: {
-              // @ts-ignore
-              _in: pageData.Posts
+      // Process each landing page
+      const pages = await Promise.all(pageData.map(async pd => {
+        // @ts-ignore
+        let featuredPosts = [];
+        // @ts-ignore
+        if (pd.Posts && pd.Posts.length > 0) {
+          featuredPosts = await directus.request(readItems('Posts', {
+            fields: ['*', 'cover.*'],
+            filter: {
+              id: {
+                // @ts-ignore
+                _in: pd.Posts
+              }
             },
-            status: {
-              _eq: 'published'
-            }
-          },
-          limit: -1
-        })) || [];
+            limit: -1
+          })) || [];
 
-        featuredPosts = featuredPosts.map(p => ({...p, id: p.uuid}));
-      }
+          featuredPosts = featuredPosts.map(p => ({...p, id: p.uuid}));
+        }
 
-      // Fetch the actual Articles based on IDs
-      // @ts-ignore
-      let featuredArticles = [];
-      // @ts-ignore
-      if (pageData.Articles && pageData.Articles.length > 0) {
-        featuredArticles = await directus.request(readItems('Articles', {
-          fields: ['*', 'cover.*'],
-          filter: {
-            id: {
-              // @ts-ignore
-              _in: pageData.Articles
+        // Fetch the actual Articles based on IDs
+        // @ts-ignore
+        let featuredArticles = [];
+        // @ts-ignore
+        if (pd.Articles && pd.Articles.length > 0) {
+          featuredArticles = await directus.request(readItems('Articles', {
+            fields: ['*', 'cover.*'],
+            filter: {
+              id: {
+                // @ts-ignore
+                _in: pd.Articles
+              }
             },
-            status: {
-              _eq: 'published'
-            }
-          },
-          limit: -1
-        })) || [];
+            limit: -1
+          })) || [];
 
-        featuredArticles = featuredArticles.map(a => ({...a, id: a.uuid}));
-      }
+          featuredArticles = featuredArticles.map(a => ({...a, id: a.uuid}));
+        }
 
-      console.debug('Loaded featured Posts:', featuredPosts.length);
-      console.debug('Loaded featured Articles:', featuredArticles.length);
-      // @ts-ignore
-      return [{id: '1', Posts: featuredPosts, Articles: featuredArticles}];
+        console.debug('Loaded featured Posts:', featuredPosts.length);
+        console.debug('Loaded featured Articles:', featuredArticles.length);
+
+        return {
+          id: pd.id || '1',
+          name: pd.name || 'Default',
+          color: pd.color || 'black',
+          bgColor: pd.bgColor || 'white',
+          insetMin: pd.insetMin || 1,
+          insetMax: pd.insetMax || 4,
+          radiusMin: pd.radiusMin || 0,
+          radiusMax: pd.radiusMax || 2,
+          //@ts-ignore
+          Posts: featuredPosts,
+          //@ts-ignore
+          Articles: featuredArticles
+        };
+      }));
+
+
+      return pages;
+
     } catch (error) {
       console.error('Directus error:', error);
-      return {id: '1', Posts: [], Articles: []};
+      return [{
+        id: '1',
+        name: 'Default',
+        color: 'black',
+        bgColor: 'white',
+        insetMin: 1,
+        insetMax: 4,
+        radiusMin: 0,
+        radiusMax: 2,
+        Posts: [],
+        Articles: []
+      }];
     }
   },
   schema: z.object({
     id: z.string(),
+    name: z.string(),
+
+    // Add the new attributes to the schema
+    color: z.string().default('black'),
+    bgColor: z.string().default('white'),
+    insetMin: z.number().default(1),
+    insetMax: z.number().default(4),
+    radiusMin: z.number().default(0),
+    radiusMax: z.number().default(2),
 
     // Define the related Posts collection
     Posts: z.array(z.object({
@@ -214,9 +255,9 @@ const landingPage = defineCollection({
   }),
 });
 
-// Don't forget to export the new collection along with existing ones
+// Export the collections
 export const collections = {
   posts,
   articles,
-  landingPage,
+  landingPages,
 };
