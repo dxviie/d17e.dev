@@ -44,6 +44,36 @@
     }
     return ext;
   }
+  
+  function createMediaHtml(media: any): string {
+    const isVideo = media.cover.type?.startsWith("video/");
+    
+    if (isVideo) {
+      // Return video element for video content
+      return `
+        <div class="featured-post">
+          <div class="video-container">
+            <video 
+              src="/assets/${media.cover.id}.mp4" 
+              poster="/assets/${media.cover.id}.jpg"
+              autoplay 
+              loop 
+              muted 
+              playsinline
+              title="${media.title}"
+            ></video>
+          </div>
+        </div>
+      `;
+    } else {
+      // Return image element for image content
+      return `
+        <div class="featured-post">
+          <img src="/assets/${media.cover.id}.${getExtForType(media.cover.type)}" alt="${media.title}"/>
+        </div>
+      `;
+    }
+  }
 
   function createBentoGrid(landingPage: any): BentoContent[] {
     const bentoContent: BentoContent[] = [];
@@ -83,11 +113,7 @@
       bentoContent.push({
         id: firstPost.id,
         dimensions: [{width: 2, height: 2}],
-        html: `
-        <div class="featured-post">
-          <img src="/assets/${firstPost.cover.id}.${getExtForType(firstPost.cover.type)}" alt="${firstPost.title}"/>
-        </div>
-      `,
+        html: createMediaHtml(firstPost),
         required: true
       });
       usedPosts.add(firstIndex);
@@ -103,11 +129,7 @@
         bentoContent.push({
           id: `post-${post.id}-${i}`, // Ensure unique IDs
           dimensions: [{width: size, height: size}],
-          html: `
-          <div class="featured-post">
-            <img src="/assets/${post.cover.id}.${getExtForType(post.cover.type)}" alt="${post.title}"/>
-          </div>
-        `,
+          html: createMediaHtml(post),
           required: false
         });
         usedPosts.add(postIndex);
@@ -233,6 +255,18 @@
         width: 100%;
         height: 100%;
         transform: scale(1.1);
+        object-fit: cover;
+    }
+    
+    :global(.video-container) {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    
+    :global(.video-container video) {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 </style>
