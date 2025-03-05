@@ -139,7 +139,7 @@
       id: 'logo',
       dimensions: [logoDimensions],
       html: `
-      <div class="logo-blip">
+      <a href="/" target="_self" class="link-link"><div class="logo-blip">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
@@ -147,7 +147,7 @@
           <span class="logo-subtext-line">I art.</span>
           <span class="logo-subtext-line">Ideas.</span>
         </div>
-      </div>
+      </div></a>
     `,
       required: true
     });
