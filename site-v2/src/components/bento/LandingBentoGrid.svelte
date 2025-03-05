@@ -44,8 +44,8 @@
     const mediaItems = document.querySelectorAll('.media-item');
 
     // Configuration
-    const minDelay = 600; // Minimum delay in ms
-    const maxAdditionalDelay = 1500; // Maximum additional random delay
+    const minDelay = 300; // Minimum delay in ms
+    const maxAdditionalDelay = 900; // Maximum additional random delay
     const minTimeBetweenAnimations = 150; // Minimum time between animations
 
     // Sort the items by a random delay, but respect minimum time between animations
