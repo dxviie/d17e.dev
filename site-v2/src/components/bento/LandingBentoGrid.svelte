@@ -152,6 +152,31 @@
       required: true
     });
 
+    // const aboutDimensions = isMobile ? {width: 3, height: 3} : isWide ? {width: 3, height: 1} : {width: 2, height: 1};
+    // bentoContent.push({
+    //   id: 'about',
+    //   dimensions: [aboutDimensions],
+    //   html: `
+    //   <div class="about-container">
+    //     <p class="about-text">
+    //       Hi! :)<br/>
+    //       I'm <b>David Vandenbogaerde</b> or <i>d17e</i> for short.
+    //     </p>
+    //     <p class="about-text">Welcome to my website.<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank">get in touch!</a></p>
+    //   </div>`,
+    //   required: true
+    // });
+
+    bentoContent.push({
+      id: 'about-link',
+      dimensions: [{width: 1, height: 1}],
+      html: `
+      <a href="/about" target="_self" class="link-link"><div class="link-container">
+        <p class="link-text">?</p>
+      </div></a>`,
+      required: true
+    });
+
     const usedPosts = new Set<number>();
 
     // Featured posts from landingPage.Posts
@@ -203,6 +228,8 @@
         height: 100%;
         width: 100%;
         justify-content: center;
+        border-radius: var(--ldp-radius);
+        overflow: hidden;
     }
 
     :global(.logo-text-container) {
@@ -211,6 +238,7 @@
         justify-content: center;
         padding: .8rem 1.5rem;
         background-color: var(--ldp-color);
+
     }
 
     :global(.logo-text) {
@@ -313,6 +341,26 @@
         animation-delay: 0.5s;
     }
 
+    :global(.about-container) {
+        padding: 0 .5rem;
+        font-size: 16px;
+        gap: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        background-color: var(--ldp-bg-color);
+        color: var(--ldp-color);
+        border-radius: var(--ldp-radius);
+        overflow: hidden;
+    }
+
+    :global(.about-text) {
+        margin: 0;
+        word-break: break-word;
+        font-family: 'nudica_monobold', serif;
+    }
+
     :global(.post-link) {
         display: block;
         width: 100%;
@@ -374,4 +422,45 @@
     :global(.media-item.visible) {
         animation: fadeIn 0.8s ease-out forwards;
     }
+
+    :global(.link-link) {
+        text-decoration: none !important;
+    }
+
+    :global(.link-container) {
+        text-decoration: none !important;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--ldp-bg-color);
+        color: var(--ldp-color);
+        border-radius: var(--ldp-radius);
+    }
+
+    :global(.link-text) {
+        font-family: 'nudica_monobold', serif;
+        font-size: 6rem;
+        animation: rotate 12s linear infinite;
+        display: inline-block; /* Important for rotation to work properly */
+        transform-origin: center; /* Rotate around the center */
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (max-width: 768px) {
+        :global(.link-text) {
+            font-size: 3rem;
+        }
+    }
+
 </style>
