@@ -10,7 +10,8 @@
 
   const svgId = "bento-landing";
 
-  const landingPage = $state(landingPages[Math.floor(Math.random() * landingPages.length)]);
+  let landingPageIndex = Math.floor(Math.random() * landingPages.length);
+  const landingPage = $state(landingPages[landingPageIndex]);
 
   const INSET = 30 / window.devicePixelRatio;
   const RADIUS = 10;
@@ -104,6 +105,40 @@
     return ext;
   }
 
+  function generateDiceSvg(number: number, strokeColor = '#000000', fillColor = '#ffffff') {
+    // Validate input
+    if (number < 1 || number > 6 || !Number.isInteger(number)) {
+      throw new Error('Dice number must be an integer between 1 and 6');
+    }
+
+    // Base SVG with dice outline
+    let svg = `<svg class="dice-svg" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
+          fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
+
+    // Dot positions for each dice face
+    const dotPositions = {
+      1: [[50, 50]],
+      2: [[30, 30], [70, 70]],
+      3: [[30, 30], [50, 50], [70, 70]],
+      4: [[30, 30], [30, 70], [70, 30], [70, 70]],
+      5: [[30, 30], [30, 70], [50, 50], [70, 30], [70, 70]],
+      6: [[30, 30], [30, 50], [30, 70], [70, 30], [70, 50], [70, 70]]
+    };
+
+    // Add dots based on the number
+    //@ts-ignore
+    const dots = dotPositions[number];
+    for (const [cx, cy] of dots) {
+      svg += `<circle cx="${cx}" cy="${cy}" r="8" fill="${strokeColor}"/>`;
+    }
+
+    // Close SVG
+    svg += '</svg>';
+
+    return svg;
+  }
+
   function createMediaHtml(media: any): string {
     const isVideo = media.cover.type?.startsWith("video/");
     // Add a fade-in class to all media items
@@ -170,7 +205,8 @@
         <p class="about-text">
           Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short.
         </p>
-        <p class="about-text">Welcome! :)<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">get in touch!</a></p>
+        <p class="about-text">Welcome! Make yourself at home. :)<br/>
+        Feel free to <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">get in touch!</a></p>
       </div>`,
       required: true
     };
@@ -206,6 +242,18 @@
           </svg>
         </div>
       </a>`,
+      required: true
+    })
+
+    bentoContent.push({
+      id: 'dice',
+      dimensions: [{width: 1, height: 1}],
+      html: `
+      <a href="/" target="_self"><div class="link-container">
+        <div class="svg-container">
+          ${generateDiceSvg(landingPageIndex + 1, bentoConfig.color, bentoConfig.bgColor)}
+        </div>
+      </div></a>`,
       required: true
     })
 
@@ -491,12 +539,17 @@
 
     :global(.svg-container) {
         display: flex;
-        transform: scale(.7);
+        transform: scale(.75);
     }
 
     :global(.rotating-svg) {
         animation: etator 7s ease-in-out infinite;
         fill: var(--ldp-color);
+    }
+
+    :global(.dice-svg) {
+        animation: dice-rotate 30s linear infinite;
+
     }
 
     @keyframes etator {
@@ -505,6 +558,15 @@
         }
         100% {
             transform: rotate(0deg);
+        }
+    }
+
+    @keyframes dice-rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
         }
     }
 
