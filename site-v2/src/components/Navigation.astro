@@ -8,6 +8,7 @@ const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
 const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
 const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('articles');
+const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 ---
 
 {!isHomePage &&
@@ -38,6 +39,14 @@ const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('article
     <span class="nav-text" data-active={isBlogIndex}>blog</span>
   </a>
 
+  <!-- ABOUT BUTTON -->
+  <a href="/about" class="nav-item">
+    <di>
+      <div class={`about-icon ${isAboutPage ? 'active' : ''}`}>?</div>
+    </di>
+    <span class="nav-text" data-active={isAboutPage}>about</span>
+  </a>
+
   <!-- COLOR MODE TOGGLE -->
   <ColorModeToggle/>
 </nav>
@@ -60,7 +69,7 @@ const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('article
     .nav-item {
         display: flex;
         align-items: center;
-        padding: 1rem;
+        padding: 1rem .5rem;
         text-decoration: none;
         color: var(--color);
         transition: all 0.2s ease;
@@ -112,6 +121,31 @@ const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('article
 
     .push-button:active {
         transform: scale(0.95);
+    }
+
+    .about-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-style: solid;
+        border-width: 2px;
+        font-family: 'nudica_monobold', serif;
+        color: var(--bg-color);
+        background-color: var(--color);
+        font-size: medium;
+    }
+
+    .about-icon.active {
+        background-color: var(--bg-color);
+        color: var(--color);
+        width: 28px;
+        height: 28px;
+        transform: translateY(-1px);
+        border-color: var(--color);
     }
 
     /* Hide text on mobile */
