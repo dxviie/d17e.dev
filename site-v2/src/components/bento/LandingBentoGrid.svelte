@@ -22,10 +22,12 @@
     palette: ['darkorange', 'hotpink']
   });
 
-  let isMobile = true;
+  let isMobile = $state(true);
+  let isWide = $state(false);
 
   $effect(() => {
     isMobile = window ? window.innerWidth < 768 : false;
+    isWide = window ? window.innerWidth > 1200 : false;
     document.documentElement.style.setProperty('--ldp-color', bentoConfig.color);
     document.documentElement.style.setProperty('--ldp-bg-color', bentoConfig.bgColor);
 
@@ -85,10 +87,12 @@
     } else {
       document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 5rem');
     }
+    const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
     // Hero section - full width
+    console.log('DIMMM', logoDimensions);
     bentoContent.push({
       id: 'logo',
-      dimensions: [isMobile ? {width: 3, height: 1} : {width: 8, height: 2}],
+      dimensions: [logoDimensions],
       html: `
       <div class="logo-blip">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
@@ -160,7 +164,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding-top: 1.7rem;
+        padding-top: .8rem;
     }
 
     :global(.logo-text) {
@@ -168,27 +172,27 @@
         animation: fadeDropIn 0.6s ease-out forwards;
         transform: translateY(-10px);
         padding: 1rem;
-        margin: 0 2rem;
+        margin: 0 2.7rem;
         font-weight: bold;
         font-family: 'nudica_monobold', serif;
-        font-size: 19.5rem;
+        font-size: 7.3rem;
     }
 
     :global(.logo-subtext) {
-        font-size: 3rem;
+        font-size: 2rem;
         font-family: 'nudica_monobold', serif;
-        gap: .8rem;
+        gap: .1rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        padding: 3rem 4.4rem;
+        padding: 0 2.7rem;
         justify-content: center;
         background-color: var(--ldp-bg-color);
         color: var(--ldp-color);
     }
 
     :global(.logo-subtext-line) {
-        line-height: 1.1;
+        line-height: 1;
         animation: fadeDropIn 0.6s ease-out forwards;
         opacity: 0;
         transform: translateY(-10px);
@@ -197,9 +201,8 @@
 
 
     @media (max-width: 420px) {
-
         :global(.logo-text-container) {
-            padding: 0 .6rem;
+            padding: 0;
         }
 
         :global(.logo-text) {
@@ -209,11 +212,33 @@
 
         :global(.logo-subtext) {
             gap: 0;
-            padding: 0 1rem;
+            padding: 0 .5rem;
         }
 
         :global(.logo-subtext-line) {
-            font-size: .8rem;
+            font-size: .7rem;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        :global(.logo-text-container) {
+            padding-top: 1.7rem;
+        }
+
+        :global(.logo-text) {
+            padding: 1rem;
+            margin: 0 2rem;
+            font-size: 19.5rem;
+        }
+
+        :global(.logo-subtext) {
+            gap: .8rem;
+            padding: 3rem 4.4rem;
+        }
+
+        :global(.logo-subtext-line) {
+            line-height: 1.1;
+            font-size: 3rem;
         }
     }
 

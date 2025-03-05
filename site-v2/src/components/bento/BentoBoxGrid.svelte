@@ -145,13 +145,6 @@
     // Build the grid
     gridTiles = buildTileGrid(columns, rows, tileWidth, tileHeight);
 
-    // Set CSS variables for styling
-    const margin = 7 * window.devicePixelRatio || 1;
-    const factor = isMobile ? .95 : 2;
-    document.documentElement.style.setProperty('--tile-font-size', `${(tileHeight * factor) - margin}px`);
-    document.documentElement.style.setProperty('--tile-font-size-small',
-      ((tileHeight * factor) - margin) / (8 / Math.min(2, window.devicePixelRatio || 1)) + 'px');
-
     // Reset state and start animation after a brief delay to ensure DOM is ready
     setTimeout(() => {
       gridDimensions = {columns, rows, tileWidth, tileHeight};
