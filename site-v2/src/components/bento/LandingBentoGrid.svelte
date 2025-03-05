@@ -22,8 +22,8 @@
     palette: ['darkorange', 'hotpink']
   });
 
-  let isMobile = $state(true);
-  let isWide = $state(false);
+  let isMobile = true;
+  let isWide = false;
 
   $effect(() => {
     isMobile = window ? window.innerWidth < 768 : false;
@@ -44,7 +44,6 @@
       else if (type === "image/webp") ext = "webp";
       else if (type === "image/svg+xml") ext = "svg";
       else if (type === "image/avif") ext = "avif";
-      else if (type === "image/jpeg") ext = "jpeg";
     }
     return ext;
   }
@@ -55,26 +54,30 @@
     if (isVideo) {
       // Return video element for video content
       return `
-        <div class="featured-post">
-          <div class="video-container">
-            <video 
-              src="/assets/${media.cover.id}.mp4" 
-              poster="/assets/${media.cover.id}.jpg"
-              autoplay 
-              loop 
-              muted 
-              playsinline
-              title="${media.title}"
-            ></video>
+        <a href="/posts/${media.slug}" class="post-link">
+          <div class="featured-post">
+            <div class="video-container">
+              <video
+                src="/assets/${media.cover.id}.mp4"
+                poster="/assets/${media.cover.id}.jpg"
+                autoplay
+                loop
+                muted
+                playsinline
+                title="${media.title}"
+              ></video>
+            </div>
           </div>
-        </div>
+        </a>
       `;
     } else {
       // Return image element for image content
       return `
+        <a href="/posts/${media.slug}" class="post-link">
         <div class="featured-post">
           <img src="/assets/${media.cover.id}.${getExtForType(media.cover.type)}" alt="${media.title}"/>
         </div>
+        </a>
       `;
     }
   }
@@ -88,8 +91,7 @@
       document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 5rem');
     }
     const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
-    // Hero section - full width
-    console.log('DIMMM', logoDimensions);
+
     bentoContent.push({
       id: 'logo',
       dimensions: [logoDimensions],
@@ -106,7 +108,6 @@
     `,
       required: true
     });
-    console.log('LOGOGOG', bentoContent[bentoContent.length - 1]);
 
     const usedPosts = new Set<number>();
 
@@ -131,7 +132,8 @@
           postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
         }
         const post = landingPage.data.Posts[postIndex];
-        const size = Math.random() > 0.7 ? 1 : 2;
+        const r = Math.random();
+        const size = r > 0.3 ? (r > 0.9 ? 3 : 1) : 2;
         bentoContent.push({
           id: `post-${post.id}-${i}`, // Ensure unique IDs
           dimensions: [{width: size, height: size}],
@@ -265,6 +267,13 @@
 
     :global(.logo-subtext-line:nth-child(3)) {
         animation-delay: 0.5s;
+    }
+
+    :global(.post-link) {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
     }
 
     :global(.featured-post) {
