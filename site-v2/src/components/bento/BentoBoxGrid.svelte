@@ -219,10 +219,10 @@
                     fill="transparent"
             />
             <foreignObject xmlns="http://www.w3.org/1999/xhtml"
-                           x={bentoContent.tile.x + box.inset}
-                           y={bentoContent.tile.y + box.inset}
-                           width={bentoContent.tile.width - box.inset * 2}
-                           height={bentoContent.tile.height - box.inset * 2 }>
+                           x={bentoContent.tile.x + 2}
+                           y={bentoContent.tile.y + 2}
+                           width={bentoContent.tile.width - 4}
+                           height={bentoContent.tile.height - 4}>
               <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
                 {@html bentoContent.html}
               </div>

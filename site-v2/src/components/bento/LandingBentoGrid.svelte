@@ -12,6 +12,21 @@
 
   const landingPage = $state(landingPages[Math.floor(Math.random() * landingPages.length)]);
 
+  const INSET = 30 / window.devicePixelRatio;
+  const RADIUS = 10;
+  const COLOR = '#000000';
+  const BG_COLOR = '#ffffff';
+
+  // const bentoConfig = $state({
+  //   insetMin: INSET, //landingPage.data?.insetMin || 1,
+  //   insetMax: INSET, // landingPage.data?.insetMax || 4,
+  //   radiusMin: RADIUS, //landingPage.data?.radiusMin || 0,
+  //   radiusMax: RADIUS, //landingPage.data?.radiusMax || 2,
+  //   color: COLOR,//landingPage.data?.color || 'black',
+  //   bgColor: BG_COLOR, //landingPage.data?.bgColor || 'white',
+  //   palette: ['darkorange', 'hotpink']
+  // });
+
   const bentoConfig = $state({
     insetMin: landingPage.data?.insetMin || 1,
     insetMax: landingPage.data?.insetMax || 4,
@@ -153,13 +168,15 @@
       html: `
       <div class="about-container">
         <p class="about-text">
-          Hi! :)<br/>
-          I'm <b>David Vandenbogaerde</b> or <i>d17e</i> for short.
+          Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short.
         </p>
-        <p class="about-text">Welcome to my website.<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank">get in touch!</a></p>
+        <p class="about-text">Welcome! :)<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">get in touch!</a></p>
       </div>`,
       required: true
     };
+    if (isWide) {
+      bentoContent.push(aboutBox);
+    }
 
     bentoContent.push({
       id: 'about-link',
@@ -170,6 +187,27 @@
       </div></a>`,
       required: true
     });
+
+    bentoContent.push({
+      id: 'posts-link',
+      dimensions: [{width: 1, height: 1}],
+      html: `
+      <a href="/posts" target="_self" class="link-link">
+        <div class="svg-container">
+          <svg
+                  class="rotating-svg"
+                  width="100%"
+                  height="100%"
+                  viewBox="0 0 1024 1024"
+          >
+            <g id="Layer2">
+              <path d="M510,20C780.438,20 1000,239.562 1000,510C1000,780.438 780.438,1000 510,1000C239.562,1000 20,780.438 20,510C20,239.562 239.562,20 510,20ZM308.909,694.39L308.909,736.969L716.135,736.969L716.135,685.847L716.309,685.847L716.309,281.531L716.135,281.531L716.135,277.757L310.147,277.757L310.147,290.073L308.873,290.073L308.873,694.39L308.909,694.39ZM674.695,648.877L350.487,648.877L350.487,319.199L674.695,319.199L674.695,648.877Z"/>
+            </g>
+          </svg>
+        </div>
+      </a>`,
+      required: true
+    })
 
     const usedPosts = new Set<number>();
 
@@ -336,11 +374,13 @@
     }
 
     :global(.about-container) {
-        padding: 0 .5rem;
+        padding: 1.5rem 2rem;
         font-size: 16px;
         gap: 0;
         display: flex;
         flex-direction: column;
+        align-items: start;
+
         height: 100%;
         width: 100%;
         background-color: var(--ldp-bg-color);
@@ -353,6 +393,11 @@
         margin: 0;
         word-break: break-word;
         font-family: 'nudica_monobold', serif;
+    }
+
+    :global(.about-link) {
+        color: var(--ldp-color);
+        font-weight: bold;
     }
 
     :global(.post-link) {
@@ -430,7 +475,7 @@
         justify-content: center;
         width: var(--bento-tile-width);
         height: var(--bento-tile-width);
-        transform: scale(.75) translateX(-10px);
+        transform: scale(.75);
         background-color: var(--ldp-color);
         color: var(--ldp-bg-color);
         border-radius: 50%;
@@ -442,6 +487,25 @@
         animation: rotate 12s linear infinite;
         display: inline-block; /* Important for rotation to work properly */
         transform-origin: center; /* Rotate around the center */
+    }
+
+    :global(.svg-container) {
+        display: flex;
+        transform: scale(.7);
+    }
+
+    :global(.rotating-svg) {
+        animation: etator 7s ease-in-out infinite;
+        fill: var(--ldp-color);
+    }
+
+    @keyframes etator {
+        0% {
+            transform: rotate(360deg);
+        }
+        100% {
+            transform: rotate(0deg);
+        }
     }
 
     @keyframes rotate {
