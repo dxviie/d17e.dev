@@ -128,13 +128,7 @@
   function createBentoGrid(landingPage: any): BentoContent[] {
     const bentoContent: BentoContent[] = [];
 
-    if (isMobile) {
-      document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 1rem');
-    } else {
-      document.documentElement.style.setProperty('--subtext-padding', '0 .7rem 0 5rem');
-    }
     const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
-
     bentoContent.push({
       id: 'logo',
       dimensions: [logoDimensions],
@@ -152,20 +146,20 @@
       required: true
     });
 
-    // const aboutDimensions = isMobile ? {width: 3, height: 3} : isWide ? {width: 3, height: 1} : {width: 2, height: 1};
-    // bentoContent.push({
-    //   id: 'about',
-    //   dimensions: [aboutDimensions],
-    //   html: `
-    //   <div class="about-container">
-    //     <p class="about-text">
-    //       Hi! :)<br/>
-    //       I'm <b>David Vandenbogaerde</b> or <i>d17e</i> for short.
-    //     </p>
-    //     <p class="about-text">Welcome to my website.<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank">get in touch!</a></p>
-    //   </div>`,
-    //   required: true
-    // });
+    const aboutDimensions = isMobile ? {width: 3, height: 3} : isWide ? {width: 3, height: 1} : {width: 2, height: 1};
+    const aboutBox = {
+      id: 'about',
+      dimensions: [aboutDimensions],
+      html: `
+      <div class="about-container">
+        <p class="about-text">
+          Hi! :)<br/>
+          I'm <b>David Vandenbogaerde</b> or <i>d17e</i> for short.
+        </p>
+        <p class="about-text">Welcome to my website.<br/> Have a look around or <a href="https://forms.d17e.dev/contact" target="_blank">get in touch!</a></p>
+      </div>`,
+      required: true
+    };
 
     bentoContent.push({
       id: 'about-link',
@@ -429,15 +423,17 @@
 
     :global(.link-container) {
         text-decoration: none !important;
-        width: 100%;
-        height: 100%;
+        line-height: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: var(--ldp-bg-color);
-        color: var(--ldp-color);
-        border-radius: var(--ldp-radius);
+        width: var(--bento-tile-width);
+        height: var(--bento-tile-width);
+        transform: scale(.75) translateX(-10px);
+        background-color: var(--ldp-color);
+        color: var(--ldp-bg-color);
+        border-radius: 50%;
     }
 
     :global(.link-text) {

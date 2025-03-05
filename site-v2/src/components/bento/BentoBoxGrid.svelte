@@ -135,6 +135,10 @@
       tileSize
     );
 
+    document.documentElement.style.setProperty('--bento-tile-width', `${tileWidth}px`);
+    document.documentElement.style.setProperty('--bento-tile-height', `${tileHeight}px`);
+    document.documentElement.style.setProperty('--bento-tile-inset', `${bentoConfig.insetMin + (bentoConfig.insetMax - bentoConfig.insetMin) / 2}px`);
+
     // Position the grid
     translateX = (containerElement.clientWidth - (columns * tileWidth)) / 2;
     translateY = (containerElement.clientHeight - (rows * tileHeight)) / 2;
