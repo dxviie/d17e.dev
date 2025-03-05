@@ -29,15 +29,9 @@
   let gridDimensions = $state({columns: 0, rows: 0, tileWidth: 0, tileHeight: 0});
 
   let animationId: number;
-  let frameCount = 0;
-  let noAddCount = 0;
-  let isAnimating = $state(false);
-
-  const INSET = 10;
 
   $effect(() => {
     if (containerElement) {
-      frameCount = 0;
       const isMobile = window ? window.innerWidth < 768 : false;
       setupGrid(isMobile);
     }
@@ -153,74 +147,11 @@
       usedTileIndices.clear();
 
       // Start animation
-      isAnimating = true;
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
       animationId = requestAnimationFrame(animate);
     }, 0);
-  }
-
-  // Helper to keep number in range
-  function clamp(num: number, min: number, max: number) {
-    return Math.min(Math.max(num, min), max);
-  }
-
-  // Helper to convert OKLAB to RGB to HEX
-  function oklabToHex(L: number, a: number, b: number): string {
-    // Convert OKLAB to linear RGB
-    const l = L + 0.3963377774 * a + 0.2158037573 * b;
-    const m = L - 0.1055613458 * a - 0.0638541728 * b;
-    const s = L - 0.0894841775 * a - 1.2914855480 * b;
-
-    // Convert to regular RGB
-    const r = clamp(Math.pow(Math.max(l, 0), 3), 0, 1);
-    const g = clamp(Math.pow(Math.max(m, 0), 3), 0, 1);
-    const b_val = clamp(Math.pow(Math.max(s, 0), 3), 0, 1);
-
-    // Convert to hex
-    const toHex = (n: number) => {
-      const hex = Math.round(n * 255).toString(16);
-      return hex.length === 1 ? '0' + hex : hex;
-    };
-
-    return `#${toHex(r)}${toHex(g)}${toHex(b_val)}`;
-  }
-
-  function generateOKLABPalette(numColors: number): string[] {
-    // Generate random colors in OKLAB space
-    const palette: string[] = [];
-
-    for (let i = 0; i < numColors; i++) {
-      // L (lightness) between 0.4 and 0.8 for good visibility
-      const L = 0.4 + Math.random() * 0.4;
-
-      // a and b components (color) between -0.2 and 0.2 for balanced colors
-      const a = -0.2 + Math.random() * 0.4;
-      const b = -0.2 + Math.random() * 0.4;
-
-      palette.push(oklabToHex(L, a, b));
-    }
-
-    return palette;
-  }
-
-  // For vibrant colors:
-  function generateVibrantOKLABPalette(numColors: number): string[] {
-    const palette: string[] = [];
-    const baseHue = Math.random() * Math.PI * 2;
-
-    for (let i = 0; i < numColors; i++) {
-      const hue = baseHue + (Math.PI * 2 * i / numColors);
-      const radius = 0.15 + Math.random() * 0.1; // Higher chroma for vibrant colors
-      const a = radius * Math.cos(hue);
-      const b = radius * Math.sin(hue);
-      const L = 0.45 + Math.random() * 0.2; // Mid-range lightness
-
-      palette.push(oklabToHex(L, a, b));
-    }
-
-    return palette;
   }
 </script>
 
