@@ -689,7 +689,7 @@ function getNeighborIndices(index: number, gridColumns: number, gridRows: number
   return neighbors;
 }
 
-export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number): Tile[][] {
+export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number, maxTilesPerShape: number = -1): Tile[][] {
   if (!tiles.length) return [];
 
   // Create a map of tile indices to tiles for quick lookup
@@ -700,18 +700,22 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
   const visitedIndices = new Set<number>();
 
   // Find connected shape starting from a specific tile using flood fill
-  function findConnectedShape(startTile: Tile): Tile[] {
+  function findConnectedShape(startTile: Tile, maxTiles: number = -1): Tile[] {
     const connectedTiles: Tile[] = [];
     const queue: Tile[] = [startTile];
     const shapeVisited = new Set<number>();
 
-    while (queue.length > 0) {
+    while (queue.length > 0 && (maxTiles < 0 || connectedTiles.length < maxTiles)) {
       const currentTile = queue.shift()!;
       if (shapeVisited.has(currentTile.index)) continue;
 
       shapeVisited.add(currentTile.index);
       visitedIndices.add(currentTile.index);
       connectedTiles.push(currentTile);
+
+      if (maxTiles > 0 && connectedTiles.length >= maxTiles) {
+        break;
+      }
 
       // Check adjacent tiles
       const adjacentIndices = getNeighborIndices(currentTile.index, gridColumns, gridRows);
@@ -729,7 +733,7 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
   // Process all tiles
   for (const tile of tiles) {
     if (!visitedIndices.has(tile.index)) {
-      const shape = findConnectedShape(tile);
+      const shape = findConnectedShape(tile, maxTilesPerShape);
       shapes.push(shape);
     }
   }
