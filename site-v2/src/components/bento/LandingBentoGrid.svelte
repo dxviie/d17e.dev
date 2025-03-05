@@ -166,7 +166,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding-top: .8rem;
+        padding: .8rem 1.5rem;
     }
 
     :global(.logo-text) {
@@ -187,7 +187,7 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        padding: 0 2.7rem;
+        padding: 0 3rem;
         justify-content: center;
         background-color: var(--ldp-bg-color);
         color: var(--ldp-color);
@@ -202,9 +202,9 @@
     }
 
 
-    @media (max-width: 420px) {
+    @media (max-width: 768px) {
         :global(.logo-text-container) {
-            padding: 0;
+            padding: 0 .7rem;
         }
 
         :global(.logo-text) {
@@ -214,7 +214,7 @@
 
         :global(.logo-subtext) {
             gap: 0;
-            padding: 0 .5rem;
+            padding: 0 .88rem;
         }
 
         :global(.logo-subtext-line) {
@@ -224,7 +224,7 @@
 
     @media (min-width: 1200px) {
         :global(.logo-text-container) {
-            padding-top: 1.7rem;
+            padding-top: 2.1rem;
         }
 
         :global(.logo-text) {
@@ -235,12 +235,12 @@
 
         :global(.logo-subtext) {
             gap: .8rem;
-            padding: 3rem 4.4rem;
+            padding: 3rem 4rem;
         }
 
         :global(.logo-subtext-line) {
-            line-height: 1.1;
-            font-size: 3rem;
+            line-height: .8;
+            font-size: 2.5rem;
         }
     }
 
