@@ -123,7 +123,7 @@
         contentTiles: [],
         inset: 10
       }
-      bentoBoxes = [...bentoBoxes, bento];
+      bentoBoxes = [bento, ...bentoBoxes];
     }
   }
 
