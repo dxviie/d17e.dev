@@ -200,7 +200,10 @@
       </g>
 
       {#each bentoBoxes as box}
-        <path d={box.path} fill={bentoConfig.color} stroke="none" stroke-width="5" opacity="1"/>
+        {#if !box.contentTiles || box.contentTiles.length === 0}
+          <path d={box.path} fill={bentoConfig.color} stroke={bentoConfig.color} stroke-width="1" opacity="1"
+                style="mix-blend-mode: hard-light;"/>
+        {/if}
 
         {#each box.contentTiles as bentoContent}
           {#if bentoContent.tile}
@@ -209,7 +212,7 @@
                     y={bentoContent.tile.y+ box.inset}
                     width={bentoContent.tile.width - box.inset * 2}
                     height={bentoContent.tile.height - box.inset * 2}
-                    fill="none"
+                    fill="transparent"
             />
             <foreignObject xmlns="http://www.w3.org/1999/xhtml"
                            x={bentoContent.tile.x + box.inset}

@@ -167,6 +167,7 @@
         flex-direction: column;
         justify-content: center;
         padding: .8rem 1.5rem;
+        background-color: var(--ldp-color);
     }
 
     :global(.logo-text) {
