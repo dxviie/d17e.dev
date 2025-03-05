@@ -1,7 +1,7 @@
 <script lang="ts">
 
-  import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
   import type {BentoContent} from "$root/src/components/bento/BentoBoxer.ts";
+  import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
 
   const {landingPages} = $props<{
     landingPages: any[];
@@ -33,8 +33,48 @@
 
     if (landingPage) {
       landingPageBentoContent = createBentoGrid(landingPage);
+      setTimeout(setupMediaDisplayDelays, 150);
     }
   });
+
+  function setupMediaDisplayDelays() {
+    // document.addEventListener('DOMContentLoaded', () => {
+    // Get all media items
+    const mediaItems = document.querySelectorAll('.media-item');
+
+    // Configuration
+    const minDelay = 600; // Minimum delay in ms
+    const maxAdditionalDelay = 1500; // Maximum additional random delay
+    const minTimeBetweenAnimations = 150; // Minimum time between animations
+
+    // Sort the items by a random delay, but respect minimum time between animations
+    const itemsWithDelay = Array.from(mediaItems).map((item, index) => {
+      // Generate a random delay for each item
+      const randomDelay = Math.floor(Math.random() * maxAdditionalDelay);
+      return {
+        element: item,
+        delay: minDelay + randomDelay
+      };
+    });
+
+    // Sort by delay
+    itemsWithDelay.sort((a, b) => a.delay - b.delay);
+
+    // Ensure minimum time between animations
+    let currentDelay = 0;
+    itemsWithDelay.forEach(item => {
+      if (item.delay < currentDelay + minTimeBetweenAnimations) {
+        item.delay = currentDelay + minTimeBetweenAnimations;
+      }
+      currentDelay = item.delay;
+
+      // Schedule the animation
+      setTimeout(() => {
+        item.element.classList.add('visible');
+      }, item.delay);
+    });
+
+  }
 
   function getExtForType(type: string) {
     let ext = "jpg"; // default extension
@@ -50,12 +90,13 @@
 
   function createMediaHtml(media: any): string {
     const isVideo = media.cover.type?.startsWith("video/");
+    // Add a fade-in class to all media items
+    const mediaClass = "media-item fade-in";
 
     if (isVideo) {
-      // Return video element for video content
       return `
         <a href="/posts/${media.slug}" class="post-link">
-          <div class="featured-post">
+          <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
                 src="/assets/${media.cover.id}.mp4"
@@ -71,10 +112,9 @@
         </a>
       `;
     } else {
-      // Return image element for image content
       return `
         <a href="/posts/${media.slug}" class="post-link">
-        <div class="featured-post">
+        <div class="featured-post ${mediaClass}">
           <img src="/assets/${media.cover.id}.${getExtForType(media.cover.type)}" alt="${media.title}"/>
         </div>
         </a>
@@ -305,5 +345,29 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+
+    /* Base styling for media items - initially invisible */
+    :global(.media-item) {
+        opacity: 0;
+        transform: translateY(20px);
+        will-change: opacity, transform;
+    }
+
+    /* Animation for fading in */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Class that will be applied by JavaScript */
+    :global(.media-item.visible) {
+        animation: fadeIn 0.8s ease-out forwards;
     }
 </style>
