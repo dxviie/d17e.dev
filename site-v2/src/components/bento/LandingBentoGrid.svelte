@@ -30,6 +30,7 @@
     isWide = window ? window.innerWidth > 1200 : false;
     document.documentElement.style.setProperty('--ldp-color', bentoConfig.color);
     document.documentElement.style.setProperty('--ldp-bg-color', bentoConfig.bgColor);
+    document.documentElement.style.setProperty('--ldp-radius', bentoConfig.radiusMin + (bentoConfig.radiusMax - bentoConfig.radiusMin) / 2 + 'px');
 
     if (landingPage) {
       landingPageBentoContent = createBentoGrid(landingPage);
@@ -105,6 +106,8 @@
                 loop
                 muted
                 playsinline
+                preload="auto"
+                disablePictureInPicture
                 title="${media.title}"
               ></video>
             </div>
@@ -325,7 +328,6 @@
         align-items: center;
         overflow: hidden;
         border-radius: 0;
-        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     }
 
     :global(.featured-post img) {
@@ -352,6 +354,8 @@
         opacity: 0;
         transform: translateY(20px);
         will-change: opacity, transform;
+        border-radius: var(--ldp-radius);
+        overflow: hidden;
     }
 
     /* Animation for fading in */
