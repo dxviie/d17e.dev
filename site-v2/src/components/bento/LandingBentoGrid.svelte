@@ -396,7 +396,7 @@
         :global(.logo-text) {
             padding: 1rem;
             margin: 0 2rem;
-            font-size: 19.5rem;
+            font-size: 17.5rem;
         }
 
         :global(.logo-subtext) {
