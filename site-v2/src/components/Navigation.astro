@@ -42,7 +42,8 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   <!-- ABOUT BUTTON -->
   <a href="/about" class="nav-item">
     <div>
-      <div class={`about-icon ${isAboutPage ? 'active' : ''}`}>?</div>
+      <div class={`about-icon ${isAboutPage ? 'active' : ''}`}>
+        <span class="rotating-about">?</span></div>
     </div>
     <span class="nav-text" data-active={isAboutPage}>about</span>
   </a>
@@ -138,6 +139,19 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
         color: var(--bg-color);
         background-color: var(--color);
         font-size: medium;
+    }
+
+    .rotating-about {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .rotating-about:hover {
+        transform: rotate(180deg);
     }
 
     .about-icon.active {
