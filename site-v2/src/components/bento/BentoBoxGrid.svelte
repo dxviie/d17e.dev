@@ -105,7 +105,10 @@
       unusedTiles = gridTiles.filter(tile => !usedTileIndices.has(tile.index));
     }
 
-    let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows, 1 + Math.round(Math.random() * 10));
+    const buggyTiling = (Math.random() > 0.5);
+    const maxTilesPerShape = 1 + Math.round(Math.random() * 10);
+    console.debug('Filling up with connected shapes. Max tiles:', maxTilesPerShape, 'buggyTiling:', buggyTiling);
+    let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows, maxTilesPerShape, buggyTiling);
     for (let i = 0; i < connectedShapes.length; i++) {
       const path = generatePathFromTiles(connectedShapes[i]);
       const roundedPath = roundAndInsetPath(connectedShapes[i], path, radius, inset);

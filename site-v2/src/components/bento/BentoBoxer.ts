@@ -689,7 +689,7 @@ function getNeighborIndices(index: number, gridColumns: number, gridRows: number
   return neighbors;
 }
 
-export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number, maxTilesPerShape: number = -1): Tile[][] {
+export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number, maxTilesPerShape: number = -1, buggyTiling: boolean = false): Tile[][] {
   if (!tiles.length) return [];
 
   // Create a map of tile indices to tiles for quick lookup
@@ -698,16 +698,18 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
 
   const shapes: Tile[][] = [];
   const visitedIndices = new Set<number>();
+  const usedIndices = new Set<number>();
+  const buggyUsedIndices = new Set<number>();
 
   // Find connected shape starting from a specific tile using flood fill
-  function findConnectedShape(startTile: Tile, maxTiles: number = -1): Tile[] {
+  function findConnectedShape(startTile: Tile, usedIndices: Set<number>, maxTiles: number = -1): Tile[] {
     const connectedTiles: Tile[] = [];
     const queue: Tile[] = [startTile];
     const shapeVisited = new Set<number>();
 
-    while (queue.length > 0 && (maxTiles < 0 || connectedTiles.length < maxTiles)) {
+    while (queue.length > 0) {
       const currentTile = queue.shift()!;
-      if (shapeVisited.has(currentTile.index)) continue;
+      if (shapeVisited.has(currentTile.index) || usedIndices.has(currentTile.index)) continue;
 
       shapeVisited.add(currentTile.index);
       visitedIndices.add(currentTile.index);
@@ -721,7 +723,7 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
       const adjacentIndices = getNeighborIndices(currentTile.index, gridColumns, gridRows);
       for (const adjIndex of adjacentIndices) {
         const adjacentTile = tileMap.get(adjIndex);
-        if (adjacentTile && !shapeVisited.has(adjIndex)) {
+        if (adjacentTile && !shapeVisited.has(adjIndex) && !usedIndices.has(adjIndex)) {
           queue.push(adjacentTile);
         }
       }
@@ -730,11 +732,16 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
     return connectedTiles;
   }
 
-  // Process all tiles
-  for (const tile of tiles) {
-    if (!visitedIndices.has(tile.index)) {
-      const shape = findConnectedShape(tile, maxTilesPerShape);
-      shapes.push(shape);
+  let startTile = tiles[0];
+  let shape = findConnectedShape(startTile, buggyTiling ? buggyUsedIndices : usedIndices, maxTilesPerShape);
+  while (shape.length > 0) {
+    shapes.push(shape);
+    shape.forEach(t => usedIndices.add(t.index));
+    startTile = tiles.find(t => !usedIndices.has(t.index))!;
+    if (startTile) {
+      shape = findConnectedShape(startTile, buggyTiling ? buggyUsedIndices : usedIndices, maxTilesPerShape);
+    } else {
+      shape = [];
     }
   }
 
