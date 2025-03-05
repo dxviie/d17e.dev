@@ -112,7 +112,7 @@
     }
 
     // Base SVG with dice outline
-    let svg = `<svg class="dice-svg" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    let svg = `<svg class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
           fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
 
@@ -539,6 +539,9 @@
 
     :global(.svg-container) {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         transform: scale(.75);
     }
 
