@@ -689,7 +689,7 @@ function getNeighborIndices(index: number, gridColumns: number, gridRows: number
   return neighbors;
 }
 
-export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number, maxTilesPerShape: number = -1, buggyTiling: boolean = false): Tile[][] {
+export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridRows: number, maxTilesPerShape: number = -1, buggyTiling: boolean = false, flakiness: number = 0.5): Tile[][] {
   if (!tiles.length) return [];
 
   // Create a map of tile indices to tiles for quick lookup
@@ -733,13 +733,13 @@ export function findAllConnectedShapes(tiles: Tile[], gridColumns: number, gridR
   }
 
   let startTile = tiles[0];
-  let shape = findConnectedShape(startTile, buggyTiling ? buggyUsedIndices : usedIndices, maxTilesPerShape);
+  let shape = findConnectedShape(startTile, (buggyTiling || (Math.random() > 1 - flakiness)) ? buggyUsedIndices : usedIndices, maxTilesPerShape);
   while (shape.length > 0) {
     shapes.push(shape);
     shape.forEach(t => usedIndices.add(t.index));
     startTile = tiles.find(t => !usedIndices.has(t.index))!;
     if (startTile) {
-      shape = findConnectedShape(startTile, buggyTiling ? buggyUsedIndices : usedIndices, maxTilesPerShape);
+      shape = findConnectedShape(startTile, (buggyTiling || (Math.random() > 1 - flakiness)) ? buggyUsedIndices : usedIndices, maxTilesPerShape);
     } else {
       shape = [];
     }

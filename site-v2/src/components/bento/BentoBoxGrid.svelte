@@ -108,7 +108,7 @@
     const buggyTiling = (Math.random() > 0.5);
     const maxTilesPerShape = 1 + Math.round(Math.random() * 10);
     console.debug('Filling up with connected shapes. Max tiles:', maxTilesPerShape, 'buggyTiling:', buggyTiling);
-    let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows, maxTilesPerShape, buggyTiling);
+    let connectedShapes = findAllConnectedShapes(unusedTiles, gridDimensions.columns, gridDimensions.rows, maxTilesPerShape, buggyTiling, .33);
     for (let i = 0; i < connectedShapes.length; i++) {
       const path = generatePathFromTiles(connectedShapes[i]);
       const roundedPath = roundAndInsetPath(connectedShapes[i], path, radius, inset);
