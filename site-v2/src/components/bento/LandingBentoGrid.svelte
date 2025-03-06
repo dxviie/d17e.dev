@@ -205,7 +205,7 @@
         <p class="about-text">
           Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short. <span class="smiley">:)</span>
         </p>
-        <p class="about-text">Welcome! Have a look around.<br/>
+        <p class="about-text">Welcome 🥳 & happy <i>clicking!</i><br/>
         Need some magic? <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">Get in touch!</a></p>
       </div>`,
       required: true
