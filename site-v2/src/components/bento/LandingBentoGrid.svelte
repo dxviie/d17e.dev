@@ -330,7 +330,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: .8rem 1.5rem;
+        padding: .8rem 0;
         background-color: var(--ldp-color);
 
     }
@@ -340,7 +340,7 @@
         animation: fadeDropIn 0.6s ease-out forwards;
         transform: translateY(-10px);
         padding: 1rem;
-        margin: 0 2.7rem;
+        margin: 0 2rem;
         font-weight: bold;
         font-family: 'nudica_monobold', serif;
         font-size: 7.3rem;
