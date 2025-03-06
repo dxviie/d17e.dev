@@ -176,7 +176,7 @@
                   height={tile.height}
                   fill={bentoConfig.bgColor}
                   stroke={bentoConfig.color}
-                  stroke-width={.1}
+                  stroke-width={.3}
                   tabindex={tile.index}
                   role="button"
                   aria-roledescription="tile selection"
@@ -188,7 +188,7 @@
                   x2={tile.x + tile.width}
                   y2={tile.y + tile.height}
                   stroke={bentoConfig.color}
-                  stroke-width={.1}
+                  stroke-width={.3}
           />
           <line
                   x1={tile.x + tile.width}
@@ -196,7 +196,7 @@
                   x2={tile.x}
                   y2={tile.y + tile.height}
                   stroke={bentoConfig.color}
-                  stroke-width={.1}
+                  stroke-width={.3}
           />
           <circle r={tile.width/2} cx={tile.x + tile.width / 2} cy={tile.y + tile.height / 2} fill="none" stroke={bentoConfig.color}
                   stroke-width="0.1"/>

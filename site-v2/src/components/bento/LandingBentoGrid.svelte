@@ -203,10 +203,10 @@
       html: `
       <div class="about-container">
         <p class="about-text">
-          Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short.
+          Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short. <span class="smiley">:)</span>
         </p>
-        <p class="about-text">Welcome! Make yourself at home. :)<br/>
-        Feel free to <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">get in touch!</a></p>
+        <p class="about-text">Welcome! Have a look around.<br/>
+        Need some magic? <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link">Get in touch!</a></p>
       </div>`,
       required: true
     };
@@ -577,6 +577,12 @@
 
     :global(.rotating-contact) {
         animation: rotate 24s ease-in-out infinite;
+    }
+
+    :global(.smiley) {
+        margin-left: 10rem;
+        display: inline-block;
+        animation: etator 15s ease-in-out infinite;
     }
 
     @keyframes etator {
