@@ -167,7 +167,7 @@
   <svg id={svgId} xmlns="http://www.w3.org/2000/svg">
     <g id="bento-grid-root" transform={`translate(${translateX}, ${translateY})`}>
 
-      <g id="grid-tile" opacity="0.7">
+      <g id="grid-tiles" opacity="0.7">
         {#each gridTiles as tile}
           <rect
                   x={tile.x}
@@ -203,33 +203,28 @@
         {/each}
       </g>
 
-      {#each bentoBoxes as box}
-        {#if !box.contentTiles || box.contentTiles.length === 0}
-          <path d={box.path} fill={bentoConfig.color} stroke={bentoConfig.color} stroke-width="1" opacity="1"
-                style="mix-blend-mode: hard-light;"/>
-        {/if}
-
-        {#each box.contentTiles as bentoContent}
-          {#if bentoContent.tile}
-            <rect
-                    x={bentoContent.tile.x + box.inset}
-                    y={bentoContent.tile.y+ box.inset}
-                    width={bentoContent.tile.width - box.inset * 2}
-                    height={bentoContent.tile.height - box.inset * 2}
-                    fill="transparent"
-            />
-            <foreignObject xmlns="http://www.w3.org/1999/xhtml"
-                           x={bentoContent.tile.x + 2}
-                           y={bentoContent.tile.y + 2}
-                           width={bentoContent.tile.width - 4}
-                           height={bentoContent.tile.height - 4}>
-              <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
-                {@html bentoContent.html}
-              </div>
-            </foreignObject>
+      <g id="bento-content">
+        {#each bentoBoxes as box}
+          {#if !box.contentTiles || box.contentTiles.length === 0}
+            <path d={box.path} fill={bentoConfig.color} stroke={bentoConfig.color} stroke-width="1" opacity="1"
+                  style="mix-blend-mode: hard-light;"/>
           {/if}
+
+          {#each box.contentTiles as bentoContent}
+            {#if bentoContent.tile}
+              <foreignObject xmlns="http://www.w3.org/1999/xhtml"
+                             x={bentoContent.tile.x + 2}
+                             y={bentoContent.tile.y + 2}
+                             width={bentoContent.tile.width - 4}
+                             height={bentoContent.tile.height - 4}>
+                <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
+                  {@html bentoContent.html}
+                </div>
+              </foreignObject>
+            {/if}
+          {/each}
         {/each}
-      {/each}
+      </g>
 
     </g>
   </svg>
