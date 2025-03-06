@@ -13,10 +13,10 @@
   let landingPageIndex = Math.floor(Math.random() * landingPages.length);
   const landingPage = $state(landingPages[landingPageIndex]);
 
-  const INSET = 30 / window.devicePixelRatio;
+  const INSET = 10 / window.devicePixelRatio;
   const RADIUS = 10;
-  const COLOR = '#000000';
-  const BG_COLOR = '#ffffff';
+  const COLOR = '#8F427B';
+  const BG_COLOR = '#FED2D2';
 
   // const bentoConfig = $state({
   //   insetMin: INSET, //landingPage.data?.insetMin || 1,
@@ -25,7 +25,7 @@
   //   radiusMax: RADIUS, //landingPage.data?.radiusMax || 2,
   //   color: COLOR,//landingPage.data?.color || 'black',
   //   bgColor: BG_COLOR, //landingPage.data?.bgColor || 'white',
-  //   palette: ['darkorange', 'hotpink']
+  //   palette: contrasting
   // });
 
   const bentoConfig = $state({
@@ -35,7 +35,7 @@
     radiusMax: landingPage.data?.radiusMax || 2,
     color: landingPage.data?.color || 'black',
     bgColor: landingPage.data?.bgColor || 'white',
-    palette: ['darkorange', 'hotpink']
+    palette: landingPage.data?.palette || []
   });
 
   let isMobile = true;

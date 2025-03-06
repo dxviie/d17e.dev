@@ -113,7 +113,8 @@ const landingPages = defineCollection({
           'insetMax',
           'radiusMin',
           'radiusMax',
-          'name'
+          'name',
+          'palette'
         ],
         limit: -1
       })) || [{id: '1'}];
@@ -160,6 +161,11 @@ const landingPages = defineCollection({
 
         console.debug('Loaded featured Posts:', featuredPosts.length);
         console.debug('Loaded featured Articles:', featuredArticles.length);
+        let palette = [];
+        if (pd.palette) {
+          // @ts-ignore
+          palette = pd.palette.map(p => p.color);
+        }
 
         return {
           id: pd.id || '1',
@@ -173,7 +179,8 @@ const landingPages = defineCollection({
           //@ts-ignore
           Posts: featuredPosts,
           //@ts-ignore
-          Articles: featuredArticles
+          Articles: featuredArticles,
+          palette: palette
         };
       }));
 
@@ -192,7 +199,8 @@ const landingPages = defineCollection({
         radiusMin: 0,
         radiusMax: 2,
         Posts: [],
-        Articles: []
+        Articles: [],
+        palette: []
       }];
     }
   },
@@ -207,6 +215,7 @@ const landingPages = defineCollection({
     insetMax: z.number().default(4),
     radiusMin: z.number().default(0),
     radiusMax: z.number().default(2),
+    palette: z.array(z.string()),
 
     // Define the related Posts collection
     Posts: z.array(z.object({

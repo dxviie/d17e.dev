@@ -112,11 +112,15 @@
     for (let i = 0; i < connectedShapes.length; i++) {
       const path = generatePathFromTiles(connectedShapes[i]);
       const roundedPath = roundAndInsetPath(connectedShapes[i], path, radius, inset);
+      let shapeColor = bentoConfig.color;
+      if (bentoConfig.palette && bentoConfig.palette.length > 0 && Math.random() > 0.8) {
+        shapeColor = bentoConfig.palette[Math.floor(Math.random() * bentoConfig.palette.length)];
+      }
       const bento = {
         shape: connectedShapes[i],
         path: roundedPath,
         pathAlt: path,
-        color: bentoConfig.color,
+        color: shapeColor,
         contentTiles: [],
         inset: 10
       }
@@ -206,7 +210,7 @@
       <g id="bento-content">
         {#each bentoBoxes as box}
           {#if !box.contentTiles || box.contentTiles.length === 0}
-            <path d={box.path} fill={bentoConfig.color} stroke={bentoConfig.color} stroke-width="1" opacity="1"
+            <path d={box.path} fill={box.color} stroke={box.color} stroke-width="1" opacity="1"
                   style="mix-blend-mode: hard-light;"/>
           {/if}
 
