@@ -370,7 +370,7 @@
 
     @media (max-width: 768px) {
         :global(.logo-text-container) {
-            padding: 0 .7rem;
+            padding: 1rem;
         }
 
         :global(.logo-text) {
