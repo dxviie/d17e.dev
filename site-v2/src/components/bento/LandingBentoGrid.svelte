@@ -10,8 +10,18 @@
 
   const svgId = "bento-landing";
 
-  let landingPageIndex = Math.floor(Math.random() * landingPages.length);
-  const landingPage = $state(landingPages[landingPageIndex]);
+  function getStoreDiceCount() {
+    if (!localStorage.getItem('diceCount')) {
+      localStorage.setItem('diceCount', '0');
+    }
+    let counter = parseInt(localStorage.getItem('diceCount') || '0');
+    counter = (counter + 1) % landingPages.length;
+    localStorage.setItem('diceCount', counter.toString());
+    return counter;
+  }
+
+  const landingPageIndex = $state(getStoreDiceCount());
+  const landingPage = $derived(landingPages[landingPageIndex]);
 
   const INSET = 10 / window.devicePixelRatio;
   const RADIUS = 10;
@@ -55,7 +65,6 @@
   });
 
   function setupMediaDisplayDelays() {
-    // document.addEventListener('DOMContentLoaded', () => {
     // Get all media items
     const mediaItems = document.querySelectorAll('.media-item');
 
@@ -112,7 +121,7 @@
     }
 
     // Base SVG with dice outline
-    let svg = `<svg class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    let svg = `<svg id="dice-svg" class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
           fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
 

@@ -10,15 +10,13 @@ const aboutContent = `
 ## Vandenbogaerde
 #### or *d17e* for short.
 
-I use **code** to turn **ideas** into **artistic expressions**.
+After about 20 years in software development, I now try and use **code** to turn **ideas** into **artistic expressions**.
 
-These take the shape of **plotter drawings**, **generative design tools** or **audio visualisations**... 
-
-Most of the time.
+These take the shape of **plotter drawings**, **generative design tools** or **audio visualisations**... Most of the time.
 
 I also help **businesses small & large** to build better products and streamline their processes.
 
-Sounds interesting? [Let's have a chat!](https://forms.d17e.dev/contact)
+Sounds interesting?<br/>[Let's have a chat!](https://forms.d17e.dev/contact)
 
 ----
 ## What you'll find here
@@ -42,12 +40,55 @@ FONTS
 <html lang="en">
 <head>
   <BaseHead title={`About | ${SITE_TITLE}`} description="About the developer behind d17e.dev"/>
+  <style>
+      main {
+          margin: 3rem auto;
+          width: 960px;
+          max-width: calc(100% - 2rem);
+          padding: 2rem 0;
+      }
+
+      .page-title {
+          font-family: 'nudica_monobold', serif;
+          margin-bottom: 2rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
+      }
+
+      .avatar-container {
+          position: absolute;
+          display: flex;
+          justify-content: end;
+          width: 100%;
+          max-width: 960px;
+      }
+
+      .avatar {
+          width: 12rem;
+      }
+
+      @media (max-width: 600px) {
+          .avatar-container {
+              max-width: 90vw;
+          }
+
+          .avatar {
+              width: 6rem;
+          }
+      }
+  </style>
 </head>
 <body>
 <Navigation/>
 <main>
+  <h1 class="page-title">About</h1>
+  <div class="avatar-container">
+    <img src="/avatar_me_vera_round.png" class="avatar"/>
+  </div>
   <article class="about-container">
-    <Markdown content={aboutContent}/>
+    <section class="intro">
+      <Markdown content={aboutContent}/>
+    </section>
   </article>
 </main>
 </body>
@@ -56,7 +97,7 @@ FONTS
 <style>
     .about-container {
         max-width: 800px;
-        margin: 4rem auto 2rem;
+
         padding: 0 1.5rem;
     }
 

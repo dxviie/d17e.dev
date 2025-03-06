@@ -220,7 +220,8 @@
                              x={bentoContent.tile.x + 2}
                              y={bentoContent.tile.y + 2}
                              width={bentoContent.tile.width - 4}
-                             height={bentoContent.tile.height - 4}>
+                             height={bentoContent.tile.height - 4}
+              >
                 <div class="bento-content" style={`font-size:${(16 + Math.random() * 16) / window.devicePixelRatio || 1}px`}>
                   {@html bentoContent.html}
                 </div>

@@ -7,6 +7,9 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import BaseHead from "../../components/BaseHead.astro";
 import MediaAsset from "../../components/MediaAsset.astro";
 import Markdown from "../../components/Markdown.astro";
+import InstagramIcon from "../../components/icons/InstagramIcon.astro";
+import RssIcon from "../../components/icons/RssIcon.astro";
+import BlueskyIcon from "../../components/icons/BlueskyIcon.astro";
 
 
 const posts = (await getCollection('posts')).sort(
@@ -14,7 +17,7 @@ const posts = (await getCollection('posts')).sort(
 );
 
 const introMd = `
-Here you can find my attempts at turning ideas into **art through code**. I try to share a steady stream of **work-in-progress** footage and stills, documenting my journey into the world of generative art...
+Here you can find my attempts at turning **ideas** into **art** through **code**. These also gets posted to:
 `;
 ---
 
@@ -42,6 +45,16 @@ Here you can find my attempts at turning ideas into **art through code**. I try 
           padding: 0 1rem;
       }
 
+      .social-links {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          gap: 1.8rem;
+          margin: 1rem 0;
+      }
+
       .header-container {
           display: flex;
           justify-content: space-between;
@@ -54,20 +67,19 @@ Here you can find my attempts at turning ideas into **art through code**. I try 
           padding-bottom: 0.5rem;
       }
 
+      .header-container.zooming {
+          justify-content: end;;
+      }
+
       .page-title {
           font-family: 'nudica_monobold', serif;
           margin: 0;
       }
 
-      .zoom-controls {
-          display: none; /* Hidden by default, shown on mobile */
-          gap: 8px;
-          align-items: center;
-      }
 
       .zoom-controls {
           display: none; /* Hidden by default, shown on mobile */
-          gap: 6px;
+          gap: .5rem;
           align-items: center;
       }
 
@@ -237,16 +249,53 @@ Here you can find my attempts at turning ideas into **art through code**. I try 
 <main>
   <div class="header-container">
     <h1 class="page-title">Posts</h1>
-    <div class="zoom-controls" id="zoom-controls">
-      <button class="zoom-button zoom-1" title="1 card per row">1</button>
-      <button class="zoom-button zoom-2" title="2 cards per row">2</button>
-      <button class="zoom-button zoom-3" title="3 cards per row">3</button>
-    </div>
   </div>
   <div class="page-intro">
     <Markdown content={introMd}/>
+    <div class="social-links">
+      <a
+              href="/rss.xml"
+              target="_blank"
+              rel="noopener"
+              aria-label="Subscribe via RSS"
+              title="Subscribe via RSS"
+      >
+        <RssIcon size="24" color="var(--color)"/>
+        <span class="sr-only">RSS Feed</span>
+      </a>
+
+      <a
+              href="https://bsky.app/profile/d17e.bsky.social"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on Bluesky"
+              title="Follow on Bluesky"
+      >
+        <BlueskyIcon/>
+        <span class="sr-only">Bluesky</span>
+      </a>
+
+      <a
+              href="https://www.instagram.com/d17e.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on Instagram"
+              title="Follow on Instagram"
+      >
+        <InstagramIcon/>
+        <span class="sr-only">Instagram</span>
+      </a>
+    </div>
+
   </div>
   <section>
+    <div class="header-container zooming">
+      <div class="zoom-controls" id="zoom-controls">
+        <button class="zoom-button zoom-1" title="1 card per row">1</button>
+        <button class="zoom-button zoom-2" title="2 cards per row">2</button>
+        <button class="zoom-button zoom-3" title="3 cards per row">3</button>
+      </div>
+    </div>
     <ul id="posts-grid">
       {
         posts.map((post) => (
