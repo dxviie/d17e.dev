@@ -212,11 +212,11 @@
     };
     if (isWide) {
       bentoContent.push(aboutBox);
-    } else {
-      bentoContent.push({
-        id: 'about-link',
-        dimensions: [{width: 1, height: 1}],
-        html: `
+    }
+    bentoContent.push({
+      id: 'about-link',
+      dimensions: [{width: 1, height: 1}],
+      html: `
       <a href="https://forms.d17e.dev/contact" target="_self" class="link-link"><div class="link-container">
         <div class="svg-container">
           <svg width="90%" height="90%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="rotating-contact">
@@ -224,9 +224,9 @@
           </svg>
         </div>
       </div></a>`,
-        required: true
-      });
-    }
+      required: true
+    });
+
 
     bentoContent.push({
       id: 'about-link',
