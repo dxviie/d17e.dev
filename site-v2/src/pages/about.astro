@@ -5,6 +5,7 @@ import Markdown from "../components/Markdown.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import {SITE_TITLE} from '../consts';
 import Footer from "../components/Footer.astro";
+import CCALogo from "../components/icons/CCALogo.astro";
 
 const aboutIntro = `
 # Hi!
@@ -42,6 +43,11 @@ const aboutConnect = `
 The source of all the stuff I do and create is right here, but I'm also on _the platforms_. 
 Not _me_ per se, rather the robots 🤖 I've typed and clicked into existence to do my social media bidding.
 You can find me on:`;
+
+const aboutCC = `
+Or if you're in or around Amsterdam (NL), come hang out at one of the [Creative Coding Amsterdam](https://cca.codes) meetups I help organize
+together with [Stanko](https://muffinman.io) & [Sinan](https://openprocessing.org).
+`;
 
 const aboutExperience = `
 ## Experience
@@ -144,7 +150,13 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
     <hr/>
     <section class="connect">
       <Markdown content={aboutConnect}/>
-      <SocialLinks/>
+      <SocialLinks showGitHub={true} showLinkedIn={true}/>
+      <a href="https://cca.codes">
+        <div class="cca-logo-container">
+          <CCALogo/>
+        </div>
+      </a>
+      <Markdown content={aboutCC}/>
     </section>
     <hr/>
     <section class="experience">
@@ -175,6 +187,14 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
         margin: 2rem 0;
         border: 0;
         border-top: 1px solid var(--border-color);
+    }
+
+    .cca-logo-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 3rem;
     }
 
     ul {

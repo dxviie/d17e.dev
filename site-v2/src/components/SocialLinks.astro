@@ -2,11 +2,15 @@
 import RssIcon from "./icons/RssIcon.astro";
 import BlueskyIcon from "./icons/BlueskyIcon.astro";
 import InstagramIcon from "./icons/InstagramIcon.astro";
+import GitHubIcon from "./icons/GitHubIcon.astro";
+import LinkedInIcon from "./icons/LinkedInIcon.astro";
 
 interface Props {
   showRss?: boolean;
   showBluesky?: boolean;
   showInstagram?: boolean;
+  showGitHub?: boolean;
+  showLinkedIn?: boolean;
   class?: string;
 }
 
@@ -14,59 +18,87 @@ const {
   showRss = true,
   showBluesky = true,
   showInstagram = true,
+  showGitHub = false,
+  showLinkedIn = false,
   class: className = ""
 } = Astro.props;
 ---
 
 <div class={`social-links ${className}`}>
   {showRss && (
-    <a
-      href="/rss.xml"
-      target="_blank"
-      rel="noopener"
-      aria-label="Subscribe via RSS"
-      title="Subscribe via RSS"
-    >
-      <RssIcon size="24" color="var(--color)"/>
-      <span class="sr-only">RSS Feed</span>
-    </a>
+          <a
+                  href="/rss.xml"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Subscribe via RSS"
+                  title="Subscribe via RSS"
+          >
+            <RssIcon size="24" color="var(--color)"/>
+            <span class="sr-only">RSS Feed</span>
+          </a>
   )}
 
   {showBluesky && (
-    <a
-      href="https://bsky.app/profile/d17e.bsky.social"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Follow on Bluesky"
-      title="Follow on Bluesky"
-    >
-      <BlueskyIcon/>
-      <span class="sr-only">Bluesky</span>
-    </a>
+          <a
+                  href="https://bsky.app/profile/d17e.bsky.social"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow on Bluesky"
+                  title="Follow on Bluesky"
+          >
+            <BlueskyIcon/>
+            <span class="sr-only">Bluesky</span>
+          </a>
   )}
 
   {showInstagram && (
-    <a
-      href="https://www.instagram.com/d17e.dev/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Follow on Instagram"
-      title="Follow on Instagram"
-    >
-      <InstagramIcon/>
-      <span class="sr-only">Instagram</span>
-    </a>
+          <a
+                  href="https://www.instagram.com/d17e.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow on Instagram"
+                  title="Follow on Instagram"
+          >
+            <InstagramIcon/>
+            <span class="sr-only">Instagram</span>
+          </a>
+  )}
+
+  {showGitHub && (
+          <a
+                  href="https://github.com/dxviie"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow on GitHub"
+                  title="Follow on GitHub"
+          >
+            <GitHubIcon/>
+            <span class="sr-only">GitHub</span>
+          </a>
+  )}
+
+  {showLinkedIn && (
+          <a
+                  href="https://www.linkedin.com/in/d16de/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Connect on LinkedIn"
+                  title="Connect on LinkedIn"
+          >
+            <LinkedInIcon/>
+            <span class="sr-only">LinkedIn</span>
+          </a>
   )}
 </div>
 
 <style>
-  .social-links {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    gap: 1.8rem;
-    margin: 1rem 0;
-  }
+    .social-links {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 1.8rem;
+        margin: 1rem 0;
+    }
 </style>
