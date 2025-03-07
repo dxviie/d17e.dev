@@ -278,16 +278,15 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
     const style = document.createElement('style');
     style.textContent = `
       .back-to-landing-arrow {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: block;
         font-family: 'nudica_monobold', serif;
         color: var(--bg-color);
         background-color: var(--color);
         border-radius: 50%;
         width: 28px;
         height: 28px;
-        font-size: 1rem;
+        font-size: 17px;
+        text-align: center;
       }
     `;
     document.head.appendChild(style);
