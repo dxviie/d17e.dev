@@ -23,15 +23,13 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
 ---
 
 {(prevPost || nextPost) && (
-<nav class="post-navigation">
+<nav class="post-navigation-mini">
   <div class="nav-links">
     {prevPost && (
             <a href={`/posts/${prevPost.data.slug}`} class="nav-link prev-link" id="prev-post-link">
               <div class="arrow">←</div>
               <div class="nav-content">
                 <span class="nav-label">Next</span>
-                <span class="nav-title">{prevPost.data.title}</span>
-                {prevPost.data.publishDate && <span class="nav-date"><FormattedDate date={prevPost.data.publishDate}/></span>}
               </div>
             </a>
     )}
@@ -40,8 +38,6 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
             <a href={`/posts/${nextPost.data.slug}`} class="nav-link next-link" id="next-post-link">
               <div class="nav-content">
                 <span class="nav-label">Prev</span>
-                <span class="nav-title">{nextPost.data.title}</span>
-                {nextPost.data.publishDate && <span class="nav-date"><FormattedDate date={nextPost.data.publishDate}/></span>}
               </div>
               <div class="arrow">→</div>
             </a>
@@ -51,11 +47,10 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
   )}
 
 <style>
-    .post-navigation {
-        font-family: 'nudica_monobold', serif;
-        margin-top: 2rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border-color, #ddd);
+    .post-navigation-mini {
+        font-family: 'nudica_monolight', serif;
+        margin-top: 0;
+        padding-top: 0;
     }
 
     .nav-links {
@@ -117,24 +112,9 @@ const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentInde
         opacity: 0.7;
     }
 
-    @media (max-width: 768px) {
-        .nav-links {
-            flex-direction: column;
-        }
-
-        .nav-link {
-            max-width: 100%;
-        }
-
-        .swipe-hint {
-            display: block;
-        }
-    }
-
     @media (min-width: 1200px) {
-        .post-navigation {
-            max-width: 1400px;
-            width: 90vw;
+        .post-navigation-mini {
+            display: none;
         }
     }
 </style>

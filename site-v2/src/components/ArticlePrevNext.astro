@@ -117,30 +117,6 @@ const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[cu
         opacity: 0.7;
     }
 
-    .swipe-hint {
-        display: none;
-        margin-top: 1rem;
-        text-align: center;
-        color: var(--color);
-        opacity: 0.7;
-        font-size: 0.9rem;
-    }
-
-    .swipe-icon {
-        font-size: 1.2rem;
-        animation: swipe-animation 2s infinite alternate ease-in-out;
-        display: inline-block;
-    }
-
-    @keyframes swipe-animation {
-        0% {
-            transform: translateX(-8px);
-        }
-        100% {
-            transform: translateX(8px);
-        }
-    }
-
     @media (max-width: 768px) {
         .nav-links {
             flex-direction: column;
@@ -148,10 +124,6 @@ const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[cu
 
         .nav-link {
             max-width: 100%;
-        }
-
-        .swipe-hint {
-            display: block;
         }
     }
 </style>

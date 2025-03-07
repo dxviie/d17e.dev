@@ -230,30 +230,3 @@ hr {
     /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
     white-space: nowrap;
 }
-
-@keyframes swipe-dot {
-    0%, 100% {
-        transform: translateX(12px);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.8;
-    }
-    30% {
-        transform: translateX(-12px);
-        opacity: 0.8;
-    }
-    40% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 0.8;
-    }
-    70% {
-        transform: translateX(12px);
-        opacity: 0.8;
-    }
-    80% {
-        opacity: 0;
-    }
-}

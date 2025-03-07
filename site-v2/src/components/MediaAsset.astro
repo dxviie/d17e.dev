@@ -76,7 +76,7 @@ if (isVideo) {
 const cmsVideoUrl = `${cmsUrl}/${id}`;
 ---
 
-<figure class="media-asset swipeable" data-is-video={isVideo.toString()} data-id={id}>
+<figure class="media-asset" data-is-video={isVideo.toString()} data-id={id}>
   {showVideo ? (
           <div class="video-container">
             <video
@@ -193,6 +193,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         width: 100%;
         height: auto;
         display: block;
+        max-height: 80vh;
     }
 
     .play-indicator {
