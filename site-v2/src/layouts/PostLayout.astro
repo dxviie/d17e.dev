@@ -1,5 +1,6 @@
 ---
 import type {CollectionEntry} from 'astro:content';
+import {ClientRouter} from 'astro:transitions';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -20,6 +21,7 @@ const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription
 <html lang="en">
 <head>
   <BaseHead title={title} description={linkDescription || ''}/>
+  <ClientRouter/>
 </head>
 
 <body>
