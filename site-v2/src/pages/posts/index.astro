@@ -8,6 +8,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import MediaAsset from "../../components/MediaAsset.astro";
 import Markdown from "../../components/Markdown.astro";
 import SocialLinks from "../../components/SocialLinks.astro";
+import FindMeOn from "../../components/FindMeOn.astro";
 
 
 const posts = (await getCollection('posts')).sort(
@@ -295,6 +296,7 @@ Here you can find my attempts at turning **ideas** into **art** through **code**
     </ul>
   </section>
 </main>
+<FindMeOn/>
 <Footer/>
 
 <script>

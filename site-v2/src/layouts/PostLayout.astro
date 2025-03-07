@@ -7,6 +7,8 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Markdown from '../components/Markdown.astro';
 import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
+import SocialLinks from "../components/SocialLinks.astro";
+import FindMeOn from "../components/FindMeOn.astro";
 
 type Props = CollectionEntry<'posts'>['data'];
 
@@ -63,6 +65,7 @@ const {title, publishDate, dateUpdated, cover, body, link, linkDescription} = As
 
   <slot/>
 </main>
+<FindMeOn/>
 <Footer/>
 </body>
 </html>
