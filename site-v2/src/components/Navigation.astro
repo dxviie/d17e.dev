@@ -14,8 +14,8 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 {!isHomePage &&
 <nav id="main-nav">
   <!-- HOME BUTTON -->
-  <a href="/" class="nav-item">
-    <div class={`icon-box ${isHomePage ? 'active' : ''}`}>
+  <a href="/" class="nav-item" id="home-nav-item">
+    <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
       <D17eIcon color={isHomePage ? "var(--bg-color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isHomePage}>home</span>
@@ -25,7 +25,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
   <!-- POSTS BUTTON -->
   <a href="/posts" class="nav-item">
-    <div class={`icon-box ${isPostsIndex ? 'active' : ''}`}>
+    <div class={`icon-box ${isPostsIndex ? 'active' : ''}`} id="posts-icon-box">
       <PostsIcon color={isPostsIndex ? "var(--bg-color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isPostsIndex}>posts</span>
@@ -33,7 +33,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
   <!-- BLOG BUTTON -->
   <a href="/articles" class="nav-item">
-    <div class={`icon-box ${isBlogIndex ? 'active' : ''}`}>
+    <div class={`icon-box ${isBlogIndex ? 'active' : ''}`} id="blog-icon-box">
       <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isBlogIndex}>blog</span>
@@ -42,7 +42,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   <!-- ABOUT BUTTON -->
   <a href="/about" class="nav-item">
     <div>
-      <div class={`about-icon ${isAboutPage ? 'active' : ''}`}>
+      <div class={`about-icon ${isAboutPage ? 'active' : ''}`} id="about-icon">
         <span class="rotating-about">?</span></div>
     </div>
     <span class="nav-text" data-active={isAboutPage}>about</span>
@@ -163,6 +163,12 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
         border-color: var(--color);
     }
 
+    .arrow {
+        font-family: 'nudica_monobold', serif;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
     /* Hide text on mobile */
     @media (max-width: 600px) {
         .nav-text {
@@ -178,6 +184,37 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
+    // Setup client-side URL detection
+    const updateNavBasedOnURL = () => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const sentFromLanding = searchParams.has('fromlanding');
+      const homeIconBox = document.getElementById('home-icon-box');
+      const backArrow = document.getElementById('back-arrow');
+
+      if (homeIconBox) {
+        if (sentFromLanding) {
+          // Check if back arrow already exists
+          if (!backArrow) {
+            // Clear any existing content
+            homeIconBox.innerHTML = '';
+            // Add back arrow
+            const arrow = document.createElement('div');
+            arrow.id = 'back-arrow';
+            arrow.className = 'back-to-landing-arrow';
+            arrow.textContent = '←';
+            homeIconBox.appendChild(arrow);
+          }
+        } else {
+          // If back arrow exists but shouldn't, replace with D17eIcon
+          if (backArrow) {
+            // We can't directly create Astro components client-side,
+            // so we'll use a placeholder or implement a client-side version
+            homeIconBox.innerHTML = '<div class="d17e-icon-placeholder">D</div>';
+          }
+        }
+      }
+    };
+
     const setupNavScroll = () => {
       const nav = document.getElementById('main-nav');
       let lastScrollY = window.scrollY;
@@ -226,8 +263,33 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
     // Initialize on page load
     setupNavScroll();
+    updateNavBasedOnURL();
 
     // For Astro View Transitions, also handle setup after page changes
-    document.addEventListener('astro:page-load', setupNavScroll);
+    document.addEventListener('astro:page-load', () => {
+      setupNavScroll();
+      updateNavBasedOnURL();
+    });
+
+    // Listen for URL changes (helpful for SPA-like behavior)
+    window.addEventListener('popstate', updateNavBasedOnURL);
+
+    // Add CSS for the client-side D17e icon placeholder
+    const style = document.createElement('style');
+    style.textContent = `
+      .back-to-landing-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'nudica_monobold', serif;
+        color: var(--bg-color);
+        background-color: var(--color);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+      }
+    `;
+    document.head.appendChild(style);
   });
 </script>
