@@ -2,30 +2,56 @@
 import BaseHead from '../components/BaseHead.astro';
 import Navigation from "../components/Navigation.astro";
 import Markdown from "../components/Markdown.astro";
+import SocialLinks from "../components/SocialLinks.astro";
 import {SITE_TITLE} from '../consts';
 
-const aboutContent = `
+const aboutIntro = `
 # Hi!
 # I'm David 
 ## Vandenbogaerde
 #### or *d17e* for short.
 
-With about **20 years** of experience in software development, I am now shifting my focus to using **code** as a means to turn **ideas** into **artistic expressions**.
+With about **20 years** of experience in software development, I am now shifting my focus to using **code** as a way of turning **ideas** into **artistic expression**.
 
 These take the shape of **plotter drawings**, **generative design tools** or **audio visualisations**... Most of the time.
 
 I also love helping **businesses small & large** to build **better products** and **streamline** their processes.
 
 Think your project could use some magic?<br/>[Let's have a chat!](https://forms.d17e.dev/contact)
+`;
 
-----
-## What you'll find here
+const aboutContent = `
+## What's on here?
 
+Under the [posts](/posts) section you can find the stream of images and videos I produce documenting my progress. 
+Where I can I also I add some of the story behind the content. Often in series of threes, as I might have some OCD going on, but nothing unmanageable. I promise.
 
----
+The [blog](/articles) part houses my writing. For now, this is where you can find more long-form content.
+I intend to expand on this part of my space here and create my version of a digital garden. But that's for later.
+[Stay tuned?!](https://forms.d17e.dev/subscribe)
+
+Then, last but not least, there's the [landing page](/). 
+I'd been wondering how to make my landing page more engaging and user-friendly, but hadn't really come up with anything substantial.
+That is until the recent Genuary '25 prompt: ['Grid-based graphic design'](https://genuary25.d17e.dev/prompt/29) sparked something.
+That spark is now my landing page. I hope you like it.`;
+
+const aboutConnect = `
 ## Connect
 
----
+The source of all the stuff I do and create is right here, but I'm also on _the platforms_. 
+Not _me_ per se, rather the robots 🤖 I've typed and clicked into existence to do my social media bidding.
+You can find me on:`;
+
+const aboutExperience = `
+## Experience
+
+
+`;
+
+const about = `
+
+----
+
 ## Experience
 
 --- 
@@ -35,8 +61,7 @@ This site is built with [Astro](https://astro.build), a modern static site gener
 
 FONTS
 
-#coding #creativity #development
-`;
+#coding #creativity #development`;
 ---
 
 <!doctype html>
@@ -45,10 +70,11 @@ FONTS
   <BaseHead title={`About | ${SITE_TITLE}`} description="About the developer behind d17e.dev"/>
   <style>
       main {
-          margin: 3rem auto;
-          width: 55rem;
-          max-width: calc(100% - 1rem);
-          padding: 2rem 0;
+          width: 90%;
+          max-width: 960px;
+          margin: 3rem auto 0;
+          padding: 2rem 1rem;
+          min-height: calc(100vh - 12.5rem);
       }
 
       .page-title {
@@ -92,7 +118,20 @@ FONTS
   </div>
   <article class="about-container">
     <section class="intro">
+      <Markdown content={aboutIntro}/>
+    </section>
+    <hr/>
+    <section class="about-container">
       <Markdown content={aboutContent}/>
+    </section>
+    <hr/>
+    <section class="about-container">
+      <Markdown content={aboutConnect}/>
+      <SocialLinks />
+    </section>
+    <hr/>
+    <section class="about-container">
+      <Markdown content={about}/>
     </section>
   </article>
 </main>
@@ -106,9 +145,15 @@ FONTS
         padding: 0 .5rem;
     }
 
+    .about-container hr {
+        margin: 2rem 0;
+        border: 0;
+        border-top: 1px solid var(--border-color);
+    }
+
     @media (max-width: 600px) {
         .about-container {
-            margin-top: 3rem;
+            margin-top: 1rem;
         }
     }
 </style>
