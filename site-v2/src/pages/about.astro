@@ -4,6 +4,7 @@ import Navigation from "../components/Navigation.astro";
 import Markdown from "../components/Markdown.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import {SITE_TITLE} from '../consts';
+import Footer from "../components/Footer.astro";
 
 const aboutIntro = `
 # Hi!
@@ -49,19 +50,24 @@ const aboutExperience = `
 `;
 
 const about = `
-
-----
-
 ## Experience
 
---- 
-## Site
+With about 20 years of writing code behind me, it is hard summarize, so instead here's a list of things I've worked with over the years. In order of appearance.
 
-This site is built with [Astro](https://astro.build), a modern static site generator that allows for fast, content-focused websites.
+#C++ #MFC #Win32 #OOP #VisualStudio #SQL #DirectX #OpenGL #XNA #Processing #C# #Perl #Java #GWT #Eclipse #MSSQL #Oracle #Haskell #FP #JavaScript
+#OWASP #WebStorm #React #Maven #Jenkins #docker #CLI #TypeScript #Vercel #Cloudflare #Svelte #Astro #SVG
+ 
+ 
+For more details, please check out [LinkedIn](https://www.linkedin.com/in/d16de/).`;
 
-FONTS
+const aboutSite = `
+## Tech
 
-#coding #creativity #development`;
+This site is built with [Astro](https://astro.build), [Svelte](https://svelte.dev) & [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG).
+I am very happy with this stack. Can recommend.
+Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
+
+### Fonts:`
 ---
 
 <!doctype html>
@@ -92,8 +98,17 @@ FONTS
           max-width: 55rem;
       }
 
+      section {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+      }
+
+      .connect {
+          gap: 2rem;
+      }
+
       .avatar {
-          //margin-right: 8rem;
           width: 12rem;
       }
 
@@ -114,27 +129,32 @@ FONTS
 <main>
   <h1 class="page-title">About</h1>
   <div class="avatar-container">
-    <img src="/avatar_me_vera_round.png" class="avatar"/>
+    <img src="/avatar_me_vera_round.png" class="avatar" alt="my avatar in a circle"/>
   </div>
   <article class="about-container">
     <section class="intro">
       <Markdown content={aboutIntro}/>
     </section>
     <hr/>
-    <section class="about-container">
+    <section class="content">
       <Markdown content={aboutContent}/>
     </section>
     <hr/>
-    <section class="about-container">
+    <section class="connect">
       <Markdown content={aboutConnect}/>
-      <SocialLinks />
+      <SocialLinks/>
     </section>
     <hr/>
-    <section class="about-container">
+    <section class="experience">
       <Markdown content={about}/>
+    </section>
+    <hr/>
+    <section class="site">
+      <Markdown content={aboutSite}/>
     </section>
   </article>
 </main>
+<Footer/>
 </body>
 </html>
 
