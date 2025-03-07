@@ -31,6 +31,8 @@ const articlesByYear = articles.reduce((acc, article) => {
 const sortedYears = Object.keys(articlesByYear)
   .map(year => parseInt(year))
   .sort((a, b) => b - a);
+
+const blogIntro = `Here you can find more long-form writing about my projects, thoughts, and ideas. You can also follow these via:`;
 ---
 
 <!doctype html>
@@ -54,14 +56,14 @@ const sortedYears = Object.keys(articlesByYear)
       }
 
       .blog-intro {
+          font-family: 'nudica_monolight', serif !important;
           font-size: 1rem;
-          font-family: 'nudica_monolight', serif;
           max-width: 960px;
           margin: 0 auto 1rem;
           padding: 0 .5rem;
           display: flex;
           flex-direction: column;
-          gap: .3rem
+          gap: .3rem;
       }
 
       .year-section {
@@ -199,7 +201,7 @@ const sortedYears = Object.keys(articlesByYear)
   <h1 class="page-title">Blog</h1>
 
   <div class="blog-intro">
-    <p>Here you can find more long-form writing about my projects, thoughts, and ideas. You can also follow these via:</p>
+    <Markdown content={blogIntro}/>
     <SocialLinks showRss={true} showBluesky={false} showInstagram={false}/>
   </div>
 
