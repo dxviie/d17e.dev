@@ -61,13 +61,15 @@ With about 20 years of writing code behind me, it is hard summarize, so instead 
 For more details, please check out [LinkedIn](https://www.linkedin.com/in/d16de/).`;
 
 const aboutSite = `
-## Tech
+## Site
+
+### Tech
 
 This site is built with [Astro](https://astro.build), [Svelte](https://svelte.dev) & [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG).
 I am very happy with this stack. Can recommend.
 Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
 
-### Fonts:`
+### Fonts <span style="font-size: 1rem;">([Atipo Foundry](https://www.atipofoundry.com/))</span>:`
 ---
 
 <!doctype html>
@@ -151,6 +153,11 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
     <hr/>
     <section class="site">
       <Markdown content={aboutSite}/>
+      <ul class="fonts">
+        <li class="nmb">Nudica Mono Bold</li>
+        <li class="nml">Nudica Mono Light</li>
+        <li class="argesta">Argesta Regular</li>
+      </ul>
     </section>
   </article>
 </main>
@@ -161,7 +168,6 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
 <style>
     .about-container {
         max-width: 800px;
-
         padding: 0 .5rem;
     }
 
@@ -169,6 +175,22 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
         margin: 2rem 0;
         border: 0;
         border-top: 1px solid var(--border-color);
+    }
+
+    ul {
+        font-size: 1rem;;
+    }
+
+    .nmb {
+        font-family: 'nudica_monobold', serif;
+    }
+
+    .nml {
+        font-family: 'nudica_monolight', serif;
+    }
+
+    .argesta {
+        font-family: 'argesta_regular', serif;
     }
 
     @media (max-width: 600px) {
