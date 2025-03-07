@@ -55,8 +55,12 @@ const sortedYears = Object.keys(articlesByYear)
       .blog-intro {
           font-size: 1rem;
           font-family: 'nudica_monolight', serif;
-          margin-bottom: 2rem;
-          padding: 0 1rem;
+          max-width: 960px;
+          margin: 0 auto 1rem;
+          padding: 0 .5rem;
+          display: flex;
+          flex-direction: column;
+          gap: .3rem
       }
 
       .year-section {
@@ -194,8 +198,8 @@ const sortedYears = Object.keys(articlesByYear)
   <h1 class="page-title">Blog</h1>
 
   <div class="blog-intro">
-    <p>Here you can find longer-form content about my projects, thoughts, and ideas.</p>
-    <SocialLinks showRss={true} showBluesky={true} showInstagram={false}/>
+    <p>Here you can find longer-form content about my projects, thoughts, and ideas. You can also follow these via:</p>
+    <SocialLinks showRss={true} showBluesky={false} showInstagram={false}/>
   </div>
 
   {sortedYears.map(year => (
