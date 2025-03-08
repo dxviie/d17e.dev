@@ -5,10 +5,21 @@ import sitemap from '@astrojs/sitemap';
 
 import svelte from '@astrojs/svelte';
 
+import sentry from '@sentry/astro';
+
 // https://astro.build/config
 // @ts-ignore
 export default defineConfig({
     site: 'https://www.d17e.dev',
 
-    integrations: [mdx(), sitemap(), svelte()],
+    integrations: [mdx(), sitemap(), svelte(), sentry({
+        dsn: "https://326015f0ad330d4959b4fbed8a9f61d3@o4504983358603264.ingest.us.sentry.io/4508942066122752",
+        tracesSampleRate: 0,
+        replaysSessionSampleRate: 0,
+        replaysOnErrorSampleRate: 0,
+        sourceMapsUploadOptions: {
+            project: "d17e-dev-astro",
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+        },
+    })],
 });

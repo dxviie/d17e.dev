@@ -296,14 +296,24 @@ Here you can find my attempts at turning **ideas** into **art** through **code**
     </ul>
   </section>
 </main>
+<!-- your-page.astro -->
+---
+---
+<button id="error-button">Throw test error</button>
 <FindMeOn/>
 <Footer/>
 
 <script>
+
+  function handleClick() {
+    throw new Error('This is a test error');
+  }
+
   // Initialize zoom controls and video hover functionality
   document.addEventListener('DOMContentLoaded', () => {
     initVideoHover();
     initZoomControls();
+    document.querySelector("#error-button").addEventListener("click", handleClick);
   });
 
   // Handle Astro view transitions
