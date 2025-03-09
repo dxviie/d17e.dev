@@ -8,19 +8,44 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Markdown from '../components/Markdown.astro';
 import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
-import SocialLinks from "../components/SocialLinks.astro";
 import FindMeOn from "../components/FindMeOn.astro";
-import PostPrevNext from "../components/PostPrevNext.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
 
 type Props = CollectionEntry<'posts'>['data'];
 
 const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription} = Astro.props;
+
+const isVideo = cover.type?.startsWith("video/");
+// Determine file extension and prepare image/video sources
+let imageUrl;
+
+if (isVideo) {
+  imageUrl = `https://d17e.dev/assets/${cover.id}.jpg`;
+
+} else {
+  // For images, determine extension from the type or filename
+  let ext = "jpg"; // default extension
+  if (cover.type) {
+    if (cover.type === "image/png") ext = "png";
+    else if (cover.type === "image/gif") ext = "gif";
+    else if (cover.type === "image/webp") ext = "webp";
+    else if (cover.type === "image/svg+xml") ext = "svg";
+    else if (cover.type === "image/avif") ext = "avif";
+    else if (cover.type === "image/jpeg") ext = "jpg";
+  } else if (cover.filenameDownload) {
+    // Extract extension from filename if available
+    const fileExt = cover.filenameDownload.split(".").pop()?.toLowerCase();
+    if (fileExt && ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif"].includes(fileExt)) {
+      ext = fileExt === "jpeg" ? "jpg" : fileExt;
+    }
+  }
+  imageUrl = `https://d17e.dev/assets/${cover.id}.${ext}`;
+}
 ---
 
 <html lang="en">
 <head>
-  <BaseHead title={title} description={linkDescription || ''}/>
+  <BaseHead title={title} description={linkDescription || ''} image={imageUrl}/>
   <ClientRouter/>
 </head>
 
