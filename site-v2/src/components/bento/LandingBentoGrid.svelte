@@ -23,8 +23,6 @@
   const landingPageIndex = $state(getStoreDiceCount());
   const landingPage = $derived(landingPages[landingPageIndex]);
 
-  const FROM_LANDING = "?fromlanding=true";
-
   const INSET = 10 / window.devicePixelRatio;
   const RADIUS = 10;
   const COLOR = '#8F427B';
@@ -157,7 +155,7 @@
 
     if (isVideo) {
       return `
-        <a href="/posts/${media.slug + FROM_LANDING}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
@@ -177,7 +175,7 @@
       `;
     } else {
       return `
-        <a href="/posts/${media.slug + FROM_LANDING}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
         <div class="featured-post ${mediaClass}">
           <img src="/assets/${media.cover.id}.${getExtForType(media.cover.type)}" alt="${media.title}"/>
         </div>
@@ -243,7 +241,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/about${FROM_LANDING}" target="_self" class="link-link" data-umami-event="lp-click-about"><div class="link-container">
+      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about"><div class="link-container">
         <p class="link-text">?</p>
       </div></a>`,
       required: true
@@ -253,7 +251,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts${FROM_LANDING}" target="_self" class="link-link" data-umami-event="lp-click-posts">
+      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts">
         <div class="svg-container">
           <svg
                   class="rotating-svg"
