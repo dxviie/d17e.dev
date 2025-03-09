@@ -143,7 +143,7 @@
 
     if (isVideo) {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="View post ${media.title}">
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
@@ -163,7 +163,7 @@
       `;
     } else {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="View post ${media.title}">
         <div class="featured-post ${mediaClass}">
           <img src="/assets/${media.cover.id}.webp" alt="${media.title}"/>
         </div>
@@ -180,7 +180,7 @@
       id: 'logo',
       dimensions: [logoDimensions],
       html: `
-      <a href="/" target="_self" class="link-link"><div class="logo-blip" data-umami-event="lp-click-logo">
+      <a href="/" target="_self" class="link-link"><div class="logo-blip" data-umami-event="lp-click-logo" aria-label="Refresh the page">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
@@ -203,7 +203,7 @@
           Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short. <span class="smiley">:)</span>
         </p>
         <p class="about-text">Welcome 🥳 & happy clicking!<br/>
-        Need some magic? <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link" data-umami-event="lp-click-contact">Get in touch!</a></p>
+        Need some magic? <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link" data-umami-event="lp-click-contact" aria-label="Fill out my contact form">Get in touch!</a></p>
       </div>`,
       required: true
     };
@@ -214,7 +214,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="https://forms.d17e.dev/contact" target="_self" class="link-link" data-umami-event="lp-click-contact"><div class="link-container">
+      <a href="https://forms.d17e.dev/contact" target="_self" class="link-link" data-umami-event="lp-click-contact" aria-label="Fill out my contact form"><div class="link-container">
         <div class="svg-container">
           <svg width="90%" height="90%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="rotating-contact">
             <path d="M3.29289 5.29289C3.47386 5.11193 3.72386 5 4 5H20C20.2761 5 20.5261 5.11193 20.7071 5.29289M3.29289 5.29289C3.11193 5.47386 3 5.72386 3 6V18C3 18.5523 3.44772 19 4 19H20C20.5523 19 21 18.5523 21 18V6C21 5.72386 20.8881 5.47386 20.7071 5.29289M3.29289 5.29289L10.5858 12.5857C11.3668 13.3668 12.6332 13.3668 13.4142 12.5857L20.7071 5.29289" stroke="${bentoConfig.bgColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -229,7 +229,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about"><div class="link-container">
+      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="View the about page"><div class="link-container">
         <p class="link-text">?</p>
       </div></a>`,
       required: true
@@ -239,7 +239,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts">
+      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="View all posts">
         <div class="svg-container">
           <svg
                   class="rotating-svg"
@@ -260,7 +260,7 @@
       id: 'dice',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/" target="_self" data-umami-event="lp-click-dice"><div class="link-container">
+      <a href="/" target="_self" data-umami-event="lp-click-dice"><div class="link-container" aria-label="Refresh the page">
         <div class="svg-container">
           ${generateDiceSvg(landingPageIndex + 1, bentoConfig.color, bentoConfig.bgColor)}
         </div>

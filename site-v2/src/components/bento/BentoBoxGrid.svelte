@@ -181,9 +181,6 @@
                   fill={bentoConfig.bgColor}
                   stroke={bentoConfig.color}
                   stroke-width={.3}
-                  tabindex={tile.index}
-                  role="button"
-                  aria-roledescription="tile selection"
                   data-index={tile.index}
           />
           <line
