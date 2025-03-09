@@ -381,7 +381,7 @@
         }
 
         :global(.logo-subtext-line) {
-            font-size: .7rem;
+            font-size: max(.7rem, 12px);
         }
     }
 
