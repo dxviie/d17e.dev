@@ -76,7 +76,7 @@ if (isVideo) {
 const cmsVideoUrl = `${cmsUrl}/${id}`;
 ---
 
-<figure class="media-asset" data-is-video={isVideo.toString()} data-id={id}>
+<figure class="media-asset" data-is-video={isVideo.toString()} data-id={id} data-hero={isHero.toString()}>
   {showVideo ? (
           <div class="video-container">
             <video
@@ -238,6 +238,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
 <script>
   document.addEventListener('astro:page-load', () => {
     setupVideoHovers();
+    playHeroVideos();
   });
 
   function setupVideoHovers() {
@@ -279,6 +280,19 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     });
   }
 
+  function playHeroVideos() {
+    // Find and play all hero videos (these have autoplay attribute but need to be manually started after page transitions)
+    const heroVideos = document.querySelectorAll('.video-container video[autoplay]');
+    heroVideos.forEach(video => {
+      if (video instanceof HTMLVideoElement) {
+        video.play().catch(e => console.log('Hero video autoplay prevented:', e));
+      }
+    });
+  }
+
   // Also run on initial page load
-  document.addEventListener('DOMContentLoaded', setupVideoHovers);
+  document.addEventListener('DOMContentLoaded', () => {
+    setupVideoHovers();
+    playHeroVideos();
+  });
 </script>
