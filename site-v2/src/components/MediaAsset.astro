@@ -34,7 +34,7 @@ let videoSrc;
 if (isVideo) {
   // For videos, import the thumbnail image
   try {
-    const thumbnailModule = await import(`../assets/${id}.jpg`);
+    const thumbnailModule = await import(`../../public/assets/${id}.webp`);
     imageUrl = thumbnailModule.default;
   } catch (error) {
     console.error(`Error importing thumbnail for ${id}:`, error);
@@ -62,13 +62,7 @@ if (isVideo) {
     const imageModule = await import(`../assets/${id}.${ext}`);
     imageUrl = imageModule.default;
   } catch (error) {
-    // Try jpg as fallback if specified extension fails
-    try {
-      const fallbackModule = await import(`../assets/${id}.jpg`);
-      imageUrl = fallbackModule.default;
-    } catch (fallbackError) {
-      console.error(`Error importing image for ${id}:`, error);
-    }
+    console.error(`Error importing image for ${id}:`, error);
   }
 }
 

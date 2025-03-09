@@ -102,18 +102,6 @@
 
   }
 
-  function getExtForType(type: string) {
-    let ext = "jpg"; // default extension
-    if (type) {
-      if (type === "image/png") ext = "png";
-      else if (type === "image/gif") ext = "gif";
-      else if (type === "image/webp") ext = "webp";
-      else if (type === "image/svg+xml") ext = "svg";
-      else if (type === "image/avif") ext = "avif";
-    }
-    return ext;
-  }
-
   function generateDiceSvg(number: number, strokeColor = '#000000', fillColor = '#ffffff') {
     // Validate input
     if (number < 1 || number > 6 || !Number.isInteger(number)) {
@@ -160,7 +148,7 @@
             <div class="video-container">
               <video
                 src="/assets/${media.cover.id}.mp4"
-                poster="/assets/${media.cover.id}.jpg"
+                poster="/assets/${media.cover.id}.webp"
                 autoplay
                 loop
                 muted
@@ -177,7 +165,7 @@
       return `
         <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}">
         <div class="featured-post ${mediaClass}">
-          <img src="/assets/${media.cover.id}.${getExtForType(media.cover.type)}" alt="${media.title}"/>
+          <img src="/assets/${media.cover.id}.webp" alt="${media.title}"/>
         </div>
         </a>
       `;

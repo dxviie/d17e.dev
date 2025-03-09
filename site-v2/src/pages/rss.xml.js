@@ -1,6 +1,5 @@
 import rss from '@astrojs/rss';
 import {getCollection} from 'astro:content';
-import {getSecret} from "astro:env/server";
 
 const getRssEntries = async () => {
     const posts = await getCollection('posts');
@@ -26,6 +25,13 @@ const getRssEntries = async () => {
     return allItems;
 }
 
+function getMediaUrl(cover) {
+    if (cover.type.startsWith('video')) {
+        return `https://www.d17e.dev/assets/${cover.id}.mp4`;
+    }
+    return `https://www.d17e.dev/assets/${cover.id}.webp`;
+}
+
 export async function GET(context) {
     const entries = await getRssEntries();
     return rss({
@@ -38,7 +44,7 @@ export async function GET(context) {
             pubDate: entry.pubDate,
             customData: entry.cover ?
                 `<enclosure
-                        url="${getSecret('DIRECTUS_URL')}/assets/${entry.cover.id}"
+                        url="${getMediaUrl(entry.cover)}"
                         length="${entry.cover.filesize}"
                         type="${entry.cover.type}"
                     />
