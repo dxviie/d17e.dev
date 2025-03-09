@@ -1,6 +1,5 @@
 ---
 import ColorModeToggle from './ColorModeToggle.astro';
-import D17eIcon from './icons/D17eIcon.astro';
 import PostsIcon from './icons/PostsIcon.astro';
 import BlogIcon from './icons/BlogIcon.astro';
 
@@ -16,7 +15,9 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   <!-- HOME BUTTON -->
   <a href="/" class="nav-item" id="home-nav-item">
     <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
-      <D17eIcon color={isHomePage ? "var(--bg-color)" : undefined}/>
+      <div class="back-to-landing-arrow">
+        ←
+      </div>
     </div>
     <span class="nav-text" data-active={isHomePage}>home</span>
   </a>
@@ -163,10 +164,17 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
         border-color: var(--color);
     }
 
-    .arrow {
+    .back-to-landing-arrow {
+        display: block;
         font-family: 'nudica_monobold', serif;
-        font-size: 1.2rem;
         font-weight: bold;
+        color: var(--bg-color);
+        background-color: var(--color);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 17px;
+        text-align: center;
     }
 
     /* Hide text on mobile */
@@ -183,112 +191,57 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 </style>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Setup client-side URL detection
-    const updateNavBasedOnURL = () => {
-      const searchParams = new URLSearchParams(window.location.search);
-      const sentFromLanding = searchParams.has('fromlanding');
-      const homeIconBox = document.getElementById('home-icon-box');
-      const backArrow = document.getElementById('back-arrow');
+  const setupNavScroll = () => {
+    const nav = document.getElementById('main-nav');
+    let lastScrollY = window.scrollY;
+    const navHeight = nav?.offsetHeight || 0;
 
-      if (homeIconBox) {
-        if (sentFromLanding) {
-          // Check if back arrow already exists
-          if (!backArrow) {
-            // Clear any existing content
-            homeIconBox.innerHTML = '';
-            // Add back arrow
-            const arrow = document.createElement('div');
-            arrow.id = 'back-arrow';
-            arrow.className = 'back-to-landing-arrow';
-            arrow.textContent = '←';
-            homeIconBox.appendChild(arrow);
-          }
-        } else {
-          // If back arrow exists but shouldn't, replace with D17eIcon
-          if (backArrow) {
-            // We can't directly create Astro components client-side,
-            // so we'll use a placeholder or implement a client-side version
-            homeIconBox.innerHTML = '<div class="d17e-icon-placeholder">D</div>';
-          }
-        }
+    // Threshold - how many pixels to scroll before hiding/showing the nav
+    const scrollThreshold = 10;
+
+    function handleScroll() {
+      if (!nav) return;
+
+      const currentScrollY = window.scrollY;
+      const scrollDifference = currentScrollY - lastScrollY;
+
+      // If we're at the very top, always show the nav
+      if (currentScrollY <= 0) {
+        nav.style.transform = 'translateY(0)';
       }
-    };
-
-    const setupNavScroll = () => {
-      const nav = document.getElementById('main-nav');
-      let lastScrollY = window.scrollY;
-      const navHeight = nav?.offsetHeight || 0;
-
-      // Threshold - how many pixels to scroll before hiding/showing the nav
-      const scrollThreshold = 10;
-
-      function handleScroll() {
-        if (!nav) return;
-
-        const currentScrollY = window.scrollY;
-        const scrollDifference = currentScrollY - lastScrollY;
-
-        // If we're at the very top, always show the nav
-        if (currentScrollY <= 0) {
-          nav.style.transform = 'translateY(0)';
-        }
-        // Scrolling down and past threshold, hide the nav
-        else if (scrollDifference > scrollThreshold) {
-          nav.style.transform = `translateY(-${navHeight}px)`;
-        }
-        // Scrolling up and past threshold, show the nav
-        else if (scrollDifference < -scrollThreshold) {
-          nav.style.transform = 'translateY(0)';
-        }
-
-        // Only update lastScrollY if we passed the threshold
-        if (Math.abs(scrollDifference) > scrollThreshold) {
-          lastScrollY = currentScrollY;
-        }
+      // Scrolling down and past threshold, hide the nav
+      else if (scrollDifference > scrollThreshold) {
+        nav.style.transform = `translateY(-${navHeight}px)`;
+      }
+      // Scrolling up and past threshold, show the nav
+      else if (scrollDifference < -scrollThreshold) {
+        nav.style.transform = 'translateY(0)';
       }
 
-      // Throttle scroll events for performance
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          window.requestAnimationFrame(() => {
-            handleScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      });
-    };
+      // Only update lastScrollY if we passed the threshold
+      if (Math.abs(scrollDifference) > scrollThreshold) {
+        lastScrollY = currentScrollY;
+      }
+    }
 
-    // Initialize on page load
-    setupNavScroll();
-    updateNavBasedOnURL();
-
-    // For Astro View Transitions, also handle setup after page changes
-    document.addEventListener('astro:page-load', () => {
-      setupNavScroll();
-      updateNavBasedOnURL();
+    // Throttle scroll events for performance
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
     });
+  };
 
-    // Listen for URL changes (helpful for SPA-like behavior)
-    window.addEventListener('popstate', updateNavBasedOnURL);
+  // Initialize on page load
+  setupNavScroll();
 
-    // Add CSS for the client-side D17e icon placeholder
-    const style = document.createElement('style');
-    style.textContent = `
-      .back-to-landing-arrow {
-        display: block;
-        font-family: 'nudica_monobold', serif;
-        color: var(--bg-color);
-        background-color: var(--color);
-        border-radius: 50%;
-        width: 28px;
-        height: 28px;
-        font-size: 17px;
-        text-align: center;
-      }
-    `;
-    document.head.appendChild(style);
+  // For Astro View Transitions, also handle setup after page changes
+  document.addEventListener('astro:page-load', () => {
+    setupNavScroll();
   });
 </script>
