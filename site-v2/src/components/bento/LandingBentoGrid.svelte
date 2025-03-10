@@ -38,11 +38,46 @@
   //   palette: contrasting
   // });
 
+  const pastelNeonPink = "#FF9EEE";
+  const pastelNeonBlue = "#9EECFF";
+  const pastelNeonGreen = "#AFFFA3";
+  const pastelNeonYellow = "#FFFFA3";
+  const pastelNeonOrange = "#FFD1A3";
+  const pastelNeonPurple = "#D9A3FF";
+  const pastelNeonTurquoise = "#A3FFF4";
+  const pastelNeonCoral = "#FFA3A3";
+  const pastelNeonLime = "#D9FFA3";
+  const pastelNeonLavender = "#C4A3FF";
+
+  const darkMidnightPurple = "#2A0E42";
+  const darkCharcoalTeal = "#0E2A2A";
+  const darkBloodRed = "#420E0E";
+  const darkForestEmerald = "#0E420E";
+  const darkNavyInk = "#0E0E42";
+  const darkBurntOrange = "#422A0E";
+  const darkMossGreen = "#2A420E";
+  const darkBerryWine = "#42082A";
+  const darkInkwell = "#1A1A2E";
+  const darkEspresso = "#2E1A1A";
+
+  // Main Colors
+  const mainBackground = "#E8F0F2"; // Light blue-gray background
+  const mainForeground = "#3A1D40"; // Dark purple for text
+
+  // Palette Colors
+  const vibrantPurple = "#9C27B0"; // Bright purple accents
+  const orangeBlock = "#F4A261"; // Orange section
+  const darkBrown = "#402218"; // Dark brown areas
+  const lightPurple = "#D8BFD8"; // Lighter purple elements
+  const accentMagenta = "#E91E63"; // Magenta highlights
+  const paleYellow = "#FCEF98"; // Subtle yellow accents
+  const charcoalLines = "#333333"; // Dark lines throughout
+
   const bentoConfig = $state({
-    insetMin: landingPage.data?.insetMin || 1,
-    insetMax: landingPage.data?.insetMax || 4,
+    insetMin: landingPage.data?.insetMin || 0,
+    insetMax: landingPage.data?.insetMax || 0,
     radiusMin: landingPage.data?.radiusMin || 0,
-    radiusMax: landingPage.data?.radiusMax || 2,
+    radiusMax: landingPage.data?.radiusMax || 0,
     color: landingPage.data?.color || 'black',
     bgColor: landingPage.data?.bgColor || 'white',
     palette: landingPage.data?.palette || []
