@@ -166,7 +166,7 @@
     // Add tooltip triggers to elements
     const mediaLinks = document.querySelectorAll('.post-link');
     mediaLinks.forEach(link => {
-      const title = link.querySelector('img, video')?.getAttribute('title') || 
+      const title = link.querySelector('img, video')?.getAttribute('data-title') || 
                    link.querySelector('img, video')?.getAttribute('alt') || 
                    link.getAttribute('aria-label') || 
                    'View details';
@@ -179,7 +179,9 @@
     // Add tooltips to navigation links
     const navLinks = document.querySelectorAll('.link-link');
     navLinks.forEach(link => {
-      const label = link.getAttribute('aria-label') || 'Navigate';
+      const label = link.getAttribute('data-title') ||
+                   link.getAttribute('aria-label') || 
+                   'Navigate';
       
       link.addEventListener('mousemove', handleMouseMove);
       link.addEventListener('mouseenter', () => showTooltipWithContent(label));
@@ -194,7 +196,7 @@
     }
 
     // Base SVG with dice outline
-    let svg = `<svg id="dice-svg" class="dice-svg link-link" aria-label="Roll the dice" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    let svg = `<svg id="dice-svg" class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
           fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
 
@@ -241,7 +243,8 @@
                 playsinline
                 preload="auto"
                 disablePictureInPicture
-                title="${mediaAlt}"
+                data-title="${mediaAlt}"
+                alt="${mediaAlt}"
               ></video>
             </div>
           </div>
@@ -251,7 +254,7 @@
       return `
         <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">
-          <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" title="${mediaAlt}"/>
+          <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" data-title="${mediaAlt}"/>
         </div>
         </a>
       `;
@@ -346,7 +349,7 @@
       id: 'dice',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/" target="_self" data-umami-event="lp-click-dice"><div class="link-container" aria-label="Roll the dice">
+      <a href="/" target="_self" class="link-link" data-title="Roll the dice" aria-label="Roll the dice" data-umami-event="lp-click-dice"><div class="link-container">
         <div class="svg-container">
           ${generateDiceSvg(landingPageIndex + 1, bentoConfig.color, bentoConfig.bgColor)}
         </div>
@@ -679,19 +682,36 @@
     .custom-tooltip {
         position: fixed;
         padding: 8px 12px;
-        background-color: var(--ldp-color);
-        color: var(--ldp-bg-color);
+        background-color: var(--ldp-bg-color);
+        color: var(--ldp-color);
         border-radius: 6px;
         font-size: 14px;
         font-family: 'nudica_monobold', serif;
         pointer-events: none;
         z-index: 9999;
-        max-width: 200px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         opacity: 0.95;
         transform-origin: center;
         backdrop-filter: blur(3px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        animation: tooltipPulse 3s infinite ease-in-out;
+    }
+
+    @keyframes tooltipPulse {
+        0% {
+            transform: scale(1);
+        }
+        30% {
+            transform: scale(1.05, 1.03);
+        }
+        50% {
+            transform: scale(1.03, 1.05);
+        }
+        70% {
+            transform: scale(1.05, 1.03);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
 
     @keyframes etator {
