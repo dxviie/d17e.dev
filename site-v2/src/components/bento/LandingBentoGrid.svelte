@@ -244,7 +244,6 @@
                 preload="auto"
                 disablePictureInPicture
                 data-title="${mediaAlt}"
-                alt="${mediaAlt}"
               ></video>
             </div>
           </div>
