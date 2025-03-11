@@ -16,53 +16,79 @@
   let tooltipX = $state(0);
   let tooltipY = $state(0);
   let isMobileDevice = $state(false);
+  let isTouchInteracting = $state(false);
+  let lastTouchTimestamp = 0;
 
   // Handle mouse movements to update tooltip position
   function handleMouseMove(e: MouseEvent) {
-    tooltipX = e.clientX + 20;
-    tooltipY = e.clientY + 20;
+    // Only handle mouse events if we're not in touch mode
+    if (!isTouchInteracting) {
+      tooltipX = e.clientX + 20;
+      tooltipY = e.clientY + 20;
+    }
   }
 
   // Handle touch events
   function handleTouchStart(e: TouchEvent) {
-    if (e.touches.length > 0) {
-      const touch = e.touches[0];
-      tooltipX = touch.clientX;
-      tooltipY = touch.clientY - 70; // Position tooltip above finger for better visibility
-
-      // get the current scroll position
-      const scrollY = window.scrollY;
-      
-      // Find element under touch point and update tooltip
-      updateTooltipFromTouchPosition(touch.clientX, touch.clientY - scrollY);
-    }
-  }
-
-  function handleTouchEnd(e: TouchEvent) {
-    hideTooltip();
-  }
-
-  function handleTouchMove(e: TouchEvent) {
-    e.preventDefault();
+    // Indicate we're in touch interaction mode to prevent mouse event handling
+    isTouchInteracting = true;
+    lastTouchTimestamp = Date.now();
+    
     if (e.touches.length > 0) {
       const touch = e.touches[0];
       tooltipX = Math.max(10, touch.clientX - 90);
       tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
       
       // Find element under touch point and update tooltip
-      updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      const hasInteractiveElement = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      
+      // Prevent default scrolling behavior when touching interactive elements
+      if (hasInteractiveElement) {
+        e.preventDefault();
+      }
+    }
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    // Hide tooltip when touching ends
+    hideTooltip();
+    
+    // Add a slight delay to reset touch mode to prevent mouse event confusion
+    setTimeout(() => {
+      isTouchInteracting = false;
+    }, 300);
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    // Update timestamp of last touch
+    lastTouchTimestamp = Date.now();
+    
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      tooltipX = Math.max(10, touch.clientX - 90);
+      tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
+      
+      // Find element under touch point and update tooltip
+      const hasInteractiveElement = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      
+      // Only prevent default if we're over an interactive element and showing a tooltip
+      // This allows scrolling when not over interactive elements
+      if (hasInteractiveElement && showTooltip) {
+        e.preventDefault();
+      }
     }
   }
   
   // Find element at point and update tooltip accordingly
   function updateTooltipFromTouchPosition(x: number, y: number) {
-    // Get the element under the touch point
-    const element = document.elementFromPoint(x, y);
+    // Get the element under the touch point, adjusted for scroll
+    const scrollY = window.scrollY;
+    const element = document.elementFromPoint(x, y - scrollY);
     
     if (!element) {
       // Hide tooltip if no element found
       hideTooltip();
-      return;
+      return false;
     }
     
     // Find the nearest tooltip-enabled element (post-link or link-link)
@@ -87,9 +113,11 @@
       
       // Show tooltip with the found content
       showTooltipWithContent(content);
+      return true;
     } else {
       // No relevant element found, hide tooltip
       hideTooltip();
+      return false;
     }
   }
 
@@ -235,6 +263,41 @@
 
     // Setup tooltip triggers
     setupTooltips();
+    
+    // Add touch-specific event handlers for interactive elements
+    setupTouchHandlers();
+  }
+  
+  function setupTouchHandlers() {
+    // Add touch event handlers to all interactive elements
+    const interactiveElements = document.querySelectorAll('.post-link, .link-link');
+    interactiveElements.forEach(element => {
+      // For link elements, prevent default scrolling during touch interaction
+      element.addEventListener('touchstart', (e) => {
+        // Detect if we're actually over an interactive element
+        const touch = e.touches[0];
+        const hasInteractiveContent = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+        
+        // Only prevent default if we found interactive content
+        if (hasInteractiveContent) {
+          // Use passive: false to allow preventDefault
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, { passive: false });
+      
+      // Prevent scrolling when moving over interactive elements
+      element.addEventListener('touchmove', (e) => {
+        const touch = e.touches[0];
+        const hasInteractiveContent = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+        
+        // Prevent page scrolling when user is interacting with tooltip
+        if (hasInteractiveContent && showTooltip) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, { passive: false });
+    });
   }
 
   function setupTooltips() {
@@ -245,7 +308,7 @@
       element.removeAttribute('title');
     });
     
-    // Add tooltip triggers to elements
+    // Add tooltip triggers to elements - only for mouse events
     const mediaLinks = document.querySelectorAll('.post-link');
     mediaLinks.forEach(link => {
       const title = link.querySelector('img, video')?.getAttribute('data-title') || 
@@ -255,11 +318,15 @@
       
       // Mouse events
       link.addEventListener('mousemove', handleMouseMove);
-      link.addEventListener('mouseenter', () => showTooltipWithContent(title));
+      link.addEventListener('mouseenter', () => {
+        if (!isTouchInteracting) {
+          showTooltipWithContent(title);
+        }
+      });
       link.addEventListener('mouseleave', hideTooltip);
     });
 
-    // Add tooltips to navigation links
+    // Add tooltips to navigation links - only for mouse events
     const navLinks = document.querySelectorAll('.link-link');
     navLinks.forEach(link => {
       const label = link.getAttribute('data-title') ||
@@ -268,7 +335,11 @@
       
       // Mouse events
       link.addEventListener('mousemove', handleMouseMove);
-      link.addEventListener('mouseenter', () => showTooltipWithContent(label));
+      link.addEventListener('mouseenter', () => {
+        if (!isTouchInteracting) {
+          showTooltipWithContent(label);
+        }
+      });
       link.addEventListener('mouseleave', hideTooltip);
     });
   }
@@ -482,12 +553,21 @@
 
 </script>
 
-<svelte:window on:mousemove={handleMouseMove} on:touchmove={handleTouchMove} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}/>
+<svelte:window 
+  on:mousemove={handleMouseMove}
+  on:touchmove={handleTouchMove}
+  on:touchstart={handleTouchStart}
+  on:touchend={handleTouchEnd}
+/>
 
 <BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
 
 <!-- Tooltip that follows cursor -->
-<div class="custom-tooltip" class:mobile={isMobileDevice} style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip ? '': 'display: none'}">
+<div 
+  class="custom-tooltip" 
+  class:mobile={isMobileDevice} 
+  style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip ? '': 'display: none'}"
+>
   {tooltipContent}
 </div>
 
@@ -644,6 +724,8 @@
         width: 100%;
         height: 100%;
         text-decoration: none;
+        /* Prevent default touch actions on links for better tooltip handling */
+        touch-action: none;
     }
 
     :global(.featured-post) {
@@ -703,6 +785,8 @@
 
     :global(.link-link) {
         text-decoration: none !important;
+        /* Prevent default touch actions on links for better tooltip handling */
+        touch-action: none;
     }
 
     :global(.link-container) {
