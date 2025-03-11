@@ -10,6 +10,29 @@
 
   const svgId = "bento-landing";
 
+  // Tooltip state
+  let showTooltip = $state(false);
+  let tooltipContent = $state('');
+  let tooltipX = $state(0);
+  let tooltipY = $state(0);
+
+  // Handle mouse movements to update tooltip position
+  function handleMouseMove(e: MouseEvent) {
+    tooltipX = e.clientX;
+    tooltipY = e.clientY;
+  }
+
+  // Show tooltip with specific content
+  function showTooltipWithContent(content: string) {
+    tooltipContent = content;
+    showTooltip = true;
+  }
+
+  // Hide the tooltip
+  function hideTooltip() {
+    showTooltip = false;
+  }
+
   function getStoreDiceCount() {
     if (!localStorage.getItem('diceCount')) {
       localStorage.setItem('diceCount', '0');
@@ -135,6 +158,33 @@
       }, item.delay);
     });
 
+    // Setup tooltip triggers
+    setupTooltips();
+  }
+
+  function setupTooltips() {
+    // Add tooltip triggers to elements
+    const mediaLinks = document.querySelectorAll('.post-link');
+    mediaLinks.forEach(link => {
+      const title = link.querySelector('img, video')?.getAttribute('title') || 
+                   link.querySelector('img, video')?.getAttribute('alt') || 
+                   link.getAttribute('aria-label') || 
+                   'View details';
+      
+      link.addEventListener('mousemove', handleMouseMove);
+      link.addEventListener('mouseenter', () => showTooltipWithContent(title));
+      link.addEventListener('mouseleave', hideTooltip);
+    });
+
+    // Add tooltips to navigation links
+    const navLinks = document.querySelectorAll('.link-link');
+    navLinks.forEach(link => {
+      const label = link.getAttribute('aria-label') || 'Navigate';
+      
+      link.addEventListener('mousemove', handleMouseMove);
+      link.addEventListener('mouseenter', () => showTooltipWithContent(label));
+      link.addEventListener('mouseleave', hideTooltip);
+    });
   }
 
   function generateDiceSvg(number: number, strokeColor = '#000000', fillColor = '#ffffff') {
@@ -144,7 +194,7 @@
     }
 
     // Base SVG with dice outline
-    let svg = `<svg id="dice-svg" class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    let svg = `<svg id="dice-svg" class="dice-svg link-link" aria-label="Roll the dice" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
           fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
 
@@ -175,10 +225,11 @@
     const isVideo = media.cover.type?.startsWith("video/");
     // Add a fade-in class to all media items
     const mediaClass = "media-item fade-in";
+    const mediaAlt = media.title.endsWith("...") ? media.title : media.title + "...";
 
     if (isVideo) {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="View post ${media.title}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
@@ -190,7 +241,7 @@
                 playsinline
                 preload="auto"
                 disablePictureInPicture
-                title="${media.title}"
+                title="${mediaAlt}"
               ></video>
             </div>
           </div>
@@ -198,9 +249,9 @@
       `;
     } else {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="View post ${media.title}">
+        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">
-          <img src="/assets/${media.cover.id}.webp" alt="${media.title}"/>
+          <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" title="${mediaAlt}"/>
         </div>
         </a>
       `;
@@ -215,7 +266,7 @@
       id: 'logo',
       dimensions: [logoDimensions],
       html: `
-      <a href="/" target="_self" class="link-link"><div class="logo-blip" data-umami-event="lp-click-logo" aria-label="Refresh the page">
+      <a href="/" target="_self" class="link-link" data-umami-event="lp-click-logo" aria-label="Refresh"><div class="logo-blip">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
@@ -249,7 +300,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="https://forms.d17e.dev/contact" target="_self" class="link-link" data-umami-event="lp-click-contact" aria-label="Fill out my contact form"><div class="link-container">
+      <a href="https://forms.d17e.dev/contact" target="_self" class="link-link" data-umami-event="lp-click-contact" aria-label="Contact..."><div class="link-container">
         <div class="svg-container">
           <svg width="90%" height="90%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="rotating-contact">
             <path d="M3.29289 5.29289C3.47386 5.11193 3.72386 5 4 5H20C20.2761 5 20.5261 5.11193 20.7071 5.29289M3.29289 5.29289C3.11193 5.47386 3 5.72386 3 6V18C3 18.5523 3.44772 19 4 19H20C20.5523 19 21 18.5523 21 18V6C21 5.72386 20.8881 5.47386 20.7071 5.29289M3.29289 5.29289L10.5858 12.5857C11.3668 13.3668 12.6332 13.3668 13.4142 12.5857L20.7071 5.29289" stroke="${bentoConfig.bgColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -264,7 +315,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="View the about page"><div class="link-container">
+      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="About..."><div class="link-container">
         <p class="link-text">?</p>
       </div></a>`,
       required: true
@@ -274,7 +325,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="View all posts">
+      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All posts...">
         <div class="svg-container">
           <svg
                   class="rotating-svg"
@@ -295,7 +346,7 @@
       id: 'dice',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/" target="_self" data-umami-event="lp-click-dice"><div class="link-container" aria-label="Refresh the page">
+      <a href="/" target="_self" data-umami-event="lp-click-dice"><div class="link-container" aria-label="Roll the dice">
         <div class="svg-container">
           ${generateDiceSvg(landingPageIndex + 1, bentoConfig.color, bentoConfig.bgColor)}
         </div>
@@ -344,7 +395,14 @@
 
 </script>
 
+<svelte:window on:mousemove={handleMouseMove} />
+
 <BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
+
+<!-- Tooltip that follows cursor -->
+<div class="custom-tooltip" style="left: {tooltipX + 15}px; top: {tooltipY + 15}px;{showTooltip ? '': 'display: none'}">
+  {tooltipContent}
+</div>
 
 <style>
     :global(.logo-blip) {
@@ -617,6 +675,25 @@
         animation: etator 15s ease-in-out infinite;
     }
 
+    /* Custom tooltip styles */
+    .custom-tooltip {
+        position: fixed;
+        padding: 8px 12px;
+        background-color: var(--ldp-color);
+        color: var(--ldp-bg-color);
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: 'nudica_monobold', serif;
+        pointer-events: none;
+        z-index: 9999;
+        max-width: 200px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        opacity: 0.95;
+        transform-origin: center;
+        backdrop-filter: blur(3px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     @keyframes etator {
         0% {
             transform: rotate(360deg);
@@ -648,6 +725,11 @@
         :global(.link-text) {
             font-size: 3rem;
         }
+        
+        .custom-tooltip {
+            font-size: 12px;
+            padding: 6px 10px;
+            max-width: 150px;
+        }
     }
-
 </style>
