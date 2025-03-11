@@ -15,11 +15,29 @@
   let tooltipContent = $state('');
   let tooltipX = $state(0);
   let tooltipY = $state(0);
+  let isMobileDevice = $state(false);
 
   // Handle mouse movements to update tooltip position
   function handleMouseMove(e: MouseEvent) {
-    tooltipX = e.clientX;
-    tooltipY = e.clientY;
+    tooltipX = e.clientX + 20;
+    tooltipY = e.clientY + 20;
+  }
+
+  // Handle touch events
+  function handleTouchStart(e: TouchEvent) {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      tooltipX = touch.clientX;
+      tooltipY = touch.clientY - 70; // Position tooltip above finger for better visibility
+    }
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      tooltipX = touch.clientX;
+      tooltipY = touch.clientY - 70; // Position tooltip above finger for better visibility
+    }
   }
 
   // Show tooltip with specific content
@@ -32,7 +50,7 @@
   function hideTooltip() {
     showTooltip = false;
   }
-
+  
   function getStoreDiceCount() {
     if (!localStorage.getItem('diceCount')) {
       localStorage.setItem('diceCount', '0');
@@ -112,6 +130,10 @@
   $effect(() => {
     isMobile = window ? window.innerWidth < 768 : false;
     isWide = window ? window.innerWidth > 1200 : false;
+    
+    // Detect if device is mobile
+    isMobileDevice = isMobile || (window && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
+    
     document.documentElement.style.setProperty('--ldp-color', bentoConfig.color);
     document.documentElement.style.setProperty('--ldp-bg-color', bentoConfig.bgColor);
     document.documentElement.style.setProperty('--ldp-radius', bentoConfig.radiusMin + (bentoConfig.radiusMax - bentoConfig.radiusMin) / 2 + 'px');
@@ -163,6 +185,13 @@
   }
 
   function setupTooltips() {
+    // Remove title attributes to prevent browser tooltips
+    document.querySelectorAll('[title]').forEach(element => {
+      const titleValue = element.getAttribute('title');
+      element.setAttribute('data-title', titleValue);
+      element.removeAttribute('title');
+    });
+    
     // Add tooltip triggers to elements
     const mediaLinks = document.querySelectorAll('.post-link');
     mediaLinks.forEach(link => {
@@ -171,9 +200,19 @@
                    link.getAttribute('aria-label') || 
                    'View details';
       
+      // Mouse events
       link.addEventListener('mousemove', handleMouseMove);
       link.addEventListener('mouseenter', () => showTooltipWithContent(title));
       link.addEventListener('mouseleave', hideTooltip);
+      
+      // Touch events - keep tooltip visible during touch
+      link.addEventListener('touchstart', (e) => {
+        handleTouchStart(e);
+        showTooltipWithContent(title);
+      });
+      link.addEventListener('touchmove', handleTouchMove);
+      link.addEventListener('touchend', hideTooltip);
+      link.addEventListener('touchcancel', hideTooltip);
     });
 
     // Add tooltips to navigation links
@@ -183,9 +222,19 @@
                    link.getAttribute('aria-label') || 
                    'Navigate';
       
+      // Mouse events
       link.addEventListener('mousemove', handleMouseMove);
       link.addEventListener('mouseenter', () => showTooltipWithContent(label));
       link.addEventListener('mouseleave', hideTooltip);
+      
+      // Touch events - keep tooltip visible during touch
+      link.addEventListener('touchstart', (e) => {
+        handleTouchStart(e);
+        showTooltipWithContent(label);
+      });
+      link.addEventListener('touchmove', handleTouchMove);
+      link.addEventListener('touchend', hideTooltip);
+      link.addEventListener('touchcancel', hideTooltip);
     });
   }
 
@@ -244,6 +293,7 @@
                 preload="auto"
                 disablePictureInPicture
                 data-title="${mediaAlt}"
+                alt="${mediaAlt}"
               ></video>
             </div>
           </div>
@@ -397,12 +447,12 @@
 
 </script>
 
-<svelte:window on:mousemove={handleMouseMove} />
+<svelte:window on:mousemove={handleMouseMove} on:touchmove={handleTouchMove} on:touchstart={handleTouchStart} />
 
 <BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
 
 <!-- Tooltip that follows cursor -->
-<div class="custom-tooltip" style="left: {tooltipX + 15}px; top: {tooltipY + 15}px;{showTooltip ? '': 'display: none'}">
+<div class="custom-tooltip" class:mobile={isMobileDevice} style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip ? '': 'display: none'}">
   {tooltipContent}
 </div>
 
@@ -693,6 +743,20 @@
         transform-origin: center;
         backdrop-filter: blur(3px);
         animation: tooltipPulse 3s infinite ease-in-out;
+        transition: opacity 0.3s ease-out;
+    }
+
+    /* Styling for mobile tooltip */
+    .custom-tooltip.mobile {
+        background-color: var(--ldp-color);
+        color: var(--ldp-bg-color);
+        font-weight: bold;
+        padding: 10px 16px;
+        border: 2px solid var(--ldp-bg-color);
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        max-width: 80%;
+        margin: 0 auto;
     }
 
     @keyframes tooltipPulse {
@@ -749,6 +813,12 @@
             font-size: 12px;
             padding: 6px 10px;
             max-width: 150px;
+        }
+        
+        .custom-tooltip.mobile {
+            font-size: 14px;
+            max-width: 80%;
+            padding: 8px 14px;
         }
     }
 </style>
