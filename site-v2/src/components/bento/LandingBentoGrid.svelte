@@ -29,14 +29,67 @@
       const touch = e.touches[0];
       tooltipX = touch.clientX;
       tooltipY = touch.clientY - 70; // Position tooltip above finger for better visibility
+
+      // get the current scroll position
+      const scrollY = window.scrollY;
+      
+      // Find element under touch point and update tooltip
+      updateTooltipFromTouchPosition(touch.clientX, touch.clientY - scrollY);
     }
   }
 
+  function handleTouchEnd(e: TouchEvent) {
+    hideTooltip();
+  }
+
   function handleTouchMove(e: TouchEvent) {
+    e.preventDefault();
     if (e.touches.length > 0) {
       const touch = e.touches[0];
-      tooltipX = touch.clientX;
-      tooltipY = touch.clientY - 70; // Position tooltip above finger for better visibility
+      tooltipX = Math.max(10, touch.clientX - 90);
+      tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
+      
+      // Find element under touch point and update tooltip
+      updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+    }
+  }
+  
+  // Find element at point and update tooltip accordingly
+  function updateTooltipFromTouchPosition(x: number, y: number) {
+    // Get the element under the touch point
+    const element = document.elementFromPoint(x, y);
+    
+    if (!element) {
+      // Hide tooltip if no element found
+      hideTooltip();
+      return;
+    }
+    
+    // Find the nearest tooltip-enabled element (post-link or link-link)
+    const closestLink = element.closest('.post-link, .link-link');
+    
+    if (closestLink) {
+      // Found a link, get tooltip content and show
+      let content = '';
+      
+      if (closestLink.classList.contains('post-link')) {
+        // If it's a post link, get content from img/video
+        content = closestLink.querySelector('img, video')?.getAttribute('data-title') || 
+                 closestLink.querySelector('img, video')?.getAttribute('alt') || 
+                 closestLink.getAttribute('aria-label') || 
+                 'View details';
+      } else {
+        // Otherwise get from aria-label
+        content = closestLink.getAttribute('data-title') ||
+                 closestLink.getAttribute('aria-label') || 
+                 'Navigate';
+      }
+      
+      // Show tooltip with the found content
+      showTooltipWithContent(content);
+    } else {
+      // No relevant element found, hide tooltip
+      hideTooltip();
     }
   }
 
@@ -204,15 +257,6 @@
       link.addEventListener('mousemove', handleMouseMove);
       link.addEventListener('mouseenter', () => showTooltipWithContent(title));
       link.addEventListener('mouseleave', hideTooltip);
-      
-      // Touch events - keep tooltip visible during touch
-      link.addEventListener('touchstart', (e) => {
-        handleTouchStart(e);
-        showTooltipWithContent(title);
-      });
-      link.addEventListener('touchmove', handleTouchMove);
-      link.addEventListener('touchend', hideTooltip);
-      link.addEventListener('touchcancel', hideTooltip);
     });
 
     // Add tooltips to navigation links
@@ -226,15 +270,6 @@
       link.addEventListener('mousemove', handleMouseMove);
       link.addEventListener('mouseenter', () => showTooltipWithContent(label));
       link.addEventListener('mouseleave', hideTooltip);
-      
-      // Touch events - keep tooltip visible during touch
-      link.addEventListener('touchstart', (e) => {
-        handleTouchStart(e);
-        showTooltipWithContent(label);
-      });
-      link.addEventListener('touchmove', handleTouchMove);
-      link.addEventListener('touchend', hideTooltip);
-      link.addEventListener('touchcancel', hideTooltip);
     });
   }
 
@@ -447,7 +482,7 @@
 
 </script>
 
-<svelte:window on:mousemove={handleMouseMove} on:touchmove={handleTouchMove} on:touchstart={handleTouchStart} />
+<svelte:window on:mousemove={handleMouseMove} on:touchmove={handleTouchMove} on:touchstart={handleTouchStart} on:touchend={handleTouchEnd}/>
 
 <BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
 
@@ -738,6 +773,7 @@
         font-family: 'nudica_monobold', serif;
         pointer-events: none;
         z-index: 9999;
+        max-width: 200px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         opacity: 0.95;
         transform-origin: center;
