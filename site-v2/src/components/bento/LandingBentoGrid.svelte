@@ -18,6 +18,11 @@
   let isMobileDevice = $state(false);
   let isTouchInteracting = $state(false);
   let lastTouchTimestamp = 0;
+  
+  // Touch tracking for drag detection
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isDragging = $state(false);
 
   // Handle mouse movements to update tooltip position
   function handleMouseMove(e: MouseEvent) {
@@ -33,25 +38,38 @@
     // Indicate we're in touch interaction mode to prevent mouse event handling
     isTouchInteracting = true;
     lastTouchTimestamp = Date.now();
+    isDragging = false;
     
     if (e.touches.length > 0) {
       const touch = e.touches[0];
+      
+      // Store the initial touch position for drag detection
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      
       tooltipX = Math.max(10, touch.clientX - 90);
       tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
       
-      // Find element under touch point and update tooltip
-      const hasInteractiveElement = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      // Find element under touch point but don't show tooltip yet
+      updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
       
-      // Prevent default scrolling behavior when touching interactive elements
-      if (hasInteractiveElement) {
-        e.preventDefault();
-      }
+      // Don't prevent default here to allow normal link taps
+      // We'll decide based on whether it's a drag in touchmove
     }
   }
 
   function handleTouchEnd(e: TouchEvent) {
-    // Hide tooltip when touching ends
-    hideTooltip();
+    // If we weren't dragging, allow the link to be followed
+    if (!isDragging) {
+      // Don't prevent default - let the link navigation happen
+      hideTooltip();
+    } else {
+      // Hide tooltip when dragging ends
+      hideTooltip();
+    }
+    
+    // Reset dragging state
+    isDragging = false;
     
     // Add a slight delay to reset touch mode to prevent mouse event confusion
     setTimeout(() => {
@@ -65,15 +83,25 @@
     
     if (e.touches.length > 0) {
       const touch = e.touches[0];
+      
+      // Calculate distance moved to determine if this is a drag
+      const deltaX = Math.abs(touch.clientX - touchStartX);
+      const deltaY = Math.abs(touch.clientY - touchStartY);
+      
+      // If moved more than 10px in any direction, consider it a drag
+      if (deltaX > 10 || deltaY > 10) {
+        isDragging = true;
+      }
+      
+      // Update tooltip position - above finger for better visibility
       tooltipX = Math.max(10, touch.clientX - 90);
-      tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
+      tooltipY = Math.max(10, touch.clientY - 90); // Position higher above finger
       
       // Find element under touch point and update tooltip
       const hasInteractiveElement = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
       
-      // Only prevent default if we're over an interactive element and showing a tooltip
-      // This allows scrolling when not over interactive elements
-      if (hasInteractiveElement && showTooltip) {
+      // Only prevent default if dragging over an interactive element
+      if (isDragging && hasInteractiveElement && showTooltip) {
         e.preventDefault();
       }
     }
@@ -278,25 +306,9 @@
         const touch = e.touches[0];
         const hasInteractiveContent = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
         
-        // Only prevent default if we found interactive content
-        if (hasInteractiveContent) {
-          // Use passive: false to allow preventDefault
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }, { passive: false });
-      
-      // Prevent scrolling when moving over interactive elements
-      element.addEventListener('touchmove', (e) => {
-        const touch = e.touches[0];
-        const hasInteractiveContent = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-        
-        // Prevent page scrolling when user is interacting with tooltip
-        if (hasInteractiveContent && showTooltip) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      }, { passive: false });
+        // Don't prevent default here - we'll let the link be tappable
+        // Let the main touchstart/touchmove handlers decide
+      }, { passive: true });
     });
   }
 
@@ -566,6 +578,7 @@
 <div 
   class="custom-tooltip" 
   class:mobile={isMobileDevice} 
+  class:dragging={isDragging}
   style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip ? '': 'display: none'}"
 >
   {tooltipContent}
@@ -877,6 +890,12 @@
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
         max-width: 80%;
         margin: 0 auto;
+    }
+
+    /* Special styling when dragging */
+    .custom-tooltip.dragging {
+        /*transform: translateY(-40px); !* Move tooltip higher when dragging *!*/
+        transition: transform 0.2s ease-out, opacity 0.3s ease-out;
     }
 
     @keyframes tooltipPulse {
