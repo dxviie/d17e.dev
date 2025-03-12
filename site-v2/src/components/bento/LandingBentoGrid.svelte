@@ -421,7 +421,8 @@
                 loop
                 muted
                 playsinline
-                preload="auto"
+                preload="none"
+                loading="lazy"
                 disablePictureInPicture
                 data-title="${mediaAlt}"
                 alt="${mediaAlt}"
@@ -434,7 +435,7 @@
       return `
         <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">
-          <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" data-title="${mediaAlt}"/>
+          <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" data-title="${mediaAlt}" loading="lazy" decoding="async"/>
         </div>
         </a>
       `;
