@@ -46,13 +46,12 @@
       // Store the initial touch position for drag detection
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
-      
-      tooltipX = Math.max(10, touch.clientX - 90);
-      tooltipY = Math.max(10, touch.clientY - 90); // Position tooltip above finger for better visibility
-      
       // Find element under touch point but don't show tooltip yet
-      updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-      
+      const tooltipContentLength = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      const tooltipPosition = getToolTipPosition(touch.clientX, touch.clientY, tooltipContentLength);
+      tooltipX = tooltipPosition.x;
+      tooltipY = tooltipPosition.y;
+
       // Don't prevent default here to allow normal link taps
       // We'll decide based on whether it's a drag in touchmove
     }
@@ -92,23 +91,21 @@
       if (deltaX > 10 || deltaY > 10) {
         isDragging = true;
       }
-      
-      // Update tooltip position - above finger for better visibility
-      tooltipX = Math.max(10, touch.clientX - 90);
-      tooltipY = Math.max(10, touch.clientY - 90); // Position higher above finger
-      
-      // Find element under touch point and update tooltip
-      const hasInteractiveElement = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-      
+
+      const tooltipContentLength = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
+      const tooltipPosition = getToolTipPosition(touch.clientX, touch.clientY, tooltipContentLength);
+      tooltipX = tooltipPosition.x;
+      tooltipY = tooltipPosition.y;
+
       // Only prevent default if dragging over an interactive element
-      if (isDragging && hasInteractiveElement && showTooltip) {
+      if (isDragging && tooltipContentLength > 0 && showTooltip) {
         e.preventDefault();
       }
     }
   }
   
   // Find element at point and update tooltip accordingly
-  function updateTooltipFromTouchPosition(x: number, y: number) {
+  function updateTooltipFromTouchPosition(x: number, y: number): number {
     // Get the element under the touch point, adjusted for scroll
     const scrollY = window.scrollY;
     const element = document.elementFromPoint(x, y - scrollY);
@@ -116,7 +113,7 @@
     if (!element) {
       // Hide tooltip if no element found
       hideTooltip();
-      return false;
+      return 0;
     }
     
     // Find the nearest tooltip-enabled element (post-link or link-link)
@@ -141,12 +138,28 @@
       
       // Show tooltip with the found content
       showTooltipWithContent(content);
-      return true;
+      return content.length;
     } else {
       // No relevant element found, hide tooltip
       hideTooltip();
-      return false;
+      return 0;
     }
+  }
+
+  function getToolTipPosition(touchX: number, touchY: number, tooltipContentLength: number) : {x: number, y: number} {
+    // Update tooltip position - above finger for better visibility
+    const contentWidth = (tooltipContentLength * 12) ; // Rough estimate of character width
+    let tooltipX = Math.max(2, touchX - contentWidth / 2);
+    tooltipY = touchY - 80; // Position higher above finger
+    if (tooltipY < 10) {
+      tooltipY = 10;
+      if (tooltipX < window.innerWidth/2) {
+        tooltipX = touchX + 10;
+      } else {
+        tooltipX = touchX - 10 - contentWidth;
+      }
+    }
+    return {x: tooltipX, y: tooltipY};
   }
 
   // Show tooltip with specific content
@@ -865,12 +878,11 @@
         padding: 8px 12px;
         background-color: var(--ldp-bg-color);
         color: var(--ldp-color);
-        border-radius: 6px;
+        border-radius: var(--ldp-radius);
         font-size: 14px;
         font-family: 'nudica_monobold', serif;
         pointer-events: none;
         z-index: 9999;
-        max-width: 200px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         opacity: 0.95;
         transform-origin: center;
@@ -885,10 +897,10 @@
         color: var(--ldp-bg-color);
         font-weight: bold;
         padding: 10px 16px;
-        border: 2px solid var(--ldp-bg-color);
+        border: 1px solid var(--ldp-bg-color);
+        border-radius: var(--ldp-radius);
         text-align: center;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-        max-width: 80%;
         margin: 0 auto;
     }
 
@@ -951,12 +963,10 @@
         .custom-tooltip {
             font-size: 12px;
             padding: 6px 10px;
-            max-width: 150px;
         }
         
         .custom-tooltip.mobile {
             font-size: 14px;
-            max-width: 80%;
             padding: 8px 14px;
         }
     }
