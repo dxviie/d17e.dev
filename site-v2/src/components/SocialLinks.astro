@@ -4,6 +4,8 @@ import BlueskyIcon from "./icons/BlueskyIcon.astro";
 import InstagramIcon from "./icons/InstagramIcon.astro";
 import GitHubIcon from "./icons/GitHubIcon.astro";
 import LinkedInIcon from "./icons/LinkedInIcon.astro";
+import MastodonIcon from "./icons/MastodonIcon.astro";
+import TwitterIcon from "./icons/TwitterIcon.astro";
 
 interface Props {
   showRss?: boolean;
@@ -11,6 +13,8 @@ interface Props {
   showInstagram?: boolean;
   showGitHub?: boolean;
   showLinkedIn?: boolean;
+  showTwitter?: boolean;
+  showMastodon?: boolean;
   class?: string;
 }
 
@@ -20,6 +24,8 @@ const {
   showInstagram = true,
   showGitHub = false,
   showLinkedIn = false,
+  showTwitter = false,
+  showMastodon = false,
   class: className = ""
 } = Astro.props;
 ---
@@ -52,6 +58,19 @@ const {
             <span class="sr-only">Bluesky</span>
           </a>
   )}
+  {showMastodon && (
+          <a
+                  href="https://mastodon.social/@d17e"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow on Mastodon"
+                  title="Follow on Mastodon"
+                  data-umami-event="soc-click-mastodon"
+          >
+            <MastodonIcon size="24px"/>
+            <span class="sr-only">Mastodon</span>
+          </a>
+  )}
 
   {showInstagram && (
           <a
@@ -67,17 +86,17 @@ const {
           </a>
   )}
 
-  {showGitHub && (
+  {showTwitter && (
           <a
-                  href="https://github.com/dxviie"
+                  href="https://x.com/david_d17e"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Follow on GitHub"
-                  title="Follow on GitHub"
-                  data-umami-event="soc-click-github"
+                  aria-label="Follow on Twitter"
+                  title="Follow on Twitter"
+                  data-umami-event="soc-click-twitter"
           >
-            <GitHubIcon/>
-            <span class="sr-only">GitHub</span>
+            <TwitterIcon size="22px"/>
+            <span class="sr-only">Twitter</span>
           </a>
   )}
 
@@ -92,6 +111,20 @@ const {
           >
             <LinkedInIcon/>
             <span class="sr-only">LinkedIn</span>
+          </a>
+  )}
+
+  {showGitHub && (
+          <a
+                  href="https://github.com/dxviie"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow on GitHub"
+                  title="Follow on GitHub"
+                  data-umami-event="soc-click-github"
+          >
+            <GitHubIcon/>
+            <span class="sr-only">GitHub</span>
           </a>
   )}
 </div>

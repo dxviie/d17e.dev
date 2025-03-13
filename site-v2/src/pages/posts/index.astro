@@ -16,15 +16,15 @@ const posts = (await getCollection('posts')).sort(
 );
 
 const introMd = `
-Here you can find my attempts at turning **ideas** into **art** through **code**. These also gets posted to:
+Here you can find the **images** and **videos** I produce while documenting my attempts at turning **ideas** into **art** through **code**. 🤖 These also get posted to:
 `;
 ---
 
 <!doctype html>
 <html lang="en">
 <head>
-  <title>{SITE_TITLE} | d17e.dev - Posts</title>
-  <BaseHead title={`${SITE_TITLE} | Posts`} description={SITE_DESCRIPTION}/>
+  <title>{SITE_TITLE} | Media</title>
+  <BaseHead title={`${SITE_TITLE} | Media`} description={SITE_DESCRIPTION}/>
   <style>
       main {
           display: flex;
@@ -240,11 +240,11 @@ Here you can find my attempts at turning **ideas** into **art** through **code**
 <Header/>
 <main>
   <div class="header-container">
-    <h1 class="page-title">Posts</h1>
+    <h1 class="page-title">Media</h1>
   </div>
   <div class="page-intro">
     <Markdown content={introMd}/>
-    <SocialLinks/>
+    <SocialLinks showMastodon={true} showTwitter={true}/>
   </div>
   <section>
     <div class="header-container zooming">

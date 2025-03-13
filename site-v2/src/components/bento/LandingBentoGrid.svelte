@@ -509,7 +509,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All posts...">
+      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All media...">
         <div class="svg-container">
           <svg
                   class="rotating-svg"

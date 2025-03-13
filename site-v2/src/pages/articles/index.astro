@@ -32,14 +32,14 @@ const sortedYears = Object.keys(articlesByYear)
   .map(year => parseInt(year))
   .sort((a, b) => b - a);
 
-const blogIntro = `Here you can find more long-form writing about my projects, thoughts, and ideas. You can also follow these via:`;
+const blogIntro = `Here you can find my **writing**. You can expect more **long-form** content about my **projects**, **thoughts**, and **ideas**. You can also follow these via RSS:`;
 ---
 
 <!doctype html>
 <html lang="en">
 <head>
-  <title>{SITE_TITLE} | d17e.dev - Blog</title>
-  <BaseHead title={`${SITE_TITLE} | Articles`} description={SITE_DESCRIPTION}/>
+  <title>{SITE_TITLE} | Blog</title>
+  <BaseHead title={`${SITE_TITLE} | Blog`} description={SITE_DESCRIPTION}/>
   <style>
       main {
           margin: 3rem auto;
