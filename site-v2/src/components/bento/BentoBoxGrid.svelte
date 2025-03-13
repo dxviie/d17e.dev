@@ -128,7 +128,18 @@
     }
   }
 
+  let timeoutId: NodeJS.Timeout;
+
+  function debouncedSetupGrid() {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      setupGrid();
+    }, 100);
+  }
+
   function setupGrid(isMobile: boolean = false) {
+    // debounce event
+
     if (!containerElement) return;
 
     // Calculate grid dimensions
@@ -166,7 +177,7 @@
   }
 </script>
 
-<svelte:window on:resize={() => setupGrid()}/>
+<svelte:window on:resize={() => debouncedSetupGrid()}/>
 <div class="container" bind:this={containerElement}>
   <svg id={svgId} xmlns="http://www.w3.org/2000/svg">
     <g id="bento-grid-root" transform={`translate(${translateX}, ${translateY})`}>
