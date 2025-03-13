@@ -10,32 +10,32 @@ import CCALogo from "../components/icons/CCALogo.astro";
 const aboutIntro = `
 # Hi!
 # I'm David 
-## Vandenbogaerde
-#### or *d17e* for short.
+# Vandenbogaerde
+#### or <div class="d17e-text">d17e</div> for short.`;
 
-With about **20 years** of experience in software development, I am now shifting my focus to using **code** as a way of turning **ideas** into **artistic expression**.
+const aboutCode = `And have been doing so for over **20 years**, making it hard to summarize.
+So instead here's a non-exhaustive list of things I've worked with over the years. In order of appearance.
 
-These take the shape of **plotter drawings**, **generative design tools** or **audio visualisations**... Most of the time.
+#C++ #MFC #Win32 #OOP #VisualStudio #SQL #DirectX #OpenGL #XNA #Processing #C# #Perl #Java #GWT #HTML #CSS #Eclipse #MSSQL #Oracle #Haskell #FP #JavaScript
+#OWASP #WebStorm #React #Maven #Jenkins #Angular #Spring #docker #CLI #TypeScript #Vercel #Cloudflare #Svelte #Astro #SVG
+ 
+For more details, you can check out [LinkedIn](https://www.linkedin.com/in/d16de/). Or if you think your project could use some of my **magic**, [let's have a chat!](https://forms.d17e.dev/contact)`;
 
-I also love helping **businesses small & large** to build **better products** and **streamline** their processes.
+const aboutArt = `I've always had a passive eye on the [creative side](https://www.media.mit.edu/people/maeda/overview/) of [technology](https://reas.com/), though never created anything substantial.
+That is why, in Q4 of **2022**, I started freelancing. In doing so, I created a little bit of space dedicated to **artistic exploration**.
 
-Think your project could use some magic?<br/>[Let's have a chat!](https://forms.d17e.dev/contact)
-`;
+You can find the outputs of that **journey** under the [media](/posts) section. 
+Where I can, I also I add some of the **story** behind the content. Often in series of threes, as I might have some OCD going on, but nothing unmanageable. I promise.
 
-const aboutContent = `
-## What's on here?
+In case you missed it, check out my [landing page](/). It was inspired by the recent Genuary '25 prompt: ['Grid-based graphic design'](https://genuary25.d17e.dev/prompt/29)
+and is now, in a way, a long-form generative piece **created just for you** everytime you visit.<br/>
+I hope you like it.`;
 
-Under the [media](/posts) section you can find the stream of images and videos I produce documenting my progress. 
-Where I can, I also I add some of the story behind the content. Often in series of threes, as I might have some OCD going on, but nothing unmanageable. I promise.
+const aboutIdeas = `I try to **learn** something new everyday, so naturally I've collected an eclectic collection of **stories** and **ideas** over the years.
+When I share these, you can find them on my [blog](/articles). 
 
-The [blog](/articles) part houses my writing. For now, this is where you can find more long-form content.
-I intend to expand on this part of my space here and create my own version of a digital garden. But that's for later.
-[Stay tuned?!](https://forms.d17e.dev/subscribe)
-
-Then, last but not least, there's the [landing page](/). 
-I'd been wondering how to make my landing page more engaging and user-friendly, but hadn't really come up with anything substantial.
-That is until the recent Genuary '25 prompt: ['Grid-based graphic design'](https://genuary25.d17e.dev/prompt/29) sparked something.
-That spark is now my landing page. I hope you like it.`;
+I intend to expand on this part and create my own version of a [digital garden](https://maggieappleton.com/garden-history). But that's for later.
+[Stay tuned?!](https://forms.d17e.dev/subscribe)`;
 
 const aboutConnect = `
 ## Connect
@@ -45,26 +45,9 @@ Not _me_ per se, rather the robots 🤖 I've typed and clicked into existence to
 You can find me on:`;
 
 const aboutCC = `
-If you're in or around Amsterdam <span style="font-size: x-small;">(NL)</span>, come hang out at one of the [Creative Coding Amsterdam](https://cca.codes) meetups I help organize
+If you're in or around Amsterdam 🇳🇱, come hang out at one of the [Creative Coding Amsterdam](https://cca.codes) meetups I help organize
 together with [Sinan](https://openprocessing.org) & [Stanko](https://muffinman.io).
 `;
-
-const aboutExperience = `
-## Experience
-
-
-`;
-
-const about = `
-## Experience
-
-With about 20 years of writing code behind me, it is hard summarize, so instead here's a list of things I've worked with over the years. In order of appearance.
-
-#C++ #MFC #Win32 #OOP #VisualStudio #SQL #DirectX #OpenGL #XNA #Processing #C# #Perl #Java #GWT #HTML #CSS #Eclipse #MSSQL #Oracle #Haskell #FP #JavaScript
-#OWASP #WebStorm #React #Maven #Jenkins #Angular #Spring #docker #CLI #TypeScript #Vercel #Cloudflare #Svelte #Astro #SVG
- 
- 
-For more details, please check out [LinkedIn](https://www.linkedin.com/in/d16de/).`;
 
 const aboutSite = `
 ## Site
@@ -72,7 +55,7 @@ const aboutSite = `
 ### Tech
 
 This site is built with [Astro](https://astro.build), [Svelte](https://svelte.dev) & [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG).
-I am very happy with this stack. Can recommend.
+I am very happy with this stack. Can recommend 💯.
 Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
 
 ### Fonts <span style="font-size: 1rem;">([Atipo Foundry](https://www.atipofoundry.com/))</span>:`
@@ -106,6 +89,17 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
           max-width: 55rem;;
       }
 
+      .about-section {
+          display: inline-block;
+          width: fit-content;
+          font-family: 'nudica_monobold', serif;
+          font-size: x-large;
+          padding: 0.3rem 1rem;
+          margin: 1rem 0 0.5rem;
+          color: var(--bg-color);
+          background-color: var(--color);
+      }
+
       section {
           display: flex;
           flex-direction: column;
@@ -120,6 +114,7 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
           width: 12rem;
           border-radius: 50%;
       }
+
 
       @media (max-width: 600px) {
           .avatar-container {
@@ -144,9 +139,18 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
     <section class="intro">
       <Markdown content={aboutIntro}/>
     </section>
-    <hr/>
-    <section class="content">
-      <Markdown content={aboutContent}/>
+    <br/>
+    <section class="intro">
+      <span class="about-section">I code.</span>
+      <Markdown content={aboutCode}/>
+    </section>
+    <section class="intro">
+      <span class="about-section">I art.</span>
+      <Markdown content={aboutArt}/>
+    </section>
+    <section class="intro">
+      <span class="about-section">Ideas.</span>
+      <Markdown content={aboutIdeas}/>
     </section>
     <hr/>
     <section class="connect">
@@ -158,10 +162,6 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
         </div>
       </a>
       <Markdown content={aboutCC}/>
-    </section>
-    <hr/>
-    <section class="experience">
-      <Markdown content={about}/>
     </section>
     <hr/>
     <section class="site">
@@ -196,6 +196,12 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
         flex-direction: column;
         align-items: center;
         height: 3rem;
+    }
+
+    :global(.d17e-text) {
+        display: inline-block;
+        font-family: 'nudica_monolight', serif;
+        color: var(--color);
     }
 
     ul {
