@@ -446,11 +446,13 @@
     const bentoContent: BentoContent[] = [];
 
     const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
+    const buttonTxt = isMobile ? 'Tap it!' : 'Click it!';
+    console.log('buttonTxt', buttonTxt);
     bentoContent.push({
       id: 'logo',
       dimensions: [logoDimensions],
       html: `
-      <a href="/" target="_self" class="link-link" data-umami-event="lp-click-logo" aria-label="Refresh"><div class="logo-blip">
+      <a href="/" target="_self" class="link-link" data-umami-event="lp-click-logo" aria-label="${buttonTxt}"><div class="logo-blip">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
