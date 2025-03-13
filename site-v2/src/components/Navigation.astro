@@ -2,6 +2,7 @@
 import ColorModeToggle from './ColorModeToggle.astro';
 import PostsIcon from './icons/PostsIcon.astro';
 import BlogIcon from './icons/BlogIcon.astro';
+import ProjectsIcon from "./icons/ProjectsIcon.astro";
 
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
@@ -44,7 +45,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   <!-- PROJECTS BUTTON -->
   <a href="/projects" class="nav-item">
     <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">
-      <span class="projects-icon">P</span>
+      <ProjectsIcon color={isProjectsIndex ? "var(--color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isProjectsIndex}>projects</span>
   </a>
@@ -149,12 +150,6 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
         color: var(--bg-color);
         background-color: var(--color);
         font-size: medium;
-    }
-
-    .projects-icon {
-        font-family: 'nudica_monobold', serif;
-        font-weight: bold;
-        font-size: 14px;
     }
 
     .rotating-about {
