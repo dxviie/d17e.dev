@@ -96,6 +96,46 @@ const articles = defineCollection({
   }),
 });
 
+const projects = defineCollection({
+  // @ts-ignore
+  loader: async () => {
+    try {
+      await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
+      console.debug('Logged in');
+      let projects = await directus.request(readItems('Projects', {
+        fields: ['*', 'cover.*'],
+        limit: -1
+      })) || [{id: '1'}];
+      console.debug('Loaded Projects: ', projects.length);
+      return projects;
+    } catch (error) {
+      console.error('Directus error:', error);
+      return [{id: '1'}];
+    }
+  },
+  schema: z.object({
+    id: z.string(),
+    dateCreated: z.coerce.date().optional(),
+    dateUpdated: z.coerce.date().optional(),
+    name: z.string(),
+    body: z.string(),
+    link: z.string().nullable().optional(),
+    linkDescription: z.string().nullable().optional(),
+    slug: z.string(),
+    startDate: z.coerce.date().nullable().optional(),
+    endDate: z.coerce.date().nullable().optional(),
+    cover: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable().optional(),
+      filenameDownload: z.string().nullable().optional(),
+      type: z.string(),
+      width: z.number().nullable().optional(),
+      height: z.number().nullable().optional(),
+    }),
+  }),
+});
+
 const landingPages = defineCollection({
   // @ts-ignore
   loader: async () => {
@@ -268,5 +308,6 @@ const landingPages = defineCollection({
 export const collections = {
   posts,
   articles,
+  projects,
   landingPages,
 };

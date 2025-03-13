@@ -41,9 +41,25 @@ type Article = {
   cover: Cover;
 };
 
+type Project = {
+  id: string;
+  status: string;
+  dateCreated?: Date;
+  dateUpdated?: Date;
+  name: string;
+  slug: string;
+  body: string;
+  link?: string | null;
+  linkDescription?: string | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
+  cover: Cover;
+};
+
 type Schema = {
   posts: Post[];
   articles: Article[];
+  projects: Project[];
   global: Global;
 }
 
