@@ -61,7 +61,7 @@
 }
 
 .markdown-content ol, .markdown-content ul {
-    margin-left: 2rem;
+    margin-left: 0;
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
