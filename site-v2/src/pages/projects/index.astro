@@ -9,16 +9,11 @@ import MediaAsset from "../../components/MediaAsset.astro";
 import Markdown from "../../components/Markdown.astro";
 import SocialLinks from "../../components/SocialLinks.astro";
 import FindMeOn from "../../components/FindMeOn.astro";
+import BaseBallCard from "../../components/BaseBallCard.astro";
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => (b.data.startDate?.valueOf() || 0) - (a.data.startDate?.valueOf() || 0),
 );
-
-const introMd = `
-Here you can find projects I'm working on or have completed. Feel free to check them out or contribute.
-
-<div style="text-align: center;"><span>🚀 More coming soon!</span></div>
-`;
 ---
 
 <!doctype html>
@@ -29,10 +24,11 @@ Here you can find projects I'm working on or have completed. Feel free to check 
   <style>
       main {
           display: flex;
-          flex-direction: column;
-          margin: 3rem auto 0;
-          width: 1960px;
-          max-width: calc(100% - 2rem);
+          flex-direction: row;
+          overflow: scroll;
+          margin: 3rem 0;
+          width: 100vw;
+          max-width: 100vw;
           padding: 2rem 0;
       }
 
@@ -66,65 +62,6 @@ Here you can find projects I'm working on or have completed. Feel free to check 
       .page-title {
           font-family: 'nudica_monobold', serif;
           margin: 0;
-      }
-
-      .zoom-controls {
-          display: none; /* Hidden by default, shown on mobile */
-          gap: .5rem;
-          align-items: center;
-      }
-
-      .zoom-button {
-          font-family: 'nudica_monolight', serif;
-          width: 28px;
-          height: 28px;
-          background-color: var(--bg-color);
-          color: var(--color);
-          font-size: 12px;
-          border: solid var(--bg-color);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          transform: translateY(0);
-          padding: 0;
-      }
-
-      .zoom-button:hover {
-          transform: translateY(-2px);
-      }
-
-      .zoom-button:active {
-          transform: translateY(1px);
-      }
-
-      .zoom-button.active {
-          border-color: var(--color);
-      }
-
-      ul {
-          justify-content: center;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 2rem;
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-      }
-
-      ul li {
-          width: calc(33% - 1rem);
-          background: rgba(var(--gray-light), 0.05);
-          border-radius: 4px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-      }
-
-      ul li:hover {
-          transform: translateY(-5px);
-          box-shadow: var(--box-shadow);
       }
 
       .media-container {
@@ -164,16 +101,49 @@ Here you can find projects I'm working on or have completed. Feel free to check 
           font-size: 0.9rem;
       }
 
-      ul li a {
-          display: block;
-          text-decoration: none;
-          color: var(--color);
-          position: relative;
-      }
-
       .content {
           padding: 1rem;
           display: none; /* Hide the original content area since we're using overlay */
+      }
+
+      .cards-container {
+          display: flex;
+          gap: 20px;
+          overflow-x: auto;
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      .cards-container::-webkit-scrollbar {
+          display: none; /* Chrome, Safari and Opera */
+      }
+
+      .card-wrapper {
+          flex: 0 0 auto;
+      }
+
+      /* Optional: Add scroll indicators */
+      .container::before,
+      .container::after {
+          content: '';
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          width: 40px;
+          pointer-events: none;
+          z-index: 1;
+      }
+
+      .container::before {
+          left: 0;
+          background: linear-gradient(to right, rgba(255, 255, 255, 0.9), transparent);
+      }
+
+      .container::after {
+          right: 0;
+          background: linear-gradient(to left, rgba(255, 255, 255, 0.9), transparent);
       }
 
       @media (max-width: 1650px) {
@@ -191,23 +161,6 @@ Here you can find projects I'm working on or have completed. Feel free to check 
       }
 
       @media (max-width: 768px) {
-          ul {
-              gap: .5rem;
-          }
-
-          ul li {
-              width: 100%; /* Default for mobile (1 card per row) */
-              transition: width 0.3s ease;
-          }
-
-          ul.zoom-level-2 li {
-              width: calc(50% - 0.5rem); /* 2 cards per row */
-          }
-
-          ul.zoom-level-3 li {
-              width: calc(33.333% - 0.667rem); /* 3 cards per row */
-          }
-
           /* Hide text and gradient overlay in multi-card view */
           .multi-card-view .title-overlay {
               display: none !important;
@@ -228,66 +181,20 @@ Here you can find projects I'm working on or have completed. Feel free to check 
           .title-overlay h2 {
               font-size: 1.2rem;
           }
-
-          .zoom-controls {
-              display: flex; /* Show zoom controls on mobile */
-          }
       }
   </style>
 </head>
 <body>
 <Header/>
 <main>
-  <ul id="projects-grid">
-    {
-      projects.map((project) => (
-              <li>
-                <a href={`/projects/${project.data.slug}/`}>
-                  {project.data.cover && (
-                          <div class="media-container">
-                            <MediaAsset
-                                    id={project.data.cover.id}
-                                    title={project.data.cover.title}
-                                    alt={project.data.cover.title || project.data.name}
-                                    type={project.data.cover.type}
-                                    filenameDownload={project.data.cover.filenameDownload}
-                                    width={800}
-                                    height={450}
-                            />
-
-                            <div class="title-overlay">
-                              {project.data.startDate && (
-                                      <span class="date">
-                                          <FormattedDate date={project.data.startDate}/>
-                                        {project.data.endDate && (
-                                                <> -
-                                                  <FormattedDate date={project.data.endDate}/>
-                                                </>
-                                        )}
-                                        </span>
-                              )}
-                              <h2>{project.data.name}</h2>
-                            </div>
-                          </div>
-                  )}
-                  <div class="content">
-                    {project.data.startDate && (
-                            <span class="date">
-                                <FormattedDate date={project.data.startDate}/>
-                              {project.data.endDate && (
-                                      <> -
-                                        <FormattedDate date={project.data.endDate}/>
-                                      </>
-                              )}
-                              </span>
-                    )}
-                    <h2 class="title">{project.data.name}</h2>
-                  </div>
-                </a>
-              </li>
-      ))
-    }
-  </ul>
+  <div class="cards-container" id="scrollContainer">
+    {projects.map(project => (
+            <div class="card-wrapper">
+              <BaseBallCard name={project.data.name} imageUrl={"/assets/" + project.data.cover.id + ".webp"} team="Foxes" year="1982"
+                            position="frontback"/>
+            </div>
+    ))}
+  </div>
 </main>
 <FindMeOn/>
 <Footer/>
@@ -322,6 +229,51 @@ Here you can find projects I'm working on or have completed. Feel free to check 
       }
     });
   }
+
+  const scrollContainer = document.getElementById('scrollContainer');
+
+  if (scrollContainer) {
+    scrollContainer.addEventListener('wheel', (evt) => {
+      const isAtEnd = scrollContainer.scrollLeft + scrollContainer.clientWidth >= scrollContainer.scrollWidth;
+      const isAtStart = scrollContainer.scrollLeft === 0;
+
+      // Only prevent default if we're not at the boundaries
+      if ((evt.deltaY > 0 && !isAtEnd) || (evt.deltaY < 0 && !isAtStart)) {
+        evt.preventDefault();
+        const scrollSpeed = 1.5;
+        scrollContainer.scrollLeft += evt.deltaY * scrollSpeed;
+      }
+      // If we're at the end/start, let the page scroll normally
+    });
+
+    // Optional: Add touch scroll support for mobile
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    scrollContainer.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - scrollContainer.offsetLeft;
+      scrollLeft = scrollContainer.scrollLeft;
+    });
+
+    scrollContainer.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+
+    scrollContainer.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+
+    scrollContainer.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scrollContainer.offsetLeft;
+      const walk = (x - startX) * 2;
+      scrollContainer.scrollLeft = scrollLeft - walk;
+    });
+  }
 </script>
 </body>
 </html>
+

@@ -118,7 +118,7 @@ const projects = defineCollection({
     dateCreated: z.coerce.date().optional(),
     dateUpdated: z.coerce.date().optional(),
     name: z.string(),
-    body: z.string(),
+    body: z.string().optional(),
     link: z.string().nullable().optional(),
     linkDescription: z.string().nullable().optional(),
     slug: z.string(),
