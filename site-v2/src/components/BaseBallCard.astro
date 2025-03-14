@@ -52,11 +52,13 @@ const {
 
 <style>
     .card {
-        height: 80vh;
+        width: 80vw;
+        max-width: 50vh;
+        min-width: 170px;
         aspect-ratio: 359/539;
         perspective: 1000px;
         font-family: 'Arial', sans-serif;
-        margin: 20px;
+
     }
 
     .card-inner {
@@ -150,9 +152,9 @@ const {
         color: #111827;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
         .card {
-            height: 70vh;
+            width: 90vw;
         }
 
         .name {
