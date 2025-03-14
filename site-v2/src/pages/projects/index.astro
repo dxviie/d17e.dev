@@ -210,7 +210,7 @@ const projects = (await getCollection('projects')).sort(
       const options = {
         root: null, // Use the viewport as the root
         rootMargin: '0px', // No margin
-        threshold: [0.3, 0.7] // Track multiple thresholds for entering/exiting
+        threshold: [0.81, 0.49] // Track multiple thresholds for entering/exiting
       };
 
       const observer = new IntersectionObserver((entries) => {
