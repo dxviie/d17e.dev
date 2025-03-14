@@ -179,7 +179,7 @@ const projects = (await getCollection('projects')).sort(
   <div class="cards-container" id="scrollContainer">
     {projects.map(project => (
             <div class="card-wrapper">
-              <a href={`/projects/${project.slug}`} class="card-link">
+              <a href={`/projects/${project.data.slug}`} class="card-link">
                 <BaseBallCard name={project.data.name} imageUrl={"/assets/" + project.data.cover.id + ".webp"} team="Foxes" year="1982"
                               position="frontback"/>
               </a>
