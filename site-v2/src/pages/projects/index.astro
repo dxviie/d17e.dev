@@ -24,10 +24,10 @@ const projects = (await getCollection('projects')).sort(
   <style>
       main {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           height: 100%;
           justify-content: center;
-          margin: 2.4rem 0;
+          margin: 3rem 0;
           width: 100vw;
           max-width: 100vw;
           padding: 2rem 0;
@@ -48,10 +48,10 @@ const projects = (await getCollection('projects')).sort(
           display: flex;
           justify-content: space-between;
           align-items: center;
-          width: 100%;
+          width: calc(100vw - 2rem);
           max-width: 960px;
           align-self: center;
-          margin-bottom: .5rem;
+          margin-bottom: 2.5rem;
           border-bottom: 1px solid var(--border-color);
           padding-bottom: 0.5rem;
       }
@@ -176,6 +176,9 @@ const projects = (await getCollection('projects')).sort(
 <body>
 <Header/>
 <main>
+  <div class="header-container">
+    <h1 class="page-title">Projects</h1>
+  </div>
   <div class="cards-container" id="scrollContainer">
     {projects.map(project => (
             <div class="card-wrapper">
@@ -210,16 +213,16 @@ const projects = (await getCollection('projects')).sort(
       const options = {
         root: null, // Use the viewport as the root
         rootMargin: '0px', // No margin
-        threshold: [0.81, 0.49] // Track multiple thresholds for entering/exiting
+        threshold: [0.89, 0.9] // Track multiple thresholds for entering/exiting
       };
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           // When a card enters or exits the viewport
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.8) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
             // Add the 'in-view' class to remove the filter when mostly visible
             entry.target.classList.add('in-view');
-          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.5) {
+          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.9) {
             // Remove the 'in-view' class to reapply the filter when mostly hidden
             entry.target.classList.remove('in-view');
           }
