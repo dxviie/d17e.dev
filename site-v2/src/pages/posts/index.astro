@@ -62,7 +62,8 @@ Here you can find the **images** and **videos** I produce while documenting my a
       }
 
       .header-container.zooming {
-          justify-content: end;;
+          justify-content: end;
+          display: none;
       }
 
       .page-title {
@@ -201,6 +202,10 @@ Here you can find the **images** and **videos** I produce while documenting my a
           ul li {
               width: 100%; /* Default for mobile (1 card per row) */
               transition: width 0.3s ease;
+          }
+
+          .header-container.zooming {
+              display: flex;
           }
 
           ul.zoom-level-2 li {
