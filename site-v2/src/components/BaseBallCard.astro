@@ -27,12 +27,12 @@ const {
 ---
 
 <div class="card">
+  <div class="image-container">
+    <img src={imageUrl} alt={name}/>
+  </div>
   <div class="card-inner">
     <div class="card-front">
       <div class="year">{year}</div>
-      <div class="image-container">
-        <img src={imageUrl} alt={name}/>
-      </div>
       <div class="player-info">
         <h2 class="name">{name}</h2>
         <p class="position">{position}</p>
@@ -58,18 +58,22 @@ const {
         aspect-ratio: 359/539;
         perspective: 1000px;
         font-family: 'Arial', sans-serif;
+        border-radius: 12px;
 
     }
 
     .card-inner {
+        font-family: 'nudica_monobold', serif;
+        pointer-events: none;
         position: relative;
         width: 100%;
         height: 100%;
         border-radius: 12px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(45deg, #f8f8f8, #ffffff);
         border: 1px solid #ddd;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .card-front {
@@ -78,13 +82,16 @@ const {
         height: 100%;
         display: flex;
         flex-direction: column;
+        align-items: start;
+        justify-content: end;
+        pointer-events: none;
     }
 
     .year {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: #dc2626;
+        background: var(--color);
         color: white;
         padding: 4px 8px;
         border-radius: 4px;
@@ -93,22 +100,31 @@ const {
     }
 
     .image-container {
+        position: fixed;
         width: 100%;
-        height: 60%;
+        height: 100%;
         overflow: hidden;
         background: #f3f4f6;
+        filter: grayscale(100%) contrast(120%) brightness(95%) blur(0.5px);
+        border-radius: 12px;
+        transition: filter 0.3s ease;
     }
 
     .image-container img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transform: scale(1.2);
+
+    }
+
+    .image-container:hover {
+        filter: none;
     }
 
     .player-info {
+        z-index: 1;
         padding: 15px;
-        background: white;
-        flex: 1;
     }
 
     .name {
@@ -155,6 +171,7 @@ const {
     @media (max-width: 768px) {
         .card {
             width: 90vw;
+            max-width: 90vw;
         }
 
         .name {
