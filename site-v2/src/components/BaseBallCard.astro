@@ -60,11 +60,16 @@ const {
         font-family: 'Arial', sans-serif;
         border-radius: 12px;
         filter: grayscale(100%) contrast(120%) brightness(95%) blur(0.5px);
-        transition: filter 0.3s ease-in;
+        transition: filter 0.4s ease-in;
     }
 
     .card:hover {
         filter: none;
+    }
+
+    .card.in-view {
+        filter: none;
+        transition: filter 0.4s ease-out;
     }
 
     .card-inner {

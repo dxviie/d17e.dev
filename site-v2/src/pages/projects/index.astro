@@ -191,15 +191,67 @@ const projects = (await getCollection('projects')).sort(
 <Footer/>
 
 <script>
-  // Initialize zoom controls and video hover functionality
+  // Initialize functionality
   document.addEventListener('DOMContentLoaded', () => {
     initVideoHover();
+    setupIntersectionObserver();
   });
 
   // Handle Astro view transitions
   document.addEventListener('astro:page-load', () => {
     initVideoHover();
+    setupIntersectionObserver();
   });
+
+  function setupIntersectionObserver() {
+    // Only use this on mobile
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      // Create an Intersection Observer to detect when cards come into view
+      const options = {
+        root: null, // Use the viewport as the root
+        rootMargin: '0px', // No margin
+        threshold: [0.3, 0.7] // Track multiple thresholds for entering/exiting
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // When a card enters or exits the viewport
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.7) {
+            // Add the 'in-view' class to remove the filter when mostly visible
+            entry.target.classList.add('in-view');
+          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.3) {
+            // Remove the 'in-view' class to reapply the filter when mostly hidden
+            entry.target.classList.remove('in-view');
+          }
+        });
+      }, options);
+
+      // Observe all cards
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        observer.observe(card);
+      });
+      
+      // Add staggered animation to reveal cards already in the viewport
+      cards.forEach((card, index) => {
+        // Add a small delay between each card's animation
+        const delay = 100 + (index * 100);
+        setTimeout(() => {
+          // If the card is in the initial viewport, remove filter immediately
+          const rect = card.getBoundingClientRect();
+          const isFullyVisible = 
+            rect.top >= 0 && 
+            rect.bottom <= window.innerHeight &&
+            rect.left >= 0 &&
+            rect.right <= window.innerWidth;
+            
+          if (isFullyVisible) {
+            card.classList.add('in-view');
+          }
+        }, delay);
+      });
+    }
+  }
 
   function initVideoHover() {
     const videos = document.querySelectorAll('video');
