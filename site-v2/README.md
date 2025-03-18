@@ -4,8 +4,6 @@
 localStorage.setItem('umami.disabled', 1);
 ```
 
-
-
 --- 
 
 # Astro Starter Kit: Blog
