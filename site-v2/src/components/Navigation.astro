@@ -6,7 +6,7 @@ import BlogIcon from './icons/BlogIcon.astro';
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
 const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
-const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('articles');
+const isBlogIndex = pathname.endsWith('blog/') || pathname.endsWith('blog');
 const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 ---
 
@@ -33,7 +33,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   </a>
 
   <!-- BLOG BUTTON -->
-  <a href="/articles" class="nav-item">
+  <a href="/blog" class="nav-item">
     <div class={`icon-box ${isBlogIndex ? 'active' : ''}`} id="blog-icon-box">
       <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined}/>
     </div>
