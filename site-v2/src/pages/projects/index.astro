@@ -135,6 +135,11 @@ const projects = (await getCollection('projects')).sort(
           background: linear-gradient(to left, rgba(255, 255, 255, 0.9), transparent);
       }
 
+      /* no opacity here, we're doing the filter transition */
+      a:hover {
+          opacity: 1;
+      }
+
       @media (max-width: 1650px) {
           ul li {
               width: calc(50% - 1rem);
