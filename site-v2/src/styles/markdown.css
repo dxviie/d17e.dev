@@ -54,10 +54,21 @@
 
 .markdown-content blockquote {
     border-left: 4px solid var(--accent-color);
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    font-style: italic;
+    padding: .5rem 0 .5rem 2rem;
+    font-family: 'caveat', serif;
     color: var(--color);
+}
+
+blockquote p {
+    font-family: 'caveat', serif;
+    font-size: 2.5rem;
+    line-height: 1.2 !important;
+}
+
+blockquote p em {
+    font-family: 'caveat', serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
 }
 
 .markdown-content ol, .markdown-content ul {

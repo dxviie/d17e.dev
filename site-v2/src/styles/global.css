@@ -23,7 +23,7 @@
     --color: #1A202C;
     --bg-color: #FFFFFF;
     --button-bg-color: #1A202C;
-    --bg-code: #f6f8fa;
+    --bg-code: #f1f1f1;
     --color-code: #24292e;
     --border-color: #e1e4e8;
 }
@@ -68,6 +68,14 @@
 @font-face {
     font-family: 'bariol_icons';
     src: url('/fonts/bariol_icons-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'caveat';
+    src: url('/fonts/Caveat-VariableFont_wght.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
