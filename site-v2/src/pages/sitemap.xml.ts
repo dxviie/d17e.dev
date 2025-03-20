@@ -27,7 +27,7 @@ export const GET: APIRoute = async ({site}) => {
       priority: 0.8,
     },
     {
-      url: 'articles',
+      url: 'blog',
       lastModified: new Date(),
       priority: 0.8,
     }
@@ -44,7 +44,7 @@ export const GET: APIRoute = async ({site}) => {
   // Map articles to sitemap entries
   //@ts-ignore
   const articleEntries = articles.map((article) => ({
-    url: `articles/${article.data.slug}`,
+    url: `blog/${article.data.slug}`,
     lastModified: article.data.dateUpdated || article.data.publishDate || new Date(),
     priority: 0.7,
   }));

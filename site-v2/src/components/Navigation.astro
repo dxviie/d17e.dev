@@ -7,7 +7,7 @@ import ProjectsIcon from "./icons/ProjectsIcon.astro";
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
 const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
-const isBlogIndex = pathname.endsWith('articles/') || pathname.endsWith('articles');
+const isBlogIndex = pathname.endsWith('blog/') || pathname.endsWith('blog');
 const isProjectsIndex = pathname.endsWith('projects/') || pathname.endsWith('projects');
 const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 ---
