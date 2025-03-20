@@ -178,6 +178,7 @@ const projects = defineCollection({
     link: z.string().nullable().optional(),
     linkDescription: z.string().nullable().optional(),
     slug: z.string(),
+    rank: z.number().nullable().optional(),
     startDate: z.coerce.date().nullable().optional(),
     endDate: z.coerce.date().nullable().optional(),
     cover: z.object({

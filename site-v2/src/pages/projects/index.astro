@@ -10,7 +10,7 @@ import BaseBallCard from "../../components/BaseBallCard.astro";
 
 const projects = (await getCollection('projects')).sort(
   //@ts-ignore
-  (a, b) => (b.data.startDate?.valueOf() || 0) - (a.data.startDate?.valueOf() || 0),
+  (a, b) => (a.data.rank || 9999) - (b.data.rank || 9999),
 );
 
 const introMd = `
