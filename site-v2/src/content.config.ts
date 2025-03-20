@@ -102,12 +102,68 @@ const projects = defineCollection({
     try {
       await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
       console.debug('Logged in');
+
+      // First fetch the projects with their main data
       let projects = await directus.request(readItems('Projects', {
-        fields: ['*', 'cover.*'],
+        fields: ['*', 'cover.*', 'relatedPosts.*', 'relatedArticles.*'],
         limit: -1
       })) || [{id: '1'}];
-      console.debug('Loaded Projects: ', projects.length);
-      return projects;
+      console.debug('Loaded Projects:', projects.length);
+
+      // Process each project to fetch related content
+      return await Promise.all(projects.map(async (project) => {
+        try {
+          //@ts-ignore
+          let postIds = project.relatedPosts.map(rel => rel['Posts_id']);
+          let relatedPosts: { id: any; }[] = [];
+          if (postIds.length > 0) {
+            const relatedPostsData = await directus.request(readItems('Posts', {
+              fields: ['*', 'cover.*'],
+              filter: {
+                id: {
+                  _in: postIds
+                }
+              },
+              limit: -1
+            })) || [];
+            relatedPosts = relatedPostsData.map(p => ({...p, id: p.uuid}));
+          }
+
+          //@ts-ignore
+          let articleIds = project.relatedArticles.map(rel => rel['Articles_id']);
+          let relatedArticles: { id: any; }[] = [];
+          if (articleIds.length > 0) {
+            const relatedArticlesData = await directus.request(readItems('Articles', {
+              fields: ['*', 'cover.*'],
+              filter: {
+                id: {
+                  _in: articleIds
+                }
+              },
+              limit: -1
+            })) || [];
+            relatedArticles = relatedArticlesData.map(a => ({...a, id: a.uuid}));
+          }
+
+          console.debug('Loaded related Posts:', relatedPosts.length, 'for Project', project.name);
+          console.debug('Loaded related Articles:', relatedArticles.length, 'for Project', project.name);
+
+          // Return the project with related content
+          return {
+            ...project,
+            relatedPosts,
+            relatedArticles
+          };
+        } catch (error) {
+          console.error(`Error fetching related content for project ${project.id}:`, error);
+          // Return the project without related content if there was an error
+          return {
+            ...project,
+            relatedPosts: [],
+            relatedArticles: []
+          };
+        }
+      }));
     } catch (error) {
       console.error('Directus error:', error);
       return [{id: '1'}];
@@ -133,6 +189,49 @@ const projects = defineCollection({
       width: z.number().nullable().optional(),
       height: z.number().nullable().optional(),
     }),
+    // Define related Posts
+    relatedPosts: z.array(z.object({
+      id: z.string(),
+      status: z.string().optional(),
+      dateCreated: z.coerce.date().optional(),
+      dateUpdated: z.coerce.date().optional(),
+      publishDate: z.coerce.date().optional(),
+      title: z.string(),
+      body: z.string().optional(),
+      link: z.string().nullable().optional(),
+      linkDescription: z.string().nullable().optional(),
+      slug: z.string(),
+      cover: z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().nullable().optional(),
+        filenameDownload: z.string().nullable().optional(),
+        type: z.string(),
+        width: z.number().nullable().optional(),
+        height: z.number().nullable().optional(),
+      }).optional(),
+    })).optional(),
+    // Define related Articles
+    relatedArticles: z.array(z.object({
+      id: z.string(),
+      status: z.string().optional(),
+      dateCreated: z.coerce.date().optional(),
+      dateUpdated: z.coerce.date().optional(),
+      publishDate: z.coerce.date().optional(),
+      title: z.string(),
+      body: z.string().optional(),
+      description: z.string().nullable().optional(),
+      slug: z.string(),
+      cover: z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().nullable().optional(),
+        filenameDownload: z.string().nullable().optional(),
+        type: z.string(),
+        width: z.number().nullable().optional(),
+        height: z.number().nullable().optional(),
+      }).optional(),
+    })).optional(),
   }),
 });
 
@@ -199,8 +298,8 @@ const landingPages = defineCollection({
           featuredArticles = featuredArticles.map(a => ({...a, id: a.uuid}));
         }
 
-        console.debug('Loaded featured Posts:', featuredPosts.length);
-        console.debug('Loaded featured Articles:', featuredArticles.length);
+        console.debug('Loaded featured Posts:', featuredPosts.length, 'for LP', pd.name);
+        console.debug('Loaded featured Articles:', featuredArticles.length, 'for LP', pd.name);
         let palette = [];
         if (pd.palette) {
           // @ts-ignore
