@@ -173,6 +173,7 @@ const projects = defineCollection({
     id: z.string(),
     dateCreated: z.coerce.date().optional(),
     dateUpdated: z.coerce.date().optional(),
+    description: z.string().nullable().optional(),
     name: z.string(),
     body: z.string().optional(),
     link: z.string().nullable().optional(),

@@ -14,15 +14,16 @@ import ProjectPrevNextMini from "../components/ProjectPrevNextMini.astro";
 type Props = CollectionEntry<'projects'>['data'];
 
 const {
-  slug, 
-  name, 
-  startDate, 
-  endDate, 
-  dateCreated, 
-  dateUpdated, 
-  cover, 
-  body, 
-  link, 
+  slug,
+  name,
+  startDate,
+  endDate,
+  description,
+  dateCreated,
+  dateUpdated,
+  cover,
+  body,
+  link,
   linkDescription,
   relatedPosts = [],
   relatedArticles = []
@@ -62,7 +63,9 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                   <span class="date-range">
                     <FormattedDate date={startDate}/>
                     {endDate && (
-                            <> - <FormattedDate date={endDate}/></>
+                            <> -
+                              <FormattedDate date={endDate}/>
+                            </>
                     )}
                   </span>
           )}
@@ -84,69 +87,69 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                 <a href={link} target="_blank" rel="noopener noreferrer">{linkDescription || link}</a>
               </span>
       )}
-      
+
       {/* Related Content Section */}
       {(relatedPosts.length > 0 || relatedArticles.length > 0) && (
-        <div class="related-content-section">
-          <h2 class="related-content-title">Related Content</h2>
-          
-          {relatedPosts.length > 0 && (
-            <div class="related-posts">
-              <h3>Media</h3>
-              <div class="posts-grid-container">
-                {relatedPosts.map((post) => (
-                  <div class="post-card">
-                    <a href={`/posts/${post.slug}/`} title={post.title}>
-                      {post.cover && (
-                        <div class="post-card-image">
-                          <img 
-                            src={`/assets/${post.cover.id}.webp`} 
-                            alt={post.title} 
-                            loading="lazy"
-                          />
+              <div class="related-content-section">
+                <h2 class="related-content-title">Related Content</h2>
+
+                {relatedPosts.length > 0 && (
+                        <div class="related-posts">
+                          <h3>Media</h3>
+                          <div class="posts-grid-container">
+                            {relatedPosts.map((post) => (
+                                    <div class="post-card">
+                                      <a href={`/posts/${post.slug}/`} title={post.title}>
+                                        {post.cover && (
+                                                <div class="post-card-image">
+                                                  <img
+                                                          src={`/assets/${post.cover.id}.webp`}
+                                                          alt={post.title}
+                                                          loading="lazy"
+                                                  />
+                                                </div>
+                                        )}
+                                      </a>
+                                    </div>
+                            ))}
+                          </div>
                         </div>
-                      )}
-                    </a>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {relatedArticles.length > 0 && (
-            <div class="related-articles">
-              <h3>Articles</h3>
-              <ul class="related-content-list">
-                {relatedArticles.map((article) => (
-                  <li class="related-item">
-                    <a href={`/blog/${article.slug}/`} class="related-link">
-                      {article.cover && (
-                        <div class="related-thumbnail">
-                          <img 
-                            src={`/assets/${article.cover.id}.webp`} 
-                            alt={article.title} 
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                      <div class="related-info">
-                        <h4>{article.title}</h4>
-                        {article.description && (
-                          <p class="related-description">{article.description}</p>
-                        )}
-                        {article.publishDate && (
-                          <span class="related-date">
-                            <FormattedDate date={new Date(article.publishDate)} />
+                )}
+
+                {relatedArticles.length > 0 && (
+                        <div class="related-articles">
+                          <h3>Articles</h3>
+                          <ul class="related-content-list">
+                            {relatedArticles.map((article) => (
+                                    <li class="related-item">
+                                      <a href={`/blog/${article.slug}/`} class="related-link">
+                                        {article.cover && (
+                                                <div class="related-thumbnail">
+                                                  <img
+                                                          src={`/assets/${article.cover.id}.webp`}
+                                                          alt={article.title}
+                                                          loading="lazy"
+                                                  />
+                                                </div>
+                                        )}
+                                        <div class="related-info">
+                                          <h4>{article.title}</h4>
+                                          {article.description && (
+                                                  <p class="related-description">{article.description}</p>
+                                          )}
+                                          {article.publishDate && (
+                                                  <span class="related-date">
+                            <FormattedDate date={new Date(article.publishDate)}/>
                           </span>
-                        )}
-                      </div>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+                                          )}
+                                        </div>
+                                      </a>
+                                    </li>
+                            ))}
+                          </ul>
+                        </div>
+                )}
+              </div>
       )}
     </div>
   </article>
@@ -222,24 +225,24 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
     .link-section a:hover {
         text-decoration: underline;
     }
-    
+
     /* Related Content Styles */
     .related-content-section {
         margin-top: 3rem;
         border-top: 1px solid var(--border-color);
         padding-top: 2rem;
     }
-    
+
     .related-content-title {
         font-family: 'nudica_monobold', serif;
         font-size: 1.5rem;
         margin-bottom: 1rem;
     }
-    
+
     .related-posts, .related-articles {
         margin-bottom: 2rem;
     }
-    
+
     .related-posts h3, .related-articles h3 {
         font-family: 'nudica_monobold', serif;
         font-size: 1.2rem;
@@ -248,7 +251,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid var(--border-color);
     }
-    
+
     /* Posts Grid Styles - Clean card grid */
     .posts-grid-container {
         display: grid;
@@ -258,7 +261,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         padding: 0;
         width: 100%;
     }
-    
+
     .post-card {
         background: rgba(var(--gray-light), 0.05);
         border-radius: 8px;
@@ -268,36 +271,36 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         width: 100%;
         aspect-ratio: 1;
     }
-    
+
     .post-card:hover {
         transform: translateY(-5px);
         box-shadow: var(--box-shadow);
     }
-    
+
     .post-card a {
         display: block;
         height: 100%;
         width: 100%;
         text-decoration: none;
     }
-    
+
     .post-card-image {
         width: 100%;
         height: 100%;
         overflow: hidden;
     }
-    
+
     .post-card-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
     }
-    
+
     .post-card:hover .post-card-image img {
         transform: scale(1.05);
     }
-    
+
     /* Articles list styles (keeping the original) */
     .related-content-list {
         list-style: none;
@@ -306,15 +309,15 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 1.5rem;
     }
-    
+
     .related-item {
         transition: transform 0.2s ease;
     }
-    
+
     .related-item:hover {
         transform: translateY(-5px);
     }
-    
+
     .related-link {
         text-decoration: none;
         color: var(--color);
@@ -322,31 +325,31 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         flex-direction: column;
         height: 100%;
     }
-    
+
     .related-thumbnail {
         aspect-ratio: 16/9;
         overflow: hidden;
         border-radius: 8px;
         margin-bottom: 0.5rem;
     }
-    
+
     .related-thumbnail img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
     }
-    
+
     .related-link:hover .related-thumbnail img {
         transform: scale(1.05);
     }
-    
+
     .related-info h4 {
         font-family: 'nudica_monobold', serif;
         margin: 0.5rem 0;
         font-size: 1rem;
     }
-    
+
     .related-description {
         font-size: 0.9rem;
         opacity: 0.8;
@@ -356,7 +359,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
-    
+
     .related-date {
         font-family: 'nudica_monolight', serif;
         font-size: 0.8rem;
@@ -366,14 +369,14 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         display: inline-block;
         margin-top: 0.5rem;
     }
-    
+
     /* Media queries for responsive grid */
     @media (max-width: 1200px) {
         .posts-grid-container {
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         }
     }
-    
+
     @media (max-width: 600px) {
         .posts-grid-container {
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
