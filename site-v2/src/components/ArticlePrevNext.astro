@@ -26,7 +26,7 @@ const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[cu
 <nav class="article-navigation">
   <div class="nav-links">
     {prevArticle && (
-            <a href={`/articles/${prevArticle.data.slug}`} class="nav-link prev-link" id="prev-article-link">
+            <a href={`/blog/${prevArticle.data.slug}`} class="nav-link prev-link" id="prev-article-link">
               <div class="arrow">←</div>
               <div class="nav-content">
                 <span class="nav-label">Next</span>
@@ -37,7 +37,7 @@ const nextArticle = currentIndex < sortedArticles.length - 1 ? sortedArticles[cu
     )}
 
     {nextArticle && (
-            <a href={`/articles/${nextArticle.data.slug}`} class="nav-link next-link" id="next-article-link">
+            <a href={`/blog/${nextArticle.data.slug}`} class="nav-link next-link" id="next-article-link">
               <div class="nav-content">
                 <span class="nav-label">Prev</span>
                 <span class="nav-title">{nextArticle.data.title}</span>

@@ -37,32 +37,18 @@ if (isVideo) {
     const thumbnailModule = await import(`../../public/assets/${id}.webp`);
     imageUrl = thumbnailModule.default;
   } catch (error) {
-    console.error(`Error importing thumbnail for ${id}:`, error);
+    console.error(`Error importing thumbnail for ${id} with extension webp`);
   }
   // Always set up the video source for hover/touch functionality
   videoSrc = `/assets/${id}.mp4`;
 } else {
-  // For images, determine extension from the type or filename
-  let ext = "jpg"; // default extension
-  if (type) {
-    if (type === "image/png") ext = "png";
-    else if (type === "image/gif") ext = "gif";
-    else if (type === "image/webp") ext = "webp";
-    else if (type === "image/svg+xml") ext = "svg";
-    else if (type === "image/avif") ext = "avif";
-    else if (type === "image/jpeg") ext = "jpg";
-  } else if (filenameDownload) {
-    // Extract extension from filename if available
-    const fileExt = filenameDownload.split(".").pop()?.toLowerCase();
-    if (fileExt && ["jpg", "jpeg", "png", "gif", "webp", "svg", "avif"].includes(fileExt)) {
-      ext = fileExt === "jpeg" ? "jpg" : fileExt;
-    }
-  }
+  // For images, we rely on our content syncer adding webps for each image
+  let ext = "webp";
   try {
     const imageModule = await import(`../assets/${id}.${ext}`);
     imageUrl = imageModule.default;
   } catch (error) {
-    console.error(`Error importing image for ${id}:`, error);
+    console.error(`Error importing image for ${id}: with extension ${ext}`);
   }
 }
 
