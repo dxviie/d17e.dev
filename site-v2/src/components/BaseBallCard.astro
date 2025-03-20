@@ -19,10 +19,13 @@ const {
   </div>
   <div class="card-inner">
     <div class="card-front">
+      <!--<div class="badge"></div>-->
       <div class="player-info">
         <h2 class="name">{name}</h2>
         <div class="description-container">
-          {description}
+          <p class="description ">
+            {description}
+          </p>
         </div>
       </div>
     </div>
@@ -51,6 +54,14 @@ const {
         transition: filter 0.4s ease-out;
     }
 
+    .card.in-view .description-container {
+        opacity: 1;
+    }
+
+    .card:hover .description-container {
+        opacity: 1;
+    }
+
     .card-inner {
         font-family: 'nudica_monobold', serif;
         pointer-events: none;
@@ -75,14 +86,14 @@ const {
         pointer-events: none;
     }
 
-    .year {
+    .badge {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: var(--color);
-        color: var(--bg-color);
+        background: var(--bg-color);
+        color: var(--color);
         padding: 4px 8px;
-        border-radius: 4px;
+        border-radius: 50%;
         font-weight: bold;
         font-size: 1.2rem;
     }
@@ -130,13 +141,21 @@ const {
     }
 
     .description-container {
-        font-family: 'nudica_monolight', serif;
-        margin-top: 1rem;
+        margin-top: .21rem;
         font-size: .9rem;
-        color: var(--bg-color);
-        background-color: var(--color);
+        color: var(--color);
+        background-color: var(--bg-color);
         padding: 1rem;
-        border-radius: 8px;
+        opacity: 0;
+        transition: opacity .8s ease;
+    }
+
+    .description {
+        font-family: 'nudica_monolight', serif;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0;
+        margin: 0;
     }
 
     .position, .team {
@@ -185,7 +204,11 @@ const {
         }
 
         .name {
-            font-size: 1.2em;
+            font-size: 1.8rem;
+        }
+
+        .description-container {
+            margin-bottom: .5rem;
         }
 
         .position, .team {
