@@ -1,11 +1,11 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Navigation from "../components/Navigation.astro";
 import Markdown from "../components/Markdown.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 import {SITE_TITLE} from '../consts';
 import Footer from "../components/Footer.astro";
 import CCALogo from "../components/icons/CCALogo.astro";
+import Header from "../components/Header.astro";
 
 const aboutIntro = `
 # Hi!
@@ -129,7 +129,7 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
   </style>
 </head>
 <body>
-<Navigation/>
+<Header/>
 <main>
   <h1 class="page-title">About</h1>
   <div class="avatar-container">

@@ -26,6 +26,14 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
   <div class="spacer"></div>
 
+  <!-- PROJECTS BUTTON -->
+  <a href="/projects" class="nav-item">
+    <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">
+      <ProjectsIcon color={isProjectsIndex ? "var(--color)" : undefined}/>
+    </div>
+    <span class="nav-text" data-active={isProjectsIndex}>projects</span>
+  </a>
+  
   <!-- POSTS BUTTON -->
   <a href="/posts" class="nav-item">
     <div class={`icon-box ${isPostsIndex ? 'active' : ''}`} id="posts-icon-box">
@@ -40,14 +48,6 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
       <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined}/>
     </div>
     <span class="nav-text" data-active={isBlogIndex}>blog</span>
-  </a>
-
-  <!-- PROJECTS BUTTON -->
-  <a href="/projects" class="nav-item">
-    <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">
-      <ProjectsIcon color={isProjectsIndex ? "var(--color)" : undefined}/>
-    </div>
-    <span class="nav-text" data-active={isProjectsIndex}>projects</span>
   </a>
 
   <!-- ABOUT BUTTON -->

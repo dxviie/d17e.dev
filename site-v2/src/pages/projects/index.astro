@@ -3,17 +3,20 @@ import {SITE_TITLE, SITE_DESCRIPTION} from '../../consts';
 import {getCollection} from 'astro:content';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import BaseHead from "../../components/BaseHead.astro";
-import MediaAsset from "../../components/MediaAsset.astro";
 import Markdown from "../../components/Markdown.astro";
-import SocialLinks from "../../components/SocialLinks.astro";
 import FindMeOn from "../../components/FindMeOn.astro";
 import BaseBallCard from "../../components/BaseBallCard.astro";
 
 const projects = (await getCollection('projects')).sort(
+  //@ts-ignore
   (a, b) => (b.data.startDate?.valueOf() || 0) - (a.data.startDate?.valueOf() || 0),
 );
+
+const introMd = `
+Looking through all the **media**, I realized it's a bit all over the place, which could be confusing. 
+So here I'm trying to bring some **order to that chaos** by grouping things per **project**. 
+`;
 ---
 
 <!doctype html>
@@ -37,7 +40,7 @@ const projects = (await getCollection('projects')).sort(
           font-family: 'nudica_monolight', serif !important;
           font-size: 1rem;
           max-width: 960px;
-          margin: 0 auto 1rem;
+          margin: 0 auto 2.5rem;
           padding: 0 .5rem;
           display: flex;
           flex-direction: column;
@@ -51,7 +54,7 @@ const projects = (await getCollection('projects')).sort(
           width: calc(100vw - 2rem);
           max-width: 960px;
           align-self: center;
-          margin-bottom: 2.5rem;
+          margin-bottom: .5rem;
           border-bottom: 1px solid var(--border-color);
           padding-bottom: 0.5rem;
       }
@@ -183,6 +186,9 @@ const projects = (await getCollection('projects')).sort(
 <main>
   <div class="header-container">
     <h1 class="page-title">Projects</h1>
+  </div>
+  <div class="page-intro">
+    <Markdown content={introMd}/>
   </div>
   <div class="cards-container" id="scrollContainer">
     {projects.map(project => (
