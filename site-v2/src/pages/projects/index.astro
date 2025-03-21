@@ -8,13 +8,7 @@ import Markdown from "../../components/Markdown.astro";
 import FindMeOn from "../../components/FindMeOn.astro";
 import BaseBallCard from "../../components/BaseBallCard.astro";
 
-const projects = (await getCollection('projects')).sort(
-  //@ts-ignore
-  (a, b) => (a.data.rank || 9999) - (b.data.rank || 9999),
-);
-
-// sort projects randomly
-projects.sort(() => Math.random() - 0.5);
+const projects = (await getCollection('projects')).sort(() => Math.random() - 0.5);
 
 
 const introMd = `
