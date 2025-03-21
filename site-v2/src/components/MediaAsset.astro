@@ -124,7 +124,6 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         position: relative;
         overflow: hidden;
         border-radius: 4px;
-        cursor: pointer;
         width: 100%;
         height: 100%;
     }
@@ -227,18 +226,18 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     mediaAssets.forEach(asset => {
       // Skip if already initialized
       if (asset.hasAttribute('data-video-initialized')) return;
-      
+
       const wrapper = asset.querySelector('.media-wrapper');
       const video = asset.querySelector<HTMLVideoElement>('.hover-video');
 
       if (!wrapper || !video) return;
-      
+
       // Mark as initialized to prevent duplicate event handlers
       asset.setAttribute('data-video-initialized', 'true');
 
       // For desktop: hover events
       let playPromise: Promise<void> | undefined;
-      
+
       wrapper.addEventListener('mouseenter', () => {
         // Only attempt to play if video is paused
         if (video.paused) {

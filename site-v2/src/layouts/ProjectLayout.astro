@@ -74,6 +74,11 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         </span>
         )}
         <h1>{name}</h1>
+        {description && (
+                <div class="description">
+                  <p>{description}</p>
+                </div>
+        )}
       </div>
 
       {/* Parse Markdown content */}
@@ -96,20 +101,20 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                             {relatedPosts
                               .sort((a, b) => new Date(b.publishDate || 0).getTime() - new Date(a.publishDate || 0).getTime())
                               .map((post) => (
-                                    <div class="post-card">
-                                      <a href={`/projects/${slug}/posts/${post.slug}`} title={post.title}>
-                                        {post.cover && (
-                                                <div class="post-card-image">
-                                                  <img
-                                                          src={`/assets/${post.cover.id}.webp`}
-                                                          alt={post.title}
-                                                          loading="lazy"
-                                                  />
-                                                </div>
-                                        )}
-                                      </a>
-                                    </div>
-                            ))}
+                                      <div class="post-card">
+                                        <a href={`/projects/${slug}/posts/${post.slug}`} title={post.title}>
+                                          {post.cover && (
+                                                  <div class="post-card-image">
+                                                    <img
+                                                            src={`/assets/${post.cover.id}.webp`}
+                                                            alt={post.title}
+                                                            loading="lazy"
+                                                    />
+                                                  </div>
+                                          )}
+                                        </a>
+                                      </div>
+                              ))}
                           </div>
                         </div>
                 )}
@@ -121,31 +126,31 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                             {relatedArticles
                               .sort((a, b) => new Date(b.publishDate || 0).getTime() - new Date(a.publishDate || 0).getTime())
                               .map((article) => (
-                                    <li class="related-item">
-                                      <a href={`/blog/${article.slug}/`} class="related-link">
-                                        {article.cover && (
-                                                <div class="related-thumbnail">
-                                                  <img
-                                                          src={`/assets/${article.cover.id}.webp`}
-                                                          alt={article.title}
-                                                          loading="lazy"
-                                                  />
-                                                </div>
-                                        )}
-                                        <div class="related-info">
-                                          <h4>{article.title}</h4>
-                                          {article.description && (
-                                                  <p class="related-description">{article.description}</p>
+                                      <li class="related-item">
+                                        <a href={`/blog/${article.slug}/`} class="related-link">
+                                          {article.cover && (
+                                                  <div class="related-thumbnail">
+                                                    <img
+                                                            src={`/assets/${article.cover.id}.webp`}
+                                                            alt={article.title}
+                                                            loading="lazy"
+                                                    />
+                                                  </div>
                                           )}
-                                          {article.publishDate && (
-                                                  <span class="related-date">
+                                          <div class="related-info">
+                                            <h4>{article.title}</h4>
+                                            {article.description && (
+                                                    <p class="related-description">{article.description}</p>
+                                            )}
+                                            {article.publishDate && (
+                                                    <span class="related-date">
                             <FormattedDate date={new Date(article.publishDate)}/>
                           </span>
-                                          )}
-                                        </div>
-                                      </a>
-                                    </li>
-                            ))}
+                                            )}
+                                          </div>
+                                        </a>
+                                      </li>
+                              ))}
                           </ul>
                         </div>
                 )}
@@ -199,6 +204,18 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         margin: 0.5rem 0;
         font-size: 2.5rem;
         line-height: 1.2;
+    }
+
+    .description {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: var(--bg-code);
+        border-radius: 8px;
+    }
+
+    .description p {
+        font-family: 'nudica_monolight', serif;
+        margin: 0;
     }
 
     .dates {
@@ -283,7 +300,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
     }
 
     .post-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-2px);
         box-shadow: var(--box-shadow);
     }
 
