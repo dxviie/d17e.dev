@@ -1,6 +1,6 @@
 ---
 import {type CollectionEntry, getCollection} from "astro:content";
-import PostLayout from "../../../../layouts/PostLayout.astro";
+import ProjectPostLayout from "../../../../layouts/ProjectPostLayout.astro";
 import FormattedDate from "../../../../components/FormattedDate.astro";
 
 export async function getStaticPaths() {
@@ -54,7 +54,11 @@ const prevPost = currentIndex > 0 ? projectPosts[currentIndex - 1] : null;
 const nextPost = currentIndex < projectPosts.length - 1 ? projectPosts[currentIndex + 1] : null;
 ---
 
-<PostLayout {...post.data}>
+<ProjectPostLayout
+  postData={post.data}
+  projectSlug={projectSlug}
+  relatedPostSlugs={relatedPostSlugs}
+>
   {(prevPost || nextPost) && (
           <nav class="post-navigation">
             <div class="nav-links">
@@ -88,7 +92,7 @@ const nextPost = currentIndex < projectPosts.length - 1 ? projectPosts[currentIn
             </div>
           </nav>
   )}
-</PostLayout>
+</ProjectPostLayout>
 
 <style>
     .post-navigation {
