@@ -13,6 +13,10 @@ const projects = (await getCollection('projects')).sort(
   (a, b) => (a.data.rank || 9999) - (b.data.rank || 9999),
 );
 
+// sort projects randomly
+projects.sort(() => Math.random() - 0.5);
+
+
 const introMd = `
 As the **media** section can be a bit **all over the place**, here I'm trying to bring some **order to that chaos** by grouping things per **project**.
 `;
