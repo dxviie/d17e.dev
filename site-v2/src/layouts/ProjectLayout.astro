@@ -93,9 +93,11 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                         <div class="related-posts">
                           <h3>Related Media</h3>
                           <div class="posts-grid-container">
-                            {relatedPosts.map((post) => (
+                            {relatedPosts
+                              .sort((a, b) => new Date(b.publishDate || 0).getTime() - new Date(a.publishDate || 0).getTime())
+                              .map((post) => (
                                     <div class="post-card">
-                                      <a href={`/posts/${post.slug}/`} title={post.title}>
+                                      <a href={`/projects/${slug}/posts/${post.slug}`} title={post.title}>
                                         {post.cover && (
                                                 <div class="post-card-image">
                                                   <img
@@ -116,7 +118,9 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                         <div class="related-articles">
                           <h3>Related Articles</h3>
                           <ul class="related-content-list">
-                            {relatedArticles.map((article) => (
+                            {relatedArticles
+                              .sort((a, b) => new Date(b.publishDate || 0).getTime() - new Date(a.publishDate || 0).getTime())
+                              .map((article) => (
                                     <li class="related-item">
                                       <a href={`/blog/${article.slug}/`} class="related-link">
                                         {article.cover && (

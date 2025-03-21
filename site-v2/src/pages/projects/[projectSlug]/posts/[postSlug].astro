@@ -1,0 +1,185 @@
+---
+import {type CollectionEntry, getCollection} from "astro:content";
+import PostLayout from "../../../../layouts/PostLayout.astro";
+import FormattedDate from "../../../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  const posts = await getCollection("posts");
+
+  // Create paths for each project-post combination where the post is related to the project
+  const paths = [];
+
+  for (const project of projects) {
+    // Get posts related to this project
+    const relatedPostSlugs = project.data.relatedPosts?.map(post => post.slug) || [];
+
+    // Find the actual post entries for related posts
+    const projectPosts = posts.filter(post =>
+      relatedPostSlugs.includes(post.data.slug)
+    );
+
+    // Create a path for each project-post pair
+    for (const post of projectPosts) {
+      paths.push({
+        params: {
+          projectSlug: project.data.slug,
+          postSlug: post.data.slug
+        },
+        props: {
+          post,
+          project
+        }
+      });
+    }
+  }
+
+  return paths;
+}
+
+const {post, project} = Astro.props;
+const projectSlug = project.data.slug;
+
+// Custom PostPrevNext component for project-related posts
+const allPosts = await getCollection('posts');
+const relatedPostSlugs = project.data.relatedPosts?.map(p => p.slug) || [];
+const projectPosts = allPosts.filter(p => relatedPostSlugs.includes(p.data.slug))
+  .sort((a, b) => {
+    return new Date(b.data.publishDate || 0).getTime() - new Date(a.data.publishDate || 0).getTime();
+  });
+
+// Find the index of the current post
+const currentIndex = projectPosts.findIndex(p => p.data.slug === post.data.slug);
+const prevPost = currentIndex > 0 ? projectPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < projectPosts.length - 1 ? projectPosts[currentIndex + 1] : null;
+---
+
+<PostLayout {...post.data}>
+  {(prevPost || nextPost) && (
+          <nav class="post-navigation">
+            <div class="nav-links">
+              {prevPost && (
+                      <a href={`/projects/${projectSlug}/posts/${prevPost.data.slug}`} class="nav-link prev-link" id="prev-post-link">
+                        <div class="arrow">←</div>
+                        <div class="nav-content">
+                          <span class="nav-label">Next</span>
+                          <span class="nav-title">{prevPost.data.title}</span>
+                          {prevPost.data.publishDate && <span class="nav-date"><FormattedDate date={prevPost.data.publishDate}/></span>}
+                        </div>
+                      </a>
+              )}
+
+              {nextPost && (
+                      <a href={`/projects/${projectSlug}/posts/${nextPost.data.slug}`} class="nav-link next-link" id="next-post-link">
+                        <div class="nav-content">
+                          <span class="nav-label">Prev</span>
+                          <span class="nav-title">{nextPost.data.title}</span>
+                          {nextPost.data.publishDate && <span class="nav-date"><FormattedDate date={nextPost.data.publishDate}/></span>}
+                        </div>
+                        <div class="arrow">→</div>
+                      </a>
+              )}
+            </div>
+
+            <div class="project-back">
+              <a href={`/projects/${projectSlug}`} class="nav-link project-link">
+                <span>← Back to project</span>
+              </a>
+            </div>
+          </nav>
+  )}
+</PostLayout>
+
+<style>
+    .post-navigation {
+        font-family: 'nudica_monobold', serif;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color, #ddd);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-links {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .project-back {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        max-width: 45%;
+        padding: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        color: var(--color);
+        background-color: var(--bg-color);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .prev-link {
+        margin-right: auto;
+    }
+
+    .next-link {
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .arrow {
+        font-size: 1.5rem;
+        margin: 0 0.5rem;
+    }
+
+    .nav-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        opacity: 0.7;
+    }
+
+    .nav-title {
+        font-weight: bold;
+        margin: 0.25rem 0;
+    }
+
+    .nav-date {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            flex-direction: column;
+        }
+
+        .nav-link {
+            max-width: 100%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .post-navigation {
+            max-width: 1400px;
+            width: 90vw;
+        }
+    }
+</style>

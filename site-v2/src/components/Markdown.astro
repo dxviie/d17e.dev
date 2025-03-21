@@ -1,122 +1,1 @@
----
-import {marked} from 'marked';
-import '../styles/markdown.css';
-
-interface Props {
-  content: string;
-}
-
-const {content} = Astro.props;
-
-// Configure marked to allow HTML and handle iframes specially
-const renderer = new marked.Renderer();
-
-// Keep the default HTML renderer which simply passes through HTML
-const originalHtml = renderer.html.bind(renderer);
-const originalText = renderer.text.bind(renderer);
-
-// Process HTML specifically
-renderer.html = (html) => {
-  // Wrap iframes in container
-  if (html.raw.trim().startsWith('<iframe')) {
-    const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
-    return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
-  }
-
-  return originalHtml(html);
-};
-
-// Process text to style hashtags
-renderer.text = (text) => {
-  // We need a more robust approach to catch all hashtags
-  let rawText = text.raw || text.text;
-
-  // Use a different approach to catch all hashtags
-  // First split the text by spaces and then process each chunk
-  const chunks = rawText.split(/(\s+)/);
-  let processedText = '';
-
-  for (let i = 0; i < chunks.length; i++) {
-    const chunk = chunks[i];
-    if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+$/)) {
-      // This is a hashtag - now supports special characters
-      processedText += `<span class="hashtag">${chunk}</span>`;
-    } else if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+[.,;:!?]$/)) {
-      // Hashtag with special chars and trailing punctuation
-      const hashtag = chunk.slice(0, -1);
-      const punctuation = chunk.slice(-1);
-      processedText += `<span class="hashtag">${hashtag}</span>${punctuation}`;
-    } else {
-      // Regular text
-      processedText += chunk;
-    }
-  }
-
-  return processedText;
-};
-
-marked.setOptions({
-  renderer: renderer,
-  breaks: false,
-  pedantic: false,
-  gfm: true
-});
-
-const htmlContent = content ? marked.parse(content) : '';
----
-
-<div class="markdown-content" set:html={htmlContent}/>
-
-<style is:global>
-    /* Additional iframe styling */
-    .markdown-content iframe {
-        width: 100%;
-        aspect-ratio: 16/9;
-        border: none;
-        border-radius: 8px;
-        margin: 1.5rem 0;
-        max-width: 100%;
-    }
-
-    .markdown-content .open-processing {
-        aspect-ratio: 1 !important;
-        padding-bottom: 100% !important;
-    }
-
-    /* Fix for the iframe container if used */
-    .markdown-content .iframe-container {
-        position: relative;
-        width: 100%;
-        margin: 1.5rem 0;
-        padding-bottom: 56.25%; /* 16:9 aspect ratio */
-        height: 0;
-        overflow: hidden;
-    }
-
-    .markdown-content .iframe-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-    }
-
-    /* Hashtag styling */
-    .markdown-content .hashtag {
-        display: inline-block;
-        font-family: 'nudica_monolight', serif;
-        color: var(--accent-color);
-        background-color: rgba(var(--accent-rgb), 0.1);
-        padding: 0.1rem 0.4rem;
-        border-radius: 4px;
-        font-size: 0.9em;
-        transition: all 0.2s ease;
-        margin-top: .3rem;
-    }
-
-    .markdown-content .hashtag:hover {
-        background-color: rgba(var(--accent-rgb), 0.2);
-        transform: translateY(-1px);
-    }
-</style>
+---import {marked} from 'marked';import '../styles/markdown.css';interface Props {  content: string;}const {content} = Astro.props;// Configure marked to allow HTML and handle iframes speciallyconst renderer = new marked.Renderer();// Keep the default HTML renderer which simply passes through HTMLconst originalHtml = renderer.html.bind(renderer);const originalText = renderer.text.bind(renderer);// Process HTML specificallyrenderer.html = (html) => {  // Wrap iframes in container  if (html.raw.trim().startsWith('<iframe')) {    const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';    return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;  }  return originalHtml(html);};// Process text to style hashtagsrenderer.text = (text) => {  // We need a more robust approach to catch all hashtags  let rawText = text.raw || text.text;  // Use a different approach to catch all hashtags  // First split the text by spaces and then process each chunk  const chunks = rawText.split(/(\s+)/);  let processedText = '';  for (let i = 0; i < chunks.length; i++) {    const chunk = chunks[i];    if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+$/)) {      // This is a hashtag - now supports special characters      processedText += `<span class="hashtag">${chunk}</span>`;    } else if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+[.,;:!?]$/)) {      // Hashtag with special chars and trailing punctuation      const hashtag = chunk.slice(0, -1);      const punctuation = chunk.slice(-1);      processedText += `<span class="hashtag">${hashtag}</span>${punctuation}`;    } else {      // Regular text      processedText += chunk;    }  }  return processedText;};marked.setOptions({  renderer: renderer,  breaks: false,  pedantic: false,  gfm: true});const htmlContent = content ? marked.parse(content) : '';---<div class="markdown-content" set:html={htmlContent}/><style is:global>    /* Additional iframe styling */    .markdown-content iframe {        width: 100%;        aspect-ratio: 16/9;        border: none;        border-radius: 8px;        margin: 1.5rem 0;        max-width: 100%;    }    .markdown-content .open-processing {        aspect-ratio: 1 !important;        padding-bottom: 100% !important;    }    /* Fix for the iframe container if used */    .markdown-content .iframe-container {        position: relative;        width: 100%;        margin: 1.5rem 0;        padding-bottom: 56.25%; /* 16:9 aspect ratio */        height: 0;        overflow: hidden;    }    .markdown-content .iframe-container iframe {        position: absolute;        top: 0;        left: 0;        width: 100%;        height: 100%;        margin: 0;    }    /* Hashtag styling */    .markdown-content .hashtag {        display: inline-block;        font-family: 'nudica_monolight', serif;        color: var(--accent-color);        background-color: rgba(var(--accent-rgb), 0.1);        padding: 0.1rem 0.4rem;        border-radius: 4px;        font-size: 0.9em;        transition: all 0.2s ease;        margin-top: .3rem;    }    .markdown-content .hashtag:hover {        background-color: rgba(var(--accent-rgb), 0.2);        transform: translateY(-1px);    }</style>

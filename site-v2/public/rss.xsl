@@ -38,7 +38,7 @@
                     background: white;
                     padding: 1.5rem;
                     margin-bottom: 1.5rem;
-                    border-radius: 8px;
+                    border-radius: 4px;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                     }
                     .item-title {
