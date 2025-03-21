@@ -225,27 +225,60 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     const mediaAssets = document.querySelectorAll('.media-asset[data-is-video="true"]:not([data-hero="true"])');
 
     mediaAssets.forEach(asset => {
+      // Skip if already initialized
+      if (asset.hasAttribute('data-video-initialized')) return;
+      
       const wrapper = asset.querySelector('.media-wrapper');
       const video = asset.querySelector<HTMLVideoElement>('.hover-video');
 
       if (!wrapper || !video) return;
+      
+      // Mark as initialized to prevent duplicate event handlers
+      asset.setAttribute('data-video-initialized', 'true');
 
       // For desktop: hover events
+      let playPromise: Promise<void> | undefined;
+      
       wrapper.addEventListener('mouseenter', () => {
-        video.play().catch(e => console.log('Autoplay prevented:', e));
+        // Only attempt to play if video is paused
+        if (video.paused) {
+          playPromise = video.play();
+          playPromise?.catch(e => console.log('Autoplay prevented:', e));
+        }
       });
 
       wrapper.addEventListener('mouseleave', () => {
-        video.pause();
-        video.currentTime = 0;
+        // Check if there's an ongoing play promise
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            // Only pause if video is still playing
+            if (!video.paused) {
+              video.pause();
+              video.currentTime = 0;
+            }
+          }).catch(() => {
+            // Promise rejected, do nothing as play likely failed
+          });
+        } else {
+          // No active promise, safe to pause
+          if (!video.paused) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        }
       });
 
       // For mobile: touch events
       let touchTimeout: NodeJS.Timeout;
+      let touchPlayPromise: Promise<void> | undefined;
 
       wrapper.addEventListener('touchstart', () => {
         touchTimeout = setTimeout(() => {
-          video.play().catch(e => console.log('Autoplay prevented:', e));
+          // Only play if video is paused
+          if (video.paused) {
+            touchPlayPromise = video.play();
+            touchPlayPromise?.catch(e => console.log('Autoplay prevented:', e));
+          }
         }, 200); // Small delay to differentiate from click/tap
       });
 
@@ -264,7 +297,8 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     // Find and play all hero videos (these have autoplay attribute but need to be manually started after page transitions)
     const heroVideos = document.querySelectorAll('.video-container video[autoplay]');
     heroVideos.forEach(video => {
-      if (video instanceof HTMLVideoElement) {
+      if (video instanceof HTMLVideoElement && video.paused) {
+        // Only attempt to play if the video is currently paused
         video.play().catch(e => console.log('Hero video autoplay prevented:', e));
       }
     });
