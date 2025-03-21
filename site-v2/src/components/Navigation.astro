@@ -15,13 +15,13 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 {!isHomePage &&
 <nav id="main-nav">
   <!-- HOME BUTTON -->
-  <a href="/" class="nav-item" id="home-nav-item">
+  <a href="#" onclick="history.back(); return false;" class="nav-item" id="home-nav-item">
     <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
       <div class="back-to-landing-arrow">
         ←
       </div>
     </div>
-    <span class="nav-text" data-active={isHomePage}>home</span>
+    <span class="nav-text" data-active={isHomePage}>back</span>
   </a>
 
   <div class="spacer"></div>
@@ -33,7 +33,7 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
     </div>
     <span class="nav-text" data-active={isProjectsIndex}>projects</span>
   </a>
-  
+
   <!-- POSTS BUTTON -->
   <a href="/posts" class="nav-item">
     <div class={`icon-box ${isPostsIndex ? 'active' : ''}`} id="posts-icon-box">
