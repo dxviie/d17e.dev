@@ -11,6 +11,7 @@ interface MediaAssetProps {
   height?: number;
   isHero?: boolean;
   cmsUrl?: string;  // Base CMS URL for media assets
+  objectFit?: string; // CSS property for object-fit
 }
 
 const {
@@ -21,7 +22,8 @@ const {
   width = 800,
   height = 450,
   isHero = false,
-  cmsUrl = "https://directus.d17e.dev/assets" // Default CMS URL - replace with your actual CMS URL
+  cmsUrl = "https://directus.d17e.dev/assets", // Default CMS URL - replace with your actual CMS URL
+  objectFit = "cover" // Default object-fit value
 } = Astro.props;
 
 const isVideo = type?.startsWith("video/");
@@ -87,7 +89,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                             height={height}
                             alt={alt}
                             format="webp"
-                            style={`object-fit: cover; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                            style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
                     />
             )}
             {isVideo && !isHero && (
