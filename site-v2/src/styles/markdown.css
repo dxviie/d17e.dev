@@ -47,9 +47,10 @@
 }
 
 .markdown-content img {
+    display: block;
     max-width: 100%;
     border-radius: 8px;
-    margin: 1.5rem 0;
+    margin: 2.5rem auto;
 }
 
 .markdown-content blockquote {

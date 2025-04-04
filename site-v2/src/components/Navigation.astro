@@ -27,12 +27,12 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   <div class="spacer"></div>
 
   <!-- PROJECTS BUTTON -->
-  <!--<a href="/projects" class="nav-item">-->
-  <!--  <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">-->
-  <!--    <ProjectsIcon color={isProjectsIndex ? "var(&#45;&#45;color)" : undefined}/>-->
-  <!--  </div>-->
-  <!--  <span class="nav-text" data-active={isProjectsIndex}>projects</span>-->
-  <!--</a>-->
+  <a href="/projects" class="nav-item">
+    <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">
+      <ProjectsIcon color={isProjectsIndex ? "var(--color)" : undefined}/>
+    </div>
+    <span class="nav-text" data-active={isProjectsIndex}>projects</span>
+  </a>
 
   <!-- POSTS BUTTON -->
   <a href="/posts" class="nav-item">

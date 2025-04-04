@@ -48,6 +48,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                       type={cover.type}
                       filenameDownload={cover.filenameDownload}
                       isHero={true}
+                      objectFit="contain"
               />
             </div>
     )}
@@ -59,11 +60,14 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
           {startDate && (
                   <span class="date-range">
                     <FormattedDate date={startDate}/>
-                    {endDate && (
-                            <> -
-                              <FormattedDate date={endDate}/>
-                            </>
-                    )}
+                    {endDate ? (
+                                    <> -
+                                      <FormattedDate date={endDate}/>
+                                    </>
+                      )
+                      : (
+                                    <> - Present</>
+                      )}
                   </span>
           )}
                   {dateUpdated && (
@@ -424,30 +428,6 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
     article {
         display: flex;
         flex-direction: column;
-    }
-
-    @media (min-width: 1200px) {
-        main {
-            max-width: 90vw;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-media {
-            max-width: 700px;
-        }
-
-        .project-content {
-            max-width: 700px;
-        }
-
-        article {
-            justify-content: center;
-            flex-direction: row;
-            gap: 2rem;
-        }
     }
 </style>
 
