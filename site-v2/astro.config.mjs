@@ -22,33 +22,31 @@ const baseIntegrations = [
         mode: 'production',
         base: '/',
         scope: '/',
-        includeAssets: ['fonts/**/*', 'assets/**/*'],
+        includeAssets: ['fonts/**/*'],
         manifest: false, // We're using a custom manifest file
         workbox: {
             globDirectory: 'dist',
             globPatterns: [
-                '**/*.{js,css,html,svg,png,jpg,jpeg,webp,woff,woff2,ttf,eot,ico}',
+                '**/*.{js,css,html,svg,woff,woff2,ttf,eot,ico}',
+                'icons/*.png',
+                'favicon-*.png',
             ],
+            // Exclude large source images from src/assets
+            globIgnores: [
+                '_astro/**/*.{jpg,jpeg,png,webp}',  // Exclude the built images from src/assets
+                'assets/*.{jpg,jpeg,png,webp}',     // Exclude large assets 
+            ],
+            maximumFileSizeToCacheInBytes: 2 * 1024 * 1024, // 2MB limit
             // Don't fallback on document based (e.g. `/some-page`) requests
             // This removes an ugly "flash" that would otherwise happen on such navigations
             navigateFallback: null,
             runtimeCaching: [
                 {
-                    urlPattern: /^https:\/\/d17e\.dev\/.*(png|jpg|jpeg|webp|svg|gif|tiff|bmp|ico)$/i,
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'images-cache',
-                        expiration: {
-                            maxEntries: 100,
-                            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-                        }
-                    }
-                },
-                {
+                    // Cache only public/assets which contains web-optimized images
                     urlPattern: /^https:\/\/d17e\.dev\/assets\/.*/i,
                     handler: 'CacheFirst',
                     options: {
-                        cacheName: 'assets-cache',
+                        cacheName: 'optimized-assets-cache',
                         expiration: {
                             maxEntries: 100,
                             maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
@@ -56,6 +54,19 @@ const baseIntegrations = [
                     }
                 },
                 {
+                    // Cache UI elements like icons
+                    urlPattern: /^https:\/\/d17e\.dev\/icons\/.*/i,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'ui-assets-cache',
+                        expiration: {
+                            maxEntries: 20,
+                            maxAgeSeconds: 60 * 24 * 60 * 60 // 60 days
+                        }
+                    }
+                },
+                {
+                    // Network-first for content pages
                     urlPattern: /^https:\/\/d17e\.dev\/(posts|blog|projects)\/.*/i,
                     handler: 'NetworkFirst',
                     options: {
