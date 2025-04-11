@@ -82,15 +82,29 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
   ) : (
           <div class="media-wrapper">
             {imageUrl && (
-                    <Image
-                            class="astro-media"
-                            src={imageUrl}
-                            width={width}
-                            height={height}
-                            alt={alt}
-                            format="webp"
-                            style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
-                    />
+              (isHero ? (<a href={`https://directus.d17e.dev/assets/${id}`} target="_blank" rel="noopener noreferrer" class="asset-link">
+                        <Image
+                                class="astro-media"
+                                src={imageUrl}
+                                width={width}
+                                height={height}
+                                alt={alt}
+                                format="webp"
+                                style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                        />
+                        <div class="link-indicator" title="View original asset"></div>
+                      </a>)
+                : (
+                              <Image
+                                      class="astro-media"
+                                      src={imageUrl}
+                                      width={width}
+                                      height={height}
+                                      alt={alt}
+                                      format="webp"
+                                      style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                              />
+                ))
             )}
             {isVideo && !isHero && (
                     <div class="video-hover-container">
@@ -208,6 +222,43 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         opacity: 0;
     }
 
+    .asset-link {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .link-indicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.2s ease;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .link-indicator::after {
+        content: '↗';
+        color: white;
+        font-size: 14px;
+        line-height: 1;
+    }
+
+    .asset-link:hover .link-indicator,
+    .asset-link:focus .link-indicator {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+
     figcaption {
         font-size: 0.875rem;
         margin-top: 0.5rem;
@@ -231,6 +282,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
 
       const wrapper = asset.querySelector('.media-wrapper');
       const video = asset.querySelector<HTMLVideoElement>('.hover-video');
+      const assetLink = asset.querySelector<HTMLAnchorElement>('.asset-link');
 
       if (!wrapper || !video) return;
 
@@ -309,5 +361,32 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
   document.addEventListener('DOMContentLoaded', () => {
     setupVideoHovers();
     playHeroVideos();
+    setupAssetLinks();
   });
+
+  function setupAssetLinks() {
+    // Handle clicks on videos to toggle controls rather than follow the link
+    document.querySelectorAll('.video-container .asset-link').forEach(link => {
+      const video = link.querySelector('video');
+      if (!video) return;
+
+      // Prevent video click from triggering the link navigation
+      video.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Toggle video controls
+        video.controls = !video.controls;
+      });
+
+      // Make sure link indicator click still navigates to the asset
+      const indicator = link.querySelector('.link-indicator');
+      if (indicator) {
+        indicator.addEventListener('click', (e) => {
+          e.stopPropagation(); // Don't let it bubble to video click handler
+          window.open(link.href, '_blank', 'noopener,noreferrer');
+        });
+      }
+    });
+  }
 </script>
