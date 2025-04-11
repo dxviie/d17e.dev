@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
->
-    <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+<xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes" media-type="text/html"/>
     <xsl:template match="/">
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
@@ -136,7 +139,16 @@
                                 </div>
                             </xsl:if>
                             <div class="item-description">
-                                <xsl:value-of select="description"/>
+                                <xsl:choose>
+                                    <!-- If there's content:encoded, use that -->
+                                    <xsl:when test="content:encoded">
+                                        <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
+                                    </xsl:when>
+                                    <!-- Otherwise fall back to description -->
+                                    <xsl:otherwise>
+                                        <xsl:value-of select="description" disable-output-escaping="yes"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </div>
                         </article>
                     </xsl:for-each>
