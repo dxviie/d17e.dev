@@ -28,7 +28,7 @@ const getRssEntries = async () => {
 
 function getMediaUrl(cover) {
     if (!cover || !cover.id) return '';
-    
+
     if (cover.type && cover.type.startsWith('video')) {
         return `https://d17e.dev/assets/${cover.id}.mp4`;
     }
@@ -37,9 +37,9 @@ function getMediaUrl(cover) {
 
 function getMediaType(cover) {
     if (!cover) return '';
-    
+
     if (cover.type) return cover.type;
-    
+
     // Infer type if not provided
     if (cover.id && cover.id.endsWith('.mp4')) {
         return 'video/mp4';
@@ -51,13 +51,13 @@ function getMediaType(cover) {
 }
 
 function formatRFC822Date(date) {
-    return new Date(date).toUTCString();
+    return new Date(date).toLocaleDateString();
 }
 
 export async function GET(context) {
     const entries = await getRssEntries();
     const site = 'https://d17e.dev';
-    
+
     // Manual XML generation with proper stylesheet processing instruction
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
@@ -66,8 +66,8 @@ export async function GET(context) {
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
-    <title>d17e.dev</title>
-    <description>code. art. ideas.</description>
+    <title>D17E.DEV</title>
+    <description>I code. I art. Ideas.</description>
     <link>${site}</link>
     <atom:link href="${site}/rss.xml" rel="self" type="application/rss+xml"/>
     <language>en</language>
@@ -78,7 +78,7 @@ export async function GET(context) {
     for (const entry of entries) {
         const pubDate = formatRFC822Date(entry.pubDate);
         const link = `${site}/${entry.type}/${entry.slug}/`;
-        
+
         xml += `    <item>
       <title>${escapeXml(entry.title)}</title>
       <link>${link}</link>
@@ -91,19 +91,19 @@ export async function GET(context) {
         if (entry.content) {
             xml += `      <content:encoded><![CDATA[${entry.content}]]></content:encoded>\n`;
         }
-        
+
         // Add media enclosure if available
         if (entry.cover && getMediaUrl(entry.cover)) {
             xml += `      <enclosure url="${getMediaUrl(entry.cover)}" length="${entry.cover.filesize || 0}" type="${getMediaType(entry.cover)}"/>\n`;
         }
-        
+
         xml += `    </item>\n`;
     }
-    
+
     // Close the XML
     xml += `  </channel>
 </rss>`;
-    
+
     // Return as Response with proper Content-Type
     return new Response(xml, {
         headers: {
