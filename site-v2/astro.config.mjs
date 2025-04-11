@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import svelte from '@astrojs/svelte';
 import sentry from '@sentry/astro';
+import AstroPWA from '@vite-pwa/astro';
 
 // Determine if we're in production based on environment
 const isProd = process.env.NODE_ENV === 'production';
@@ -16,7 +17,62 @@ const baseIntegrations = [
         changefreq: 'weekly',
         lastmod: new Date(),
     }), 
-    svelte()
+    svelte(),
+    AstroPWA({
+        mode: 'production',
+        base: '/',
+        scope: '/',
+        includeAssets: ['fonts/**/*', 'assets/**/*'],
+        manifest: false, // We're using a custom manifest file
+        workbox: {
+            globDirectory: 'dist',
+            globPatterns: [
+                '**/*.{js,css,html,svg,png,jpg,jpeg,webp,woff,woff2,ttf,eot,ico}',
+            ],
+            // Don't fallback on document based (e.g. `/some-page`) requests
+            // This removes an ugly "flash" that would otherwise happen on such navigations
+            navigateFallback: null,
+            runtimeCaching: [
+                {
+                    urlPattern: /^https:\/\/d17e\.dev\/.*(png|jpg|jpeg|webp|svg|gif|tiff|bmp|ico)$/i,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'images-cache',
+                        expiration: {
+                            maxEntries: 100,
+                            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                        }
+                    }
+                },
+                {
+                    urlPattern: /^https:\/\/d17e\.dev\/assets\/.*/i,
+                    handler: 'CacheFirst',
+                    options: {
+                        cacheName: 'assets-cache',
+                        expiration: {
+                            maxEntries: 100,
+                            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                        }
+                    }
+                },
+                {
+                    urlPattern: /^https:\/\/d17e\.dev\/(posts|blog|projects)\/.*/i,
+                    handler: 'NetworkFirst',
+                    options: {
+                        cacheName: 'content-cache',
+                        expiration: {
+                            maxEntries: 50,
+                            maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+                        }
+                    }
+                }
+            ]
+        },
+        devOptions: {
+            enabled: true,
+            type: 'module'
+        }
+    })
 ];
 
 // Add Sentry only in production

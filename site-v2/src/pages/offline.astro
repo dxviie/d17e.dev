@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Offline - d17e.dev" description="You are currently offline">
+  <div class="offline-container">
+    <h1>You're offline</h1>
+    <p>It looks like you're currently not connected to the internet.</p>
+    <p>Don't worry though! You can still access content you've visited before.</p>
+    <a href="/" class="home-button">Go to Homepage</a>
+  </div>
+</BaseLayout>
+
+<style>
+  .offline-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    min-height: 60vh;
+  }
+
+  h1 {
+    font-family: 'Nudica Mono Bold', monospace;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-family: 'Nudica Mono Light', monospace;
+    margin-bottom: 1rem;
+  }
+
+  .home-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--accent);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-family: 'Nudica Mono Bold', monospace;
+    transition: background-color 0.3s ease;
+  }
+
+  .home-button:hover {
+    background-color: var(--accent-dark);
+  }
+</style>

@@ -23,6 +23,14 @@ const {title, description, image = '/logo-landing-og.jpg'} = Astro.props;
   <script async src="https://umami.d17e.dev/script.js" data-website-id="300da643-d89e-4e5c-b834-8f626b092c92"/>
 }
 
+<!-- PWA tags -->
+<meta name="theme-color" content="#1a1a1a"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="d17e.dev"/>
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL}/>
 
