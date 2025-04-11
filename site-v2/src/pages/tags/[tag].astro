@@ -1,0 +1,450 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FindMeOn from "../../components/FindMeOn.astro";
+import MediaAsset from "../../components/MediaAsset.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import { SITE_TITLE } from '../../consts';
+import { countTagOccurrences, findContentByTag } from '../../utils/tagUtils';
+
+export async function getStaticPaths() {
+  // Get all content
+  const projects = await getCollection('projects');
+  const articles = await getCollection('articles');
+  const posts = await getCollection('posts');
+
+  // Combine all content for tag extraction
+  const allContent = [
+    ...projects.map(project => ({ body: project.data.body || '' })),
+    ...articles.map(article => ({ body: article.data.body || '' })),
+    ...posts.map(post => ({ body: post.data.body || '' }))
+  ];
+
+  // Get all unique tags
+  const tagCounts = countTagOccurrences(allContent);
+  
+  // Create a path for each tag
+  return Array.from(tagCounts.keys()).map(tag => ({
+    params: { tag: tag.toLowerCase() },
+    props: { tag }
+  }));
+}
+
+// Receives the tag as a prop from getStaticPaths
+const { tag } = Astro.props;
+
+// Get all content
+const projects = await getCollection('projects');
+const articles = await getCollection('articles');
+const posts = await getCollection('posts');
+
+// Find all content related to this tag
+const relatedContent = findContentByTag(tag, projects, articles, posts);
+---
+
+<html lang="en">
+<head>
+  <BaseHead 
+    title={`#${tag} | ${SITE_TITLE}`} 
+    description={`Content tagged with #${tag}`} 
+  />
+</head>
+<body>
+  <Header />
+  <main>
+    <div class="header-container">
+      <h1 class="page-title">#{tag}</h1>
+      <a href="/tags" class="back-link">← All Tags</a>
+    </div>
+
+    <!-- Projects Section (if any) -->
+    {relatedContent.projects.length > 0 && (
+      <section class="content-section">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          {relatedContent.projects.map(project => (
+            <a href={`/projects/${project.data.slug}`} class="project-card">
+              {project.data.cover && (
+                <div class="project-image">
+                  <img 
+                    src={`/assets/${project.data.cover.id}.webp`} 
+                    alt={project.data.name} 
+                    loading="lazy" 
+                  />
+                </div>
+              )}
+              <div class="project-info">
+                <h3>{project.data.name}</h3>
+                {project.data.description && (
+                  <p class="project-description">{project.data.description}</p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Articles Section (if any) -->
+    {relatedContent.articles.length > 0 && (
+      <section class="content-section">
+        <h2 class="section-title">Articles</h2>
+        <div class="article-grid">
+          {relatedContent.articles.map(article => (
+            <a href={`/blog/${article.data.slug}`} class="article-card">
+              {article.data.cover && (
+                <div class="article-image">
+                  <img 
+                    src={`/assets/${article.data.cover.id}.webp`} 
+                    alt={article.data.title} 
+                    loading="lazy" 
+                  />
+                </div>
+              )}
+              <div class="article-info">
+                <h3>{article.data.title}</h3>
+                {article.data.description && (
+                  <p class="article-description">{article.data.description}</p>
+                )}
+                {article.data.publishDate && (
+                  <span class="article-date">
+                    <FormattedDate date={new Date(article.data.publishDate)} />
+                  </span>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Media Posts Section (if any) -->
+    {relatedContent.posts.length > 0 && (
+      <section class="content-section">
+        <h2 class="section-title">Media</h2>
+        <div class="media-grid">
+          {relatedContent.posts.map(post => (
+            <a href={`/posts/${post.data.slug}`} class="media-card">
+              {post.data.cover && (
+                <div class="media-image">
+                  <MediaAsset 
+                    id={post.data.cover.id}
+                    title={post.data.title}
+                    alt={post.data.title}
+                    type={post.data.cover.type}
+                    width={400}
+                    height={225}
+                  />
+                </div>
+              )}
+              <div class="media-info">
+                <h3>{post.data.title}</h3>
+                {post.data.publishDate && (
+                  <span class="media-date">
+                    <FormattedDate date={new Date(post.data.publishDate)} />
+                  </span>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {relatedContent.projects.length === 0 && 
+     relatedContent.articles.length === 0 && 
+     relatedContent.posts.length === 0 && (
+      <div class="no-content">
+        <p>No content found for tag #{tag}</p>
+      </div>
+    )}
+  </main>
+  <FindMeOn />
+  <Footer />
+</body>
+</html>
+
+<style>
+  main {
+    width: 90%;
+    max-width: 960px;
+    margin: 3rem auto 0;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 12.5rem);
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-family: 'nudica_monobold', serif;
+    margin: 0;
+    color: var(--accent-color);
+  }
+
+  .back-link {
+    font-family: 'nudica_monolight', serif;
+    text-decoration: none;
+    color: var(--color);
+    background-color: var(--bg-color);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .back-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .content-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-family: 'nudica_monobold', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* Project Cards */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    text-decoration: none;
+    color: var(--color);
+    background: rgba(var(--gray-light), 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow);
+  }
+
+  .project-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-image img {
+    transform: scale(1.05);
+  }
+
+  .project-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-info h3 {
+    font-family: 'nudica_monobold', serif;
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .project-description {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  /* Article Cards */
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .article-card {
+    text-decoration: none;
+    color: var(--color);
+    background: rgba(var(--gray-light), 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow);
+  }
+
+  .article-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .article-card:hover .article-image img {
+    transform: scale(1.05);
+  }
+
+  .article-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-info h3 {
+    font-family: 'nudica_monobold', serif;
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .article-description {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .article-date {
+    font-family: 'nudica_monolight', serif;
+    font-size: 0.8rem;
+    background-color: var(--color);
+    color: var(--bg-color);
+    padding: 0.1rem 0.3rem;
+    display: inline-block;
+    margin-top: auto;
+    align-self: flex-start;
+  }
+
+  /* Media Cards */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .media-card {
+    text-decoration: none;
+    color: var(--color);
+    background: rgba(var(--gray-light), 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .media-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--box-shadow);
+  }
+
+  .media-image {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .media-info {
+    padding: 0.8rem;
+  }
+
+  .media-info h3 {
+    font-family: 'nudica_monobold', serif;
+    margin: 0;
+    font-size: 1rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .media-date {
+    font-family: 'nudica_monolight', serif;
+    font-size: 0.7rem;
+    background-color: var(--color);
+    color: var(--bg-color);
+    padding: 0.1rem 0.3rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+
+  /* No content message */
+  .no-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+
+  .no-content p {
+    font-family: 'nudica_monolight', serif;
+    color: var(--color);
+    opacity: 0.7;
+    font-size: 1.2rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .project-grid,
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .media-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .header-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .back-link {
+      align-self: flex-start;
+    }
+  }
+</style>
