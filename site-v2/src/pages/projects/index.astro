@@ -12,7 +12,8 @@ const projects = (await getCollection('projects')).sort(() => Math.random() - 0.
 
 
 const introMd = `
-As the **media** section can be a bit **all over the place**, here I'm trying to bring some **order to that chaos** by grouping things per **project**.
+As the **media** section can be a bit **all over the place**, here I'm trying to bring some **order to that chaos** by grouping things per **project**. 
+You can also **[browse by tag](/tags)**
 `;
 ---
 
@@ -191,12 +192,12 @@ As the **media** section can be a bit **all over the place**, here I'm trying to
     {projects.map(project => (
             <div class="card-wrapper">
               <a href={`/projects/${project.data.slug}`} class="card-link">
-                <BaseBallCard 
-                  name={project.data.name} 
-                  imageUrl={"/assets/" + project.data.cover.id + ".webp"}
-                  description={project.data.description}
-                  startDate={project.data.startDate}
-                  endDate={project.data.endDate}
+                <BaseBallCard
+                        name={project.data.name}
+                        imageUrl={"/assets/" + project.data.cover.id + ".webp"}
+                        description={project.data.description}
+                        startDate={project.data.startDate}
+                        endDate={project.data.endDate}
                 />
               </a>
             </div>
