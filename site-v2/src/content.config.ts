@@ -2,6 +2,12 @@ import {defineCollection, z} from 'astro:content';
 import {authentication, createDirectus, readItems, rest} from "@directus/sdk";
 import {getSecret} from "astro:env/server";
 
+// Check if we're in development mode
+const isDev = process.env.NODE_ENV !== 'production';
+
+// Log the mode we're running in
+console.log(`Running in ${isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode - ${isDev ? 'ALL' : 'ONLY PUBLISHED'} content will be loaded`);
+
 const directus = createDirectus(getSecret('DIRECTUS_URL') || '').with(authentication('json')).with(rest());
 
 const posts = defineCollection({
@@ -10,13 +16,17 @@ const posts = defineCollection({
     try {
       await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
       console.debug('Logged in');
+      // In development mode, fetch all posts regardless of status
+      // In production mode, only fetch published posts
+      const filter = isDev ? {} : {
+        status: {
+          _eq: 'published'
+        }
+      };
+      
       let posts = await directus.request(readItems('Posts', {
         fields: ['*', 'cover.*'],
-        filter: {
-          status: {
-            _eq: 'published'
-          }
-        },
+        filter,
         limit: -1
       })) || [{id: '1'}];
       posts = posts.map(p => ({...p, id: p.uuid}));
@@ -57,13 +67,17 @@ const articles = defineCollection({
     try {
       await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
       console.debug('Logged in');
+      // In development mode, fetch all articles regardless of status
+      // In production mode, only fetch published articles
+      const filter = isDev ? {} : {
+        status: {
+          _eq: 'published'
+        }
+      };
+      
       let articles = await directus.request(readItems('Articles', {
         fields: ['*', 'cover.*'],
-        filter: {
-          status: {
-            _eq: 'published'
-          }
-        },
+        filter,
         limit: -1
       })) || [{id: '1'}];
       articles = articles.map(a => ({...a, id: a.uuid}));
@@ -117,13 +131,22 @@ const projects = defineCollection({
           let postIds = project.relatedPosts.map(rel => rel['Posts_id']);
           let relatedPosts: { id: any; }[] = [];
           if (postIds.length > 0) {
+            // Create filter based on environment
+            const filter = {
+              id: {
+                _in: postIds
+              },
+              // Only add status filter in production
+              ...(isDev ? {} : {
+                status: {
+                  _eq: 'published'
+                }
+              })
+            };
+            
             const relatedPostsData = await directus.request(readItems('Posts', {
               fields: ['*', 'cover.*'],
-              filter: {
-                id: {
-                  _in: postIds
-                }
-              },
+              filter,
               limit: -1
             })) || [];
             relatedPosts = relatedPostsData.map(p => ({...p, id: p.uuid}));
@@ -133,13 +156,22 @@ const projects = defineCollection({
           let articleIds = project.relatedArticles.map(rel => rel['Articles_id']);
           let relatedArticles: { id: any; }[] = [];
           if (articleIds.length > 0) {
+            // Create filter based on environment
+            const filter = {
+              id: {
+                _in: articleIds
+              },
+              // Only add status filter in production
+              ...(isDev ? {} : {
+                status: {
+                  _eq: 'published'
+                }
+              })
+            };
+            
             const relatedArticlesData = await directus.request(readItems('Articles', {
               fields: ['*', 'cover.*'],
-              filter: {
-                id: {
-                  _in: articleIds
-                }
-              },
+              filter,
               limit: -1
             })) || [];
             relatedArticles = relatedArticlesData.map(a => ({...a, id: a.uuid}));
@@ -267,14 +299,23 @@ const landingPages = defineCollection({
         let featuredPosts = [];
         // @ts-ignore
         if (pd.Posts && pd.Posts.length > 0) {
+          // Create filter based on environment
+          const filter = {
+            id: {
+              // @ts-ignore
+              _in: pd.Posts
+            },
+            // Only add status filter in production
+            ...(isDev ? {} : {
+              status: {
+                _eq: 'published'
+              }
+            })
+          };
+          
           featuredPosts = await directus.request(readItems('Posts', {
             fields: ['*', 'cover.*'],
-            filter: {
-              id: {
-                // @ts-ignore
-                _in: pd.Posts
-              }
-            },
+            filter,
             limit: -1
           })) || [];
 
@@ -286,14 +327,23 @@ const landingPages = defineCollection({
         let featuredArticles = [];
         // @ts-ignore
         if (pd.Articles && pd.Articles.length > 0) {
+          // Create filter based on environment
+          const filter = {
+            id: {
+              // @ts-ignore
+              _in: pd.Articles
+            },
+            // Only add status filter in production
+            ...(isDev ? {} : {
+              status: {
+                _eq: 'published'
+              }
+            })
+          };
+          
           featuredArticles = await directus.request(readItems('Articles', {
             fields: ['*', 'cover.*'],
-            filter: {
-              id: {
-                // @ts-ignore
-                _in: pd.Articles
-              }
-            },
+            filter,
             limit: -1
           })) || [];
 

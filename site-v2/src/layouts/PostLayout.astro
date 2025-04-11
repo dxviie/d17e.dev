@@ -10,10 +10,11 @@ import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
+import DraftIndicator from "../components/DraftIndicator.astro";
 
 type Props = CollectionEntry<'posts'>['data'];
 
-const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription} = Astro.props;
+const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription, status} = Astro.props;
 
 let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 ---
@@ -27,7 +28,8 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 <body>
 <Header/>
 <main>
-  <article>
+  <article class="post-container">
+    <DraftIndicator status={status}/>
     {cover && (
             <div class="hero-media">
               <MediaAsset
@@ -148,9 +150,10 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
         }
     }
 
-    article {
+    article.post-container {
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     @media (min-width: 1200px) {
@@ -172,7 +175,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 
         article {
             justify-content: center;
-            flex-direction: row;
+            flex-direction: row !important;
             gap: 2rem;
         }
     }

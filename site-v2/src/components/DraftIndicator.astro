@@ -1,0 +1,36 @@
+---
+/**
+  * A component that shows a "DRAFT" indicator for content that's not published yet.
+  * Only visible in development mode.
+  */
+interface Props {
+  status?: string;
+}
+
+const {status} = Astro.props;
+const isDev = process.env.NODE_ENV !== 'production';
+const isDraft = status && status !== 'published';
+const shouldShow = isDev && isDraft;
+---
+
+{shouldShow && (
+<div class="draft-indicator">
+  <span>DRAFT</span>
+</div>
+  )}
+
+<style>
+    .draft-indicator {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: var(--color);
+        color: var(--bg-color);
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        z-index: 100;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        font-family: 'nudica_monolight', monospace;
+    }
+</style>
