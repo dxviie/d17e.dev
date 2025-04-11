@@ -191,8 +191,13 @@ As the **media** section can be a bit **all over the place**, here I'm trying to
     {projects.map(project => (
             <div class="card-wrapper">
               <a href={`/projects/${project.data.slug}`} class="card-link">
-                <BaseBallCard name={project.data.name} imageUrl={"/assets/" + project.data.cover.id + ".webp"}
-                              description={project.data.description}/>
+                <BaseBallCard 
+                  name={project.data.name} 
+                  imageUrl={"/assets/" + project.data.cover.id + ".webp"}
+                  description={project.data.description}
+                  startDate={project.data.startDate}
+                  endDate={project.data.endDate}
+                />
               </a>
             </div>
     ))}

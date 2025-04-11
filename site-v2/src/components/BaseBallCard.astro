@@ -5,13 +5,60 @@ interface Props {
   name: string;
   description: string;
   imageUrl?: string;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
 
 const {
   name,
   description,
-  imageUrl = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='14' fill='%23666' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E"
+  imageUrl = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ddd'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='14' fill='%23666' text-anchor='middle' dy='.3em'%3ENo Image%3C/text%3E%3C/svg%3E",
+  startDate = null,
+  endDate = null
 } = Astro.props;
+
+// Check if the project is active (no end date)
+const isActive = endDate === null;
+
+// Format date display with appropriate detail level
+function formatTimeDetails(start: Date | null, end: Date | null): string {
+  if (!start) return '';
+  
+  // Convert dates to ensure we're working with Date objects
+  const startDate = start instanceof Date ? start : new Date(start);
+  
+  if (!end) {
+    // For active projects (should not reach here as we use isActive flag)
+    return '';
+  }
+  
+  const endDate = end instanceof Date ? end : new Date(end);
+  
+  // Get year and month for both dates
+  const startMonth = startDate.getMonth();
+  const startYear = startDate.getFullYear();
+  const endMonth = endDate.getMonth();
+  const endYear = endDate.getFullYear();
+  
+  // Month names for display
+  const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  
+  // Same year and month
+  if (startYear === endYear && startMonth === endMonth) {
+    return `${monthNames[startMonth]} ${startYear}`;
+  }
+  
+  // Same year, different months
+  if (startYear === endYear) {
+    return `${startYear}`;
+  }
+  
+  // Different years
+  return `${startYear}–${endYear}`;
+}
+
+// Get time display for non-active projects
+const timeDisplay = !isActive && startDate ? formatTimeDetails(startDate, endDate) : '';
 
 const names = name.split(" ");
 ---
@@ -19,6 +66,8 @@ const names = name.split(" ");
 <div class="card">
   <div class="image-container">
     <img src={imageUrl} alt={name}/>
+    {isActive && <div class="active-blip" title="Active project"></div>}
+    {!isActive && timeDisplay && <div class="time-badge" title="Project duration">{timeDisplay}</div>}
   </div>
   <div class="card-inner">
     <div class="card-front">
@@ -100,6 +149,53 @@ const names = name.split(" ");
         border-radius: 50%;
         font-weight: bold;
         font-size: 1.2rem;
+    }
+    
+    .active-blip {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 15px;
+        height: 15px;
+        background: #22c55e; /* Green color for active projects */
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3), 
+                   0 0 10px rgba(34, 197, 94, 0.6);
+        animation: pulse 2s infinite;
+        z-index: 10;
+    }
+    
+    .time-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--bg-color, #fafafa);
+        color: var(--color, #222);
+        font-family: 'nudica_monolight', serif;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        opacity: 0.9;
+        transition: opacity 0.3s ease, transform 0.2s ease;
+    }
+    
+    .card:hover .time-badge {
+        opacity: 1;
+        transform: translateY(-2px);
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
     }
 
     .image-container {
