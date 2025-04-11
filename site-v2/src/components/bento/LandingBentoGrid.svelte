@@ -236,7 +236,7 @@
   const paleYellow = "#FCEF98"; // Subtle yellow accents
   const charcoalLines = "#333333"; // Dark lines throughout
 
-  const bentoConfig = $state({
+  const bentoConfig = $derived({
     insetMin: landingPage.data?.insetMin || 0,
     insetMax: landingPage.data?.insetMax || 0,
     radiusMin: landingPage.data?.radiusMin || 0,
