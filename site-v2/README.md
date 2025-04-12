@@ -4,6 +4,7 @@
 localStorage.setItem('umami.disabled', 1);
 ```
 
+
 ## PWA Support
 
 This site has Progressive Web App (PWA) support. To set it up:
