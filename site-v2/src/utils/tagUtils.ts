@@ -11,10 +11,9 @@ export function extractTags(content: string): string[] {
   const matches = content.match(hashtagRegex) || [];
 
   // Remove duplicates and sort
-  const uniqueTags = Array.from(new Set(matches))
-    .map(tag => tag.substring(1)); // Remove the # symbol
-
-  return uniqueTags;
+  // Remove the # symbol
+  return Array.from(new Set(matches))
+    .map(tag => tag.substring(1));
 }
 
 // Count tag occurrences across multiple content items
