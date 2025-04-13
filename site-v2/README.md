@@ -4,14 +4,13 @@
 localStorage.setItem('umami.disabled', 1);
 ```
 
-
 ## PWA Support
 
 This site has Progressive Web App (PWA) support. To set it up:
 
 1. Generate the required PWA icons:
-   - On Windows: `npm run generate-pwa-icons:win`
-   - On macOS/Linux: `npm run generate-pwa-icons`
+    - On Windows: `npm run generate-pwa-icons:win`
+    - On macOS/Linux: `npm run generate-pwa-icons`
 
    This requires [ffmpeg](https://ffmpeg.org/download.html) to be installed and in your PATH.
 
