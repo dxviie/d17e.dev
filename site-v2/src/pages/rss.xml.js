@@ -4,53 +4,53 @@ import {marked} from 'marked';
 // Configure marked renderer the same way as in Markdown.astro
 const configureMarked = () => {
     const renderer = new marked.Renderer();
-    
+
     // Keep the default HTML renderer which simply passes through HTML
     const originalHtml = renderer.html.bind(renderer);
     const originalText = renderer.text.bind(renderer);
-    
+
     // Process HTML specifically
     renderer.html = (html) => {
-      // Wrap iframes in container
-      if (html.raw.trim().startsWith('<iframe')) {
-        const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
-        return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
-      }
-      return originalHtml(html);
+        // Wrap iframes in container
+        if (html.raw.trim().startsWith('<iframe')) {
+            const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
+            return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
+        }
+        return originalHtml(html);
     };
-    
+
     // Process text to style hashtags and make them clickable links
     renderer.text = (text) => {
-      let rawText = text.raw || text.text;
-      const chunks = rawText.split(/(\s+)/);
-      let processedText = '';
-      for (let i = 0; i < chunks.length; i++) {
-        const chunk = chunks[i];
-        if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+$/)) {
-          // This is a hashtag - now supports special characters
-          const tagName = chunk.substring(1); // Remove the # symbol
-          processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${chunk}</a>`;
-        } else if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+[.,;:!?]$/)) {
-          // Hashtag with special chars and trailing punctuation
-          const hashtag = chunk.slice(0, -1);
-          const tagName = hashtag.substring(1); // Remove the # symbol
-          const punctuation = chunk.slice(-1);
-          processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${hashtag}</a>${punctuation}`;
-        } else {
-          // Regular text
-          processedText += chunk;
+        let rawText = text.raw || text.text;
+        const chunks = rawText.split(/(\s+)/);
+        let processedText = '';
+        for (let i = 0; i < chunks.length; i++) {
+            const chunk = chunks[i];
+            if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+$/)) {
+                // This is a hashtag - now supports special characters
+                const tagName = chunk.substring(1); // Remove the # symbol
+                processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${chunk}</a>`;
+            } else if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+[.,;:!?]$/)) {
+                // Hashtag with special chars and trailing punctuation
+                const hashtag = chunk.slice(0, -1);
+                const tagName = hashtag.substring(1); // Remove the # symbol
+                const punctuation = chunk.slice(-1);
+                processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${hashtag}</a>${punctuation}`;
+            } else {
+                // Regular text
+                processedText += chunk;
+            }
         }
-      }
-      return processedText;
+        return processedText;
     };
-    
+
     marked.setOptions({
-      renderer: renderer,
-      breaks: false,
-      pedantic: false,
-      gfm: true
+        renderer: renderer,
+        breaks: false,
+        pedantic: false,
+        gfm: true
     });
-    
+
     return marked;
 };
 
@@ -142,6 +142,8 @@ export async function GET(context) {
 
     // Add each item
     for (const entry of entries) {
+        console.log('------------> ', entry.description);
+        console.log('====', entry.content);
         const pubDate = formatRFC822Date(entry.pubDate);
         const link = `${site}/${entry.type}/${entry.slug}/`;
 
@@ -157,7 +159,7 @@ export async function GET(context) {
         if (entry.content) {
             xml += `      <content:encoded><![CDATA[${entry.content}]]></content:encoded>\n`;
         }
-        
+
         // Add author information
         if (entry.author) {
             xml += `      <dc:creator><![CDATA[${entry.author}]]></dc:creator>\n`;
