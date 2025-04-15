@@ -87,6 +87,10 @@
                     width: fit-content;
                     padding: 0.2rem 1rem 0 1rem;
                     }
+                    a {
+                    color: darkorange;
+                    font-family: 'Nudica Mono Light', monospace;
+                    }
                     .item-title a {
                     text-decoration: none;
                     color: inherit;
@@ -211,15 +215,11 @@
                                 <xsl:choose>
                                     <!-- If there's content:encoded, use that -->
                                     <xsl:when test="content:encoded">
-                                        <!--                                        <content:encoded>-->
-                                        <xsl:copy-of select="content:encoded"/>
-                                        <!--                                        </content:encoded>-->
+                                        <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
                                     </xsl:when>
                                     <!-- Otherwise fall back to description -->
                                     <xsl:otherwise>
-                                        <!--                                        <content:encoded>-->
-                                        <xsl:copy-of select="description"/>
-                                        <!--                                        </content:encoded>-->
+                                        <xsl:value-of select="description" disable-output-escaping="yes"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </div>

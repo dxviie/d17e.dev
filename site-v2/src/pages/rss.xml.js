@@ -142,8 +142,6 @@ export async function GET(context) {
 
     // Add each item
     for (const entry of entries) {
-        console.log('------------> ', entry.description);
-        console.log('====', entry.content);
         const pubDate = formatRFC822Date(entry.pubDate);
         const link = `${site}/${entry.type}/${entry.slug}/`;
 
@@ -157,7 +155,8 @@ export async function GET(context) {
 
         // Add content:encoded if available
         if (entry.content) {
-            xml += `      <content:encoded><![CDATA[${entry.content}]]></content:encoded>\n`;
+            // Wrap the content in a div to ensure it's valid XML
+            xml += `      <content:encoded><![CDATA[<div>${entry.content}</div>]]></content:encoded>\n`;
         }
 
         // Add author information
