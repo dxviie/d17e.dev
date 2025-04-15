@@ -211,7 +211,7 @@
                                 <xsl:choose>
                                     <!-- If there's content:encoded, use that -->
                                     <xsl:when test="content:encoded">
-                                        <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
+                                        <xsl:copy-of select="content:encoded/*"/>
                                     </xsl:when>
                                     <!-- Otherwise fall back to description -->
                                     <xsl:otherwise>

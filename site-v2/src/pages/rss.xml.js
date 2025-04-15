@@ -1,4 +1,61 @@
 import {getCollection} from 'astro:content';
+import {marked} from 'marked';
+
+// Configure marked renderer the same way as in Markdown.astro
+const configureMarked = () => {
+    const renderer = new marked.Renderer();
+    
+    // Keep the default HTML renderer which simply passes through HTML
+    const originalHtml = renderer.html.bind(renderer);
+    const originalText = renderer.text.bind(renderer);
+    
+    // Process HTML specifically
+    renderer.html = (html) => {
+      // Wrap iframes in container
+      if (html.raw.trim().startsWith('<iframe')) {
+        const openProcessing = html.raw.indexOf('openprocessing.org') > -1 ? 'open-processing' : '';
+        return `<div class="iframe-container ${openProcessing}">${html.raw}</div>`;
+      }
+      return originalHtml(html);
+    };
+    
+    // Process text to style hashtags and make them clickable links
+    renderer.text = (text) => {
+      let rawText = text.raw || text.text;
+      const chunks = rawText.split(/(\s+)/);
+      let processedText = '';
+      for (let i = 0; i < chunks.length; i++) {
+        const chunk = chunks[i];
+        if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+$/)) {
+          // This is a hashtag - now supports special characters
+          const tagName = chunk.substring(1); // Remove the # symbol
+          processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${chunk}</a>`;
+        } else if (chunk.match(/^#[a-zA-Z0-9._&+\-@#]+[.,;:!?]$/)) {
+          // Hashtag with special chars and trailing punctuation
+          const hashtag = chunk.slice(0, -1);
+          const tagName = hashtag.substring(1); // Remove the # symbol
+          const punctuation = chunk.slice(-1);
+          processedText += `<a href="https://d17e.dev/tags/${tagName.toLowerCase()}" class="hashtag">${hashtag}</a>${punctuation}`;
+        } else {
+          // Regular text
+          processedText += chunk;
+        }
+      }
+      return processedText;
+    };
+    
+    marked.setOptions({
+      renderer: renderer,
+      breaks: false,
+      pedantic: false,
+      gfm: true
+    });
+    
+    return marked;
+};
+
+// Initialize marked with our configuration
+const markedInstance = configureMarked();
 
 const getRssEntries = async () => {
     const posts = await getCollection('posts');
@@ -7,18 +64,20 @@ const getRssEntries = async () => {
         ...posts.map(post => ({
             ...post.data,
             type: 'posts',
-            description: post.data.body || post.data.description || '',
-            content: post.data.body || post.data.description || '',
+            description: post.data.description || '',
+            content: post.data.body ? markedInstance.parse(post.data.body) : (post.data.description || ''),
             title: post.data.title,
-            pubDate: post.data.publishDate
+            pubDate: post.data.publishDate,
+            author: 'David Vandenbogaerde'
         })),
         ...articles.map(article => ({
             ...article.data,
             type: 'blog',
             description: article.data.description || '',
-            content: article.data.description || '',
+            content: article.data.body ? markedInstance.parse(article.data.body) : (article.data.description || ''),
             title: article.data.title,
-            pubDate: article.data.publishDate
+            pubDate: article.data.publishDate,
+            author: 'David Vandenbogaerde'
         }))
     ];
     // Sort by publish date, newest first
@@ -70,6 +129,13 @@ export async function GET(context) {
     <description>I code. I art. Ideas.</description>
     <link>${site}</link>
     <atom:link href="${site}/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://d17e.dev/favicon-32x32.png</url>
+      <title>D17E.DEV</title>
+      <link>https://d17e.dev</link>
+      <width>32</width>
+      <height>32</height>
+    </image>
     <language>en</language>
     <lastBuildDate>${formatRFC822Date(new Date())}</lastBuildDate>
 `;
@@ -90,6 +156,11 @@ export async function GET(context) {
         // Add content:encoded if available
         if (entry.content) {
             xml += `      <content:encoded><![CDATA[${entry.content}]]></content:encoded>\n`;
+        }
+        
+        // Add author information
+        if (entry.author) {
+            xml += `      <dc:creator><![CDATA[${entry.author}]]></dc:creator>\n`;
         }
 
         // Add media enclosure if available
