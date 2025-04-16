@@ -239,7 +239,7 @@ hr {
 @media (max-width: 600px) {
     /* Further adjustments for very small screens */
     .content-margin {
-        margin: 0 auto 5rem; /* Even more space at bottom for nav */
+        margin: -1.5rem auto 5rem;
     }
 }
 
