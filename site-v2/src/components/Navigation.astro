@@ -193,7 +193,6 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
             top: unset;
             bottom: 0;
             box-shadow: 0 7px 11px rgba(0, 0, 0, 0.8);
-            padding-bottom: 1.1rem;
         }
 
         .nav-item {
@@ -209,9 +208,40 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
             height: 30px;
         }
     }
+    
+    /* PWA mode specific styles */
+    @media (max-width: 600px) and (display-mode: standalone) {
+        nav {
+            padding-bottom: 1.1rem;
+        }
+    }
+    
+    /* Class-based PWA mode (applied by JS) */
+    @media (max-width: 600px) {
+        nav.pwa-mode {
+            padding-bottom: 1.1rem;
+        }
+    }
 </style>
 
 <script is:inline>
+  const setupNav = () => {
+    const nav = document.getElementById('main-nav');
+    if (!nav) return;
+    
+    // Detect if running as PWA (installed app)
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
+                 window.navigator.standalone || // iOS Safari
+                 document.referrer.includes('android-app://');
+    
+    // Apply bottom padding if in PWA mode on mobile
+    if (isPWA && window.innerWidth <= 600) {
+      nav.classList.add('pwa-mode');
+    } else {
+      nav.classList.remove('pwa-mode');
+    }
+  };
+  
   const setupNavScroll = () => {
     const nav = document.getElementById('main-nav');
     let lastScrollY = window.scrollY;
@@ -263,10 +293,15 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
   };
 
   // Initialize on page load
+  setupNav();
   setupNavScroll();
 
   // For Astro View Transitions, also handle setup after page changes
   document.addEventListener('astro:page-load', () => {
+    setupNav();
     setupNavScroll();
   });
+  
+  // Also check on resize in case of orientation changes
+  window.addEventListener('resize', setupNav);
 </script>
