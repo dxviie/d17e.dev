@@ -186,6 +186,10 @@
                             <div class="item-meta">
                                 Published:
                                 <xsl:value-of select="pubDate"/>
+                                <xsl:if test="creator">
+                                    by
+                                    <xsl:value-of select="creator" disable-output-escaping="yes"/>
+                                </xsl:if>
                             </div>
                             <xsl:if test="enclosure">
                                 <div class="media-container">

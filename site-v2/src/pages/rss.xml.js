@@ -161,7 +161,7 @@ export async function GET(context) {
 
         // Add author information
         if (entry.author) {
-            xml += `      <dc:creator><![CDATA[${entry.author}]]></dc:creator>\n`;
+            xml += `      <creator><![CDATA[${entry.author}]]></creator>\n`;
         }
 
         // Add media enclosure if available
