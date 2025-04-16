@@ -189,6 +189,15 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
     /* Hide text on mobile */
     @media (max-width: 600px) {
+        nav {
+            top: unset;
+            bottom: 0;
+        }
+
+        .nav-item {
+            padding: .5rem .5rem;
+        }
+
         .nav-text {
             display: none;
         }
@@ -211,6 +220,10 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 
     function handleScroll() {
       if (!nav) return;
+
+      if (window.innerWidth <= 600) {
+        return;
+      }
 
       const currentScrollY = window.scrollY;
       const scrollDifference = currentScrollY - lastScrollY;
