@@ -69,9 +69,9 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
       main {
           width: 90%;
           max-width: 960px;
-          margin: 3rem auto 0;
           padding: 2rem 1rem;
           min-height: calc(100vh - 12.5rem);
+          /* margin now handled by content-margin class */
       }
 
       .page-title {
@@ -130,7 +130,7 @@ Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
 </head>
 <body>
 <Navigation/>
-<main>
+<main class="content-margin">
   <h1 class="page-title">About</h1>
   <div class="avatar-container">
     <img src="/avatar_me_vera_round.png" class="avatar" alt="my avatar in a circle"/>

@@ -45,10 +45,10 @@ const blogIntro = `Here you can find my **writing**. You can expect more **long-
   <BaseHead title={`${SITE_TITLE} | Blog`} description={SITE_DESCRIPTION}/>
   <style>
       main {
-          margin: 3rem auto;
           width: 960px;
           max-width: calc(100% - 2rem);
           padding: 2rem 0;
+          /* margin now handled by content-margin class */
       }
 
       .page-title {
@@ -200,7 +200,7 @@ const blogIntro = `Here you can find my **writing**. You can expect more **long-
 </head>
 <body>
 <Header/>
-<main>
+<main class="content-margin">
   <h1 class="page-title">Blog</h1>
 
   <div class="blog-intro">

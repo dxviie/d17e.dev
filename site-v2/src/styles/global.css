@@ -216,6 +216,11 @@ hr {
     transform: scale(0.95);
 }
 
+/* Common content margin class */
+.content-margin {
+    margin: 3rem auto 0;
+}
+
 @media (max-width: 720px) {
     body {
         font-size: 18px;
@@ -223,6 +228,18 @@ hr {
 
     main {
         padding: 1em;
+    }
+
+    /* Adjust content margin for mobile when nav is at bottom */
+    .content-margin {
+        margin: 1.5rem auto 4rem; /* Reduced top margin, added bottom margin for nav */
+    }
+}
+
+@media (max-width: 600px) {
+    /* Further adjustments for very small screens */
+    .content-margin {
+        margin: 0 auto 5rem; /* Even more space at bottom for nav */
     }
 }
 

@@ -32,10 +32,10 @@ You can also **[browse by tag](/tags)**
       main {
           display: flex;
           flex-direction: column;
-          margin: 3rem auto 0;
           width: 1960px;
           max-width: calc(100% - 2rem);
           padding: 2rem 0;
+          /* margin now handled by content-margin class */
       }
 
       .page-intro {
@@ -246,7 +246,7 @@ You can also **[browse by tag](/tags)**
 </head>
 <body>
 <Header/>
-<main>
+<main class="content-margin">
   <div class="header-container">
     <h1 class="page-title">Media</h1>
   </div>

@@ -42,7 +42,7 @@ const minCount = Math.min(...counts);
 </head>
 <body>
 <Header/>
-<main>
+<main class="content-margin">
   <div class="header-container">
     <h1 class="page-title">Tags</h1>
   </div>
@@ -74,8 +74,8 @@ const minCount = Math.min(...counts);
     main {
         width: 90%;
         max-width: 960px;
-        margin: 3rem auto 0;
         padding: 2rem 1rem;
+        /* margin now handled by content-margin class */
     }
 
     .header-container {

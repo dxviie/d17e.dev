@@ -77,7 +77,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
 
 <body>
 <Header/>
-<main>
+<main class="content-margin">
   <article>
     {cover && (
             <div class="hero-media">
@@ -204,9 +204,9 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
     main {
         width: 90%;
         max-width: 960px;
-        margin: 3rem auto 0;
         padding: 2rem 1rem;
         min-height: calc(100vh - 12.5rem);
+        /* margin now handled by content-margin class */
     }
 
     article {
