@@ -8,14 +8,14 @@ import SocialLinks from "./SocialLinks.astro";
         font-family: 'nudica_monolight', serif !important;
         font-size: 1rem;
         text-align: center;
-        margin: 2rem 0;
+        margin: 1rem 0;
     }
 
     .embeddable-buttondown-form {
         display: flex;
         flex-direction: column;
-        gap: .5rem;
-        margin-top: 1rem;
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 
     input {
@@ -36,7 +36,6 @@ import SocialLinks from "./SocialLinks.astro";
 </div>
 <SocialLinks showLinkedIn={true} showGitHub={true} showMastodon={true}/>
 <div class="find-me-on">
-  <a href="https://forms.d17e.dev/contact">Contact</a>
   <form
           action="https://buttondown.com/api/emails/embed-subscribe/d17e.dev"
           method="post"
@@ -50,4 +49,5 @@ import SocialLinks from "./SocialLinks.astro";
       <input type="submit" value="Subscribe" class="form-button"/>
     </div>
   </form>
+  <a href="https://forms.d17e.dev/contact">Contact</a>
 </div>

@@ -252,6 +252,7 @@ hr {
 @media (max-width: 720px) {
     body {
         font-size: 18px;
+        margin-bottom: 4rem;
     }
 
     main {
@@ -260,14 +261,14 @@ hr {
 
     /* Adjust content margin for mobile when nav is at bottom */
     .content-margin {
-        margin: 1.5rem auto 4rem; /* Reduced top margin, added bottom margin for nav */
+        margin: -1.5rem auto 0 auto;
     }
 }
 
 @media (max-width: 600px) {
     /* Further adjustments for very small screens */
     .content-margin {
-        margin: -1.5rem auto 5rem;
+        margin: -1.5rem auto 0 auto;
     }
 }
 
