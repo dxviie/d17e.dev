@@ -25,10 +25,11 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 </head>
 
 <body>
+<div class="statusbar"/>
 <Header/>
 <main class="content-margin">
   <article class="article-container">
-    <DraftIndicator status={status} />
+    <DraftIndicator status={status}/>
     {cover && (
             <div class="hero-media">
               <MediaAsset
@@ -131,7 +132,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
     article.article-container {
         position: relative;
     }
-    
+
     @media (max-width: 768px) {
         .title-section h1 {
             font-size: 2rem;

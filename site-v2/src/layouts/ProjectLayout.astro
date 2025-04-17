@@ -32,36 +32,36 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 // Format date display with appropriate detail level
 function formatTimeDetails(start: Date | null, end: Date | null): string {
   if (!start) return '';
-  
+
   // Convert dates to ensure we're working with Date objects
   const startDate = start instanceof Date ? start : new Date(start);
-  
+
   // Month names for display
   const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  
+
   if (!end) {
     // For active projects
     return `${monthNames[startDate.getMonth()]} ${startDate.getFullYear()} - PRESENT`;
   }
-  
+
   const endDate = end instanceof Date ? end : new Date(end);
-  
+
   // Get year and month for both dates
   const startMonth = startDate.getMonth();
   const startYear = startDate.getFullYear();
   const endMonth = endDate.getMonth();
   const endYear = endDate.getFullYear();
-  
+
   // Same year and month
   if (startYear === endYear && startMonth === endMonth) {
     return `${monthNames[startMonth]} ${startYear}`;
   }
-  
+
   // Same year, different months
   if (startYear === endYear) {
     return `${startYear}`;
   }
-  
+
   // Different years
   return `${startYear}–${endYear}`;
 }
@@ -76,6 +76,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
 </head>
 
 <body>
+<div class="statusbar"/>
 <Header/>
 <main class="content-margin">
   <article>

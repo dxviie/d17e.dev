@@ -17,8 +17,8 @@ type Props = {
   relatedPostSlugs: string[];
 };
 
-const { postData, projectSlug, relatedPostSlugs } = Astro.props;
-const { slug, title, publishDate, dateUpdated, cover, body, link, linkDescription } = postData;
+const {postData, projectSlug, relatedPostSlugs} = Astro.props;
+const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription} = postData;
 
 let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 ---
@@ -30,6 +30,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 </head>
 
 <body>
+<div class="statusbar"/>
 <Header/>
 <main class="content-margin">
   <article>
@@ -43,10 +44,10 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                       filenameDownload={cover.filenameDownload}
                       isHero={true}
               />
-              <ProjectPostPrevNextMini 
-                currentSlug={slug}
-                projectSlug={projectSlug}
-                relatedPostSlugs={relatedPostSlugs}
+              <ProjectPostPrevNextMini
+                      currentSlug={slug}
+                      projectSlug={projectSlug}
+                      relatedPostSlugs={relatedPostSlugs}
               />
             </div>
     )}

@@ -29,28 +29,6 @@ You can also **[browse by tag](/tags)**
   <title>{SITE_TITLE} | Media</title>
   <BaseHead title={`${SITE_TITLE} | Media`} description={SITE_DESCRIPTION}/>
   <style>
-      .statusbar {
-          position: fixed;
-          left: 0;
-          right: 0;
-          top: -66px;
-          height: 66px;
-          overflow: hidden;
-          z-index: 99;
-      }
-
-      .statusbar::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          height: 150%;
-          -webkit-backdrop-filter: blur(8px);
-          backdrop-filter: blur(8px);
-          background-color: rgb(var(--bg-color) / 0.6);
-      }
-
       main {
           display: flex;
           flex-direction: column;

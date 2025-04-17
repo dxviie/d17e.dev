@@ -14,6 +14,7 @@ const landingPagesData = await getCollection('landingPages');
   <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION}/>
 </head>
 <body>
+<div class="statusbar"/>
 <Navigation/>
 <main class="content-margin">
   <LandingBentoGrid landingPages={landingPagesData} client:only/>
