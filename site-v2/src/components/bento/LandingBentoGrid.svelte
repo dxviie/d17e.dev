@@ -414,7 +414,7 @@
 
     if (isVideo) {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
+        <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
@@ -436,7 +436,7 @@
       `;
     } else {
       return `
-        <a href="/posts/${media.slug}" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
+        <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">
           <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" data-title="${mediaAlt}" loading="lazy" decoding="async"/>
         </div>
@@ -504,7 +504,7 @@
       id: 'about-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/about" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="About..."><div class="link-container">
+      <a href="/about?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="About..."><div class="link-container">
         <p class="link-text">?</p>
       </div></a>`,
       required: true
@@ -514,7 +514,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All media...">
+      <a href="/posts?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All media...">
         <div class="svg-container">
           <svg
                   class="rotating-svg"
@@ -535,7 +535,7 @@
       id: 'projects-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/projects" target="_self" class="link-link" data-umami-event="lp-click-projects" aria-label="Projects..."><div class="link-container">
+      <a href="/projects?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-projects" aria-label="Projects..."><div class="link-container">
         <div class="svg-container">
           <svg
                   class="projects-svg rotating-svg"
