@@ -20,10 +20,7 @@ let isComingFromLandingPage = false;
   <!-- HOME BUTTON -->
   <a href="/" class="nav-item" id="home-nav-item" data-from-lp="false">
     <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
-      <!-- Will be updated by JavaScript -->
-      <div class="push-button">
-        <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"}/>
-      </div>
+      <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"}/>
     </div>
     <span class="nav-text" data-active={isHomePage}>home</span>
   </a>
@@ -182,8 +179,8 @@ let isComingFromLandingPage = false;
         display: block;
         font-family: 'nudica_monobold', serif;
         font-weight: bold;
-        color: var(--bg-color);
-        background-color: var(--color);
+        //color: var(--bg-color);
+        //background-color: var(--color);
         border-radius: 50%;
         width: 28px;
         height: 28px;
@@ -227,16 +224,7 @@ let isComingFromLandingPage = false;
         }
     }
 
-    /* Ensure HomeIcon SVG (added via JS) looks right */
-    .push-button .home-svg {
-        width: 24px;
-        height: 24px;
-        transition: transform 0.3s ease;
-    }
-
-    .push-button:hover .home-svg {
-        transform: scale(1.1);
-    }
+    /* No extra styling needed */
 </style>
 
 <script is:inline>
@@ -257,36 +245,22 @@ let isComingFromLandingPage = false;
         homeNavItem.querySelector('.nav-text').textContent = 'back';
 
         // Replace with back arrow
-        homeIconBox.innerHTML = `
-          <div class="push-button">
-            <div class="back-to-landing-arrow">
-              ←
-            </div>
-          </div>
-        `;
+        homeIconBox.innerHTML = `<div class="back-to-landing-arrow">←</div>`;
       } else {
         // Not coming from landing page - show home icon
         homeNavItem.removeAttribute('data-from-lp');
         homeNavItem.querySelector('.nav-text').textContent = 'home';
 
-        // Reset to original HTML with HomeIcon
-        const isActive = homeIconBox.classList.contains('active');
-        const color = isActive ? "var(--bg-color)" : "var(--color)";
+        // Using a simpler approach to reload without the parameter
+        // This ensures we get the Astro-generated HomeIcon with proper styling
+        homeNavItem.querySelector('.nav-text').textContent = 'home';
 
-        // We can't directly create the Astro component, so we need to refresh the page
-        // or use another approach if this backgto-home transition is critical
-        const homeButtonHTML = `
-          <div class="push-button">
-            <svg class="home-svg" width="100%" height="100%" viewBox="0 0 24 24" 
-                fill="none" stroke="${color}" stroke-width="2" 
-                stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-              <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-          </div>
-        `;
-
-        homeIconBox.innerHTML = homeButtonHTML;
+        // Reload the page without the parameter to restore the original state
+        if (window.location.search) {
+          // Only reload if we need to clear parameters
+          window.location.href = window.location.pathname;
+          return; // Stop execution to prevent flicker
+        }
       }
     }
   };
