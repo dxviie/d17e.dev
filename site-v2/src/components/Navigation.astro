@@ -186,8 +186,8 @@ let isComingFromLandingPage = false;
         text-align: center;
     }
 
-    /* Hide text on mobile */
-    @media (max-width: 600px) {
+    /* Hide text on mobile and iPad */
+    @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
         nav {
             top: unset;
             bottom: 0;
@@ -209,14 +209,23 @@ let isComingFromLandingPage = false;
     }
 
     /* PWA mode specific styles */
-    @media (max-width: 600px) and (display-mode: standalone) {
+    @media (max-width: 600px) and (display-mode: standalone),
+    (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
+        nav {
+            padding-bottom: 1.1rem;
+        }
+    }
+
+    /* PWA mode specific styles */
+    @media (max-width: 600px) and (display-mode: standalone),
+    (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
         nav {
             padding-bottom: 1.1rem;
         }
     }
 
     /* Class-based PWA mode (applied by JS) */
-    @media (max-width: 600px) {
+    @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
         nav.pwa-mode {
             padding-bottom: 1.1rem;
         }
@@ -272,8 +281,12 @@ let isComingFromLandingPage = false;
       window.navigator.standalone || // iOS Safari
       document.referrer.includes('android-app://');
 
-    // Apply bottom padding if in PWA mode on mobile
-    if (isPWA && window.innerWidth <= 600) {
+    // Check if device is mobile or iPad with touch
+    const isMobileOrTablet = window.innerWidth <= 600 ||
+      (window.innerWidth <= 1024 && window.matchMedia('(pointer: coarse)').matches);
+
+    // Apply bottom padding if in PWA mode on mobile or iPad
+    if (isPWA && isMobileOrTablet) {
       nav.classList.add('pwa-mode');
     } else {
       nav.classList.remove('pwa-mode');
@@ -294,7 +307,8 @@ let isComingFromLandingPage = false;
     function handleScroll() {
       if (!nav) return;
 
-      if (window.innerWidth <= 600) {
+      // Skip scroll handling for mobile and iPad touch devices (bottom nav)
+      if (window.innerWidth <= 600 || (window.innerWidth <= 1024 && window.matchMedia('(pointer: coarse)').matches)) {
         return;
       }
 

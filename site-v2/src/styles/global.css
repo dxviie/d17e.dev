@@ -249,7 +249,7 @@ hr {
     margin: 3rem auto 0;
 }
 
-@media (max-width: 720px) {
+@media (max-width: 720px), (max-width: 1024px) {
     body {
         font-size: 18px;
         margin-bottom: 4rem;

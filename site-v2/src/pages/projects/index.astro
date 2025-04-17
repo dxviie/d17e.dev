@@ -222,8 +222,8 @@ You can also **[browse by tag](/tags)**
   });
 
   function setupIntersectionObserver() {
-    // Only use this on mobile
-    if (window.matchMedia('(max-width: 768px)').matches) {
+    // Use this on mobile devices and touch devices like iPads
+    if (window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches) {
       // Create an Intersection Observer to detect when cards come into view
       const options = {
         root: null, // Use the viewport as the root
@@ -273,20 +273,38 @@ You can also **[browse by tag](/tags)**
 
   function initVideoHover() {
     const videos = document.querySelectorAll('video');
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
 
     videos.forEach(video => {
       const listItem = video.closest('li');
 
       if (listItem) {
-        listItem.addEventListener('mouseenter', () => {
-          video.play();
-        });
+        if (!isTouchDevice) {
+          // Mouse hover for desktop devices
+          listItem.addEventListener('mouseenter', () => {
+            video.play();
+          });
 
-        listItem.addEventListener('mouseleave', () => {
-          video.pause();
-          // Reset to first frame
-          video.currentTime = 0.1;
-        });
+          listItem.addEventListener('mouseleave', () => {
+            video.pause();
+            // Reset to first frame
+            video.currentTime = 0.1;
+          });
+        } else {
+          // For touch devices, play video on click/tap
+          listItem.addEventListener('click', (e) => {
+            // Don't prevent the default behavior to allow navigation
+            const videoPlaying = !video.paused;
+            
+            // Toggle play/pause
+            if (videoPlaying) {
+              video.pause();
+              video.currentTime = 0.1;
+            } else {
+              video.play();
+            }
+          });
+        }
       }
     });
   }
