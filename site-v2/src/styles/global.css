@@ -117,6 +117,11 @@ h6 {
     line-height: 1.2;
 }
 
+*:focus-visible {
+    outline: var(--accent-color) dashed 1px;
+    border-color: var(--accent-color);
+}
+
 h1 {
     font-size: 3.052em;
 }
@@ -167,6 +172,7 @@ textarea {
 
 input {
     font-size: 16px;
+    outline: none;
 }
 
 table {
