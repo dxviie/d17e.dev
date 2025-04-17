@@ -4,8 +4,8 @@
   "description": "code. art. ideas.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#1a1a1a",
+  "background_color": "var(--ldp-bg-color)",
+  "theme_color": "var(--ldp-bg-color)",
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
