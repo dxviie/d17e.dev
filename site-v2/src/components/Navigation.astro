@@ -3,6 +3,7 @@ import ColorModeToggle from './ColorModeToggle.astro';
 import PostsIcon from './icons/PostsIcon.astro';
 import BlogIcon from './icons/BlogIcon.astro';
 import ProjectsIcon from "./icons/ProjectsIcon.astro";
+import HomeIcon from "./icons/HomeIcon.astro";
 
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === '/' || pathname === '';
@@ -10,18 +11,21 @@ const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
 const isBlogIndex = pathname.endsWith('blog/') || pathname.endsWith('blog');
 const isProjectsIndex = pathname.endsWith('projects/') || pathname.endsWith('projects');
 const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
+// Using JavaScript to detect URL parameters since Astro.url.searchParams may not work consistently
+let isComingFromLandingPage = false;
 ---
 
 {!isHomePage &&
 <nav id="main-nav">
   <!-- HOME BUTTON -->
-  <a href="#" onclick="history.back(); return false;" class="nav-item" id="home-nav-item">
+  <a href="/" class="nav-item" id="home-nav-item" data-from-lp="false">
     <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
-      <div class="back-to-landing-arrow">
-        ←
+      <!-- Will be updated by JavaScript -->
+      <div class="push-button">
+        <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"}/>
       </div>
     </div>
-    <span class="nav-text" data-active={isHomePage}>back</span>
+    <span class="nav-text" data-active={isHomePage}>home</span>
   </a>
 
   <div class="spacer"></div>
@@ -208,40 +212,105 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
             height: 30px;
         }
     }
-    
+
     /* PWA mode specific styles */
     @media (max-width: 600px) and (display-mode: standalone) {
         nav {
             padding-bottom: 1.1rem;
         }
     }
-    
+
     /* Class-based PWA mode (applied by JS) */
     @media (max-width: 600px) {
         nav.pwa-mode {
             padding-bottom: 1.1rem;
         }
     }
+
+    /* Ensure HomeIcon SVG (added via JS) looks right */
+    .push-button .home-svg {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s ease;
+    }
+
+    .push-button:hover .home-svg {
+        transform: scale(1.1);
+    }
 </style>
 
 <script is:inline>
+  // Check if coming from landing page
+  const checkFromLandingPage = () => {
+    // Get the from-lp parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFromLP = urlParams.has('from-lp');
+
+    // Find all navigation elements that need to be updated
+    const homeNavItem = document.getElementById('home-nav-item');
+    const homeIconBox = document.getElementById('home-icon-box');
+
+    if (homeNavItem && homeIconBox) {
+      if (isFromLP) {
+        // Coming from landing page - show back arrow
+        homeNavItem.setAttribute('data-from-lp', 'true');
+        homeNavItem.querySelector('.nav-text').textContent = 'back';
+
+        // Replace with back arrow
+        homeIconBox.innerHTML = `
+          <div class="push-button">
+            <div class="back-to-landing-arrow">
+              ←
+            </div>
+          </div>
+        `;
+      } else {
+        // Not coming from landing page - show home icon
+        homeNavItem.removeAttribute('data-from-lp');
+        homeNavItem.querySelector('.nav-text').textContent = 'home';
+
+        // Reset to original HTML with HomeIcon
+        const isActive = homeIconBox.classList.contains('active');
+        const color = isActive ? "var(--bg-color)" : "var(--color)";
+
+        // We can't directly create the Astro component, so we need to refresh the page
+        // or use another approach if this backgto-home transition is critical
+        const homeButtonHTML = `
+          <div class="push-button">
+            <svg class="home-svg" width="100%" height="100%" viewBox="0 0 24 24" 
+                fill="none" stroke="${color}" stroke-width="2" 
+                stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+        `;
+
+        homeIconBox.innerHTML = homeButtonHTML;
+      }
+    }
+  };
+
   const setupNav = () => {
     const nav = document.getElementById('main-nav');
     if (!nav) return;
-    
+
     // Detect if running as PWA (installed app)
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches || 
-                 window.navigator.standalone || // iOS Safari
-                 document.referrer.includes('android-app://');
-    
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone || // iOS Safari
+      document.referrer.includes('android-app://');
+
     // Apply bottom padding if in PWA mode on mobile
     if (isPWA && window.innerWidth <= 600) {
       nav.classList.add('pwa-mode');
     } else {
       nav.classList.remove('pwa-mode');
     }
+
+    // Check URL parameter on every page change
+    checkFromLandingPage();
   };
-  
+
   const setupNavScroll = () => {
     const nav = document.getElementById('main-nav');
     let lastScrollY = window.scrollY;
@@ -301,7 +370,10 @@ const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
     setupNav();
     setupNavScroll();
   });
-  
+
+  // Handle URL changes
+  window.addEventListener('popstate', setupNav);
+
   // Also check on resize in case of orientation changes
   window.addEventListener('resize', setupNav);
 </script>

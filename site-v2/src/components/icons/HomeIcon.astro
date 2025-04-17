@@ -1,0 +1,39 @@
+---
+interface Props {
+  color?: string;
+}
+
+const {color = "currentColor"} = Astro.props;
+---
+<div class="svg-container">
+  <svg
+      class="home-svg"
+      width="100%"
+      height="100%"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+  >
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+</div>
+
+<style>
+    .svg-container {
+        display: flex;
+        width: 24px;
+        height: 24px;
+    }
+
+    .home-svg {
+        transition: transform 0.3s ease;
+    }
+
+    .svg-container:hover .home-svg {
+        transform: scale(1.1);
+    }
+</style>
