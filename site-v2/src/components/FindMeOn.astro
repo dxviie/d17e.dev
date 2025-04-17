@@ -10,6 +10,25 @@ import SocialLinks from "./SocialLinks.astro";
         text-align: center;
         margin: 2rem 0;
     }
+
+    .embeddable-buttondown-form {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        margin-top: 1rem;
+    }
+
+    input {
+        line-height: 1.7rem;
+        padding: .3rem 1rem;
+        border-radius: 8px;
+        font-family: 'nudica_monobold', serif;
+    }
+
+    .form-button {
+        color: var(--bg-color);
+        background-color: var(--color);
+    }
 </style>
 <div class="find-me-on">
   Find me on:
@@ -17,5 +36,17 @@ import SocialLinks from "./SocialLinks.astro";
 <SocialLinks showLinkedIn={true} showGitHub={true} showMastodon={true}/>
 <div class="find-me-on">
   <a href="https://forms.d17e.dev/contact">Contact</a>
-  <a href="https://forms.d17e.dev/subscribe">Subscribe</a>
+  <form
+          action="https://buttondown.com/api/emails/embed-subscribe/d17e.dev"
+          method="post"
+          target="popupwindow"
+          onsubmit="window.open('https://buttondown.com/d17e.dev', 'popupwindow')"
+          class="embeddable-buttondown-form"
+  >
+    <label for="bd-email">Subscribe for monthly updates:</label>
+    <div class="form-input">
+      <input type="email" name="email" id="bd-email"/>
+      <input type="submit" value="Subscribe" class="form-button"/>
+    </div>
+  </form>
 </div>
