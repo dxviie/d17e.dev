@@ -78,6 +78,10 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
               <source src={cmsVideoUrl} type={type}>
               Your browser does not support the video tag.
             </video>
+            <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute">
+              <span class="icon-muted">🔇</span>
+              <span class="icon-unmuted">🔊</span>
+            </button>
           </div>
   ) : (
           <div class="media-wrapper">
@@ -262,6 +266,45 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         opacity: 0.8;
         transform: scale(1.1);
     }
+    
+    .mute-toggle {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+    }
+    
+    .video-container:hover .mute-toggle {
+        opacity: 0.8;
+    }
+    
+    .mute-toggle:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .icon-unmuted {
+        display: none;
+    }
+    
+    .video-container.unmuted .icon-muted {
+        display: none;
+    }
+    
+    .video-container.unmuted .icon-unmuted {
+        display: block;
+    }
 
     figcaption {
         font-size: 0.875rem;
@@ -391,6 +434,26 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
           window.open(link.href, '_blank', 'noopener,noreferrer');
         });
       }
+    });
+    
+    // Setup mute toggle buttons for videos
+    document.querySelectorAll('.video-container').forEach(container => {
+      const video = container.querySelector('video');
+      const muteButton = container.querySelector('.mute-toggle');
+      
+      if (!video || !muteButton) return;
+      
+      muteButton.addEventListener('click', () => {
+        // Toggle muted state
+        video.muted = !video.muted;
+        
+        // Update container class for styling
+        if (video.muted) {
+          container.classList.remove('unmuted');
+        } else {
+          container.classList.add('unmuted');
+        }
+      });
     });
   }
 </script>
