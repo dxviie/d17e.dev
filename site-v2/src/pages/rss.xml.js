@@ -89,7 +89,7 @@ function getMediaUrl(cover) {
     if (!cover || !cover.id) return '';
 
     if (cover.type && cover.type.startsWith('video')) {
-        return `https://d17e.dev/assets/${cover.id}.mp4`;
+        return `https://directus.d17e.dev/assets/${cover.id}.mp4`;
     }
     return `https://d17e.dev/assets/${cover.id}.webp`;
 }
