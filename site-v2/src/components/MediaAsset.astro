@@ -66,11 +66,12 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                     poster={imageUrl?.src}
                     width={width}
                     height={height}
-                    preload="none"
+                    preload="metadata"
                     autoplay
                     loop
                     muted
                     playsinline
+                    data-has-audio="checking"
             >
               <!-- Local source first for faster loading if available -->
               <source src={`/assets/${id}.mp4`} type={type}>
@@ -78,7 +79,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
               <source src={cmsVideoUrl} type={type}>
               Your browser does not support the video tag.
             </video>
-            <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute">
+            <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute" style="display: none;">
               <span class="icon-muted">🔇</span>
               <span class="icon-unmuted">🔊</span>
             </button>
@@ -289,6 +290,12 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         opacity: 0.8;
     }
     
+    @media (max-width: 768px) {
+        .video-container .mute-toggle {
+            opacity: 0.8;
+        }
+    }
+    
     .mute-toggle:hover {
         opacity: 1;
         background-color: rgba(0, 0, 0, 0.7);
@@ -442,8 +449,21 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
       const muteButton = container.querySelector('.mute-toggle');
       
       if (!video || !muteButton) return;
+
+      // Simpler approach: show mute button for all videos
+      // Mobile: always visible
+      // Desktop: visible on hover
+      if (window.innerWidth <= 768) {
+        muteButton.style.display = 'flex';
+      } else {
+        muteButton.style.display = 'flex';
+      }
       
-      muteButton.addEventListener('click', () => {
+      // Setup toggle button click handler
+      muteButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
         // Toggle muted state
         video.muted = !video.muted;
         
@@ -452,6 +472,11 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
           container.classList.remove('unmuted');
         } else {
           container.classList.add('unmuted');
+          
+          // Attempt to play if it was paused (mobile browsers often require user interaction)
+          if (video.paused) {
+            video.play().catch(err => console.log('Could not play video after unmuting:', err));
+          }
         }
       });
     });
