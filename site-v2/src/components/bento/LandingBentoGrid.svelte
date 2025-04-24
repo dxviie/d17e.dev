@@ -472,7 +472,6 @@
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
               <video
-                src="/assets/${media.cover.id}.mp4"
                 poster="/assets/${media.cover.id}.webp"
                 autoplay
                 loop
@@ -483,7 +482,12 @@
                 disablePictureInPicture
                 data-title="${mediaAlt}"
                 alt="${mediaAlt}"
-              ></video>
+              >
+                  <!-- Local source first for faster loading if available -->
+                  <source src="/assets/${media.cover.id}.mp4" type="video/mp4">
+                  <!-- CMS fallback source -->
+                  <source src="https://directus.d17e.dev/assets/${media.cover.id}" type="video/mp4">
+                </video>
             </div>
           </div>
         </a>
