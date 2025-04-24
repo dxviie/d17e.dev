@@ -373,7 +373,7 @@ const landingPages = defineCollection({
           //@ts-ignore
           Articles: featuredArticles,
           palette: palette,
-          blendMode: pd.blendMode || 'normal'
+          blendMode: pd.blendMode || 'hard-light'
         };
       }));
 
@@ -409,7 +409,7 @@ const landingPages = defineCollection({
     radiusMin: z.number().default(0),
     radiusMax: z.number().default(2),
     palette: z.array(z.string()),
-    blendMode: z.string().optional(),
+    blendMode: z.string().default('hard-light'),
 
     // Define the related Posts collection
     Posts: z.array(z.object({
