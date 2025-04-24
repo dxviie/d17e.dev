@@ -219,7 +219,7 @@
         {#each bentoBoxes as box}
           {#if !box.contentTiles || box.contentTiles.length === 0}
             <path d={box.path} fill={box.color} stroke={box.color} stroke-width="1" opacity="1"
-                  style="mix-blend-mode: hard-light;"/>
+                  style={`mix-blend-mode: ${bentoConfig.blendMode};`}/>
           {/if}
 
           {#each box.contentTiles as bentoContent}

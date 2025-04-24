@@ -20,10 +20,10 @@ export type BentoBox = {
 
 export type BentoContent = {
   id: string;
-  dimensions: { width: number; height: number }[]
-  html: string
-  required: boolean
-  tile?: Tile
+  dimensions: { width: number; height: number }[];
+  html: string;
+  required: boolean;
+  tile?: Tile;
 }
 
 export type BentoConfig = {
@@ -34,6 +34,7 @@ export type BentoConfig = {
   color: string;
   bgColor: string;
   palette: string[];
+  blendMode?: string;
 }
 
 /******** GRID HELPERS ********/

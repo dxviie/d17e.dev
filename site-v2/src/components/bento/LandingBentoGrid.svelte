@@ -243,8 +243,62 @@
     radiusMax: landingPage.data?.radiusMax || 0,
     color: landingPage.data?.color || 'black',
     bgColor: landingPage.data?.bgColor || 'white',
-    palette: landingPage.data?.palette || []
+    palette: landingPage.data?.palette || [],
+    blendMode: landingPage.data?.blendMode || 'hard-light'
   });
+
+  const fdmnPalette = [
+    "#FFFFFF", // White (dominant in the center)
+    "#4A306D", // Dark Purple (from the bars)
+    "#FCE883", // Light Yellow (background variations)
+    "#A890D3", // Light Purple
+    "#756951", // Brown
+    "#F26419", // Orange
+    "#2E9CCA", // Light Blue
+    "#E4E3E5", // Off-White/Light Gray
+    "#8E2800", // Dark Red/Brown
+    "#90A4AE", // Steel Blue/Gray
+    "#7CB342", // Lime Green
+    "#FFB74D", // Light Orange
+    "#BDBDBD", // Medium Gray
+    "#558B2F", // Dark Green
+    "#607D8B", // Blue Gray
+    "#FFD54F"  // Yellow
+  ];
+
+  const fdmnBgColor = "#E4E3E5"; // Off-White/Light Gray (general background tone)
+  const fdmnColor = "#4A306D"; // Dark Purple (for text/highlights)
+
+  const mixBlendModes = [
+    "normal",
+    "multiply",
+    "screen",
+    "overlay",
+    "darken",
+    "lighten",
+    "color-dodge",
+    "color-burn",
+    "hard-light",
+    "soft-light",
+    "difference",
+    "exclusion",
+    "hue",
+    "saturation",
+    "color",
+    "luminosity"
+  ];
+
+
+  // const bentoConfig = $derived({
+  //   insetMin: 15,
+  //   insetMax: 30,
+  //   radiusMin: 50,
+  //   radiusMax: 100,
+  //   color: fdmnColor,
+  //   bgColor: fdmnBgColor,
+  //   palette: fdmnPalette,
+  //   blendMode: 'color-burn'
+  // });
 
   let isMobile = true;
   let isWide = false;
@@ -450,7 +504,6 @@
 
     const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
     const buttonTxt = isMobile ? 'Tap it!' : 'Click it!';
-    console.log('buttonTxt', buttonTxt);
     bentoContent.push({
       id: 'logo',
       dimensions: [logoDimensions],
@@ -636,7 +689,6 @@
         height: 100%;
         width: 100%;
         justify-content: center;
-        border-radius: var(--ldp-radius);
         overflow: hidden;
     }
 
