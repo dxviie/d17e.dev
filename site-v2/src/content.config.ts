@@ -23,7 +23,7 @@ const posts = defineCollection({
           _eq: 'published'
         }
       };
-      
+
       let posts = await directus.request(readItems('Posts', {
         fields: ['*', 'cover.*'],
         filter,
@@ -74,7 +74,7 @@ const articles = defineCollection({
           _eq: 'published'
         }
       };
-      
+
       let articles = await directus.request(readItems('Articles', {
         fields: ['*', 'cover.*'],
         filter,
@@ -143,7 +143,7 @@ const projects = defineCollection({
                 }
               })
             };
-            
+
             const relatedPostsData = await directus.request(readItems('Posts', {
               fields: ['*', 'cover.*'],
               filter,
@@ -168,7 +168,7 @@ const projects = defineCollection({
                 }
               })
             };
-            
+
             const relatedArticlesData = await directus.request(readItems('Articles', {
               fields: ['*', 'cover.*'],
               filter,
@@ -287,7 +287,8 @@ const landingPages = defineCollection({
           'radiusMin',
           'radiusMax',
           'name',
-          'palette'
+          'palette',
+          'blendMode'
         ],
         limit: -1
       })) || [{id: '1'}];
@@ -312,7 +313,7 @@ const landingPages = defineCollection({
               }
             })
           };
-          
+
           featuredPosts = await directus.request(readItems('Posts', {
             fields: ['*', 'cover.*'],
             filter,
@@ -340,7 +341,7 @@ const landingPages = defineCollection({
               }
             })
           };
-          
+
           featuredArticles = await directus.request(readItems('Articles', {
             fields: ['*', 'cover.*'],
             filter,
@@ -371,7 +372,8 @@ const landingPages = defineCollection({
           Posts: featuredPosts,
           //@ts-ignore
           Articles: featuredArticles,
-          palette: palette
+          palette: palette,
+          blendMode: pd.blendMode || 'normal'
         };
       }));
 
@@ -407,6 +409,7 @@ const landingPages = defineCollection({
     radiusMin: z.number().default(0),
     radiusMax: z.number().default(2),
     palette: z.array(z.string()),
+    blendMode: z.string().optional(),
 
     // Define the related Posts collection
     Posts: z.array(z.object({
