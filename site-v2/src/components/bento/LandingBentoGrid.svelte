@@ -571,7 +571,7 @@
       id: 'posts-link',
       dimensions: [{width: 1, height: 1}],
       html: `
-      <a href="/posts?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="All media...">
+      <a href="/posts?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="Media...">
         <div class="svg-container">
           <svg
                   class="rotating-svg"
@@ -612,6 +612,28 @@
       </a>`,
       required: true
     });
+
+    bentoContent.push({
+      id: 'blog-link',
+      dimensions: [{width: 1, height: 1}],
+      html: `
+      <a href="/blog?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-blog" aria-label="Blog..."><div class="link-container">
+        <div class="svg-container">
+          <svg
+          class="blog-svg"
+          width="100%"
+          height="100%"
+          viewBox="0 0 1024 1024"
+
+  >
+    <g id="Layer2">
+      <path d="M510,20C780.438,20 1000,239.562 1000,510C1000,780.438 780.438,1000 510,1000C239.562,1000 20,780.438 20,510C20,239.562 239.562,20 510,20ZM432.859,519.236L432.859,556.077L639.592,556.077L639.592,519.236L432.859,519.236ZM608.639,337.075L608.639,373.916L704.106,373.916L704.106,337.075L608.639,337.075ZM492.31,640.677L492.31,677.518L704.106,677.518L704.106,640.677L492.31,640.677ZM562.182,616.798L562.182,579.957L325.233,579.957L325.233,616.798L562.182,616.798ZM468.045,677.518L468.045,640.677L325.233,640.677L325.233,677.518L468.045,677.518ZM653.054,495.357L653.054,458.516L513.856,458.516L513.856,495.357L653.054,495.357ZM408.595,556.077L408.595,519.236L325.233,519.236L325.233,556.077L408.595,556.077ZM586.447,579.957L586.447,616.798L704.106,616.798L704.106,579.957L586.447,579.957ZM584.374,373.916L584.374,337.075L513.856,337.075L513.856,373.916L584.374,373.916ZM491.72,277.318L324.87,277.318L324.87,495.973L491.72,495.973L491.72,277.318ZM704.106,276.354L513.856,276.354L513.856,313.196L704.106,313.196L704.106,276.354ZM704.106,397.795L513.856,397.795L513.856,434.636L704.106,434.636L704.106,397.795ZM663.857,519.236L663.857,556.077L704.106,556.077L704.106,519.236L663.857,519.236ZM704.106,701.398L325.233,701.398L325.233,738.239L704.106,738.239L704.106,701.398Z"/>
+    </g>
+  </svg>
+        </div></div>
+      </a>`,
+      required: true
+    })
 
     bentoContent.push({
       id: 'dice',
@@ -942,6 +964,12 @@
         animation: etatoragain 12s ease-in-out infinite;
         fill: var(--ldp-bg-color);
         stroke: var(--ldp-bg-color);
+    }
+
+    :global(.blog-svg) {
+        animation: etatoragain 12s ease-in-out infinite;
+        stroke: var(--ldp-bg-color);
+        fill: var(--ldp-bg-color);
     }
 
     :global(.dice-svg) {
