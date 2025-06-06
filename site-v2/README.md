@@ -1,98 +1,57 @@
-## Exclude Umami visits:
+# d17e.dev Site v2
 
-```javascript
-localStorage.setItem('umami.disabled', 1);
+Personal website and blog built with Astro, featuring PWA support and Directus CMS integration.
+
+## Features
+
+- **Astro** - Static site generator with hybrid rendering
+- **Svelte** - Interactive components
+- **TypeScript** - Type-safe development
+- **PWA Support** - Progressive Web App capabilities
+- **Directus CMS** - Headless content management
+- **Sentry** - Error monitoring
+
+## Getting Started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start development server:
+   ```bash
+   npm run dev
+   ```
+   Site will be available at `localhost:4321`
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start local dev server |
+| `npm run build` | Build production site to `./dist/` |
+| `npm run preview` | Preview build locally |
+| `npm run sync` | Sync Astro content types |
+| `npm run generate-pwa-icons` | Generate PWA icons (requires ffmpeg) |
+
+## Project Structure
+
 ```
-
-//kk
+src/
+├── components/     # UI components (.astro, .svelte)
+├── layouts/        # Page layouts
+├── pages/          # Route definitions
+├── services/       # API integrations (Directus)
+├── styles/         # Global styles
+└── utils/          # Utility functions
+```
 
 ## PWA Support
 
-This site has Progressive Web App (PWA) support. To set it up:
+To enable PWA features:
 
-1. Generate the required PWA icons:
-    - On Windows: `npm run generate-pwa-icons:win`
-    - On macOS/Linux: `npm run generate-pwa-icons`
+1. Generate icons: `npm run generate-pwa-icons` (or `:win` on Windows)
+2. Build: `npm run build`
+3. Preview: `npm run preview`
 
-   This requires [ffmpeg](https://ffmpeg.org/download.html) to be installed and in your PATH.
-
-2. Build and preview the site:
-   ```
-   npm run build
-   npm run preview
-   ```
-
-3. The site should now be installable as a PWA and work offline.
-
----
-
-# Astro Starter Kit: Blog
-
-```sh
-npm create astro@latest -- --template blog
-```
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from
-`src/content/blog/`, and type-check your frontmatter using an optional schema.
-See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-|:--------------------------|:-------------------------------------------------|
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Requires [ffmpeg](https://ffmpeg.org/download.html) for icon generation.
