@@ -19,7 +19,7 @@
     "@directus/sdk": "^18.0.3",
     "@sentry/astro": "^9.5.0",
     "@vite-pwa/astro": "^1.0.1",
-    "astro": "^5.1.0",
+    "astro": "^5.9.0",
     "marked": "^15.0.7",
     "svelte": "^5.20.2",
     "typescript": "^5.7.3"
