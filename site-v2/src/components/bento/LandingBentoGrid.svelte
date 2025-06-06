@@ -7,6 +7,7 @@
     landingPages: any[];
   }>();
   let landingPageBentoContent: BentoContent[] = $state([]);
+  $inspect(landingPages)
 
   const svgId = "bento-landing";
 
@@ -178,6 +179,9 @@
       localStorage.setItem('diceCount', '0');
     }
     let counter = parseInt(localStorage.getItem('diceCount') || '0');
+    if (!counter) {
+      counter = 0;
+    }
     counter = (counter + 1) % landingPages.length;
     localStorage.setItem('diceCount', counter.toString());
     return counter;
