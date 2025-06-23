@@ -127,6 +127,21 @@
                     max-width: 100%;
                     border-radius: 4px;
                     }
+                    figure img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 4px;
+                    }
+                    figure video {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 4px;
+                    }
+                    figcaption {
+                    text-align: center;
+                    font-size: smaller;
+                    font-style: italic;
+                    }
                     @media (max-width: 600px) {
                     body {
                     padding: 1rem;

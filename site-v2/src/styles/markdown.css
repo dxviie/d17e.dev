@@ -53,6 +53,29 @@
     margin: 2.5rem auto;
 }
 
+.markdown-content video {
+    display: block;
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 2.5rem auto;
+}
+
+.markdown-content figure {
+    display: block;
+    margin-block-start: .2em;
+    margin-block-end: .2em;
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+    unicode-bidi: isolate;
+}
+
+.markdown-content figcaption {
+    font-size: smaller;
+    font-style: italic;
+    text-align: center;
+    margin-top: -2rem;
+}
+
 .markdown-content blockquote {
     border-left: 4px solid var(--accent-color);
     padding: .5rem 0 .5rem 2rem;
