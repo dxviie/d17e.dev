@@ -258,11 +258,6 @@ hr {
     main {
         padding: 1em;
     }
-
-    /* Adjust content margin for mobile when nav is at bottom */
-    .content-margin {
-        margin: -1.5rem auto 0 auto;
-    }
 }
 
 @media (max-width: 600px) {

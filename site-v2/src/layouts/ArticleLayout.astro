@@ -9,6 +9,7 @@ import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
+import ShareOn from "../components/ShareOn.astro";
 
 type Props = CollectionEntry<'articles'>['data'];
 
@@ -65,6 +66,8 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
 
       {/* Parse Markdown content */}
       <Markdown content={body}/>
+
+      <ShareOn title={title} description={description || ''} />
     </div>
   </article>
 

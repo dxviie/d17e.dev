@@ -10,6 +10,7 @@ import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import ProjectPostPrevNextMini from "../components/ProjectPostPrevNextMini.astro";
+import ShareOn from "../components/ShareOn.astro";
 
 type Props = {
   postData: CollectionEntry<'posts'>['data'];
@@ -75,6 +76,8 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                 <a href={link} target="_blank" rel="noopener noreferrer">{linkDescription || link}</a>
               </span>
       )}
+
+      <ShareOn title={title} description={linkDescription || ''} />
     </div>
   </article>
 

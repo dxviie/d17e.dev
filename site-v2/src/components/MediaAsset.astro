@@ -154,7 +154,15 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     }
 
     .astro-media.hero-media {
-        object-fit: contain;
+        object-fit: contain !important;
+        object-position: top !important;
+        //margin-top: 4rem;
+    }
+
+    @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
+        .astro-media.hero-media {
+            margin-top: 1rem;
+        }
     }
 
     img {
@@ -267,7 +275,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         opacity: 0.8;
         transform: scale(1.1);
     }
-    
+
     .mute-toggle {
         position: absolute;
         bottom: 10px;
@@ -285,30 +293,30 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         transition: opacity 0.3s ease;
         z-index: 10;
     }
-    
+
     .video-container:hover .mute-toggle {
         opacity: 0.8;
     }
-    
+
     @media (max-width: 768px) {
         .video-container .mute-toggle {
             opacity: 0.8;
         }
     }
-    
+
     .mute-toggle:hover {
         opacity: 1;
         background-color: rgba(0, 0, 0, 0.7);
     }
-    
+
     .icon-unmuted {
         display: none;
     }
-    
+
     .video-container.unmuted .icon-muted {
         display: none;
     }
-    
+
     .video-container.unmuted .icon-unmuted {
         display: block;
     }
@@ -410,7 +418,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         video.play().catch(e => console.log('Hero video autoplay prevented:', e));
       }
     });
-    
+
     // Setup mute toggles after hero videos are initialized
     setTimeout(() => {
       setupMuteToggles();
@@ -448,7 +456,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         });
       }
     });
-    
+
     // Setup mute toggle buttons for videos
     setupMuteToggles();
   }
@@ -457,7 +465,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     document.querySelectorAll('.video-container').forEach(container => {
       const video = container.querySelector('video');
       const muteButton = container.querySelector('.mute-toggle');
-      
+
       if (!video || !muteButton) return;
 
       // Skip if already initialized
@@ -466,21 +474,21 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
 
       // Show mute button
       muteButton.style.display = 'flex';
-      
+
       // Setup toggle button click handler
       muteButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         // Toggle muted state
         video.muted = !video.muted;
-        
+
         // Update container class for styling
         if (video.muted) {
           container.classList.remove('unmuted');
         } else {
           container.classList.add('unmuted');
-          
+
           // Attempt to play if it was paused (mobile browsers often require user interaction)
           if (video.paused) {
             video.play().catch(err => console.log('Could not play video after unmuting:', err));

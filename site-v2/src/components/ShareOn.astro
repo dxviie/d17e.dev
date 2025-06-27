@@ -1,0 +1,210 @@
+---
+import BlueskyIcon from './icons/BlueskyIcon.astro';
+import MastodonIcon from './icons/MastodonIcon.astro';
+import LinkedInIcon from './icons/LinkedInIcon.astro';
+import RedditIcon from './icons/RedditIcon.astro';
+import HackerNewsIcon from './icons/HackerNewsIcon.astro';
+
+interface Props {
+  title: string;
+  url?: string;
+  description?: string;
+  platforms?: ('reddit' | 'hackernews' | 'bluesky' | 'mastodon' | 'linkedin')[];
+  class?: string;
+}
+
+const {
+  title,
+  url = Astro.url.href,
+  description = '',
+  platforms = ['reddit', 'hackernews', 'bluesky', 'mastodon', 'linkedin'],
+  class: className = ''
+} = Astro.props;
+
+// Encode URL and text for sharing
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+const encodedDescription = encodeURIComponent(description);
+
+// Platform share URLs
+const shareUrls = {
+  reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+  hackernews: `https://news.ycombinator.com/submitlink?u=${encodedUrl}&t=${encodedTitle}`,
+  bluesky: `https://bsky.app/intent/compose?text=${encodedTitle}%20${encodedUrl}`,
+  mastodon: `https://mastodon.social/share?text=${encodedTitle}%20${encodedUrl}`,
+  linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`
+};
+
+// Platform display names
+const platformNames = {
+  reddit: 'Reddit',
+  hackernews: 'Hacker News',
+  bluesky: 'Bluesky',
+  mastodon: 'Mastodon',
+  linkedin: 'LinkedIn'
+};
+
+// Filter platforms to only include requested ones
+const enabledPlatforms = platforms.filter(platform => shareUrls[platform]);
+---
+
+<div class={`share-on-component ${className}`}>
+  <span class="share-label">Share on:</span>
+  <div class="share-links">
+    {enabledPlatforms.map(platform => (
+            <a
+                    href={shareUrls[platform]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class={`share-link share-${platform}`}
+                    title={`Share on ${platformNames[platform]}`}
+                    data-umami-event="share-click"
+                    data-umami-event-platform={platform}
+            >
+              {platform === 'reddit' &&
+                      <RedditIcon size="20"/>}
+              {platform === 'hackernews' &&
+                      <HackerNewsIcon size="20"/>}
+              {platform === 'bluesky' &&
+                      <BlueskyIcon size="20"/>}
+              {platform === 'mastodon' &&
+                      <MastodonIcon size="20"/>}
+              {platform === 'linkedin' &&
+                      <LinkedInIcon size="20"/>}
+            </a>
+    ))}
+  </div>
+</div>
+
+<style>
+    .share-on-component {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: var(--bg-color);
+        border: 0px solid var(--border-color, #e5e7eb);
+        border-radius: 8px;
+        font-family: inherit;
+    }
+
+    .share-label {
+        font-weight: 600;
+        font-family: 'nudica_monobold', serif;
+        color: var(--color);
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    .share-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+        align-items: center;
+    }
+
+    .share-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        padding: 0.5rem 0.75rem;
+        text-decoration: none;
+        color: var(--color);
+        background: transparent;
+        border: 0px solid var(--border-color, #e5e7eb);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .share-link:hover {
+        background: var(--color);
+        color: var(--bg-color);
+        border-color: var(--color);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .share-link :global(svg) {
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+    }
+
+    .share-link:hover :global(svg) {
+        fill: var(--bg-color);
+    }
+
+    .platform-name {
+        font-size: 0.875rem;
+    }
+
+    /* Platform-specific hover colors */
+    .share-reddit:hover {
+        background: #ff4500;
+        border-color: #ff4500;
+    }
+
+    .share-hackernews:hover {
+        background: #ff6600;
+        border-color: #ff6600;
+    }
+
+    .share-bluesky:hover {
+        background: #0285ff;
+        border-color: #0285ff;
+    }
+
+    .share-mastodon:hover {
+        background: #6364ff;
+        border-color: #6364ff;
+    }
+
+    .share-linkedin:hover {
+        background: #0077b5;
+        border-color: #0077b5;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .share-on-component {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .share-links {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .share-link {
+            flex: 1;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .platform-name {
+            display: none;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .share-links {
+            flex-direction: row;
+            width: 100%;
+        }
+
+        .share-link {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .platform-name {
+            display: inline;
+        }
+    }
+</style>

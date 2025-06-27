@@ -11,6 +11,7 @@ import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
+import ShareOn from "../components/ShareOn.astro";
 
 type Props = CollectionEntry<'posts'>['data'];
 
@@ -69,6 +70,8 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                 <a href={link} target="_blank" rel="noopener noreferrer">{linkDescription || link}</a>
               </span>
       )}
+
+      <ShareOn title={title} description={linkDescription || ''} />
     </div>
   </article>
 
