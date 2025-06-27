@@ -410,6 +410,11 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
         video.play().catch(e => console.log('Hero video autoplay prevented:', e));
       }
     });
+    
+    // Setup mute toggles after hero videos are initialized
+    setTimeout(() => {
+      setupMuteToggles();
+    }, 100);
   }
 
   // Also run on initial page load
@@ -445,20 +450,22 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
     });
     
     // Setup mute toggle buttons for videos
+    setupMuteToggles();
+  }
+
+  function setupMuteToggles() {
     document.querySelectorAll('.video-container').forEach(container => {
       const video = container.querySelector('video');
       const muteButton = container.querySelector('.mute-toggle');
       
       if (!video || !muteButton) return;
 
-      // Simpler approach: show mute button for all videos
-      // Mobile: always visible
-      // Desktop: visible on hover
-      if (window.innerWidth <= 768) {
-        muteButton.style.display = 'flex';
-      } else {
-        muteButton.style.display = 'flex';
-      }
+      // Skip if already initialized
+      if (muteButton.hasAttribute('data-mute-initialized')) return;
+      muteButton.setAttribute('data-mute-initialized', 'true');
+
+      // Show mute button
+      muteButton.style.display = 'flex';
       
       // Setup toggle button click handler
       muteButton.addEventListener('click', (e) => {
@@ -478,6 +485,14 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
           if (video.paused) {
             video.play().catch(err => console.log('Could not play video after unmuting:', err));
           }
+        }
+      });
+
+      // Also setup mute toggle when video is loaded
+      video.addEventListener('loadedmetadata', () => {
+        if (!muteButton.hasAttribute('data-mute-initialized')) {
+          muteButton.style.display = 'flex';
+          muteButton.setAttribute('data-mute-initialized', 'true');
         }
       });
     });

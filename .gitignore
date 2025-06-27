@@ -44,3 +44,6 @@ blog/next-env.d.ts
 .astro/
 /site-v2/.astro/
 /site-v2/dist/
+
+# claude
+*/.claude/
