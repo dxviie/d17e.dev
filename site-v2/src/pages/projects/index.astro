@@ -284,14 +284,36 @@ You can also **[browse by tag](/tags)**
       if (listItem) {
         if (!isTouchDevice) {
           // Mouse hover for desktop devices
+          let playPromise: null | Promise<void> = null;
+
           listItem.addEventListener('mouseenter', () => {
-            video.play();
+            playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                // Auto-play was prevented, which is fine
+                console.debug('Video autoplay prevented');
+              });
+            }
           });
 
           listItem.addEventListener('mouseleave', () => {
-            video.pause();
-            // Reset to first frame
-            video.currentTime = 0.1;
+            if (playPromise !== null) {
+              playPromise.then(() => {
+                // Only pause if video is still playing
+                if (!video.paused) {
+                  video.pause();
+                  video.currentTime = 0.1;
+                }
+              }).catch(() => {
+                // Play was prevented, so no need to pause
+              });
+            } else {
+              // No active play promise, safe to pause
+              if (!video.paused) {
+                video.pause();
+                video.currentTime = 0.1;
+              }
+            }
           });
         } else {
           // For touch devices, play video on click/tap
@@ -304,7 +326,9 @@ You can also **[browse by tag](/tags)**
               video.pause();
               video.currentTime = 0.1;
             } else {
-              video.play();
+              video.play().catch(error => {
+                console.log('Video play prevented:', error);
+              });
             }
           });
         }
