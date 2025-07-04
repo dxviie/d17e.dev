@@ -10,6 +10,7 @@ import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
 import ShareOn from "../components/ShareOn.astro";
+import {estimateReadingTime, formatReadingTime} from "../utils/readingTime";
 
 type Props = CollectionEntry<'articles'>['data'];
 
@@ -54,6 +55,9 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
                   · Last updated: <FormattedDate date={dateUpdated}/>
                 </span>
           )}
+          <span class="reading-time">
+            · {formatReadingTime(estimateReadingTime(body))}
+          </span>
         </span>
         <h1>{title}</h1>
 
@@ -67,7 +71,7 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
       {/* Parse Markdown content */}
       <Markdown content={body}/>
 
-      <ShareOn title={title} description={description || ''} />
+      <ShareOn title={title} description={description || ''}/>
     </div>
   </article>
 
@@ -118,6 +122,14 @@ let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
     .last-updated {
         font-style: italic;
         font-size: 0.85rem;
+    }
+
+    .reading-time {
+        font-family: 'nudica_monolight', serif;
+        font-size: 0.85rem;
+        color: var(--bg-color);
+        opacity: 0.7;
+        margin-left: 0.5rem;
     }
 
     .description {
