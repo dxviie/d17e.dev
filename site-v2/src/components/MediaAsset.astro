@@ -396,16 +396,16 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
             touchPlayPromise?.catch(e => console.log('Autoplay prevented:', e));
           }
         }, 200); // Small delay to differentiate from click/tap
-      });
+      }, { passive: true });
 
       wrapper.addEventListener('touchend', () => {
         clearTimeout(touchTimeout);
         // Don't pause immediately on touchend to allow viewing on mobile
-      });
+      }, { passive: true });
 
       wrapper.addEventListener('touchmove', () => {
         clearTimeout(touchTimeout);
-      });
+      }, { passive: true });
     });
   }
 
