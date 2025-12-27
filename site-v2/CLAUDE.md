@@ -27,3 +27,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `src/layouts/` - Page layouts
 - `src/pages/` - Route definitions
 - `src/services/` - API integrations
+- `src/utils/` - Utility functions and constants
+- `src/assets/` - Static assets
+- `src/styles/` - Global styles and themes
