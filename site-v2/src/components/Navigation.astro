@@ -12,7 +12,7 @@ const isBlogIndex = pathname.endsWith('blog/') || pathname.endsWith('blog');
 const isProjectsIndex = pathname.endsWith('projects/') || pathname.endsWith('projects');
 const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
 // Using JavaScript to detect URL parameters since Astro.url.searchParams may not work consistently
-let isComingFromLandingPage = false;
+let isComingFromBentoPage = false;
 ---
 
 {!isHomePage &&
@@ -250,6 +250,7 @@ let isComingFromLandingPage = false;
         // Coming from landing page - show back arrow
         homeNavItem.setAttribute('data-from-lp', 'true');
         homeNavItem.querySelector('.nav-text').textContent = 'back';
+        homeNavItem.href = '/bento';
 
         // Replace with back arrow
         homeIconBox.innerHTML = `<div class="back-to-landing-arrow">←</div>`;

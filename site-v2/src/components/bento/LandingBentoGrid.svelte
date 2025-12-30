@@ -1,477 +1,556 @@
 <script lang="ts">
+    import type { BentoContent } from "$root/src/components/bento/BentoBoxer.ts";
+    import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
 
-  import type {BentoContent} from "$root/src/components/bento/BentoBoxer.ts";
-  import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
+    const { landingPages } = $props<{
+        landingPages: any[];
+    }>();
+    let landingPageBentoContent: BentoContent[] = $state([]);
+    $inspect(landingPages);
 
-  const {landingPages} = $props<{
-    landingPages: any[];
-  }>();
-  let landingPageBentoContent: BentoContent[] = $state([]);
-  $inspect(landingPages)
+    const svgId = "bento-landing";
 
-  const svgId = "bento-landing";
+    // Tooltip state
+    let showTooltip = $state(false);
+    let tooltipContent = $state("");
+    let tooltipX = $state(0);
+    let tooltipY = $state(0);
+    let isMobileDevice = $state(false);
+    let isTouchInteracting = $state(false);
+    let lastTouchTimestamp = 0;
 
-  // Tooltip state
-  let showTooltip = $state(false);
-  let tooltipContent = $state('');
-  let tooltipX = $state(0);
-  let tooltipY = $state(0);
-  let isMobileDevice = $state(false);
-  let isTouchInteracting = $state(false);
-  let lastTouchTimestamp = 0;
-  
-  // Touch tracking for drag detection
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let isDragging = $state(false);
+    // Touch tracking for drag detection
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isDragging = $state(false);
 
-  // Handle mouse movements to update tooltip position
-  function handleMouseMove(e: MouseEvent) {
-    // Only handle mouse events if we're not in touch mode
-    if (!isTouchInteracting) {
-      tooltipX = e.clientX + 20;
-      tooltipY = e.clientY + 20;
-    }
-  }
-
-  // Handle touch events
-  function handleTouchStart(e: TouchEvent) {
-    // Indicate we're in touch interaction mode to prevent mouse event handling
-    isTouchInteracting = true;
-    lastTouchTimestamp = Date.now();
-    isDragging = false;
-    
-    if (e.touches.length > 0) {
-      const touch = e.touches[0];
-      
-      // Store the initial touch position for drag detection
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      // Find element under touch point but don't show tooltip yet
-      const tooltipContentLength = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-      const tooltipPosition = getToolTipPosition(touch.clientX, touch.clientY, tooltipContentLength);
-      tooltipX = tooltipPosition.x;
-      tooltipY = tooltipPosition.y;
-
-      // Don't prevent default here to allow normal link taps
-      // We'll decide based on whether it's a drag in touchmove
-    }
-  }
-
-  function handleTouchEnd(e: TouchEvent) {
-    // If we weren't dragging, allow the link to be followed
-    if (!isDragging) {
-      // Don't prevent default - let the link navigation happen
-      hideTooltip();
-    } else {
-      // Hide tooltip when dragging ends
-      hideTooltip();
-    }
-    
-    // Reset dragging state
-    isDragging = false;
-    
-    // Add a slight delay to reset touch mode to prevent mouse event confusion
-    setTimeout(() => {
-      isTouchInteracting = false;
-    }, 300);
-  }
-
-  function handleTouchMove(e: TouchEvent) {
-    // Update timestamp of last touch
-    lastTouchTimestamp = Date.now();
-    
-    if (e.touches.length > 0) {
-      const touch = e.touches[0];
-      
-      // Calculate distance moved to determine if this is a drag
-      const deltaX = Math.abs(touch.clientX - touchStartX);
-      const deltaY = Math.abs(touch.clientY - touchStartY);
-      
-      // If moved more than 10px in any direction, consider it a drag
-      if (deltaX > 10 || deltaY > 10) {
-        isDragging = true;
-      }
-
-      const tooltipContentLength = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-      const tooltipPosition = getToolTipPosition(touch.clientX, touch.clientY, tooltipContentLength);
-      tooltipX = tooltipPosition.x;
-      tooltipY = tooltipPosition.y;
-
-      // Only prevent default if dragging over an interactive element
-      if (isDragging && tooltipContentLength > 0 && showTooltip) {
-        e.preventDefault();
-      }
-    }
-  }
-  
-  // Find element at point and update tooltip accordingly
-  function updateTooltipFromTouchPosition(x: number, y: number): number {
-    // Get the element under the touch point, adjusted for scroll
-    const scrollY = window.scrollY;
-    const element = document.elementFromPoint(x, y - scrollY);
-    
-    if (!element) {
-      // Hide tooltip if no element found
-      hideTooltip();
-      return 0;
-    }
-    
-    // Find the nearest tooltip-enabled element (post-link or link-link)
-    const closestLink = element.closest('.post-link, .link-link');
-    
-    if (closestLink) {
-      // Found a link, get tooltip content and show
-      let content = '';
-      
-      if (closestLink.classList.contains('post-link')) {
-        // If it's a post link, get content from img/video
-        content = closestLink.querySelector('img, video')?.getAttribute('data-title') || 
-                 closestLink.querySelector('img, video')?.getAttribute('alt') || 
-                 closestLink.getAttribute('aria-label') || 
-                 'View details';
-      } else {
-        // Otherwise get from aria-label
-        content = closestLink.getAttribute('data-title') ||
-                 closestLink.getAttribute('aria-label') || 
-                 'Navigate';
-      }
-      
-      // Show tooltip with the found content
-      showTooltipWithContent(content);
-      return content.length;
-    } else {
-      // No relevant element found, hide tooltip
-      hideTooltip();
-      return 0;
-    }
-  }
-
-  function getToolTipPosition(touchX: number, touchY: number, tooltipContentLength: number) : {x: number, y: number} {
-    // Update tooltip position - above finger for better visibility
-    const contentWidth = (tooltipContentLength * 12) ; // Rough estimate of character width
-    let tooltipX = Math.max(2, touchX - contentWidth / 2);
-    tooltipY = touchY - 80; // Position higher above finger
-    if (tooltipY < 10) {
-      tooltipY = 10;
-      if (tooltipX < window.innerWidth/2) {
-        tooltipX = touchX + 10;
-      } else {
-        tooltipX = touchX - 10 - contentWidth;
-      }
-    }
-    return {x: tooltipX, y: tooltipY};
-  }
-
-  // Show tooltip with specific content
-  function showTooltipWithContent(content: string) {
-    tooltipContent = content;
-    showTooltip = true;
-  }
-
-  // Hide the tooltip
-  function hideTooltip() {
-    showTooltip = false;
-  }
-  
-  function getStoreDiceCount() {
-    if (!localStorage.getItem('diceCount')) {
-      localStorage.setItem('diceCount', '0');
-    }
-    let counter = parseInt(localStorage.getItem('diceCount') || '0');
-    if (!counter) {
-      counter = 0;
-    }
-    counter = (counter + 1) % landingPages.length;
-    localStorage.setItem('diceCount', counter.toString());
-    return counter;
-  }
-
-  const landingPageIndex = $state(getStoreDiceCount());
-  const landingPage = $derived(landingPages[landingPageIndex]);
-
-  const INSET = 10 / window.devicePixelRatio;
-  const RADIUS = 10;
-  const COLOR = '#8F427B';
-  const BG_COLOR = '#FED2D2';
-
-  // const bentoConfig = $state({
-  //   insetMin: INSET, //landingPage.data?.insetMin || 1,
-  //   insetMax: INSET, // landingPage.data?.insetMax || 4,
-  //   radiusMin: RADIUS, //landingPage.data?.radiusMin || 0,
-  //   radiusMax: RADIUS, //landingPage.data?.radiusMax || 2,
-  //   color: COLOR,//landingPage.data?.color || 'black',
-  //   bgColor: BG_COLOR, //landingPage.data?.bgColor || 'white',
-  //   palette: contrasting
-  // });
-
-  const pastelNeonPink = "#FF9EEE";
-  const pastelNeonBlue = "#9EECFF";
-  const pastelNeonGreen = "#AFFFA3";
-  const pastelNeonYellow = "#FFFFA3";
-  const pastelNeonOrange = "#FFD1A3";
-  const pastelNeonPurple = "#D9A3FF";
-  const pastelNeonTurquoise = "#A3FFF4";
-  const pastelNeonCoral = "#FFA3A3";
-  const pastelNeonLime = "#D9FFA3";
-  const pastelNeonLavender = "#C4A3FF";
-
-  const darkMidnightPurple = "#2A0E42";
-  const darkCharcoalTeal = "#0E2A2A";
-  const darkBloodRed = "#420E0E";
-  const darkForestEmerald = "#0E420E";
-  const darkNavyInk = "#0E0E42";
-  const darkBurntOrange = "#422A0E";
-  const darkMossGreen = "#2A420E";
-  const darkBerryWine = "#42082A";
-  const darkInkwell = "#1A1A2E";
-  const darkEspresso = "#2E1A1A";
-
-  // Main Colors
-  const mainBackground = "#E8F0F2"; // Light blue-gray background
-  const mainForeground = "#3A1D40"; // Dark purple for text
-
-  // Palette Colors
-  const vibrantPurple = "#9C27B0"; // Bright purple accents
-  const orangeBlock = "#F4A261"; // Orange section
-  const darkBrown = "#402218"; // Dark brown areas
-  const lightPurple = "#D8BFD8"; // Lighter purple elements
-  const accentMagenta = "#E91E63"; // Magenta highlights
-  const paleYellow = "#FCEF98"; // Subtle yellow accents
-  const charcoalLines = "#333333"; // Dark lines throughout
-
-  const bentoConfig = $derived({
-    insetMin: landingPage.data?.insetMin || 0,
-    insetMax: landingPage.data?.insetMax || 0,
-    radiusMin: landingPage.data?.radiusMin || 0,
-    radiusMax: landingPage.data?.radiusMax || 0,
-    color: landingPage.data?.color || 'black',
-    bgColor: landingPage.data?.bgColor || 'white',
-    palette: landingPage.data?.palette || [],
-    blendMode: landingPage.data?.blendMode || 'hard-light'
-  });
-
-  const fdmnPalette = [
-    "#FFFFFF", // White (dominant in the center)
-    "#4A306D", // Dark Purple (from the bars)
-    "#FCE883", // Light Yellow (background variations)
-    "#A890D3", // Light Purple
-    "#756951", // Brown
-    "#F26419", // Orange
-    "#2E9CCA", // Light Blue
-    "#E4E3E5", // Off-White/Light Gray
-    "#8E2800", // Dark Red/Brown
-    "#90A4AE", // Steel Blue/Gray
-    "#7CB342", // Lime Green
-    "#FFB74D", // Light Orange
-    "#BDBDBD", // Medium Gray
-    "#558B2F", // Dark Green
-    "#607D8B", // Blue Gray
-    "#FFD54F"  // Yellow
-  ];
-
-  const fdmnBgColor = "#E4E3E5"; // Off-White/Light Gray (general background tone)
-  const fdmnColor = "#4A306D"; // Dark Purple (for text/highlights)
-
-  const mixBlendModes = [
-    "normal",
-    "multiply",
-    "screen",
-    "overlay",
-    "darken",
-    "lighten",
-    "color-dodge",
-    "color-burn",
-    "hard-light",
-    "soft-light",
-    "difference",
-    "exclusion",
-    "hue",
-    "saturation",
-    "color",
-    "luminosity"
-  ];
-
-
-  // const bentoConfig = $derived({
-  //   insetMin: 15,
-  //   insetMax: 30,
-  //   radiusMin: 50,
-  //   radiusMax: 100,
-  //   color: fdmnColor,
-  //   bgColor: fdmnBgColor,
-  //   palette: fdmnPalette,
-  //   blendMode: 'color-burn'
-  // });
-
-  let isMobile = true;
-  let isWide = false;
-
-  $effect(() => {
-    isMobile = window ? window.innerWidth < 768 : false;
-    isWide = window ? window.innerWidth > 1200 : false;
-    
-    // Detect if device is mobile
-    isMobileDevice = isMobile || (window && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
-    
-    document.documentElement.style.setProperty('--ldp-color', bentoConfig.color);
-    document.documentElement.style.setProperty('--ldp-bg-color', bentoConfig.bgColor);
-    document.documentElement.style.setProperty('--ldp-radius', bentoConfig.radiusMin + (bentoConfig.radiusMax - bentoConfig.radiusMin) / 2 + 'px');
-
-    if (landingPage) {
-      landingPageBentoContent = createBentoGrid(landingPage);
-      setTimeout(setupMediaDisplayDelays, 150);
-    }
-  });
-
-  function setupMediaDisplayDelays() {
-    // Get all media items
-    const mediaItems = document.querySelectorAll('.media-item');
-
-    // Configuration
-    const minDelay = 300; // Minimum delay in ms
-    const maxAdditionalDelay = 900; // Maximum additional random delay
-    const minTimeBetweenAnimations = 150; // Minimum time between animations
-
-    // Sort the items by a random delay, but respect minimum time between animations
-    const itemsWithDelay = Array.from(mediaItems).map((item, index) => {
-      // Generate a random delay for each item
-      const randomDelay = Math.floor(Math.random() * maxAdditionalDelay);
-      return {
-        element: item,
-        delay: minDelay + randomDelay
-      };
-    });
-
-    // Sort by delay
-    itemsWithDelay.sort((a, b) => a.delay - b.delay);
-
-    // Ensure minimum time between animations
-    let currentDelay = 0;
-    itemsWithDelay.forEach(item => {
-      if (item.delay < currentDelay + minTimeBetweenAnimations) {
-        item.delay = currentDelay + minTimeBetweenAnimations;
-      }
-      currentDelay = item.delay;
-
-      // Schedule the animation
-      setTimeout(() => {
-        item.element.classList.add('visible');
-      }, item.delay);
-    });
-
-    // Setup tooltip triggers
-    setupTooltips();
-    
-    // Add touch-specific event handlers for interactive elements
-    setupTouchHandlers();
-  }
-  
-  function setupTouchHandlers() {
-    // Add touch event handlers to all interactive elements
-    const interactiveElements = document.querySelectorAll('.post-link, .link-link');
-    interactiveElements.forEach(element => {
-      // For link elements, prevent default scrolling during touch interaction
-      element.addEventListener('touchstart', (e) => {
-        // Detect if we're actually over an interactive element
-        //@ts-ignore
-        const touch = e.touches[0];
-        const hasInteractiveContent = updateTooltipFromTouchPosition(touch.clientX, touch.clientY);
-        
-        // Don't prevent default here - we'll let the link be tappable
-        // Let the main touchstart/touchmove handlers decide
-      }, { passive: true });
-    });
-  }
-
-  function setupTooltips() {
-    // Remove title attributes to prevent browser tooltips
-    document.querySelectorAll('[title]').forEach(element => {
-      const titleValue = element.getAttribute('title');
-      element.setAttribute('data-title', titleValue || '');
-      element.removeAttribute('title');
-    });
-    
-    // Add tooltip triggers to elements - only for mouse events
-    const mediaLinks = document.querySelectorAll('.post-link');
-    mediaLinks.forEach(link => {
-      const title = link.querySelector('img, video')?.getAttribute('data-title') || 
-                   link.querySelector('img, video')?.getAttribute('alt') || 
-                   link.getAttribute('aria-label') || 
-                   'View details';
-      
-      // Mouse events
-      //@ts-ignore
-      link.addEventListener('mousemove', handleMouseMove);
-      link.addEventListener('mouseenter', () => {
+    // Handle mouse movements to update tooltip position
+    function handleMouseMove(e: MouseEvent) {
+        // Only handle mouse events if we're not in touch mode
         if (!isTouchInteracting) {
-          showTooltipWithContent(title);
+            tooltipX = e.clientX + 20;
+            tooltipY = e.clientY + 20;
         }
-      });
-      link.addEventListener('mouseleave', hideTooltip);
-    });
-
-    // Add tooltips to navigation links - only for mouse events
-    const navLinks = document.querySelectorAll('.link-link');
-    navLinks.forEach(link => {
-      const label = link.getAttribute('data-title') ||
-                   link.getAttribute('aria-label') || 
-                   'Navigate';
-      
-      // Mouse events
-      //@ts-ignore
-      link.addEventListener('mousemove', handleMouseMove);
-      link.addEventListener('mouseenter', () => {
-        if (!isTouchInteracting) {
-          showTooltipWithContent(label);
-        }
-      });
-      link.addEventListener('mouseleave', hideTooltip);
-    });
-  }
-
-  function generateDiceSvg(number: number, strokeColor = '#000000', fillColor = '#ffffff') {
-    // Validate input
-    if (number < 1 || number > 6 || !Number.isInteger(number)) {
-      throw new Error('Dice number must be an integer between 1 and 6');
     }
 
-    // Base SVG with dice outline
-    let svg = `<svg id="dice-svg" class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    // Handle touch events
+    function handleTouchStart(e: TouchEvent) {
+        // Indicate we're in touch interaction mode to prevent mouse event handling
+        isTouchInteracting = true;
+        lastTouchTimestamp = Date.now();
+        isDragging = false;
+
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+
+            // Store the initial touch position for drag detection
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            // Find element under touch point but don't show tooltip yet
+            const tooltipContentLength = updateTooltipFromTouchPosition(
+                touch.clientX,
+                touch.clientY,
+            );
+            const tooltipPosition = getToolTipPosition(
+                touch.clientX,
+                touch.clientY,
+                tooltipContentLength,
+            );
+            tooltipX = tooltipPosition.x;
+            tooltipY = tooltipPosition.y;
+
+            // Don't prevent default here to allow normal link taps
+            // We'll decide based on whether it's a drag in touchmove
+        }
+    }
+
+    function handleTouchEnd(e: TouchEvent) {
+        // If we weren't dragging, allow the link to be followed
+        if (!isDragging) {
+            // Don't prevent default - let the link navigation happen
+            hideTooltip();
+        } else {
+            // Hide tooltip when dragging ends
+            hideTooltip();
+        }
+
+        // Reset dragging state
+        isDragging = false;
+
+        // Add a slight delay to reset touch mode to prevent mouse event confusion
+        setTimeout(() => {
+            isTouchInteracting = false;
+        }, 300);
+    }
+
+    function handleTouchMove(e: TouchEvent) {
+        // Update timestamp of last touch
+        lastTouchTimestamp = Date.now();
+
+        if (e.touches.length > 0) {
+            const touch = e.touches[0];
+
+            // Calculate distance moved to determine if this is a drag
+            const deltaX = Math.abs(touch.clientX - touchStartX);
+            const deltaY = Math.abs(touch.clientY - touchStartY);
+
+            // If moved more than 10px in any direction, consider it a drag
+            if (deltaX > 10 || deltaY > 10) {
+                isDragging = true;
+            }
+
+            const tooltipContentLength = updateTooltipFromTouchPosition(
+                touch.clientX,
+                touch.clientY,
+            );
+            const tooltipPosition = getToolTipPosition(
+                touch.clientX,
+                touch.clientY,
+                tooltipContentLength,
+            );
+            tooltipX = tooltipPosition.x;
+            tooltipY = tooltipPosition.y;
+
+            // Only prevent default if dragging over an interactive element
+            if (isDragging && tooltipContentLength > 0 && showTooltip) {
+                e.preventDefault();
+            }
+        }
+    }
+
+    // Find element at point and update tooltip accordingly
+    function updateTooltipFromTouchPosition(x: number, y: number): number {
+        // Get the element under the touch point, adjusted for scroll
+        const scrollY = window.scrollY;
+        const element = document.elementFromPoint(x, y - scrollY);
+
+        if (!element) {
+            // Hide tooltip if no element found
+            hideTooltip();
+            return 0;
+        }
+
+        // Find the nearest tooltip-enabled element (post-link or link-link)
+        const closestLink = element.closest(".post-link, .link-link");
+
+        if (closestLink) {
+            // Found a link, get tooltip content and show
+            let content = "";
+
+            if (closestLink.classList.contains("post-link")) {
+                // If it's a post link, get content from img/video
+                content =
+                    closestLink
+                        .querySelector("img, video")
+                        ?.getAttribute("data-title") ||
+                    closestLink
+                        .querySelector("img, video")
+                        ?.getAttribute("alt") ||
+                    closestLink.getAttribute("aria-label") ||
+                    "View details";
+            } else {
+                // Otherwise get from aria-label
+                content =
+                    closestLink.getAttribute("data-title") ||
+                    closestLink.getAttribute("aria-label") ||
+                    "Navigate";
+            }
+
+            // Show tooltip with the found content
+            showTooltipWithContent(content);
+            return content.length;
+        } else {
+            // No relevant element found, hide tooltip
+            hideTooltip();
+            return 0;
+        }
+    }
+
+    function getToolTipPosition(
+        touchX: number,
+        touchY: number,
+        tooltipContentLength: number,
+    ): { x: number; y: number } {
+        // Update tooltip position - above finger for better visibility
+        const contentWidth = tooltipContentLength * 12; // Rough estimate of character width
+        let tooltipX = Math.max(2, touchX - contentWidth / 2);
+        tooltipY = touchY - 80; // Position higher above finger
+        if (tooltipY < 10) {
+            tooltipY = 10;
+            if (tooltipX < window.innerWidth / 2) {
+                tooltipX = touchX + 10;
+            } else {
+                tooltipX = touchX - 10 - contentWidth;
+            }
+        }
+        return { x: tooltipX, y: tooltipY };
+    }
+
+    // Show tooltip with specific content
+    function showTooltipWithContent(content: string) {
+        tooltipContent = content;
+        showTooltip = true;
+    }
+
+    // Hide the tooltip
+    function hideTooltip() {
+        showTooltip = false;
+    }
+
+    function getStoreDiceCount() {
+        if (!localStorage.getItem("diceCount")) {
+            localStorage.setItem("diceCount", "0");
+        }
+        let counter = parseInt(localStorage.getItem("diceCount") || "0");
+        if (!counter) {
+            counter = 0;
+        }
+        counter = (counter + 1) % landingPages.length;
+        localStorage.setItem("diceCount", counter.toString());
+        return counter;
+    }
+
+    const landingPageIndex = $state(getStoreDiceCount());
+    const landingPage = $derived(landingPages[landingPageIndex]);
+
+    const INSET = 10 / window.devicePixelRatio;
+    const RADIUS = 10;
+    const COLOR = "#8F427B";
+    const BG_COLOR = "#FED2D2";
+
+    // const bentoConfig = $state({
+    //   insetMin: INSET, //landingPage.data?.insetMin || 1,
+    //   insetMax: INSET, // landingPage.data?.insetMax || 4,
+    //   radiusMin: RADIUS, //landingPage.data?.radiusMin || 0,
+    //   radiusMax: RADIUS, //landingPage.data?.radiusMax || 2,
+    //   color: COLOR,//landingPage.data?.color || 'black',
+    //   bgColor: BG_COLOR, //landingPage.data?.bgColor || 'white',
+    //   palette: contrasting
+    // });
+
+    const pastelNeonPink = "#FF9EEE";
+    const pastelNeonBlue = "#9EECFF";
+    const pastelNeonGreen = "#AFFFA3";
+    const pastelNeonYellow = "#FFFFA3";
+    const pastelNeonOrange = "#FFD1A3";
+    const pastelNeonPurple = "#D9A3FF";
+    const pastelNeonTurquoise = "#A3FFF4";
+    const pastelNeonCoral = "#FFA3A3";
+    const pastelNeonLime = "#D9FFA3";
+    const pastelNeonLavender = "#C4A3FF";
+
+    const darkMidnightPurple = "#2A0E42";
+    const darkCharcoalTeal = "#0E2A2A";
+    const darkBloodRed = "#420E0E";
+    const darkForestEmerald = "#0E420E";
+    const darkNavyInk = "#0E0E42";
+    const darkBurntOrange = "#422A0E";
+    const darkMossGreen = "#2A420E";
+    const darkBerryWine = "#42082A";
+    const darkInkwell = "#1A1A2E";
+    const darkEspresso = "#2E1A1A";
+
+    // Main Colors
+    const mainBackground = "#E8F0F2"; // Light blue-gray background
+    const mainForeground = "#3A1D40"; // Dark purple for text
+
+    // Palette Colors
+    const vibrantPurple = "#9C27B0"; // Bright purple accents
+    const orangeBlock = "#F4A261"; // Orange section
+    const darkBrown = "#402218"; // Dark brown areas
+    const lightPurple = "#D8BFD8"; // Lighter purple elements
+    const accentMagenta = "#E91E63"; // Magenta highlights
+    const paleYellow = "#FCEF98"; // Subtle yellow accents
+    const charcoalLines = "#333333"; // Dark lines throughout
+
+    const bentoConfig = $derived({
+        insetMin: landingPage.data?.insetMin || 0,
+        insetMax: landingPage.data?.insetMax || 0,
+        radiusMin: landingPage.data?.radiusMin || 0,
+        radiusMax: landingPage.data?.radiusMax || 0,
+        color: landingPage.data?.color || "black",
+        bgColor: landingPage.data?.bgColor || "white",
+        palette: landingPage.data?.palette || [],
+        blendMode: landingPage.data?.blendMode || "hard-light",
+    });
+
+    const fdmnPalette = [
+        "#FFFFFF", // White (dominant in the center)
+        "#4A306D", // Dark Purple (from the bars)
+        "#FCE883", // Light Yellow (background variations)
+        "#A890D3", // Light Purple
+        "#756951", // Brown
+        "#F26419", // Orange
+        "#2E9CCA", // Light Blue
+        "#E4E3E5", // Off-White/Light Gray
+        "#8E2800", // Dark Red/Brown
+        "#90A4AE", // Steel Blue/Gray
+        "#7CB342", // Lime Green
+        "#FFB74D", // Light Orange
+        "#BDBDBD", // Medium Gray
+        "#558B2F", // Dark Green
+        "#607D8B", // Blue Gray
+        "#FFD54F", // Yellow
+    ];
+
+    const fdmnBgColor = "#E4E3E5"; // Off-White/Light Gray (general background tone)
+    const fdmnColor = "#4A306D"; // Dark Purple (for text/highlights)
+
+    const mixBlendModes = [
+        "normal",
+        "multiply",
+        "screen",
+        "overlay",
+        "darken",
+        "lighten",
+        "color-dodge",
+        "color-burn",
+        "hard-light",
+        "soft-light",
+        "difference",
+        "exclusion",
+        "hue",
+        "saturation",
+        "color",
+        "luminosity",
+    ];
+
+    // const bentoConfig = $derived({
+    //   insetMin: 15,
+    //   insetMax: 30,
+    //   radiusMin: 50,
+    //   radiusMax: 100,
+    //   color: fdmnColor,
+    //   bgColor: fdmnBgColor,
+    //   palette: fdmnPalette,
+    //   blendMode: 'color-burn'
+    // });
+
+    let isMobile = true;
+    let isWide = false;
+
+    $effect(() => {
+        isMobile = window ? window.innerWidth < 768 : false;
+        isWide = window ? window.innerWidth > 1200 : false;
+
+        // Detect if device is mobile
+        isMobileDevice =
+            isMobile ||
+            (window &&
+                ("ontouchstart" in window || navigator.maxTouchPoints > 0));
+
+        document.documentElement.style.setProperty(
+            "--ldp-color",
+            bentoConfig.color,
+        );
+        document.documentElement.style.setProperty(
+            "--ldp-bg-color",
+            bentoConfig.bgColor,
+        );
+        document.documentElement.style.setProperty(
+            "--ldp-radius",
+            bentoConfig.radiusMin +
+                (bentoConfig.radiusMax - bentoConfig.radiusMin) / 2 +
+                "px",
+        );
+
+        if (landingPage) {
+            landingPageBentoContent = createBentoGrid(landingPage);
+            setTimeout(setupMediaDisplayDelays, 150);
+        }
+    });
+
+    function setupMediaDisplayDelays() {
+        // Get all media items
+        const mediaItems = document.querySelectorAll(".media-item");
+
+        // Configuration
+        const minDelay = 300; // Minimum delay in ms
+        const maxAdditionalDelay = 900; // Maximum additional random delay
+        const minTimeBetweenAnimations = 150; // Minimum time between animations
+
+        // Sort the items by a random delay, but respect minimum time between animations
+        const itemsWithDelay = Array.from(mediaItems).map((item, index) => {
+            // Generate a random delay for each item
+            const randomDelay = Math.floor(Math.random() * maxAdditionalDelay);
+            return {
+                element: item,
+                delay: minDelay + randomDelay,
+            };
+        });
+
+        // Sort by delay
+        itemsWithDelay.sort((a, b) => a.delay - b.delay);
+
+        // Ensure minimum time between animations
+        let currentDelay = 0;
+        itemsWithDelay.forEach((item) => {
+            if (item.delay < currentDelay + minTimeBetweenAnimations) {
+                item.delay = currentDelay + minTimeBetweenAnimations;
+            }
+            currentDelay = item.delay;
+
+            // Schedule the animation
+            setTimeout(() => {
+                item.element.classList.add("visible");
+            }, item.delay);
+        });
+
+        // Setup tooltip triggers
+        setupTooltips();
+
+        // Add touch-specific event handlers for interactive elements
+        setupTouchHandlers();
+    }
+
+    function setupTouchHandlers() {
+        // Add touch event handlers to all interactive elements
+        const interactiveElements = document.querySelectorAll(
+            ".post-link, .link-link",
+        );
+        interactiveElements.forEach((element) => {
+            // For link elements, prevent default scrolling during touch interaction
+            element.addEventListener(
+                "touchstart",
+                (e) => {
+                    // Detect if we're actually over an interactive element
+                    //@ts-ignore
+                    const touch = e.touches[0];
+                    const hasInteractiveContent =
+                        updateTooltipFromTouchPosition(
+                            touch.clientX,
+                            touch.clientY,
+                        );
+
+                    // Don't prevent default here - we'll let the link be tappable
+                    // Let the main touchstart/touchmove handlers decide
+                },
+                { passive: true },
+            );
+        });
+    }
+
+    function setupTooltips() {
+        // Remove title attributes to prevent browser tooltips
+        document.querySelectorAll("[title]").forEach((element) => {
+            const titleValue = element.getAttribute("title");
+            element.setAttribute("data-title", titleValue || "");
+            element.removeAttribute("title");
+        });
+
+        // Add tooltip triggers to elements - only for mouse events
+        const mediaLinks = document.querySelectorAll(".post-link");
+        mediaLinks.forEach((link) => {
+            const title =
+                link.querySelector("img, video")?.getAttribute("data-title") ||
+                link.querySelector("img, video")?.getAttribute("alt") ||
+                link.getAttribute("aria-label") ||
+                "View details";
+
+            // Mouse events
+            //@ts-ignore
+            link.addEventListener("mousemove", handleMouseMove);
+            link.addEventListener("mouseenter", () => {
+                if (!isTouchInteracting) {
+                    showTooltipWithContent(title);
+                }
+            });
+            link.addEventListener("mouseleave", hideTooltip);
+        });
+
+        // Add tooltips to navigation links - only for mouse events
+        const navLinks = document.querySelectorAll(".link-link");
+        navLinks.forEach((link) => {
+            const label =
+                link.getAttribute("data-title") ||
+                link.getAttribute("aria-label") ||
+                "Navigate";
+
+            // Mouse events
+            //@ts-ignore
+            link.addEventListener("mousemove", handleMouseMove);
+            link.addEventListener("mouseenter", () => {
+                if (!isTouchInteracting) {
+                    showTooltipWithContent(label);
+                }
+            });
+            link.addEventListener("mouseleave", hideTooltip);
+        });
+    }
+
+    function generateDiceSvg(
+        number: number,
+        strokeColor = "#000000",
+        fillColor = "#ffffff",
+    ) {
+        // Validate input
+        if (number < 1 || number > 6 || !Number.isInteger(number)) {
+            throw new Error("Dice number must be an integer between 1 and 6");
+        }
+
+        // Base SVG with dice outline
+        let svg = `<svg id="dice-svg" class="dice-svg" width="90%" height="90%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="10" width="80" height="80" rx="15" ry="15"
           fill="${fillColor}" stroke="${strokeColor}" stroke-width="3"/>`;
 
-    // Dot positions for each dice face
-    const dotPositions = {
-      1: [[50, 50]],
-      2: [[30, 30], [70, 70]],
-      3: [[30, 30], [50, 50], [70, 70]],
-      4: [[30, 30], [30, 70], [70, 30], [70, 70]],
-      5: [[30, 30], [30, 70], [50, 50], [70, 30], [70, 70]],
-      6: [[30, 30], [30, 50], [30, 70], [70, 30], [70, 50], [70, 70]]
-    };
+        // Dot positions for each dice face
+        const dotPositions = {
+            1: [[50, 50]],
+            2: [
+                [30, 30],
+                [70, 70],
+            ],
+            3: [
+                [30, 30],
+                [50, 50],
+                [70, 70],
+            ],
+            4: [
+                [30, 30],
+                [30, 70],
+                [70, 30],
+                [70, 70],
+            ],
+            5: [
+                [30, 30],
+                [30, 70],
+                [50, 50],
+                [70, 30],
+                [70, 70],
+            ],
+            6: [
+                [30, 30],
+                [30, 50],
+                [30, 70],
+                [70, 30],
+                [70, 50],
+                [70, 70],
+            ],
+        };
 
-    // Add dots based on the number
-    //@ts-ignore
-    const dots = dotPositions[number];
-    for (const [cx, cy] of dots) {
-      svg += `<circle cx="${cx}" cy="${cy}" r="8" fill="${strokeColor}"/>`;
+        // Add dots based on the number
+        //@ts-ignore
+        const dots = dotPositions[number];
+        for (const [cx, cy] of dots) {
+            svg += `<circle cx="${cx}" cy="${cy}" r="8" fill="${strokeColor}"/>`;
+        }
+
+        // Close SVG
+        svg += "</svg>";
+
+        return svg;
     }
 
-    // Close SVG
-    svg += '</svg>';
+    function createMediaHtml(media: any): string {
+        const isVideo = media.cover.type?.startsWith("video/");
+        // Add a fade-in class to all media items
+        const mediaClass = "media-item fade-in";
+        const mediaAlt = media.title.endsWith("...")
+            ? media.title
+            : media.title + "...";
 
-    return svg;
-  }
-
-  function createMediaHtml(media: any): string {
-    const isVideo = media.cover.type?.startsWith("video/");
-    // Add a fade-in class to all media items
-    const mediaClass = "media-item fade-in";
-    const mediaAlt = media.title.endsWith("...") ? media.title : media.title + "...";
-
-    if (isVideo) {
-      return `
+        if (isVideo) {
+            return `
         <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
           <div class="featured-post ${mediaClass}">
             <div class="video-container">
@@ -496,27 +575,31 @@
           </div>
         </a>
       `;
-    } else {
-      return `
+        } else {
+            return `
         <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">
           <img src="/assets/${media.cover.id}.webp" alt="${mediaAlt}" data-title="${mediaAlt}" loading="lazy" decoding="async"/>
         </div>
         </a>
       `;
+        }
     }
-  }
 
-  function createBentoGrid(landingPage: any): BentoContent[] {
-    const bentoContent: BentoContent[] = [];
+    function createBentoGrid(landingPage: any): BentoContent[] {
+        const bentoContent: BentoContent[] = [];
 
-    const logoDimensions = isMobile ? {width: 3, height: 1} : isWide ? {width: 8, height: 2} : {width: 4, height: 1};
-    const buttonTxt = isMobile ? 'Tap it!' : 'Click it!';
-    bentoContent.push({
-      id: 'logo',
-      dimensions: [logoDimensions],
-      html: `
-      <a href="/" target="_self" class="link-link" data-umami-event="lp-click-logo" aria-label="${buttonTxt}"><div class="logo-blip">
+        const logoDimensions = isMobile
+            ? { width: 3, height: 1 }
+            : isWide
+              ? { width: 8, height: 2 }
+              : { width: 4, height: 1 };
+        const buttonTxt = isMobile ? "Tap it!" : "Click it!";
+        bentoContent.push({
+            id: "logo",
+            dimensions: [logoDimensions],
+            html: `
+      <a href="/bento" target="_self" class="link-link" data-umami-event="lp-click-logo" aria-label="${buttonTxt}"><div class="logo-blip">
         <div class="logo-text-container"><div class="logo-text">D17E</div></div>
 
         <div class="logo-subtext">
@@ -526,14 +609,18 @@
         </div>
       </div></a>
     `,
-      required: true
-    });
+            required: true,
+        });
 
-    const aboutDimensions = isMobile ? {width: 3, height: 3} : isWide ? {width: 3, height: 1} : {width: 2, height: 1};
-    const aboutBox = {
-      id: 'about',
-      dimensions: [aboutDimensions],
-      html: `
+        const aboutDimensions = isMobile
+            ? { width: 3, height: 3 }
+            : isWide
+              ? { width: 3, height: 1 }
+              : { width: 2, height: 1 };
+        const aboutBox = {
+            id: "about",
+            dimensions: [aboutDimensions],
+            html: `
       <div class="about-container">
         <p class="about-text">
           Hi! I'm <b>David Vandenbogaerde</b><br/> or <i>d17e</i> for short. <span class="smiley">:)</span>
@@ -541,15 +628,15 @@
         <p class="about-text">Welcome 🥳 & happy clicking!<br/>
         Need some magic? <a href="https://forms.d17e.dev/contact" target="_blank" class="about-link" data-umami-event="lp-click-contact" aria-label="Fill out my contact form">Get in touch!</a></p>
       </div>`,
-      required: true
-    };
-    if (isWide) {
-      bentoContent.push(aboutBox);
-    }
-    bentoContent.push({
-      id: 'about-link',
-      dimensions: [{width: 1, height: 1}],
-      html: `
+            required: true,
+        };
+        if (isWide) {
+            bentoContent.push(aboutBox);
+        }
+        bentoContent.push({
+            id: "about-link",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
       <a href="https://forms.d17e.dev/contact" target="_self" class="link-link" data-umami-event="lp-click-contact" aria-label="Contact..."><div class="link-container">
         <div class="svg-container">
           <svg width="90%" height="90%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="rotating-contact">
@@ -557,24 +644,23 @@
           </svg>
         </div>
       </div></a>`,
-      required: true
-    });
+            required: true,
+        });
 
-
-    bentoContent.push({
-      id: 'about-link',
-      dimensions: [{width: 1, height: 1}],
-      html: `
+        bentoContent.push({
+            id: "about-link",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
       <a href="/about?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-about" aria-label="About..."><div class="link-container">
         <p class="link-text">?</p>
       </div></a>`,
-      required: true
-    });
+            required: true,
+        });
 
-    bentoContent.push({
-      id: 'posts-link',
-      dimensions: [{width: 1, height: 1}],
-      html: `
+        bentoContent.push({
+            id: "posts-link",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
       <a href="/posts?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-posts" aria-label="Media...">
         <div class="svg-container">
           <svg
@@ -589,13 +675,13 @@
           </svg>
         </div>
       </a>`,
-      required: true
-    })
+            required: true,
+        });
 
-    bentoContent.push({
-      id: 'projects-link',
-      dimensions: [{width: 1, height: 1}],
-      html: `
+        bentoContent.push({
+            id: "projects-link",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
       <a href="/projects?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-projects" aria-label="Projects..."><div class="link-container">
         <div class="svg-container">
           <svg
@@ -614,13 +700,13 @@
           </svg>
         </div></div>
       </a>`,
-      required: true
-    });
+            required: true,
+        });
 
-    bentoContent.push({
-      id: 'blog-link',
-      dimensions: [{width: 1, height: 1}],
-      html: `
+        bentoContent.push({
+            id: "blog-link",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
       <a href="/blog?from-lp=true" target="_self" class="link-link" data-umami-event="lp-click-blog" aria-label="Blog..."><div class="link-container">
         <div class="svg-container">
           <svg
@@ -637,79 +723,94 @@
   </svg>
         </div></div>
       </a>`,
-      required: true
-    })
+            required: true,
+        });
 
-    bentoContent.push({
-      id: 'dice',
-      dimensions: [{width: 1, height: 1}],
-      html: `
-      <a href="/" target="_self" class="link-link" data-title="Roll the dice" aria-label="Roll the dice" data-umami-event="lp-click-dice"><div class="link-container">
+        bentoContent.push({
+            id: "dice",
+            dimensions: [{ width: 1, height: 1 }],
+            html: `
+      <a href="/bento" target="_self" class="link-link" data-title="Roll the dice" aria-label="Roll the dice" data-umami-event="lp-click-dice"><div class="link-container">
         <div class="svg-container">
           ${generateDiceSvg(landingPageIndex + 1, bentoConfig.color, bentoConfig.bgColor)}
         </div>
       </div></a>`,
-      required: true
-    })
-
-    const usedPosts = new Set<number>();
-
-    // Featured posts from landingPage.Posts
-    if (landingPage.data.Posts && landingPage.data.Posts.length > 1) {
-      // First featured post - medium size
-      const firstIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
-      const firstPost = landingPage.data.Posts[firstIndex];
-
-      bentoContent.push({
-        id: firstPost.id,
-        dimensions: [{width: 2, height: 2}],
-        html: createMediaHtml(firstPost),
-        required: true
-      });
-      usedPosts.add(firstIndex);
-
-      // Other posts - smaller tiles
-      for (let i = 1; i < Math.min(landingPage.data.Posts.length, Math.round(2 + Math.random() * 5)); i++) {
-        let postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
-        while (usedPosts.has(postIndex)) {
-          postIndex = Math.floor(Math.random() * landingPage.data.Posts.length);
-        }
-        const post = landingPage.data.Posts[postIndex];
-        const r = Math.random();
-        const size = r > 0.3 ? (r > 0.9 ? 3 : 1) : 2;
-        bentoContent.push({
-          id: `post-${post.id}-${i}`, // Ensure unique IDs
-          dimensions: [{width: size, height: size}],
-          html: createMediaHtml(post),
-          required: false
+            required: true,
         });
-        usedPosts.add(postIndex);
-      }
+
+        const usedPosts = new Set<number>();
+
+        // Featured posts from landingPage.Posts
+        if (landingPage.data.Posts && landingPage.data.Posts.length > 1) {
+            // First featured post - medium size
+            const firstIndex = Math.floor(
+                Math.random() * landingPage.data.Posts.length,
+            );
+            const firstPost = landingPage.data.Posts[firstIndex];
+
+            bentoContent.push({
+                id: firstPost.id,
+                dimensions: [{ width: 2, height: 2 }],
+                html: createMediaHtml(firstPost),
+                required: true,
+            });
+            usedPosts.add(firstIndex);
+
+            // Other posts - smaller tiles
+            for (
+                let i = 1;
+                i <
+                Math.min(
+                    landingPage.data.Posts.length,
+                    Math.round(2 + Math.random() * 5),
+                );
+                i++
+            ) {
+                let postIndex = Math.floor(
+                    Math.random() * landingPage.data.Posts.length,
+                );
+                while (usedPosts.has(postIndex)) {
+                    postIndex = Math.floor(
+                        Math.random() * landingPage.data.Posts.length,
+                    );
+                }
+                const post = landingPage.data.Posts[postIndex];
+                const r = Math.random();
+                const size = r > 0.3 ? (r > 0.9 ? 3 : 1) : 2;
+                bentoContent.push({
+                    id: `post-${post.id}-${i}`, // Ensure unique IDs
+                    dimensions: [{ width: size, height: size }],
+                    html: createMediaHtml(post),
+                    required: false,
+                });
+                usedPosts.add(postIndex);
+            }
+        }
+
+        // Add more tiles based on Articles and other content...
+        return bentoContent;
     }
-
-    // Add more tiles based on Articles and other content...
-    return bentoContent;
-  }
-
 </script>
 
-<svelte:window 
-  on:mousemove={handleMouseMove}
-  on:touchmove={handleTouchMove}
-  on:touchstart={handleTouchStart}
-  on:touchend={handleTouchEnd}
+<svelte:window
+    on:mousemove={handleMouseMove}
+    on:touchmove={handleTouchMove}
+    on:touchstart={handleTouchStart}
+    on:touchend={handleTouchEnd}
 />
 
-<BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig}/>
+<BentoBoxGrid {svgId} bentoContent={landingPageBentoContent} {bentoConfig} />
 
 <!-- Tooltip that follows cursor -->
-<div 
-  class="custom-tooltip" 
-  class:mobile={isMobileDevice} 
-  class:dragging={isDragging}
-  style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip ? '': 'display: none'}"
+<div
+    class="custom-tooltip"
+    class:mobile={isMobileDevice}
+    class:dragging={isDragging}
+    style="left: {tooltipX}px; top: {tooltipY}px;{showTooltip
+        ? ''
+        : 'display: none'}"
 >
-  {tooltipContent}
+    {tooltipContent}
 </div>
 
 <style>
@@ -727,9 +828,8 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: .8rem 0;
+        padding: 0.8rem 0;
         background-color: var(--ldp-color);
-
     }
 
     :global(.logo-text) {
@@ -739,14 +839,14 @@
         padding: 1rem;
         margin: 0 2rem;
         font-weight: bold;
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         font-size: 7.3rem;
     }
 
     :global(.logo-subtext) {
         font-size: 2rem;
-        font-family: 'nudica_monobold', serif;
-        gap: .1rem;
+        font-family: "nudica_monobold", serif;
+        gap: 0.1rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -764,7 +864,6 @@
         animation-delay: 0.3s;
     }
 
-
     @media (max-width: 768px) {
         :global(.logo-text-container) {
             padding: 1rem;
@@ -777,11 +876,11 @@
 
         :global(.logo-subtext) {
             gap: 0;
-            padding: 0 .88rem;
+            padding: 0 0.88rem;
         }
 
         :global(.logo-subtext-line) {
-            font-size: max(.7rem, 12px);
+            font-size: max(0.7rem, 12px);
         }
     }
 
@@ -797,12 +896,12 @@
         }
 
         :global(.logo-subtext) {
-            gap: .8rem;
+            gap: 0.8rem;
             padding: 3rem 4rem;
         }
 
         :global(.logo-subtext-line) {
-            line-height: .8;
+            line-height: 0.8;
             font-size: 2.5rem;
         }
     }
@@ -851,7 +950,7 @@
     :global(.about-text) {
         margin: 0;
         word-break: break-word;
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
     }
 
     :global(.about-link) {
@@ -938,14 +1037,14 @@
         justify-content: center;
         width: var(--bento-tile-width);
         height: var(--bento-tile-width);
-        transform: scale(.75);
+        transform: scale(0.75);
         background-color: var(--ldp-color);
         color: var(--ldp-bg-color);
         border-radius: 50%;
     }
 
     :global(.link-text) {
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         font-size: 6rem;
         animation: rotate 12s linear infinite;
         display: inline-block; /* Important for rotation to work properly */
@@ -957,7 +1056,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transform: scale(.75);
+        transform: scale(0.75);
     }
 
     :global(.rotating-svg) {
@@ -979,11 +1078,10 @@
 
     :global(.dice-svg) {
         animation: dice-rotate 30s linear infinite;
-
     }
 
     :global(.icon-font) {
-        font-family: 'bariol_icons', serif;
+        font-family: "bariol_icons", serif;
         margin-top: 3rem;
         margin-left: 1rem;
     }
@@ -1006,7 +1104,7 @@
         color: var(--ldp-color);
         border-radius: var(--ldp-radius);
         font-size: 14px;
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         pointer-events: none;
         z-index: 9999;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -1033,7 +1131,9 @@
     /* Special styling when dragging */
     .custom-tooltip.dragging {
         /*transform: translateY(-40px); !* Move tooltip higher when dragging *!*/
-        transition: transform 0.2s ease-out, opacity 0.3s ease-out;
+        transition:
+            transform 0.2s ease-out,
+            opacity 0.3s ease-out;
     }
 
     @keyframes tooltipPulse {
@@ -1097,12 +1197,12 @@
         :global(.link-text) {
             font-size: 3rem;
         }
-        
+
         .custom-tooltip {
             font-size: 12px;
             padding: 6px 10px;
         }
-        
+
         .custom-tooltip.mobile {
             font-size: 14px;
             padding: 8px 14px;
