@@ -77,23 +77,23 @@
                                 const effectiveMax = 0.7;
                                 const effectiveRange =
                                     effectiveMax - effectiveMin;
-                                const steps = 10;
+                                const steps = 100;
 
                                 return Array.from(
                                     { length: steps + 1 },
                                     (_, step) => {
+                                        // Calculate shift to move the range forward incrementally
                                         const shift =
                                             (step / steps) * effectiveRange;
-                                        let newMin = range.min + shift;
-                                        let newMax = range.max + shift;
-
-                                        // Wrap around when exceeding the effective max
-                                        if (newMin >= effectiveMax) {
-                                            newMin =
+                                        let newMin =
+                                            ((range.min -
                                                 effectiveMin +
-                                                (newMin - effectiveMax);
-                                            newMax = newMin + rangeSize;
-                                        }
+                                                shift) %
+                                                effectiveRange) +
+                                            effectiveMin;
+                                        let newMax = newMin + rangeSize;
+
+                                        // Handle wrap around when range crosses the boundary
                                         if (newMax > effectiveMax) {
                                             newMax =
                                                 effectiveMin +
@@ -104,10 +104,12 @@
                                             { length: 256 },
                                             (_, idx) => {
                                                 const val = idx / 255;
-                                                // Handle wrapping case
+                                                // Handle wrapping case when range crosses the boundary
                                                 if (newMin > newMax) {
-                                                    return val >= newMin ||
-                                                        val <= newMax
+                                                    return (val >= newMin &&
+                                                        val <= effectiveMax) ||
+                                                        (val >= effectiveMin &&
+                                                            val <= newMax)
                                                         ? 1
                                                         : 0;
                                                 }
