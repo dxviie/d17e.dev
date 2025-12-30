@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
 import LandingLogo from "../components/LandingLogo.svelte";
+import NoisePlayground from "../components/NoisePlayground.svelte";
 ---
 
 <!doctype html>
@@ -14,8 +15,9 @@ import LandingLogo from "../components/LandingLogo.svelte";
         <div class="statusbar"></div>
         <Navigation />
         <main class="landing">
-            <LandingLogo />
+            <LandingLogo client:only />
         </main>
+        <NoisePlayground client:only />
     </body>
 </html>
 
