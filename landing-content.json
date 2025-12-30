@@ -1,0 +1,239 @@
+{
+  "contexts": {
+    "code": {
+      "title": "Software Engineering",
+      "description": "Building robust systems, developer tools, and creative coding platforms",
+      "highlights": [
+        {
+          "title": "Passive Event Listeners Proposal",
+          "description": "TC39 proposal for passive event listeners in JavaScript, improving performance and developer experience",
+          "type": "open-source",
+          "url": "/work/passive-event-listeners",
+          "tags": ["javascript", "tc39", "web-standards", "performance"],
+          "featured": true
+        },
+        {
+          "title": "Plotter.so",
+          "description": "A suite of digital tools for artists exploring pen plotting and generative art",
+          "type": "product",
+          "url": "/work/plotter",
+          "tags": ["creative-tools", "generative-art", "web-platform"],
+          "featured": true
+        },
+        {
+          "title": "Glyph - Developer Assistant",
+          "description": "AI-powered coding assistant that enhances developer productivity with intelligent code suggestions",
+          "type": "product",
+          "url": "/work/glyph",
+          "tags": ["ai", "developer-tools", "productivity"],
+          "featured": true
+        },
+        {
+          "title": "Professional Experience",
+          "companies": [
+            {
+              "name": "Anthropic",
+              "role": "Founding Engineer, Product",
+              "period": "2024-present",
+              "description": "Building Claude and AI safety tools"
+            },
+            {
+              "name": "Watershed",
+              "role": "Senior Software Engineer",
+              "period": "2022-2024",
+              "description": "Climate intelligence platform"
+            },
+            {
+              "name": "Meta",
+              "role": "Software Engineer",
+              "period": "2020-2022",
+              "description": "Infrastructure and developer tools"
+            }
+          ],
+          "url": "/work"
+        }
+      ],
+      "skills": ["JavaScript/TypeScript", "React", "Python", "System Design", "Web Standards", "Creative Coding"],
+      "cta": {
+        "text": "View all engineering work",
+        "url": "/work"
+      }
+    },
+    "art": {
+      "title": "Creative Practice",
+      "description": "Exploring generative art, pen plotting, and experimental video work",
+      "highlights": [
+        {
+          "title": "Pen Plotter Work",
+          "description": "Generative drawings created with algorithmic processes and mechanical precision",
+          "type": "artwork",
+          "url": "/work/plotter",
+          "tags": ["plotter", "generative-art", "physical-computing"],
+          "featured": true,
+          "media": {
+            "type": "image",
+            "note": "Plotter artwork showcased on plotter.so"
+          }
+        },
+        {
+          "title": "Video Experiments",
+          "description": "Exploring motion, time, and digital aesthetics through video",
+          "type": "artwork",
+          "url": "/work",
+          "tags": ["video", "motion", "experimental"],
+          "featured": true,
+          "examples": [
+            {
+              "title": "Blobs (Experimental)",
+              "date": "2024-08-01",
+              "description": "Organic motion study with blob-like forms",
+              "media": "7be70f9c-ae53-46ec-b0f6-8e4f62331eba.mp4"
+            },
+            {
+              "title": "Lines (Experimental)",
+              "date": "2024-08-01",
+              "description": "Minimal line-based animation exploration",
+              "media": "6bab12d4-afde-4d8f-81b7-48e7dba0cd9d.mp4"
+            }
+          ]
+        },
+        {
+          "title": "Plotter.so Creative Tools",
+          "description": "Built tools and platforms for artists exploring computational creativity",
+          "type": "creative-tool",
+          "url": "/work/plotter",
+          "tags": ["tool-building", "community", "creative-coding"],
+          "featured": true
+        },
+        {
+          "title": "Generative Systems",
+          "description": "Algorithmic approaches to creating visual and interactive experiences",
+          "type": "practice",
+          "tags": ["algorithms", "procedural-generation", "creative-coding"],
+          "projects": [
+            "Custom plotting software",
+            "Generative art frameworks",
+            "Interactive installations"
+          ]
+        }
+      ],
+      "tools": ["Custom software", "Pen plotters", "Processing", "Web technologies", "Video editing"],
+      "cta": {
+        "text": "Explore creative work",
+        "url": "/work"
+      }
+    },
+    "ideas": {
+      "title": "Thinking & Creating",
+      "description": "Product thinking, education, and exploring ideas at the intersection of technology and creativity",
+      "highlights": [
+        {
+          "title": "Product Philosophy",
+          "description": "Building tools that empower creators and developers",
+          "type": "approach",
+          "featured": true,
+          "examples": [
+            {
+              "project": "Plotter.so",
+              "insight": "Created accessible tools democratizing generative art and pen plotting for artists",
+              "url": "/work/plotter"
+            },
+            {
+              "project": "Glyph",
+              "insight": "Designed AI assistance that enhances rather than replaces developer expertise",
+              "url": "/work/glyph"
+            },
+            {
+              "project": "Claude at Anthropic",
+              "insight": "Building AI products with safety and user empowerment at the core",
+              "url": "/work"
+            }
+          ]
+        },
+        {
+          "title": "Web Standards & Community",
+          "description": "Contributing to the evolution of web technologies through standards work",
+          "type": "contribution",
+          "featured": true,
+          "examples": [
+            {
+              "title": "TC39 Passive Listeners Proposal",
+              "description": "Advancing JavaScript standards to improve web performance and developer experience",
+              "url": "/work/passive-event-listeners",
+              "impact": "Standards work affecting millions of developers"
+            }
+          ]
+        },
+        {
+          "title": "Creator & Educator",
+          "description": "Sharing knowledge and building community around creative technology",
+          "type": "practice",
+          "featured": true,
+          "activities": [
+            "Open source contributions",
+            "Tool creation for creative communities",
+            "Exploring and sharing experimental processes",
+            "Building accessible platforms for artists and developers"
+          ]
+        },
+        {
+          "title": "Cross-Disciplinary Approach",
+          "description": "Bridging engineering, design, and art to create meaningful experiences",
+          "type": "philosophy",
+          "manifesto": [
+            "Technology as a creative medium",
+            "Tools that enable rather than constrain",
+            "Community-centered product development",
+            "Experimentation as a core practice",
+            "Building with intention and care"
+          ]
+        },
+        {
+          "title": "Writing & Documentation",
+          "description": "Articulating ideas and processes to help others learn and create",
+          "type": "communication",
+          "examples": [
+            {
+              "title": "Proposal Documentation",
+              "description": "Clear technical writing for standards proposals",
+              "url": "/work/passive-event-listeners"
+            },
+            {
+              "title": "Product Documentation",
+              "description": "Making complex tools accessible through thoughtful documentation"
+            }
+          ]
+        }
+      ],
+      "themes": [
+        "Human-centered technology",
+        "Creative empowerment",
+        "Open source and community",
+        "Exploration and experimentation",
+        "Clear communication",
+        "Intentional design"
+      ],
+      "cta": {
+        "text": "Learn more about my work",
+        "url": "/work"
+      }
+    }
+  },
+  "meta": {
+    "version": "1.0.0",
+    "generated": "2025-12-30",
+    "source": "Curated from d17e.dev content",
+    "contexts_description": {
+      "code": "Technical expertise, engineering projects, and professional experience",
+      "art": "Creative practice, generative art, plotting, and experimental media",
+      "ideas": "Product thinking, philosophy, education, and cross-disciplinary approaches"
+    }
+  },
+  "global": {
+    "name": "David Vandenbogaerde",
+    "tagline": "Engineer, Artist, Creator",
+    "current_role": "Founding Engineer at Anthropic",
+    "website": "https://d17e.dev",
+    "contact_url": "/work"
+  }
+}

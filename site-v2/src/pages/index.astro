@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
+import LandingLogo from "../components/LandingLogo.svelte";
 ---
 
 <!doctype html>
@@ -12,12 +13,20 @@ import Navigation from "../components/Navigation.astro";
     <body>
         <div class="statusbar"></div>
         <Navigation />
-        <main class="content-margin">hello world</main>
+        <main class="landing">
+            <LandingLogo />
+        </main>
     </body>
 </html>
 
 <style>
-    rect {
-        border-radius: 100px;
+    .landing {
+        width: calc(100vw - 3rem);
+        max-width: 1200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
     }
 </style>
