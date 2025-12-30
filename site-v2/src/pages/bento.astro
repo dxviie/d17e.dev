@@ -1,7 +1,10 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
+import LandingBentoGrid from "../components/bento/LandingBentoGrid.svelte";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import Navigation from "../components/Navigation.astro";
+import { getCollection } from "astro:content";
+
+const landingPagesData = await getCollection("landingPages");
 ---
 
 <!doctype html>
@@ -11,8 +14,9 @@ import Navigation from "../components/Navigation.astro";
     </head>
     <body>
         <div class="statusbar"></div>
-        <Navigation />
-        <main class="content-margin">hello world</main>
+        <main class="content-margin">
+            <LandingBentoGrid landingPages={landingPagesData} client:only />
+        </main>
     </body>
 </html>
 
