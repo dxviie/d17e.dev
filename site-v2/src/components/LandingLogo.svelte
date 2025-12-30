@@ -64,7 +64,64 @@
                             const range = thresholdRanges[i];
                             return val >= range.min && val <= range.max ? 1 : 0;
                         }).join(" ")}
-                    />
+                    >
+                        <!-- Animate the threshold range moving upward and looping -->
+                        <animate
+                            attributeName="tableValues"
+                            dur="30s"
+                            repeatCount="indefinite"
+                            values={(() => {
+                                const range = thresholdRanges[i];
+                                const rangeSize = range.max - range.min;
+                                const effectiveMin = 0.3;
+                                const effectiveMax = 0.7;
+                                const effectiveRange =
+                                    effectiveMax - effectiveMin;
+                                const steps = 10;
+
+                                return Array.from(
+                                    { length: steps + 1 },
+                                    (_, step) => {
+                                        const shift =
+                                            (step / steps) * effectiveRange;
+                                        let newMin = range.min + shift;
+                                        let newMax = range.max + shift;
+
+                                        // Wrap around when exceeding the effective max
+                                        if (newMin >= effectiveMax) {
+                                            newMin =
+                                                effectiveMin +
+                                                (newMin - effectiveMax);
+                                            newMax = newMin + rangeSize;
+                                        }
+                                        if (newMax > effectiveMax) {
+                                            newMax =
+                                                effectiveMin +
+                                                (newMax - effectiveMax);
+                                        }
+
+                                        return Array.from(
+                                            { length: 256 },
+                                            (_, idx) => {
+                                                const val = idx / 255;
+                                                // Handle wrapping case
+                                                if (newMin > newMax) {
+                                                    return val >= newMin ||
+                                                        val <= newMax
+                                                        ? 1
+                                                        : 0;
+                                                }
+                                                return val >= newMin &&
+                                                    val <= newMax
+                                                    ? 1
+                                                    : 0;
+                                            },
+                                        ).join(" ");
+                                    },
+                                ).join("; ");
+                            })()}
+                        />
+                    </feFuncA>
                 </feComponentTransfer>
             </filter>
 
