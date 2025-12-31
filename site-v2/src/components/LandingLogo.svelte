@@ -409,14 +409,6 @@
                     mask="url(#mask-{img.id})"
                 />
             {/each}
-
-            <!-- Render main logo (always fully visible) -->
-            <image
-                href="/logo/d17e-logo.png"
-                class="overlay-logo"
-                width="1472"
-                height="488"
-            />
         </svg>
     {/if}
 </div>
@@ -424,11 +416,6 @@
 <style>
     .logo-container {
         background: #ffffff;
-    }
-
-    .overlay-logo {
-        mix-blend-mode: normal;
-        opacity: 0.1;
     }
 
     svg,
