@@ -2,33 +2,39 @@
     // Svelte 5 component - stack of images with noise masks
     // All masks share the same noise field but use different non-overlapping threshold ranges
 
-    // Image data
-    const images = [
-        { id: 1, url: "/logo/rstr-01.png" },
-        { id: 2, url: "/logo/rstr-02.png" },
-        { id: 3, url: "/logo/rstr-03.png" },
-        { id: 4, url: "/logo/rstr-04.png" },
-        { id: 5, url: "/logo/rstr-05.png" },
-        { id: 6, url: "/logo/rstr-12.png" },
-    ];
+    // All available images (01 to 13)
+    const allImages = Array.from({ length: 13 }, (_, i) => ({
+        id: i + 1,
+        url: `/logo/rstr-${String(i + 1).padStart(2, "0")}.png`,
+    }));
 
-    // Shared noise parameters
+    // Fisher-Yates shuffle and pick 6 random images
+    function pickRandomImages(count) {
+        const shuffled = [...allImages];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, count);
+    }
+
+    // Randomly selected images for this load
+    const images = pickRandomImages(6);
+
+    // Shared noise parameters with random seed
     const sharedNoise = {
         baseFrequency: 0.008,
         octaves: 4,
-        seed: 43,
+        seed: Math.floor(Math.random() * 10000),
     };
 
-    // Non-overlapping threshold ranges - each layer gets a narrow slice
-    // Effective range is 0.3 to 0.7, divided into 6 equal slices
-    // Total coverage is small, so main logo remains mostly visible
     const thresholdRanges = [
-        { min: 0.3, max: 0.31 }, // ~6.67% slice
-        { min: 0.37, max: 0.39 }, // ~6.67% slice
-        { min: 0.4333, max: 0.47 }, // ~6.67% slice
-        { min: 0.5, max: 0.53 }, // ~6.67% slice
-        { min: 0.5667, max: 0.6 }, // ~6.67% slice
-        { min: 0.6333, max: 0.66 }, // ~6.67% slice
+        { min: 0.3, max: 0.37 },
+        { min: 0.37, max: 0.4 },
+        { min: 0.45, max: 0.5 },
+        { min: 0.5, max: 0.5667 },
+        { min: 0.5667, max: 0.6333 },
+        { min: 0.66, max: 0.72 },
     ];
 </script>
 
@@ -151,75 +157,6 @@
             height="488"
             mask="url(#mask-{img.id})"
         />
-    {/each}
-</svg>
-
-<!-- Debug visualization of masks -->
-<svg
-    width="1472"
-    height="300"
-    viewBox="0 0 1472 300"
-    xmlns="http://www.w3.org/2000/svg"
-    role="img"
-    aria-label="Mask Visualization"
->
-    <defs>
-        <!-- Reuse the shared noise filter -->
-        <filter id="debug-shared-noise">
-            <feTurbulence
-                type="fractalNoise"
-                baseFrequency={sharedNoise.baseFrequency}
-                numOctaves={sharedNoise.octaves}
-                seed={sharedNoise.seed}
-                result="noise"
-            />
-        </filter>
-
-        <!-- Create debug filters for visualization -->
-        {#each images as img, i}
-            <filter id="debug-threshold-{img.id}">
-                <feComponentTransfer>
-                    <feFuncA
-                        type="discrete"
-                        tableValues={Array.from({ length: 256 }, (_, idx) => {
-                            const val = idx / 255;
-                            const range = thresholdRanges[i];
-                            return val >= range.min && val <= range.max ? 1 : 0;
-                        }).join(" ")}
-                    />
-                </feComponentTransfer>
-            </filter>
-        {/each}
-    </defs>
-
-    <!-- Display each mask as a BW rectangle with label -->
-    {#each images as img, i}
-        <g transform="translate({i * 245}, 0)">
-            <!-- Label -->
-            <text
-                x="120"
-                y="15"
-                text-anchor="middle"
-                font-family="monospace"
-                font-size="12"
-                fill="#333"
-            >
-                Mask {i + 1}: {thresholdRanges[i].min.toFixed(
-                    2,
-                )}-{thresholdRanges[i].max.toFixed(2)}
-            </text>
-
-            <!-- Mask visualization -->
-            <rect
-                x="0"
-                y="30"
-                width="240"
-                height="80"
-                fill="white"
-                stroke="#ccc"
-                filter="url(#debug-shared-noise) url(#debug-threshold-{img.id})"
-            />
-        </g>
     {/each}
 </svg>
 
