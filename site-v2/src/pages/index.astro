@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
 import LandingLogo from "../components/LandingLogo.svelte";
+import HydraBackground from "../components/HydraBackground.svelte";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
@@ -13,10 +14,29 @@ import SocialLinks from "../components/SocialLinks.astro";
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
+    <!-- Hydra Background - fullscreen canvas for live visuals -->
+    <HydraBackground
+      client:only
+      blendMode="multiply"
+      opacity={0.6}
+      threshold={0.5}
+      initialCode="solid(0.95, 0.95, 0.95).out()"
+    />
+
     <div class="statusbar"></div>
 
     <!-- Hero Section - Full Page LandingLogo -->
     <section class="hero">
+      <!-- Hydra code for hero: subtle animated gradient -->
+      <pre
+        data-hydra>
+        osc(3, 0.05, 1.5)
+          .color(0.9, 0.85, 0.95)
+          .saturate(0.3)
+          .contrast(1.1)
+          .brightness(0.5)
+          .out()
+      </pre>
       <LandingLogo client:only />
       <div class="scroll-indicator">
         <span class="scroll-text">scroll</span>
@@ -26,6 +46,16 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     <!-- Introduction Section -->
     <section class="section intro-section">
+      <!-- Hydra code for intro: soft noise texture -->
+      <pre
+        data-hydra>
+        noise(3, 0.1)
+          .color(0.95, 0.92, 0.9)
+          .modulateScale(osc(2, 0.05), 0.05)
+          .brightness(0.4)
+          .contrast(1.05)
+          .out()
+      </pre>
       <div class="section-content">
         <div class="intro-header">
           <img
@@ -51,6 +81,16 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     <!-- Code Section -->
     <section class="section code-section">
+      <!-- Hydra code for code section: digital grid pattern -->
+      <pre
+        data-hydra>
+        voronoi(8, 0.3, 0.3)
+          .color(0.85, 0.88, 0.95)
+          .modulatePixelate(noise(2, 0.2), 50, 20)
+          .brightness(0.35)
+          .contrast(1.1)
+          .out()
+      </pre>
       <div class="section-content">
         <div class="section-label">I code.</div>
         <h2>Software Engineering</h2>
@@ -95,6 +135,17 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     <!-- Art Section -->
     <section class="section art-section">
+      <!-- Hydra code for art section: organic flowing shapes -->
+      <pre
+        data-hydra>
+        osc(6, 0.08, 0.8)
+          .kaleid(3)
+          .color(0.95, 0.85, 0.88)
+          .modulateRotate(osc(2, 0.1), 0.2)
+          .brightness(0.4)
+          .contrast(1.05)
+          .out()
+      </pre>
       <div class="section-content">
         <div class="section-label">I art.</div>
         <h2>Creative Exploration</h2>
@@ -137,6 +188,16 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     <!-- Ideas Section -->
     <section class="section ideas-section">
+      <!-- Hydra code for ideas section: interconnected network -->
+      <pre
+        data-hydra>
+        gradient(0.5)
+          .color(0.92, 0.9, 0.95)
+          .add(voronoi(15, 0.2, 0.2).color(0.1, 0.08, 0.12), 0.15)
+          .modulateHue(osc(1, 0.05), 0.1)
+          .brightness(0.35)
+          .out()
+      </pre>
       <div class="section-content">
         <div class="section-label">Ideas.</div>
         <h2>Thinking & Sharing</h2>
@@ -183,6 +244,17 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     <!-- Contact Section -->
     <section class="section contact-section">
+      <!-- Hydra code for contact section: calm, inviting atmosphere -->
+      <pre
+        data-hydra>
+        osc(2, 0.04, 1)
+          .color(0.9, 0.92, 0.98)
+          .rotate(0.1, 0.02)
+          .modulateScale(noise(1, 0.1), 0.1)
+          .brightness(0.45)
+          .contrast(1.02)
+          .out()
+      </pre>
       <div class="section-content">
         <h2>Let's Connect</h2>
         <p>

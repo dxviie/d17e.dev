@@ -107,4 +107,14 @@ if (isProd) {
 export default defineConfig({
     site: 'https://d17e.dev',
     integrations: baseIntegrations,
+    vite: {
+        define: {
+            // Polyfill for Node.js globals used by hydra-synth dependencies
+            global: 'globalThis',
+        },
+        optimizeDeps: {
+            // Ensure hydra-synth and its dependencies are pre-bundled correctly
+            include: ['hydra-synth'],
+        },
+    },
 });
