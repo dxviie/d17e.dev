@@ -25,13 +25,24 @@
         seed: Math.floor(Math.random() * 10000),
     };
 
-    const thresholdRanges = [
+    // Desktop: wider ranges for more visible effect
+    const thresholdRangesDesktop = [
         { min: 0.3, max: 0.37 },
         { min: 0.37, max: 0.4 },
         { min: 0.45, max: 0.5 },
         { min: 0.5, max: 0.5667 },
         { min: 0.5667, max: 0.6333 },
         { min: 0.66, max: 0.72 },
+    ];
+
+    // Mobile: narrower ranges for better readability
+    const thresholdRangesMobile = [
+        { min: 0.32, max: 0.35 },
+        { min: 0.38, max: 0.4 },
+        { min: 0.46, max: 0.48 },
+        { min: 0.52, max: 0.54 },
+        { min: 0.58, max: 0.6 },
+        { min: 0.66, max: 0.68 },
     ];
 
     // Canvas state
@@ -218,7 +229,7 @@
                 const overlayImg = overlayImgs[i];
                 if (!overlayImg) continue;
 
-                const range = thresholdRanges[i];
+                const range = thresholdRangesMobile[i];
                 const rangeSize = range.max - range.min;
 
                 // Calculate animated range
@@ -313,7 +324,7 @@
                                     { length: 256 },
                                     (_, idx) => {
                                         const val = idx / 255;
-                                        const range = thresholdRanges[i];
+                                        const range = thresholdRangesDesktop[i];
                                         return val >= range.min &&
                                             val <= range.max
                                             ? 1
@@ -326,7 +337,7 @@
                                     dur="30s"
                                     repeatCount="indefinite"
                                     values={(() => {
-                                        const range = thresholdRanges[i];
+                                        const range = thresholdRangesDesktop[i];
                                         const rangeSize = range.max - range.min;
                                         const effectiveMin = 0.3;
                                         const effectiveMax = 0.7;
