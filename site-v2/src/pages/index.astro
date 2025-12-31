@@ -314,7 +314,10 @@ import SocialLinks from "../components/SocialLinks.astro";
   /* Hero Section */
   .hero {
     width: 100%;
-    height: calc(100svh + 3rem);
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     background-color: rgba(255, 255, 255, 0.8);
     flex-direction: column;
@@ -361,7 +364,8 @@ import SocialLinks from "../components/SocialLinks.astro";
 
   /* Section Base Styles */
   .section {
-    min-height: calc(100svh + 3rem);
+    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
