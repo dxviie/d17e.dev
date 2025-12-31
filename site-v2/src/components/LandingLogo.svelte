@@ -208,13 +208,13 @@
         const effectiveMin = 0.3;
         const effectiveMax = 0.7;
         const effectiveRange = effectiveMax - effectiveMin;
-        const animationDuration = 30000; // 30 seconds
+        const animationDuration = 300000; // 300 seconds
         let startTime = performance.now();
 
         function render() {
             const elapsed = performance.now() - startTime;
             const progress = (elapsed % animationDuration) / animationDuration;
-            const timeOffset = progress * effectiveRange * 0.5; // Shift noise over time
+            const timeOffset = progress * effectiveRange * 0.025; // Shift noise over time
 
             // Generate noise for current frame
             generateNoise(timeOffset);
