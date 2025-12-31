@@ -427,8 +427,8 @@
     }
 
     .overlay-logo {
-        mix-blend-mode: overlay;
-        opacity: 0.5;
+        mix-blend-mode: normal;
+        opacity: 0.1;
     }
 
     svg,
