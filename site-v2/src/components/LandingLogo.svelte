@@ -173,14 +173,14 @@
         const noiseField = new Float32Array(noiseWidth * noiseHeight);
 
         function generateNoise(timeOffset) {
-            const freq = sharedNoise.baseFrequency * 100; // Scale frequency for canvas
+            const freq = sharedNoise.baseFrequency * 0.5; // Scale frequency for canvas
             for (let y = 0; y < noiseHeight; y++) {
                 for (let x = 0; x < noiseWidth; x++) {
                     const nx = x * noiseScale * freq;
                     const ny = y * noiseScale * freq;
                     noiseField[y * noiseWidth + x] = perlin.fbm(
                         nx + timeOffset,
-                        ny,
+                        ny - timeOffset,
                         sharedNoise.octaves,
                     );
                 }
@@ -203,7 +203,7 @@
         function render() {
             const elapsed = performance.now() - startTime;
             const progress = (elapsed % animationDuration) / animationDuration;
-            const timeOffset = progress * effectiveRange * 50; // Shift noise over time
+            const timeOffset = progress * effectiveRange * 0.5; // Shift noise over time
 
             // Generate noise for current frame
             generateNoise(timeOffset);
