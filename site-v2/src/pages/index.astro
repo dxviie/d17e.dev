@@ -14,23 +14,14 @@ import SocialLinks from "../components/SocialLinks.astro";
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
-    <!-- Hydra Background - fullscreen canvas for live visuals -->
-    <HydraBackground
-      client:only
-      blendMode="multiply"
-      opacity={0.6}
-      threshold={0.5}
-      initialCode="solid(0.95, 0.95, 0.95).out()"
-    />
-
     <div class="statusbar"></div>
 
     <!-- Hero Section - Full Page LandingLogo -->
-    <section class="hero">
-      <!-- Hydra code for hero: subtle animated gradient -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         noise(9, .01)
+         .scale(1, 1, ()=> window.innerWidth / window.innerHeight)
           .color(0.95, 0.92, 0.9)
           .modulateRotate(osc(99, 0.015), 0.05)
           .brightness(0.4)
@@ -38,108 +29,124 @@ import SocialLinks from "../components/SocialLinks.astro";
   .luma(.2, 0.3)
   .thresh(.2)
           .out()
-      </pre>
-      <LandingLogo client:only />
-      <div class="scroll-indicator">
-        <span class="scroll-text">scroll</span>
-        <div class="scroll-arrow">↓</div>
-      </div>
-    </section>
+      `}
+      blendMode="multiply"
+      opacity={0.4}
+    >
+      <section class="hero">
+        <LandingLogo client:only />
+        <div class="scroll-indicator">
+          <span class="scroll-text">scroll</span>
+          <div class="scroll-arrow">↓</div>
+        </div>
+      </section>
+    </HydraBackground>
 
     <!-- Introduction Section -->
-    <section class="section intro-section">
-      <!-- Hydra code for intro: soft noise texture -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         noise(3, 0.1)
           .color(0.95, 0.92, 0.9)
           .modulateScale(osc(2, 0.05), 0.05)
           .brightness(0.4)
           .contrast(1.05)
           .out()
-      </pre>
-      <div class="section-content">
-        <div class="intro-header">
-          <img
-            src="/avatar_me_vera_round.png"
-            class="avatar"
-            alt="David Vandenbogaerde"
-          />
-          <div class="intro-title">
-            <h1>Hi, I'm <span class="highlight">David Vandenbogaerde</span></h1>
-            <p class="subtitle">or <span class="d17e">d17e</span> for short</p>
+      `}
+      blendMode="multiply"
+      opacity={0.5}
+    >
+      <section class="section intro-section">
+        <div class="section-content">
+          <div class="intro-header">
+            <img
+              src="/avatar_me_vera_round.png"
+              class="avatar"
+              alt="David Vandenbogaerde"
+            />
+            <div class="intro-title">
+              <h1>
+                Hi, I'm <span class="highlight">David Vandenbogaerde</span>
+              </h1>
+              <p class="subtitle">
+                or <span class="d17e">d17e</span> for short
+              </p>
+            </div>
           </div>
+          <p class="intro-text">
+            A creative technologist based in Amsterdam, blending <em>code</em>, <em
+              >art</em
+            >, and <em>ideas</em>
+            into digital experiences. With over 20 years in software engineering,
+            I now split my time between building things that work and making things
+            that move.
+          </p>
         </div>
-        <p class="intro-text">
-          A creative technologist based in Amsterdam, blending <em>code</em>, <em
-            >art</em
-          >, and <em>ideas</em>
-          into digital experiences. With over 20 years in software engineering, I
-          now split my time between building things that work and making things that
-          move.
-        </p>
-      </div>
-    </section>
+      </section>
+    </HydraBackground>
 
     <!-- Code Section -->
-    <section class="section code-section">
-      <!-- Hydra code for code section: digital grid pattern -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         voronoi(8, 0.3, 0.3)
           .color(0.85, 0.88, 0.95)
           .modulatePixelate(noise(2, 0.2), 50, 20)
           .brightness(0.35)
           .contrast(1.1)
           .out()
-      </pre>
-      <div class="section-content">
-        <div class="section-label">I code.</div>
-        <h2>Software Engineering</h2>
-        <p>
-          From enterprise systems to creative tooling — I've spent two decades
-          turning complex problems into elegant solutions. My journey has taken
-          me through C++, Java, and into the modern web with TypeScript, Svelte,
-          and Astro.
-        </p>
-        <div class="tech-tags">
-          <span class="tag">TypeScript</span>
-          <span class="tag">Svelte</span>
-          <span class="tag">Astro</span>
-          <span class="tag">React</span>
-          <span class="tag">SVG</span>
-          <span class="tag">WebGL</span>
+      `}
+      blendMode="multiply"
+      opacity={0.5}
+    >
+      <section class="section code-section">
+        <div class="section-content">
+          <div class="section-label">I code.</div>
+          <h2>Software Engineering</h2>
+          <p>
+            From enterprise systems to creative tooling — I've spent two decades
+            turning complex problems into elegant solutions. My journey has
+            taken me through C++, Java, and into the modern web with TypeScript,
+            Svelte, and Astro.
+          </p>
+          <div class="tech-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">Svelte</span>
+            <span class="tag">Astro</span>
+            <span class="tag">React</span>
+            <span class="tag">SVG</span>
+            <span class="tag">WebGL</span>
+          </div>
+          <div class="section-links">
+            <a href="/projects" class="section-cta">
+              <span>View Projects</span>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              href="https://github.com/dxviie"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="section-link"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/d16de/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="section-link"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
-        <div class="section-links">
-          <a href="/projects" class="section-cta">
-            <span>View Projects</span>
-            <span class="arrow">→</span>
-          </a>
-          <a
-            href="https://github.com/dxviie"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="section-link"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/d16de/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="section-link"
-          >
-            LinkedIn
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </HydraBackground>
 
     <!-- Art Section -->
-    <section class="section art-section">
-      <!-- Hydra code for art section: organic flowing shapes -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         osc(6, 0.08, 0.8)
           .kaleid(3)
           .color(0.95, 0.85, 0.88)
@@ -147,108 +154,116 @@ import SocialLinks from "../components/SocialLinks.astro";
           .brightness(0.4)
           .contrast(1.05)
           .out()
-      </pre>
-      <div class="section-content">
-        <div class="section-label">I art.</div>
-        <h2>Creative Exploration</h2>
-        <p>
-          In 2022, I carved out space for artistic exploration. What started as
-          experiments with generative art has grown into a practice spanning
-          video, pen plotting, and creative coding. Each piece is a conversation
-          between algorithm and intention.
-        </p>
-        <div class="art-mediums">
-          <div class="medium">
-            <span class="medium-icon">◎</span>
-            <span class="medium-name">Generative Art</span>
+      `}
+      blendMode="multiply"
+      opacity={0.5}
+    >
+      <section class="section art-section">
+        <div class="section-content">
+          <div class="section-label">I art.</div>
+          <h2>Creative Exploration</h2>
+          <p>
+            In 2022, I carved out space for artistic exploration. What started
+            as experiments with generative art has grown into a practice
+            spanning video, pen plotting, and creative coding. Each piece is a
+            conversation between algorithm and intention.
+          </p>
+          <div class="art-mediums">
+            <div class="medium">
+              <span class="medium-icon">◎</span>
+              <span class="medium-name">Generative Art</span>
+            </div>
+            <div class="medium">
+              <span class="medium-icon">✎</span>
+              <span class="medium-name">Pen Plotting</span>
+            </div>
+            <div class="medium">
+              <span class="medium-icon">▶</span>
+              <span class="medium-name">Video</span>
+            </div>
           </div>
-          <div class="medium">
-            <span class="medium-icon">✎</span>
-            <span class="medium-name">Pen Plotting</span>
-          </div>
-          <div class="medium">
-            <span class="medium-icon">▶</span>
-            <span class="medium-name">Video</span>
+          <div class="section-links">
+            <a href="/posts" class="section-cta">
+              <span>Browse Media</span>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              href="https://www.instagram.com/d17e.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="section-link"
+            >
+              Instagram
+            </a>
           </div>
         </div>
-        <div class="section-links">
-          <a href="/posts" class="section-cta">
-            <span>Browse Media</span>
-            <span class="arrow">→</span>
-          </a>
-          <a
-            href="https://www.instagram.com/d17e.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="section-link"
-          >
-            Instagram
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </HydraBackground>
 
     <!-- Ideas Section -->
-    <section class="section ideas-section">
-      <!-- Hydra code for ideas section: interconnected network -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         gradient(0.5)
           .color(0.92, 0.9, 0.95)
           .add(voronoi(15, 0.2, 0.2).color(0.1, 0.08, 0.12), 0.15)
           .modulateHue(osc(1, 0.05), 0.1)
           .brightness(0.35)
           .out()
-      </pre>
-      <div class="section-content">
-        <div class="section-label">Ideas.</div>
-        <h2>Thinking & Sharing</h2>
-        <p>
-          I believe in learning something new every day. Whether it's diving
-          deep into a technical challenge or exploring the intersection of
-          creativity and code — I write about it. My blog is where ideas take
-          shape and stories find their voice.
-        </p>
-        <div class="ideas-focus">
-          <div class="focus-item">
-            <span class="focus-label">Educator</span>
-            <span class="focus-desc"
-              >Sharing knowledge through writing and workshops</span
-            >
+      `}
+      blendMode="multiply"
+      opacity={0.5}
+    >
+      <section class="section ideas-section">
+        <div class="section-content">
+          <div class="section-label">Ideas.</div>
+          <h2>Thinking & Sharing</h2>
+          <p>
+            I believe in learning something new every day. Whether it's diving
+            deep into a technical challenge or exploring the intersection of
+            creativity and code — I write about it. My blog is where ideas take
+            shape and stories find their voice.
+          </p>
+          <div class="ideas-focus">
+            <div class="focus-item">
+              <span class="focus-label">Educator</span>
+              <span class="focus-desc"
+                >Sharing knowledge through writing and workshops</span
+              >
+            </div>
+            <div class="focus-item">
+              <span class="focus-label">Thinker</span>
+              <span class="focus-desc"
+                >Exploring the edges of technology and creativity</span
+              >
+            </div>
+            <div class="focus-item">
+              <span class="focus-label">Communicator</span>
+              <span class="focus-desc">Making complex ideas accessible</span>
+            </div>
           </div>
-          <div class="focus-item">
-            <span class="focus-label">Thinker</span>
-            <span class="focus-desc"
-              >Exploring the edges of technology and creativity</span
+          <div class="section-links">
+            <a href="/blog" class="section-cta">
+              <span>Read the Blog</span>
+              <span class="arrow">→</span>
+            </a>
+            <a
+              href="https://buttondown.com/d17e.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="section-link"
             >
-          </div>
-          <div class="focus-item">
-            <span class="focus-label">Communicator</span>
-            <span class="focus-desc">Making complex ideas accessible</span>
+              Newsletter
+            </a>
           </div>
         </div>
-        <div class="section-links">
-          <a href="/blog" class="section-cta">
-            <span>Read the Blog</span>
-            <span class="arrow">→</span>
-          </a>
-          <a
-            href="https://buttondown.com/d17e.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="section-link"
-          >
-            Newsletter
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </HydraBackground>
 
     <!-- Contact Section -->
-    <section class="section contact-section">
-      <!-- Hydra code for contact section: calm, inviting atmosphere -->
-      <pre
-        data-hydra>
+    <HydraBackground
+      client:only
+      code={`
         osc(2, 0.04, 1)
           .color(0.9, 0.92, 0.98)
           .rotate(0.1, 0.02)
@@ -256,35 +271,40 @@ import SocialLinks from "../components/SocialLinks.astro";
           .brightness(0.45)
           .contrast(1.02)
           .out()
-      </pre>
-      <div class="section-content">
-        <h2>Let's Connect</h2>
-        <p>
-          Whether you have a project in mind, want to collaborate, or just want
-          to say hello — I'd love to hear from you.
-        </p>
-        <div class="contact-actions">
-          <a href="/about" class="contact-cta primary">
-            <span>About Me</span>
-          </a>
-          <a
-            href="https://forms.d17e.dev/contact"
-            class="contact-cta secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span>Get in Touch</span>
-          </a>
+      `}
+      blendMode="multiply"
+      opacity={0.5}
+    >
+      <section class="section contact-section">
+        <div class="section-content">
+          <h2>Let's Connect</h2>
+          <p>
+            Whether you have a project in mind, want to collaborate, or just
+            want to say hello — I'd love to hear from you.
+          </p>
+          <div class="contact-actions">
+            <a href="/about" class="contact-cta primary">
+              <span>About Me</span>
+            </a>
+            <a
+              href="https://forms.d17e.dev/contact"
+              class="contact-cta secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>Get in Touch</span>
+            </a>
+          </div>
+          <div class="social-section">
+            <SocialLinks
+              showLinkedIn={true}
+              showGitHub={true}
+              showMastodon={true}
+            />
+          </div>
         </div>
-        <div class="social-section">
-          <SocialLinks
-            showLinkedIn={true}
-            showGitHub={true}
-            showMastodon={true}
-          />
-        </div>
-      </div>
-    </section>
+      </section>
+    </HydraBackground>
 
     <Footer />
   </body>
