@@ -151,7 +151,7 @@
     async function initCanvas() {
         const ctx = canvas.getContext("2d");
         const width = 1472;
-        const height = 488;
+        const height = 448;
 
         // Set canvas size
         canvas.width = width;
@@ -208,7 +208,7 @@
         const effectiveMin = 0.3;
         const effectiveMax = 0.7;
         const effectiveRange = effectiveMax - effectiveMin;
-        const animationDuration = 300000; // 300 seconds
+        const animationDuration = 150000; // 150 seconds
         let startTime = performance.now();
 
         function render() {
@@ -296,8 +296,8 @@
         <!-- SVG version with filters (desktop) -->
         <svg
             width="1472"
-            height="488"
-            viewBox="0 0 1472 488"
+            height="448"
+            viewBox="0 0 1472 448"
             xmlns="http://www.w3.org/2000/svg"
             role="img"
             aria-label="D17E Logo"
@@ -409,14 +409,14 @@
             </defs>
 
             <!-- Render main logo (always fully visible) -->
-            <image href="/logo/d17e-logo.png" width="1472" height="488" />
+            <image href="/logo/d17e-logo.png" width="1472" height="448" />
 
             <!-- Render augmented layers with masks -->
             {#each images as img}
                 <image
                     href={img.url}
                     width="1472"
-                    height="488"
+                    height="448"
                     mask="url(#mask-{img.id})"
                 />
             {/each}
