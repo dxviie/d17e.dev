@@ -3,31 +3,652 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
 import LandingLogo from "../components/LandingLogo.svelte";
-import NoisePlayground from "../components/NoisePlayground.svelte";
+import Footer from "../components/Footer.astro";
+import SocialLinks from "../components/SocialLinks.astro";
 ---
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-    </head>
-    <body>
-        <div class="statusbar"></div>
-        <Navigation />
-        <main class="landing">
-            <LandingLogo client:only />
-        </main>
-    </body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <div class="statusbar"></div>
+
+    <!-- Hero Section - Full Page LandingLogo -->
+    <section class="hero">
+      <LandingLogo client:only />
+      <div class="scroll-indicator">
+        <span class="scroll-text">scroll</span>
+        <div class="scroll-arrow">↓</div>
+      </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="section intro-section">
+      <div class="section-content">
+        <div class="intro-header">
+          <img
+            src="/avatar_me_vera_round.png"
+            class="avatar"
+            alt="David Vandenbogaerde"
+          />
+          <div class="intro-title">
+            <h1>Hi, I'm <span class="highlight">David Vandenbogaerde</span></h1>
+            <p class="subtitle">or <span class="d17e">d17e</span> for short</p>
+          </div>
+        </div>
+        <p class="intro-text">
+          A creative technologist based in Amsterdam, blending <em>code</em>, <em
+            >art</em
+          >, and <em>ideas</em>
+          into digital experiences. With over 20 years in software engineering, I
+          now split my time between building things that work and making things that
+          move.
+        </p>
+      </div>
+    </section>
+
+    <!-- Code Section -->
+    <section class="section code-section">
+      <div class="section-content">
+        <div class="section-label">I code.</div>
+        <h2>Software Engineering</h2>
+        <p>
+          From enterprise systems to creative tooling — I've spent two decades
+          turning complex problems into elegant solutions. My journey has taken
+          me through C++, Java, and into the modern web with TypeScript, Svelte,
+          and Astro.
+        </p>
+        <div class="tech-tags">
+          <span class="tag">TypeScript</span>
+          <span class="tag">Svelte</span>
+          <span class="tag">Astro</span>
+          <span class="tag">React</span>
+          <span class="tag">SVG</span>
+          <span class="tag">WebGL</span>
+        </div>
+        <div class="section-links">
+          <a href="/projects" class="section-cta">
+            <span>View Projects</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://github.com/dxviie"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/d16de/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Art Section -->
+    <section class="section art-section">
+      <div class="section-content">
+        <div class="section-label">I art.</div>
+        <h2>Creative Exploration</h2>
+        <p>
+          In 2022, I carved out space for artistic exploration. What started as
+          experiments with generative art has grown into a practice spanning
+          video, pen plotting, and creative coding. Each piece is a conversation
+          between algorithm and intention.
+        </p>
+        <div class="art-mediums">
+          <div class="medium">
+            <span class="medium-icon">◎</span>
+            <span class="medium-name">Generative Art</span>
+          </div>
+          <div class="medium">
+            <span class="medium-icon">✎</span>
+            <span class="medium-name">Pen Plotting</span>
+          </div>
+          <div class="medium">
+            <span class="medium-icon">▶</span>
+            <span class="medium-name">Video</span>
+          </div>
+        </div>
+        <div class="section-links">
+          <a href="/posts" class="section-cta">
+            <span>Browse Media</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://www.instagram.com/d17e.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ideas Section -->
+    <section class="section ideas-section">
+      <div class="section-content">
+        <div class="section-label">Ideas.</div>
+        <h2>Thinking & Sharing</h2>
+        <p>
+          I believe in learning something new every day. Whether it's diving
+          deep into a technical challenge or exploring the intersection of
+          creativity and code — I write about it. My blog is where ideas take
+          shape and stories find their voice.
+        </p>
+        <div class="ideas-focus">
+          <div class="focus-item">
+            <span class="focus-label">Educator</span>
+            <span class="focus-desc"
+              >Sharing knowledge through writing and workshops</span
+            >
+          </div>
+          <div class="focus-item">
+            <span class="focus-label">Thinker</span>
+            <span class="focus-desc"
+              >Exploring the edges of technology and creativity</span
+            >
+          </div>
+          <div class="focus-item">
+            <span class="focus-label">Communicator</span>
+            <span class="focus-desc">Making complex ideas accessible</span>
+          </div>
+        </div>
+        <div class="section-links">
+          <a href="/blog" class="section-cta">
+            <span>Read the Blog</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://buttondown.com/d17e.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            Newsletter
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section">
+      <div class="section-content">
+        <h2>Let's Connect</h2>
+        <p>
+          Whether you have a project in mind, want to collaborate, or just want
+          to say hello — I'd love to hear from you.
+        </p>
+        <div class="contact-actions">
+          <a href="/about" class="contact-cta primary">
+            <span>About Me</span>
+          </a>
+          <a
+            href="https://forms.d17e.dev/contact"
+            class="contact-cta secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Get in Touch</span>
+          </a>
+        </div>
+        <div class="social-section">
+          <SocialLinks
+            showLinkedIn={true}
+            showGitHub={true}
+            showMastodon={true}
+          />
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </body>
 </html>
 
 <style>
-    .landing {
-        width: calc(100vw - 3rem);
-        max-width: 1200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f5f5f5;
+  /* Hero Section */
+  .hero {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    position: relative;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: bounce 2s ease-in-out infinite;
+    opacity: 0.6;
+  }
+
+  .scroll-text {
+    font-family: "nudica_monolight", serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color);
+  }
+
+  .scroll-arrow {
+    font-size: 1.5rem;
+    color: var(--color);
+  }
+
+  @keyframes bounce {
+    0%,
+    100% {
+      transform: translateY(0);
     }
+    50% {
+      transform: translateY(10px);
+    }
+  }
+
+  /* Section Base Styles */
+  .section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+    box-sizing: border-box;
+  }
+
+  .section-content {
+    max-width: 720px;
+    width: 100%;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: "nudica_monobold", serif;
+    font-size: 1.5rem;
+    padding: 0.3rem 1rem;
+    margin-bottom: 1rem;
+    color: var(--bg-color);
+    background-color: var(--color);
+  }
+
+  .section h2 {
+    font-family: "nudica_monobold", serif;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--color);
+  }
+
+  .section p {
+    font-family: "argesta_regular", serif;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--color);
+    margin-bottom: 2rem;
+  }
+
+  .section p em {
+    color: var(--accent-color);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* Introduction Section */
+  .intro-section {
+    background-color: var(--bg-color);
+  }
+
+  .intro-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-color);
+  }
+
+  .intro-title h1 {
+    font-family: "nudica_monobold", serif;
+    font-size: 3rem;
+    margin: 0;
+    color: var(--color);
+  }
+
+  .intro-title .highlight {
+    color: var(--accent-color);
+  }
+
+  .intro-title .subtitle {
+    font-family: "nudica_monolight", serif;
+    font-size: 1.25rem;
+    margin: 0.5rem 0 0;
+    color: var(--color);
+    opacity: 0.8;
+  }
+
+  .d17e {
+    font-family: "nudica_monolight", serif;
+    color: var(--accent-color);
+  }
+
+  .intro-text {
+    font-size: 1.35rem !important;
+  }
+
+  /* Code Section */
+  .code-section {
+    background: linear-gradient(
+      135deg,
+      var(--bg-color) 0%,
+      rgba(var(--accent-rgb), 0.05) 100%
+    );
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .tag {
+    font-family: "nudica_monolight", serif;
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    background-color: var(--color);
+    color: var(--bg-color);
+    border-radius: 2rem;
+  }
+
+  /* Art Section */
+  .art-section {
+    background-color: var(--bg-color);
+    position: relative;
+  }
+
+  .art-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--border-color),
+      transparent
+    );
+  }
+
+  .art-mediums {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .medium {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .medium-icon {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+  }
+
+  .medium-name {
+    font-family: "nudica_monolight", serif;
+    font-size: 1rem;
+    color: var(--color);
+  }
+
+  /* Ideas Section */
+  .ideas-section {
+    background: linear-gradient(
+      180deg,
+      var(--bg-color) 0%,
+      rgba(var(--accent-rgb), 0.08) 100%
+    );
+  }
+
+  .ideas-focus {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent-color);
+  }
+
+  .focus-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .focus-label {
+    font-family: "nudica_monobold", serif;
+    font-size: 1.1rem;
+    color: var(--color);
+  }
+
+  .focus-desc {
+    font-family: "argesta_regular", serif;
+    font-size: 1rem;
+    color: var(--color);
+    opacity: 0.7;
+  }
+
+  /* Section Links */
+  .section-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .section-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: "nudica_monobold", serif;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--color);
+    color: var(--bg-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .section-cta:hover {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
+  .section-cta .arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .section-cta:hover .arrow {
+    transform: translateX(4px);
+  }
+
+  .section-link {
+    font-family: "nudica_monolight", serif;
+    font-size: 1rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--accent-color);
+    padding-bottom: 2px;
+  }
+
+  .section-link:hover {
+    border-bottom-style: solid;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    background-color: var(--bg-color);
+    text-align: center;
+    position: relative;
+  }
+
+  .contact-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--border-color),
+      transparent
+    );
+  }
+
+  .contact-section .section-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-section h2 {
+    font-size: 3rem;
+  }
+
+  .contact-section p {
+    max-width: 500px;
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .contact-cta {
+    font-family: "nudica_monobold", serif;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .contact-cta.primary {
+    background-color: var(--color);
+    color: var(--bg-color);
+  }
+
+  .contact-cta.secondary {
+    background-color: var(--accent-color);
+    color: white;
+  }
+
+  .contact-cta:hover {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+
+  .social-section {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .section {
+      padding: 4rem 1.5rem;
+      min-height: auto;
+    }
+
+    .intro-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+    }
+
+    .intro-title h1 {
+      font-size: 2.2rem;
+    }
+
+    .section h2 {
+      font-size: 2rem;
+    }
+
+    .section p {
+      font-size: 1.1rem;
+    }
+
+    .contact-section h2 {
+      font-size: 2.2rem;
+    }
+
+    .art-mediums {
+      gap: 1rem;
+    }
+
+    .section-links {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .contact-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .contact-cta {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .scroll-indicator {
+      bottom: 1rem;
+    }
+
+    .intro-title h1 {
+      font-size: 1.8rem;
+    }
+
+    .section-label {
+      font-size: 1.2rem;
+    }
+  }
 </style>
