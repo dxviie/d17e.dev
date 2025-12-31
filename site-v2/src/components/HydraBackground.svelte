@@ -5,8 +5,7 @@
      * HydraBackground - A wrapper component that renders Hydra visuals behind its content
      *
      * This component creates a canvas that fills its container and renders Hydra code
-     * as a background for the slotted content. It pauses rendering when off-screen
-     * to prevent scroll jank on mobile.
+     * as a background for the slotted content.
      *
      * Usage:
      * <HydraBackground code="osc(10, 0.1, 0.8).out()">
@@ -40,55 +39,45 @@
     let hydra = $state(null);
     let mounted = $state(false);
     let initialized = $state(false);
-    let isVisible = $state(false);
-    let animationId = null;
     let resizeObserver = null;
-    let visibilityObserver = null;
 
     onMount(() => {
         mounted = true;
 
         return () => {
-            // Cleanup
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
             if (resizeObserver) {
                 resizeObserver.disconnect();
             }
-            if (visibilityObserver) {
-                visibilityObserver.disconnect();
+            // Clean up Hydra instance
+            if (hydra) {
+                try {
+                    // Stop the render loop if possible
+                    if (hydra.loop) {
+                        hydra.loop.stop();
+                    }
+                } catch (e) {
+                    // Ignore cleanup errors
+                }
             }
         };
     });
 
     // Initialize Hydra when canvas is available
     $effect(() => {
-        if (canvas && mounted && !initialized) {
+        if (canvas && container && mounted && !initialized) {
             initHydra();
         }
     });
 
-    // Re-execute code when it changes
+    // Re-execute code when it changes (but only after initialization)
     $effect(() => {
         if (hydra && code && initialized) {
             executeCode(code);
         }
     });
 
-    // Control animation based on visibility
-    $effect(() => {
-        if (hydra && initialized) {
-            if (isVisible) {
-                startRendering();
-            } else {
-                stopRendering();
-            }
-        }
-    });
-
     async function initHydra() {
-        if (!canvas || !container) return;
+        if (!canvas || !container || initialized) return;
 
         try {
             // Dynamically import Hydra to avoid SSR issues
@@ -106,14 +95,14 @@
             canvas.width = width;
             canvas.height = height;
 
-            // Initialize Hydra with autoLoop disabled - we'll control it manually
+            // Initialize Hydra
             hydra = new Hydra({
                 canvas: canvas,
                 detectAudio: false,
                 enableStreamCapture: false,
                 width: width,
                 height: height,
-                autoLoop: false, // We control the loop manually for perf
+                autoLoop: true,
             });
 
             initialized = true;
@@ -121,25 +110,26 @@
             // Execute initial code
             executeCode(code);
 
-            // Set up visibility observer to pause when off-screen
-            visibilityObserver = new IntersectionObserver(
-                (entries) => {
-                    for (const entry of entries) {
-                        isVisible = entry.isIntersecting;
-                    }
-                },
-                {
-                    threshold: 0,
-                    rootMargin: "50px", // Start rendering slightly before visible
-                },
-            );
-            visibilityObserver.observe(container);
-
-            // Set up resize observer (throttled)
+            // Set up resize observer (throttled) - but skip during active scroll
             let resizeTimeout = null;
+            let isScrolling = false;
+            let scrollTimeout = null;
+
+            const handleScroll = () => {
+                isScrolling = true;
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    isScrolling = false;
+                }, 150);
+            };
+
+            window.addEventListener("scroll", handleScroll, { passive: true });
+
             resizeObserver = new ResizeObserver((entries) => {
-                // Throttle resize handling
+                // Skip resize during scroll to prevent jank
+                if (isScrolling) return;
                 if (resizeTimeout) return;
+
                 resizeTimeout = setTimeout(() => {
                     resizeTimeout = null;
                     for (const entry of entries) {
@@ -159,29 +149,11 @@
                             hydra.setResolution(scaledWidth, scaledHeight);
                         }
                     }
-                }, 100);
+                }, 200);
             });
             resizeObserver.observe(container);
         } catch (e) {
             console.error("[HydraBackground] Initialization error:", e);
-        }
-    }
-
-    function startRendering() {
-        if (animationId || !hydra) return;
-
-        function tick(dt) {
-            if (!isVisible) return;
-            hydra.tick(dt);
-            animationId = requestAnimationFrame(tick);
-        }
-        animationId = requestAnimationFrame(tick);
-    }
-
-    function stopRendering() {
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-            animationId = null;
         }
     }
 
@@ -227,6 +199,9 @@
         position: relative;
         width: 100%;
         overflow: hidden;
+        /* Tell browser this content can be skipped when off-screen */
+        content-visibility: auto;
+        contain-intrinsic-size: auto 100vh;
     }
 
     .hydra-canvas {
@@ -237,8 +212,9 @@
         height: 100%;
         z-index: 0;
         pointer-events: none;
-        /* Use GPU compositing but reduce quality slightly */
-        image-rendering: auto;
+        /* Promote to GPU layer for smoother compositing */
+        will-change: contents;
+        transform: translateZ(0);
     }
 
     .hydra-content {
