@@ -19,10 +19,6 @@ const {title, description, image = '/logo-landing-og.jpg'} = Astro.props;
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
 <link rel="icon" type="image/png" href="/favicon-32x32.png"/>
 <meta name="generator" content={Astro.generator}/>
-
-<!-- Preload critical fonts to reduce CLS -->
-<link rel="preload" href="/fonts/nudicamono-bold-webfont.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/nudicamono-light-webfont.woff" as="font" type="font/woff" crossorigin />
 {import.meta.env.PROD &&
 <script async src="https://umami.d17e.dev/script.js" data-website-id="300da643-d89e-4e5c-b834-8f626b092c92"/>
   }
