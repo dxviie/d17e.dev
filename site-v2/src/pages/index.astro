@@ -346,8 +346,22 @@ import SocialLinks from "../components/SocialLinks.astro";
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    animation: bounce 2s ease-in-out infinite;
-    opacity: 0.6;
+    animation:
+      bounce 2s ease-in-out infinite,
+      scroll-fade linear forwards;
+    animation-timeline: auto, scroll(root);
+    animation-range:
+      normal,
+      0vh 66vh;
+  }
+
+  @keyframes scroll-fade {
+    from {
+      opacity: 0.6;
+    }
+    to {
+      opacity: 0;
+    }
   }
 
   .scroll-text {
@@ -767,38 +781,3 @@ import SocialLinks from "../components/SocialLinks.astro";
     }
   }
 </style>
-
-<script>
-  function initScrollFade() {
-    const scrollIndicator = document.querySelector(
-      ".scroll-indicator",
-    ) as HTMLElement;
-    const hero = document.querySelector(".hero") as HTMLElement;
-
-    if (!scrollIndicator || !hero) {
-      // Elements not ready yet, try again
-      requestAnimationFrame(initScrollFade);
-      return;
-    }
-
-    const baseOpacity = 0.6;
-
-    function updateOpacity() {
-      const heroHeight = hero.offsetHeight;
-      const fadeOutPoint = heroHeight * (2 / 3);
-      const scrollY = window.scrollY;
-      const opacity = Math.max(0, baseOpacity * (1 - scrollY / fadeOutPoint));
-      scrollIndicator.style.opacity = String(opacity);
-    }
-
-    window.addEventListener("scroll", updateOpacity, { passive: true });
-    updateOpacity(); // Initial call
-  }
-
-  // Start checking for elements
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initScrollFade);
-  } else {
-    initScrollFade();
-  }
-</script>
