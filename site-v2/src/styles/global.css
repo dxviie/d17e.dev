@@ -47,6 +47,11 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+    /* Size adjustment to minimize CLS when loading */
+    size-adjust: 100%;
+    ascent-override: 95%;
+    descent-override: 20%;
+    line-gap-override: 0%;
 }
 
 @font-face {
@@ -55,6 +60,10 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+    size-adjust: 100%;
+    ascent-override: 95%;
+    descent-override: 20%;
+    line-gap-override: 0%;
 }
 
 @font-face {
@@ -63,6 +72,10 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+    size-adjust: 105%;
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
 }
 
 @font-face {

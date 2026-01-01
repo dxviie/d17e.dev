@@ -1,0 +1,185 @@
+---
+/**
+ * CSSBackground - A lightweight alternative to HydraBackground
+ * Uses pure CSS for animated noise/gradient backgrounds without heavy JS
+ */
+interface Props {
+    variant?: "noise" | "voronoi" | "gradient" | "osc" | "default";
+    blendMode?: string;
+    opacity?: number;
+}
+
+const {
+    variant = "default",
+    blendMode = "multiply",
+    opacity = 0.5,
+} = Astro.props;
+---
+
+<div class="css-bg-wrapper" data-variant={variant}>
+    <div
+        class="css-bg-layer"
+        style={`mix-blend-mode: ${blendMode}; opacity: ${opacity};`}
+    >
+    </div>
+    <div class="css-bg-content">
+        <slot />
+    </div>
+</div>
+
+<style>
+    .css-bg-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .css-bg-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    .css-bg-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Noise variant - subtle animated grain */
+    [data-variant="noise"] .css-bg-layer {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(24, 24, 235, 0.8),
+                rgba(240, 23, 23, 0.6)
+            ),
+            url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        animation: noise-shift 20s ease-in-out infinite alternate;
+    }
+
+    /* Voronoi variant - geometric pattern */
+    [data-variant="voronoi"] .css-bg-layer {
+        background:
+            radial-gradient(
+                circle at 20% 30%,
+                rgba(220, 225, 240, 0.6) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                circle at 80% 70%,
+                rgba(225, 230, 245, 0.5) 0%,
+                transparent 50%
+            ),
+            radial-gradient(
+                circle at 50% 50%,
+                rgba(230, 235, 250, 0.4) 0%,
+                transparent 60%
+            ),
+            linear-gradient(
+                135deg,
+                rgba(245, 248, 255, 0.9),
+                rgba(240, 245, 255, 0.7)
+            );
+        animation: voronoi-shift 25s ease-in-out infinite alternate;
+    }
+
+    /* Gradient variant - flowing gradient */
+    [data-variant="gradient"] .css-bg-layer {
+        background: linear-gradient(
+            135deg,
+            rgba(235, 230, 245, 0.7) 0%,
+            rgba(240, 235, 250, 0.5) 50%,
+            rgba(245, 240, 255, 0.6) 100%
+        );
+        animation: gradient-shift 30s ease-in-out infinite alternate;
+    }
+
+    /* Osc variant - oscillating stripes */
+    [data-variant="osc"] .css-bg-layer {
+        background:
+            repeating-linear-gradient(
+                90deg,
+                rgba(230, 235, 250, 0.3) 0px,
+                rgba(240, 245, 255, 0.2) 20px,
+                rgba(230, 235, 250, 0.3) 40px
+            ),
+            linear-gradient(
+                180deg,
+                rgba(245, 248, 255, 0.8),
+                rgba(240, 245, 255, 0.6)
+            );
+        animation: osc-shift 15s ease-in-out infinite alternate;
+    }
+
+    /* Default variant - simple subtle background */
+    [data-variant="default"] .css-bg-layer {
+        background: linear-gradient(
+            180deg,
+            rgba(250, 248, 245, 0.9) 0%,
+            rgba(255, 255, 255, 0.7) 100%
+        );
+    }
+
+    @keyframes noise-shift {
+        0% {
+            background-position:
+                0 0,
+                0 0;
+        }
+        100% {
+            background-position:
+                0 0,
+                100px 100px;
+        }
+    }
+
+    @keyframes voronoi-shift {
+        0% {
+            background-position:
+                0% 0%,
+                100% 100%,
+                50% 50%,
+                0% 0%;
+        }
+        100% {
+            background-position:
+                10% 10%,
+                90% 90%,
+                55% 45%,
+                0% 0%;
+        }
+    }
+
+    @keyframes gradient-shift {
+        0% {
+            background-position: 0% 50%;
+        }
+        100% {
+            background-position: 100% 50%;
+        }
+    }
+
+    @keyframes osc-shift {
+        0% {
+            background-position:
+                0 0,
+                0 0;
+        }
+        100% {
+            background-position:
+                40px 0,
+                0 0;
+        }
+    }
+
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+        .css-bg-layer {
+            animation: none !important;
+        }
+    }
+</style>

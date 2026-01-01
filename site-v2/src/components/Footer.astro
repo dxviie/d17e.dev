@@ -33,18 +33,25 @@ const year = new Date().getFullYear();
         width: calc(100% - 4rem);
         padding: 1rem 2rem;
         font-size: 0.75rem;
+        /* Prevent layout shift by reserving space */
+        min-height: 80px;
+        contain: layout style;
     }
 
     .footer-container {
         display: flex;
         width: 100%;
         margin: 0 auto;
+        /* Reserve minimum height for content */
+        min-height: 48px;
     }
 
     .footer-left {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        /* Reserve space for text lines */
+        min-height: 40px;
     }
 
     .made-with {

@@ -3,7 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
 import LandingLogo from "../components/LandingLogo.svelte";
-import HydraBackground from "../components/HydraBackground.svelte";
+import CSSBackground from "../components/CSSBackground.astro";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
@@ -17,45 +17,23 @@ import SocialLinks from "../components/SocialLinks.astro";
     <div class="statusbar"></div>
 
     <!-- Hero Section - Full Page LandingLogo -->
-    <HydraBackground
-      client:only
-      code={`
-        noise(9, .01)
-         .scale(1, 1, ()=> window.innerWidth / window.innerHeight)
-          .color(0.95, 0.92, 0.9)
-          .modulateRotate(osc(99, 0.015), 0.05)
-          .brightness(0.4)
-          .contrast(1.05)
-  .luma(.2, 0.3)
-  .thresh(.2)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.4}
+    <CSSBackground
+      variant="noise"
+      blendMode="normal"
+      opacity={1}
+      client:visible
     >
       <section class="hero">
-        <LandingLogo client:only />
+        <LandingLogo client:visible />
         <div class="scroll-indicator">
           <span class="scroll-text">scroll</span>
           <div class="scroll-arrow">↓</div>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <!-- Introduction Section -->
-    <HydraBackground
-      client:only
-      code={`
-        noise(3, 0.1)
-          .color(0.95, 0.92, 0.9)
-          .modulateScale(osc(2, 0.05), 0.05)
-          .brightness(0.4)
-          .contrast(1.05)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.5}
-    >
+    <CSSBackground variant="noise" blendMode="multiply" opacity={0.5}>
       <section class="section intro-section">
         <div class="section-content">
           <div class="intro-header">
@@ -63,6 +41,8 @@ import SocialLinks from "../components/SocialLinks.astro";
               src="/avatar_me_vera_round.png"
               class="avatar"
               alt="David Vandenbogaerde"
+              width="120"
+              height="120"
             />
             <div class="intro-title">
               <h1>
@@ -83,22 +63,10 @@ import SocialLinks from "../components/SocialLinks.astro";
           </p>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <!-- Code Section -->
-    <HydraBackground
-      client:only
-      code={`
-        voronoi(8, 0.3, 0.3)
-          .color(0.85, 0.88, 0.95)
-          .modulatePixelate(noise(2, 0.2), 50, 20)
-          .brightness(0.35)
-          .contrast(1.1)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.5}
-    >
+    <CSSBackground variant="voronoi" blendMode="multiply" opacity={0.5}>
       <section class="section code-section">
         <div class="section-content">
           <div class="section-label">I code.</div>
@@ -141,23 +109,10 @@ import SocialLinks from "../components/SocialLinks.astro";
           </div>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <!-- Art Section -->
-    <HydraBackground
-      client:only
-      code={`
-        osc(6, 0.08, 0.8)
-          .kaleid(3)
-          .color(0.95, 0.85, 0.88)
-          .modulateRotate(osc(2, 0.1), 0.2)
-          .brightness(0.4)
-          .contrast(1.05)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.5}
-    >
+    <CSSBackground variant="osc" blendMode="multiply" opacity={0.5}>
       <section class="section art-section">
         <div class="section-content">
           <div class="section-label">I art.</div>
@@ -198,22 +153,10 @@ import SocialLinks from "../components/SocialLinks.astro";
           </div>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <!-- Ideas Section -->
-    <HydraBackground
-      client:only
-      code={`
-        gradient(0.5)
-          .color(0.92, 0.9, 0.95)
-          .add(voronoi(15, 0.2, 0.2).color(0.1, 0.08, 0.12), 0.15)
-          .modulateHue(osc(1, 0.05), 0.1)
-          .brightness(0.35)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.5}
-    >
+    <CSSBackground variant="gradient" blendMode="multiply" opacity={0.5}>
       <section class="section ideas-section">
         <div class="section-content">
           <div class="section-label">Ideas.</div>
@@ -258,23 +201,10 @@ import SocialLinks from "../components/SocialLinks.astro";
           </div>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <!-- Contact Section -->
-    <HydraBackground
-      client:only
-      code={`
-        osc(2, 0.04, 1)
-          .color(0.9, 0.92, 0.98)
-          .rotate(0.1, 0.02)
-          .modulateScale(noise(1, 0.1), 0.1)
-          .brightness(0.45)
-          .contrast(1.02)
-          .out()
-      `}
-      blendMode="multiply"
-      opacity={0.5}
-    >
+    <CSSBackground variant="osc" blendMode="multiply" opacity={0.5}>
       <section class="section contact-section">
         <div class="section-content">
           <h2>Let's Connect</h2>
@@ -304,7 +234,7 @@ import SocialLinks from "../components/SocialLinks.astro";
           </div>
         </div>
       </section>
-    </HydraBackground>
+    </CSSBackground>
 
     <Footer />
   </body>
