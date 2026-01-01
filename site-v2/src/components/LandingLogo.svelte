@@ -409,7 +409,12 @@
             </defs>
 
             <!-- Render main logo (always fully visible) -->
-            <image href="/logo/d17e-logo.png" width="1472" height="448" />
+            <image
+                href="/logo/d17e-logo.png"
+                width="1472"
+                height="448"
+                fetchpriority="high"
+            />
 
             <!-- Render augmented layers with masks -->
             {#each images as img}
