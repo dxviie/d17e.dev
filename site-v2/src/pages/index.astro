@@ -3,7 +3,6 @@ import BaseHead from "../components/BaseHead.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Navigation from "../components/Navigation.astro";
 import LandingLogo from "../components/LandingLogo.svelte";
-import CSSBackground from "../components/CSSBackground.astro";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
 ---
@@ -17,224 +16,207 @@ import SocialLinks from "../components/SocialLinks.astro";
     <div class="statusbar"></div>
 
     <!-- Hero Section - Full Page LandingLogo -->
-    <CSSBackground
-      variant="noise"
-      blendMode="normal"
-      opacity={1}
-      client:visible
-    >
-      <section class="hero">
-        <LandingLogo client:visible />
-        <div class="scroll-indicator">
-          <span class="scroll-text">scroll</span>
-          <div class="scroll-arrow">↓</div>
-        </div>
-      </section>
-    </CSSBackground>
+    <section class="hero">
+      <LandingLogo client:visible />
+      <div class="scroll-indicator">
+        <span class="scroll-text">scroll</span>
+        <div class="scroll-arrow">↓</div>
+      </div>
+    </section>
 
     <!-- Introduction Section -->
-    <CSSBackground variant="noise" blendMode="multiply" opacity={0.5}>
-      <section class="section intro-section">
-        <div class="section-content">
-          <div class="intro-header">
-            <img
-              src="/avatar_me_vera_round.png"
-              class="avatar"
-              alt="David Vandenbogaerde"
-              width="120"
-              height="120"
-            />
-            <div class="intro-title">
-              <h1>
-                Hi, I'm <span class="highlight">David Vandenbogaerde</span>
-              </h1>
-              <p class="subtitle">
-                or <span class="d17e">d17e</span> for short
-              </p>
-            </div>
+    <section class="section intro-section">
+      <div class="section-content">
+        <div class="intro-header">
+          <img
+            src="/avatar_me_vera_round.png"
+            class="avatar"
+            alt="David Vandenbogaerde"
+            width="120"
+            height="120"
+          />
+          <div class="intro-title">
+            <h1>
+              Hi, I'm <span class="highlight">David Vandenbogaerde</span>
+            </h1>
+            <p class="subtitle">
+              or <span class="d17e">d17e</span> for short
+            </p>
           </div>
-          <p class="intro-text">
-            A creative technologist based in Amsterdam, blending <em>code</em>, <em
-              >art</em
-            >, and <em>ideas</em>
-            into digital experiences. With over 20 years in software engineering,
-            I now split my time between building things that work and making things
-            that move.
-          </p>
         </div>
-      </section>
-    </CSSBackground>
+        <p class="intro-text">
+          A creative technologist based in Amsterdam, blending <em>code</em>, <em
+            >art</em
+          >, and <em>ideas</em>
+          into digital experiences. With over 20 years in software engineering, I
+          now split my time between building things that work and making things that
+          move.
+        </p>
+      </div>
+    </section>
 
     <!-- Code Section -->
-    <CSSBackground variant="voronoi" blendMode="multiply" opacity={0.5}>
-      <section class="section code-section">
-        <div class="section-content">
-          <div class="section-label">I code.</div>
-          <h2>Software Engineering</h2>
-          <p>
-            From enterprise systems to creative tooling — I've spent two decades
-            turning complex problems into elegant solutions. My journey has
-            taken me through C++, Java, and into the modern web with TypeScript,
-            Svelte, and Astro.
-          </p>
-          <div class="tech-tags">
-            <span class="tag">TypeScript</span>
-            <span class="tag">Svelte</span>
-            <span class="tag">Astro</span>
-            <span class="tag">React</span>
-            <span class="tag">SVG</span>
-            <span class="tag">WebGL</span>
-          </div>
-          <div class="section-links">
-            <a href="/projects" class="section-cta">
-              <span>View Projects</span>
-              <span class="arrow">→</span>
-            </a>
-            <a
-              href="https://github.com/dxviie"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="section-link"
-            >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/d16de/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="section-link"
-            >
-              LinkedIn
-            </a>
-          </div>
+    <section class="section code-section">
+      <div class="section-content">
+        <div class="section-label">I code.</div>
+        <h2>Software Engineering</h2>
+        <p>
+          From enterprise systems to creative tooling — I've spent two decades
+          turning complex problems into elegant solutions. My journey has taken
+          me through C++, Java, and into the modern web with TypeScript, Svelte,
+          and Astro.
+        </p>
+        <div class="tech-tags">
+          <span class="tag">TypeScript</span>
+          <span class="tag">Svelte</span>
+          <span class="tag">Astro</span>
+          <span class="tag">React</span>
+          <span class="tag">SVG</span>
+          <span class="tag">WebGL</span>
         </div>
-      </section>
-    </CSSBackground>
+        <div class="section-links">
+          <a href="/projects" class="section-cta">
+            <span>View Projects</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://github.com/dxviie"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/d16de/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- Art Section -->
-    <CSSBackground variant="osc" blendMode="multiply" opacity={0.5}>
-      <section class="section art-section">
-        <div class="section-content">
-          <div class="section-label">I art.</div>
-          <h2>Creative Exploration</h2>
-          <p>
-            In 2022, I carved out space for artistic exploration. What started
-            as experiments with generative art has grown into a practice
-            spanning video, pen plotting, and creative coding. Each piece is a
-            conversation between algorithm and intention.
-          </p>
-          <div class="art-mediums">
-            <div class="medium">
-              <span class="medium-icon">◎</span>
-              <span class="medium-name">Generative Art</span>
-            </div>
-            <div class="medium">
-              <span class="medium-icon">✎</span>
-              <span class="medium-name">Pen Plotting</span>
-            </div>
-            <div class="medium">
-              <span class="medium-icon">▶</span>
-              <span class="medium-name">Video</span>
-            </div>
+    <section class="section art-section">
+      <div class="section-content">
+        <div class="section-label">I art.</div>
+        <h2>Creative Exploration</h2>
+        <p>
+          In 2022, I carved out space for artistic exploration. What started as
+          experiments with generative art has grown into a practice spanning
+          video, pen plotting, and creative coding. Each piece is a conversation
+          between algorithm and intention.
+        </p>
+        <div class="art-mediums">
+          <div class="medium">
+            <span class="medium-icon">◎</span>
+            <span class="medium-name">Generative Art</span>
           </div>
-          <div class="section-links">
-            <a href="/posts" class="section-cta">
-              <span>Browse Media</span>
-              <span class="arrow">→</span>
-            </a>
-            <a
-              href="https://www.instagram.com/d17e.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="section-link"
-            >
-              Instagram
-            </a>
+          <div class="medium">
+            <span class="medium-icon">✎</span>
+            <span class="medium-name">Pen Plotting</span>
+          </div>
+          <div class="medium">
+            <span class="medium-icon">▶</span>
+            <span class="medium-name">Video</span>
           </div>
         </div>
-      </section>
-    </CSSBackground>
+        <div class="section-links">
+          <a href="/posts" class="section-cta">
+            <span>Browse Media</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://www.instagram.com/d17e.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            Instagram
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- Ideas Section -->
-    <CSSBackground variant="gradient" blendMode="multiply" opacity={0.5}>
-      <section class="section ideas-section">
-        <div class="section-content">
-          <div class="section-label">Ideas.</div>
-          <h2>Thinking & Sharing</h2>
-          <p>
-            I believe in learning something new every day. Whether it's diving
-            deep into a technical challenge or exploring the intersection of
-            creativity and code — I write about it. My blog is where ideas take
-            shape and stories find their voice.
-          </p>
-          <div class="ideas-focus">
-            <div class="focus-item">
-              <span class="focus-label">Educator</span>
-              <span class="focus-desc"
-                >Sharing knowledge through writing and workshops</span
-              >
-            </div>
-            <div class="focus-item">
-              <span class="focus-label">Thinker</span>
-              <span class="focus-desc"
-                >Exploring the edges of technology and creativity</span
-              >
-            </div>
-            <div class="focus-item">
-              <span class="focus-label">Communicator</span>
-              <span class="focus-desc">Making complex ideas accessible</span>
-            </div>
-          </div>
-          <div class="section-links">
-            <a href="/blog" class="section-cta">
-              <span>Read the Blog</span>
-              <span class="arrow">→</span>
-            </a>
-            <a
-              href="https://buttondown.com/d17e.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="section-link"
+    <section class="section ideas-section">
+      <div class="section-content">
+        <div class="section-label">Ideas.</div>
+        <h2>Thinking & Sharing</h2>
+        <p>
+          I believe in learning something new every day. Whether it's diving
+          deep into a technical challenge or exploring the intersection of
+          creativity and code — I write about it. My blog is where ideas take
+          shape and stories find their voice.
+        </p>
+        <div class="ideas-focus">
+          <div class="focus-item">
+            <span class="focus-label">Educator</span>
+            <span class="focus-desc"
+              >Sharing knowledge through writing and workshops</span
             >
-              Newsletter
-            </a>
+          </div>
+          <div class="focus-item">
+            <span class="focus-label">Thinker</span>
+            <span class="focus-desc"
+              >Exploring the edges of technology and creativity</span
+            >
+          </div>
+          <div class="focus-item">
+            <span class="focus-label">Communicator</span>
+            <span class="focus-desc">Making complex ideas accessible</span>
           </div>
         </div>
-      </section>
-    </CSSBackground>
+        <div class="section-links">
+          <a href="/blog" class="section-cta">
+            <span>Read the Blog</span>
+            <span class="arrow">→</span>
+          </a>
+          <a
+            href="https://buttondown.com/d17e.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="section-link"
+          >
+            Newsletter
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- Contact Section -->
-    <CSSBackground variant="osc" blendMode="multiply" opacity={0.5}>
-      <section class="section contact-section">
-        <div class="section-content">
-          <h2>Let's Connect</h2>
-          <p>
-            Whether you have a project in mind, want to collaborate, or just
-            want to say hello — I'd love to hear from you.
-          </p>
-          <div class="contact-actions">
-            <a href="/about" class="contact-cta primary">
-              <span>About Me</span>
-            </a>
-            <a
-              href="https://forms.d17e.dev/contact"
-              class="contact-cta secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Get in Touch</span>
-            </a>
-          </div>
-          <div class="social-section">
-            <SocialLinks
-              showLinkedIn={true}
-              showGitHub={true}
-              showMastodon={true}
-            />
-          </div>
+    <section class="section contact-section">
+      <div class="section-content">
+        <h2>Let's Connect</h2>
+        <p>
+          Whether you have a project in mind, want to collaborate, or just want
+          to say hello — I'd love to hear from you.
+        </p>
+        <div class="contact-actions">
+          <a href="/about" class="contact-cta primary">
+            <span>About Me</span>
+          </a>
+          <a
+            href="https://forms.d17e.dev/contact"
+            class="contact-cta secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Get in Touch</span>
+          </a>
         </div>
-      </section>
-    </CSSBackground>
+        <div class="social-section">
+          <SocialLinks
+            showLinkedIn={true}
+            showGitHub={true}
+            showMastodon={true}
+          />
+        </div>
+      </div>
+    </section>
 
     <Footer />
   </body>
