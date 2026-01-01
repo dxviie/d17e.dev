@@ -756,3 +756,38 @@ import SocialLinks from "../components/SocialLinks.astro";
     }
   }
 </style>
+
+<script>
+  function initScrollFade() {
+    const scrollIndicator = document.querySelector(
+      ".scroll-indicator",
+    ) as HTMLElement;
+    const hero = document.querySelector(".hero") as HTMLElement;
+
+    if (!scrollIndicator || !hero) {
+      // Elements not ready yet, try again
+      requestAnimationFrame(initScrollFade);
+      return;
+    }
+
+    const baseOpacity = 0.6;
+
+    function updateOpacity() {
+      const heroHeight = hero.offsetHeight;
+      const fadeOutPoint = heroHeight * (2 / 3);
+      const scrollY = window.scrollY;
+      const opacity = Math.max(0, baseOpacity * (1 - scrollY / fadeOutPoint));
+      scrollIndicator.style.opacity = String(opacity);
+    }
+
+    window.addEventListener("scroll", updateOpacity, { passive: true });
+    updateOpacity(); // Initial call
+  }
+
+  // Start checking for elements
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollFade);
+  } else {
+    initScrollFade();
+  }
+</script>
