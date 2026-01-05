@@ -330,6 +330,7 @@
     let isWide = false;
 
     $effect(() => {
+        if (!bentoConfig || !bentoConfig.color || !bentoConfig.bgColor) return;
         isMobile = window ? window.innerWidth < 768 : false;
         isWide = window ? window.innerWidth > 1200 : false;
 
@@ -954,7 +955,6 @@
     }
 
     :global(.about-link) {
-        color: var(--ldp-color);
         font-weight: bold;
     }
 
