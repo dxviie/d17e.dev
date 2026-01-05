@@ -1,23 +1,25 @@
 ---
 /**
-  * A component that shows a "DRAFT" indicator for content that's not published yet.
-  * Only visible in development mode.
-  */
+ * A component that shows a "DRAFT" indicator for content that's not published yet.
+ * Only visible in development mode.
+ */
 interface Props {
-  status?: string;
+    status?: string;
 }
 
-const {status} = Astro.props;
-const isDev = process.env.NODE_ENV !== 'production';
-const isDraft = status && status !== 'published';
+const { status } = Astro.props;
+const isDev = process.env.NODE_ENV !== "production";
+const isDraft = status && status !== "published";
 const shouldShow = isDev && isDraft;
 ---
 
-{shouldShow && (
-<div class="draft-indicator">
-  <span>DRAFT</span>
-</div>
-  )}
+{
+    shouldShow && (
+        <div class="draft-indicator">
+            <span>DRAFT</span>
+        </div>
+    )
+}
 
 <style>
     .draft-indicator {
@@ -31,6 +33,6 @@ const shouldShow = isDev && isDraft;
         z-index: 100;
         border-bottom-left-radius: 4px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        font-family: 'nudica_monolight', monospace;
+        font-family: "nudica_monolight", monospace;
     }
 </style>
