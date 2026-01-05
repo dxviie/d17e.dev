@@ -1059,38 +1059,38 @@
         transform: scale(0.75);
     }
 
-    :global(.rotating-svg) {
+    :global(.link-link .rotating-svg) {
         animation: etator 7s ease-in-out infinite;
         fill: var(--ldp-color);
     }
 
-    :global(.projects-svg) {
+    :global(.link-link .projects-svg) {
         animation: etatoragain 12s ease-in-out infinite;
         fill: var(--ldp-bg-color);
         stroke: var(--ldp-bg-color);
     }
 
-    :global(.blog-svg) {
+    :global(.link-link .blog-svg) {
         animation: etatoragain 12s ease-in-out infinite;
         stroke: var(--ldp-color);
         fill: var(--ldp-color);
     }
 
-    :global(.dice-svg) {
+    :global(.link-link .dice-svg) {
         animation: dice-rotate 30s linear infinite;
     }
 
-    :global(.icon-font) {
+    :global(.link-link .icon-font) {
         font-family: "bariol_icons", serif;
         margin-top: 3rem;
         margin-left: 1rem;
     }
 
-    :global(.rotating-contact) {
+    :global(.link-link .rotating-contact) {
         animation: rotate 24s ease-in-out infinite;
     }
 
-    :global(.smiley) {
+    :global(.about-container .smiley) {
         margin-left: 10rem;
         display: inline-block;
         animation: etator 15s ease-in-out infinite;
