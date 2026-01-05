@@ -15,6 +15,7 @@ import SocialLinks from "../components/SocialLinks.astro";
     </head>
     <body>
         <div class="statusbar"></div>
+        <Navigation />
 
         <!-- Hero Section - Full Page LandingLogo -->
         <HydraBackground
@@ -252,7 +253,7 @@ import SocialLinks from "../components/SocialLinks.astro";
         min-height: 66svh;
         padding: 2rem 2rem 9rem 2rem;
         display: flex;
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: var(--bg-color-transparent);
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -267,7 +268,7 @@ import SocialLinks from "../components/SocialLinks.astro";
         left: 0;
         right: 0;
         height: 50px;
-        background: linear-gradient(to bottom, transparent, white);
+        background: linear-gradient(to bottom, transparent, var(--bg-color));
         pointer-events: none;
     }
 

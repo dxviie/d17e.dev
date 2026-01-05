@@ -16,66 +16,70 @@
     --gray-light: 229, 233, 240;
     --gray-dark: 34, 41, 57;
     --gray-gradient: rgba(var(--gray-light), 50%), #fff;
-    --box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-    0 16px 32px rgba(var(--gray), 33%);
+    --box-shadow:
+        0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
+        0 16px 32px rgba(var(--gray), 33%);
 
     /* Theme variables */
-    --color: #1A202C;
-    --bg-color: #FFFFFF;
-    --button-bg-color: #1A202C;
+    --color: #1a202c;
+    --bg-color: #ffffff;
+    --bg-color-transparent: rgba(255, 255, 255, 0.8);
+    --button-bg-color: #1a202c;
     --bg-code: #f1f1f1;
     --color-code: #24292e;
     --border-color: #e1e4e8;
 }
 
 :root.dark {
-    --color: #FFFFFF;
+    --color: #ffffff;
     --bg-color: #1c1d20;
-    --button-bg-color: #FFFFFF;
+    --bg-color-transparent: rgba(28, 29, 32, 0.8);
+    --button-bg-color: #ffffff;
     --accent-color: #ff9957;
     --accent-rgb: 144, 205, 244; /* RGB values for dark mode accent-color */
     --bg-code: #2d333b;
     --color-code: #adbac7;
     --border-color: #444c56;
-    --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.5),
-    0 16px 32px rgba(0, 0, 0, 0.5);
+    --box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.5),
+        0 16px 32px rgba(0, 0, 0, 0.5);
 }
 
 @font-face {
-    font-family: 'nudica_monobold';
-    src: url('/fonts/nudicamono-bold-webfont.woff') format('woff');
+    font-family: "nudica_monobold";
+    src: url("/fonts/nudicamono-bold-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'nudica_monolight';
-    src: url('/fonts/nudicamono-light-webfont.woff') format('woff');
+    font-family: "nudica_monolight";
+    src: url("/fonts/nudicamono-light-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'argesta_regular';
-    src: url('/fonts/argestatext-regular-webfont.woff') format('woff');
+    font-family: "argesta_regular";
+    src: url("/fonts/argestatext-regular-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'bariol_icons';
-    src: url('/fonts/bariol_icons-webfont.woff') format('woff');
+    font-family: "bariol_icons";
+    src: url("/fonts/bariol_icons-webfont.woff") format("woff");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'caveat';
-    src: url('/fonts/Caveat-VariableFont_wght.ttf') format('truetype');
+    font-family: "caveat";
+    src: url("/fonts/Caveat-VariableFont_wght.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -95,7 +99,9 @@ body {
     color: var(--color);
     font-size: 20px;
     line-height: 1.7;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
 }
 
 main {
@@ -117,7 +123,7 @@ main {
 }
 
 .statusbar::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     right: 0;
@@ -180,7 +186,7 @@ a:hover {
 
 p {
     margin-bottom: 1em;
-    font-family: 'argesta_regular', serif;
+    font-family: "argesta_regular", serif;
 }
 
 .prose p {

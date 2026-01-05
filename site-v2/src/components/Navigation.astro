@@ -1,69 +1,87 @@
 ---
-import ColorModeToggle from './ColorModeToggle.astro';
-import PostsIcon from './icons/PostsIcon.astro';
-import BlogIcon from './icons/BlogIcon.astro';
+import ColorModeToggle from "./ColorModeToggle.astro";
+import PostsIcon from "./icons/PostsIcon.astro";
+import BlogIcon from "./icons/BlogIcon.astro";
 import ProjectsIcon from "./icons/ProjectsIcon.astro";
 import HomeIcon from "./icons/HomeIcon.astro";
 
 const pathname = Astro.url.pathname;
-const isHomePage = pathname === '/' || pathname === '';
-const isPostsIndex = pathname.endsWith('posts/') || pathname.endsWith('posts');
-const isBlogIndex = pathname.endsWith('blog/') || pathname.endsWith('blog');
-const isProjectsIndex = pathname.endsWith('projects/') || pathname.endsWith('projects');
-const isAboutPage = pathname.endsWith('about/') || pathname.endsWith('about');
+const isHomePage = pathname === "/" || pathname === "";
+const isPostsIndex = pathname.endsWith("posts/") || pathname.endsWith("posts");
+const isBlogIndex = pathname.endsWith("blog/") || pathname.endsWith("blog");
+const isProjectsIndex =
+    pathname.endsWith("projects/") || pathname.endsWith("projects");
+const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
 // Using JavaScript to detect URL parameters since Astro.url.searchParams may not work consistently
 let isComingFromBentoPage = false;
 ---
 
-{!isHomePage &&
 <nav id="main-nav">
-  <!-- HOME BUTTON -->
-  <a href="/" class="nav-item" id="home-nav-item" data-from-lp="false">
-    <div class={`icon-box ${isHomePage ? 'active' : ''}`} id="home-icon-box">
-      <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"}/>
-    </div>
-    <span class="nav-text" data-active={isHomePage}>home</span>
-  </a>
+    <!-- HOME BUTTON -->
+    <a href="/" class="nav-item" id="home-nav-item" data-from-lp="false">
+        <div
+            class={`icon-box ${isHomePage ? "active" : ""}`}
+            id="home-icon-box"
+        >
+            <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"} />
+        </div>
+        <span class="nav-text" data-active={isHomePage}>home</span>
+    </a>
 
-  <div class="spacer"></div>
+    <div class="spacer"></div>
 
-  <!-- PROJECTS BUTTON -->
-  <a href="/projects" class="nav-item">
-    <div class={`icon-box ${isProjectsIndex ? 'active' : ''}`} id="projects-icon-box">
-      <ProjectsIcon color={isProjectsIndex ? "var(--color)" : undefined}/>
-    </div>
-    <span class="nav-text" data-active={isProjectsIndex}>projects</span>
-  </a>
+    <!-- PROJECTS BUTTON -->
+    <a href="/projects" class="nav-item">
+        <div
+            class={`icon-box ${isProjectsIndex ? "active" : ""}`}
+            id="projects-icon-box"
+        >
+            <ProjectsIcon
+                color={isProjectsIndex ? "var(--color)" : undefined}
+            />
+        </div>
+        <span class="nav-text" data-active={isProjectsIndex}>projects</span>
+    </a>
 
-  <!-- POSTS BUTTON -->
-  <a href="/posts" class="nav-item">
-    <div class={`icon-box ${isPostsIndex ? 'active' : ''}`} id="posts-icon-box">
-      <PostsIcon color={isPostsIndex ? "var(--bg-color)" : undefined}/>
-    </div>
-    <span class="nav-text" data-active={isPostsIndex}>media</span>
-  </a>
+    <!-- POSTS BUTTON -->
+    <a href="/posts" class="nav-item">
+        <div
+            class={`icon-box ${isPostsIndex ? "active" : ""}`}
+            id="posts-icon-box"
+        >
+            <PostsIcon color={isPostsIndex ? "var(--bg-color)" : undefined} />
+        </div>
+        <span class="nav-text" data-active={isPostsIndex}>media</span>
+    </a>
 
-  <!-- BLOG BUTTON -->
-  <a href="/blog" class="nav-item">
-    <div class={`icon-box ${isBlogIndex ? 'active' : ''}`} id="blog-icon-box">
-      <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined}/>
-    </div>
-    <span class="nav-text" data-active={isBlogIndex}>blog</span>
-  </a>
+    <!-- BLOG BUTTON -->
+    <a href="/blog" class="nav-item">
+        <div
+            class={`icon-box ${isBlogIndex ? "active" : ""}`}
+            id="blog-icon-box"
+        >
+            <BlogIcon color={isBlogIndex ? "var(--bg-color)" : undefined} />
+        </div>
+        <span class="nav-text" data-active={isBlogIndex}>blog</span>
+    </a>
 
-  <!-- ABOUT BUTTON -->
-  <a href="/about" class="nav-item">
-    <div>
-      <div class={`about-icon ${isAboutPage ? 'active' : ''}`} id="about-icon">
-        <span class="rotating-about">?</span></div>
-    </div>
-    <span class="nav-text" data-active={isAboutPage}>about</span>
-  </a>
+    <!-- ABOUT BUTTON -->
+    <a href="/about" class="nav-item">
+        <div>
+            <div
+                class={`about-icon ${isAboutPage ? "active" : ""}`}
+                id="about-icon"
+            >
+                <span class="rotating-about">?</span>
+            </div>
+        </div>
+        <span class="nav-text" data-active={isAboutPage}>about</span>
+    </a>
 
-  <!-- COLOR MODE TOGGLE -->
-  <ColorModeToggle/>
+    <!-- COLOR MODE TOGGLE -->
+    <ColorModeToggle />
 </nav>
-  }
+
 <style>
     nav {
         position: fixed;
@@ -82,7 +100,7 @@ let isComingFromBentoPage = false;
     .nav-item {
         display: flex;
         align-items: center;
-        padding: 1rem .5rem;
+        padding: 1rem 0.5rem;
         text-decoration: none;
         color: var(--color);
         transition: all 0.2s ease;
@@ -116,7 +134,7 @@ let isComingFromBentoPage = false;
     }
 
     .nav-text {
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         margin-left: 0.5rem;
     }
 
@@ -147,7 +165,7 @@ let isComingFromBentoPage = false;
         justify-content: center;
         border-style: solid;
         border-width: 2px;
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         color: var(--bg-color);
         background-color: var(--color);
         font-size: medium;
@@ -177,7 +195,7 @@ let isComingFromBentoPage = false;
 
     :global(.back-to-landing-arrow) {
         display: block;
-        font-family: 'nudica_monobold', serif;
+        font-family: "nudica_monobold", serif;
         font-weight: bold;
         border-radius: 50%;
         width: 28px;
@@ -195,7 +213,7 @@ let isComingFromBentoPage = false;
         }
 
         .nav-item {
-            padding: .5rem .8rem;
+            padding: 0.5rem 0.8rem;
         }
 
         .nav-text {
@@ -210,7 +228,7 @@ let isComingFromBentoPage = false;
 
     /* PWA mode specific styles */
     @media (max-width: 600px) and (display-mode: standalone),
-    (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
+        (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
         nav {
             padding-bottom: 1.1rem;
         }
@@ -218,7 +236,7 @@ let isComingFromBentoPage = false;
 
     /* PWA mode specific styles */
     @media (max-width: 600px) and (display-mode: standalone),
-    (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
+        (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
         nav {
             padding-bottom: 1.1rem;
         }
@@ -235,132 +253,139 @@ let isComingFromBentoPage = false;
 </style>
 
 <script is:inline>
-  // Check if coming from landing page
-  const checkFromLandingPage = () => {
-    // Get the from-lp parameter from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const isFromLP = urlParams.has('from-lp');
+    // Check if coming from landing page
+    const checkFromLandingPage = () => {
+        // Get the from-lp parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const isFromLP = urlParams.has("from-lp");
 
-    // Find all navigation elements that need to be updated
-    const homeNavItem = document.getElementById('home-nav-item');
-    const homeIconBox = document.getElementById('home-icon-box');
+        // Find all navigation elements that need to be updated
+        const homeNavItem = document.getElementById("home-nav-item");
+        const homeIconBox = document.getElementById("home-icon-box");
 
-    if (homeNavItem && homeIconBox) {
-      if (isFromLP) {
-        // Coming from landing page - show back arrow
-        homeNavItem.setAttribute('data-from-lp', 'true');
-        homeNavItem.querySelector('.nav-text').textContent = 'back';
-        homeNavItem.href = '/bento';
+        if (homeNavItem && homeIconBox) {
+            if (isFromLP) {
+                // Coming from landing page - show back arrow
+                homeNavItem.setAttribute("data-from-lp", "true");
+                homeNavItem.querySelector(".nav-text").textContent = "back";
+                homeNavItem.href = "/bento";
 
-        // Replace with back arrow
-        homeIconBox.innerHTML = `<div class="back-to-landing-arrow">←</div>`;
-      } else {
-        // Not coming from landing page - show home icon
-        homeNavItem.removeAttribute('data-from-lp');
-        homeNavItem.querySelector('.nav-text').textContent = 'home';
+                // Replace with back arrow
+                homeIconBox.innerHTML = `<div class="back-to-landing-arrow">←</div>`;
+            } else {
+                // Not coming from landing page - show home icon
+                homeNavItem.removeAttribute("data-from-lp");
+                homeNavItem.querySelector(".nav-text").textContent = "home";
 
-        // Using a simpler approach to reload without the parameter
-        // This ensures we get the Astro-generated HomeIcon with proper styling
-        homeNavItem.querySelector('.nav-text').textContent = 'home';
+                // Using a simpler approach to reload without the parameter
+                // This ensures we get the Astro-generated HomeIcon with proper styling
+                homeNavItem.querySelector(".nav-text").textContent = "home";
 
-        // Reload the page without the parameter to restore the original state
-        if (window.location.search) {
-          // Only reload if we need to clear parameters
-          window.location.href = window.location.pathname;
-          return; // Stop execution to prevent flicker
+                // Reload the page without the parameter to restore the original state
+                if (window.location.search) {
+                    // Only reload if we need to clear parameters
+                    window.location.href = window.location.pathname;
+                    return; // Stop execution to prevent flicker
+                }
+            }
         }
-      }
-    }
-  };
+    };
 
-  const setupNav = () => {
-    const nav = document.getElementById('main-nav');
-    if (!nav) return;
+    const setupNav = () => {
+        const nav = document.getElementById("main-nav");
+        if (!nav) return;
 
-    // Detect if running as PWA (installed app)
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
-      window.navigator.standalone || // iOS Safari
-      document.referrer.includes('android-app://');
+        // Detect if running as PWA (installed app)
+        const isPWA =
+            window.matchMedia("(display-mode: standalone)").matches ||
+            window.navigator.standalone || // iOS Safari
+            document.referrer.includes("android-app://");
 
-    // Check if device is mobile or iPad with touch
-    const isMobileOrTablet = window.innerWidth <= 600 ||
-      (window.innerWidth <= 1024 && window.matchMedia('(pointer: coarse)').matches);
+        // Check if device is mobile or iPad with touch
+        const isMobileOrTablet =
+            window.innerWidth <= 600 ||
+            (window.innerWidth <= 1024 &&
+                window.matchMedia("(pointer: coarse)").matches);
 
-    // Apply bottom padding if in PWA mode on mobile or iPad
-    if (isPWA && isMobileOrTablet) {
-      nav.classList.add('pwa-mode');
-    } else {
-      nav.classList.remove('pwa-mode');
-    }
+        // Apply bottom padding if in PWA mode on mobile or iPad
+        if (isPWA && isMobileOrTablet) {
+            nav.classList.add("pwa-mode");
+        } else {
+            nav.classList.remove("pwa-mode");
+        }
 
-    // Check URL parameter on every page change
-    checkFromLandingPage();
-  };
+        // Check URL parameter on every page change
+        checkFromLandingPage();
+    };
 
-  const setupNavScroll = () => {
-    const nav = document.getElementById('main-nav');
-    let lastScrollY = window.scrollY;
-    const navHeight = nav?.offsetHeight || 0;
+    const setupNavScroll = () => {
+        const nav = document.getElementById("main-nav");
+        let lastScrollY = window.scrollY;
+        const navHeight = nav?.offsetHeight || 0;
 
-    // Threshold - how many pixels to scroll before hiding/showing the nav
-    const scrollThreshold = 10;
+        // Threshold - how many pixels to scroll before hiding/showing the nav
+        const scrollThreshold = 10;
 
-    function handleScroll() {
-      if (!nav) return;
+        function handleScroll() {
+            if (!nav) return;
 
-      // Skip scroll handling for mobile and iPad touch devices (bottom nav)
-      if (window.innerWidth <= 600 || (window.innerWidth <= 1024 && window.matchMedia('(pointer: coarse)').matches)) {
-        return;
-      }
+            // Skip scroll handling for mobile and iPad touch devices (bottom nav)
+            if (
+                window.innerWidth <= 600 ||
+                (window.innerWidth <= 1024 &&
+                    window.matchMedia("(pointer: coarse)").matches)
+            ) {
+                return;
+            }
 
-      const currentScrollY = window.scrollY;
-      const scrollDifference = currentScrollY - lastScrollY;
+            const currentScrollY = window.scrollY;
+            const scrollDifference = currentScrollY - lastScrollY;
 
-      // If we're at the very top, always show the nav
-      if (currentScrollY <= 0) {
-        nav.style.transform = 'translateY(0)';
-      }
-      // Scrolling down and past threshold, hide the nav
-      else if (scrollDifference > scrollThreshold) {
-        nav.style.transform = `translateY(-${navHeight}px)`;
-      }
-      // Scrolling up and past threshold, show the nav
-      else if (scrollDifference < -scrollThreshold) {
-        nav.style.transform = 'translateY(0)';
-      }
+            // If we're at the very top, always show the nav
+            if (currentScrollY <= 0) {
+                nav.style.transform = "translateY(0)";
+            }
+            // Scrolling down and past threshold, hide the nav
+            else if (scrollDifference > scrollThreshold) {
+                nav.style.transform = `translateY(-${navHeight}px)`;
+            }
+            // Scrolling up and past threshold, show the nav
+            else if (scrollDifference < -scrollThreshold) {
+                nav.style.transform = "translateY(0)";
+            }
 
-      // Only update lastScrollY if we passed the threshold
-      if (Math.abs(scrollDifference) > scrollThreshold) {
-        lastScrollY = currentScrollY;
-      }
-    }
+            // Only update lastScrollY if we passed the threshold
+            if (Math.abs(scrollDifference) > scrollThreshold) {
+                lastScrollY = currentScrollY;
+            }
+        }
 
-    // Throttle scroll events for performance
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          handleScroll();
-          ticking = false;
+        // Throttle scroll events for performance
+        let ticking = false;
+        window.addEventListener("scroll", () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
         });
-        ticking = true;
-      }
-    });
-  };
+    };
 
-  // Initialize on page load
-  setupNav();
-  setupNavScroll();
-
-  // For Astro View Transitions, also handle setup after page changes
-  document.addEventListener('astro:page-load', () => {
+    // Initialize on page load
     setupNav();
     setupNavScroll();
-  });
 
-  // Handle URL changes
-  window.addEventListener('popstate', setupNav);
+    // For Astro View Transitions, also handle setup after page changes
+    document.addEventListener("astro:page-load", () => {
+        setupNav();
+        setupNavScroll();
+    });
 
-  // Also check on resize in case of orientation changes
-  window.addEventListener('resize', setupNav);
+    // Handle URL changes
+    window.addEventListener("popstate", setupNav);
+
+    // Also check on resize in case of orientation changes
+    window.addEventListener("resize", setupNav);
 </script>
