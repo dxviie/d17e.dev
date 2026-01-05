@@ -303,8 +303,8 @@
             aria-label="D17E Logo"
         >
             <defs>
-                <!-- Single shared noise turbulence -->
-                <filter id="shared-noise">
+                <!-- Single shared noise turbulence with low resolution for pixelation -->
+                <filter id="shared-noise" filterRes="368 112">
                     <feTurbulence
                         type="fractalNoise"
                         baseFrequency={sharedNoise.baseFrequency}
