@@ -16,16 +16,13 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
 let isComingFromBentoPage = false;
 ---
 
-<nav id="main-nav">
+<nav id="main-nav" class={isHomePage ? "transparent" : ""}>
     <!-- HOME BUTTON -->
     <a href="/" class="nav-item" id="home-nav-item" data-from-lp="false">
-        <div
-            class={`icon-box ${isHomePage ? "active" : ""}`}
-            id="home-icon-box"
-        >
-            <HomeIcon color={isHomePage ? "var(--bg-color)" : "var(--color)"} />
+        <div class={`icon-box`} id="home-icon-box">
+            <HomeIcon color="var(--color)" />
         </div>
-        <span class="nav-text" data-active={isHomePage}>home</span>
+        <span class="nav-text" data-active={true}>home</span>
     </a>
 
     <div class="spacer"></div>
@@ -95,6 +92,10 @@ let isComingFromBentoPage = false;
         background-color: var(--bg-color);
         align-items: center;
         transition: transform 0.3s ease;
+    }
+
+    nav.transparent {
+        background-color: var(--bg-color-transparent);
     }
 
     .nav-item {
@@ -210,6 +211,7 @@ let isComingFromBentoPage = false;
             top: unset;
             bottom: 0;
             box-shadow: 0 7px 11px rgba(0, 0, 0, 0.8);
+            background-color: var(--bg-color) !important;
         }
 
         .nav-item {
