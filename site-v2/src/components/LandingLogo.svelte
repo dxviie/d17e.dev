@@ -16,7 +16,7 @@
     }
 
     // Randomly selected images for this load
-    const images = pickRandomImages(6);
+    const images = pickRandomImages(3);
 
     // Shared noise parameters with random seed
     const sharedNoise = {
@@ -27,22 +27,22 @@
 
     // Desktop: wider ranges for more visible effect
     const thresholdRangesDesktop = [
-        { min: 0.3, max: 0.37 },
-        { min: 0.37, max: 0.4 },
-        { min: 0.45, max: 0.5 },
-        { min: 0.5, max: 0.5667 },
-        { min: 0.5667, max: 0.6333 },
-        { min: 0.66, max: 0.72 },
+        { min: 0.3, max: 0.4 },
+        // { min: 0.37, max: 0.4 },
+        { min: 0.45, max: 0.55 },
+        // { min: 0.5, max: 0.5667 },
+        { min: 0.63, max: 0.7 },
+        // { min: 0.66, max: 0.72 },
     ];
 
     // Mobile: narrower ranges for better readability
     const thresholdRangesMobile = [
         { min: 0.32, max: 0.35 },
-        { min: 0.38, max: 0.4 },
+        // { min: 0.38, max: 0.4 },
         { min: 0.46, max: 0.48 },
-        { min: 0.52, max: 0.54 },
+        // { min: 0.52, max: 0.54 },
         { min: 0.58, max: 0.6 },
-        { min: 0.66, max: 0.68 },
+        // { min: 0.66, max: 0.68 },
     ];
 
     // Canvas state
