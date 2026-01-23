@@ -5,12 +5,33 @@
  */
 
 :root {
-    --accent: #ffa801;
-    --accent-color: #ff7e29;
-    --accent-rgb: 255, 126, 41; /* RGB values for accent-color */
-    --accent-light: #ffbb22;
-    --accent-dark: #ff8c00;
-    --accent-darker: #ff6e00;
+    --accent-cyan: #23d0ff;
+    --accent-cyan-color: #00bfe8;
+    --accent-cyan-rgb: 0, 191, 232; /* RGB values for accent-cyan-color */
+    --accent-cyan-light: #6fe4ff;
+    --accent-cyan-dark: #009cc1;
+    --accent-cyan-darker: #007fa0;
+
+    --accent-magenta: #ff3db4;
+    --accent-magenta-color: #ff2aa6;
+    --accent-magenta-rgb: 255, 42, 166; /* RGB values for accent-magenta-color */
+    --accent-magenta-light: #ff7ac8;
+    --accent-magenta-dark: #e61c93;
+    --accent-magenta-darker: #c5147d;
+
+    --accent-yellow: #ffcc33;
+    --accent-yellow-color: #ffb000;
+    --accent-yellow-rgb: 255, 176, 0; /* RGB values for accent-yellow-color */
+    --accent-yellow-light: #ffe075;
+    --accent-yellow-dark: #e09a00;
+    --accent-yellow-darker: #c27f00;
+
+    --accent: var(--accent-magenta);
+    --accent-color: var(--accent-magenta-color);
+    --accent-rgb: var(--accent-magenta-rgb);
+    --accent-light: var(--accent-magenta-light);
+    --accent-dark: var(--accent-magenta-dark);
+    --accent-darker: var(--accent-magenta-darker);
     --black: 15, 18, 25;
     --gray: 96, 115, 159;
     --gray-light: 229, 233, 240;
@@ -35,8 +56,12 @@
     --bg-color: #1c1d20;
     --bg-color-transparent: rgba(28, 29, 32, 0.8);
     --button-bg-color: #ffffff;
-    --accent-color: #ff9957;
-    --accent-rgb: 144, 205, 244; /* RGB values for dark mode accent-color */
+    --accent: var(--accent-magenta);
+    --accent-color: var(--accent-magenta-color);
+    --accent-rgb: var(--accent-magenta-rgb); /* RGB values for dark mode accent-color */
+    --accent-light: var(--accent-magenta-light);
+    --accent-dark: var(--accent-magenta-dark);
+    --accent-darker: var(--accent-magenta-darker);
     --bg-code: #2d333b;
     --color-code: #adbac7;
     --border-color: #444c56;
