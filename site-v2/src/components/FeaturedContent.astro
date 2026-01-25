@@ -24,11 +24,13 @@ const {
             alt={imageAlt}
             loading="lazy"
         />
-        {!compact && (
-            <div class="featured-overlay">
-                <h3 class="featured-title">{title}</h3>
-            </div>
-        )}
+        {
+            !compact && (
+                <div class="featured-overlay">
+                    <h3 class="featured-title">{title}</h3>
+                </div>
+            )
+        }
     </div>
 </a>
 
@@ -36,10 +38,13 @@ const {
     .featured-card {
         display: block;
         margin: 1.5rem 0;
+        padding: 0;
         border-radius: 8px;
         overflow: hidden;
         text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
     .featured-card:hover {
