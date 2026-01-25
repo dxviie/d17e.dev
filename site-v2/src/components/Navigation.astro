@@ -205,53 +205,14 @@ let isComingFromBentoPage = false;
         text-align: center;
     }
 
-    /* Hide text on mobile and iPad */
+    /* Hide entire desktop nav on mobile and iPad - using MobileNavigation instead */
     @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
         nav {
-            top: unset;
-            bottom: 0;
-            box-shadow: 0 7px 11px rgba(0, 0, 0, 0.8);
-            background-color: var(--bg-color) !important;
-        }
-
-        .nav-item {
-            padding: 0.5rem 0.8rem;
-        }
-
-        .nav-text {
             display: none;
         }
-
-        .icon-box.active {
-            width: 30px;
-            height: 30px;
-        }
     }
 
-    /* PWA mode specific styles */
-    @media (max-width: 600px) and (display-mode: standalone),
-        (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
-        nav {
-            padding-bottom: 1.1rem;
-        }
-    }
-
-    /* PWA mode specific styles */
-    @media (max-width: 600px) and (display-mode: standalone),
-        (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
-        nav {
-            padding-bottom: 1.1rem;
-        }
-    }
-
-    /* Class-based PWA mode (applied by JS) */
-    @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
-        nav.pwa-mode {
-            padding-bottom: 1.1rem;
-        }
-    }
-
-    /* No extra styling needed */
+    /* Note: PWA mode styles moved to MobileNavigation component */
 </style>
 
 <script is:inline>
@@ -296,25 +257,6 @@ let isComingFromBentoPage = false;
     const setupNav = () => {
         const nav = document.getElementById("main-nav");
         if (!nav) return;
-
-        // Detect if running as PWA (installed app)
-        const isPWA =
-            window.matchMedia("(display-mode: standalone)").matches ||
-            window.navigator.standalone || // iOS Safari
-            document.referrer.includes("android-app://");
-
-        // Check if device is mobile or iPad with touch
-        const isMobileOrTablet =
-            window.innerWidth <= 600 ||
-            (window.innerWidth <= 1024 &&
-                window.matchMedia("(pointer: coarse)").matches);
-
-        // Apply bottom padding if in PWA mode on mobile or iPad
-        if (isPWA && isMobileOrTablet) {
-            nav.classList.add("pwa-mode");
-        } else {
-            nav.classList.remove("pwa-mode");
-        }
 
         // Check URL parameter on every page change
         checkFromLandingPage();

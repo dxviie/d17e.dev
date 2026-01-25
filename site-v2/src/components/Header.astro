@@ -1,9 +1,13 @@
 ---
 import Navigation from './Navigation.astro';
+import MobileNavigation from './MobileNavigation.astro';
 ---
 
 <header>
+  <!-- Desktop navigation (hidden on mobile/tablet) -->
   <Navigation/>
+  <!-- Mobile navigation (hidden on desktop) -->
+  <MobileNavigation/>
 </header>
 
 <style>

@@ -10,6 +10,7 @@ import FeaturedContent from "../components/FeaturedContent.astro";
 import FeaturedProjectImage from "../assets/046e24a8-8c31-405d-ba43-2c89c00ace91.webp";
 import FeaturedMediaImage from "../assets/5bd94a9f-2ef5-4087-a231-bdf4aa7e2415.webp";
 import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.webp";
+import MobileNavigation from "../components/MobileNavigation.astro";
 ---
 
 <!doctype html>
@@ -19,7 +20,10 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
     </head>
     <body>
         <div class="statusbar"></div>
+        <!-- Desktop navigation (hidden on mobile/tablet) -->
         <Navigation />
+        <!-- Mobile navigation (hidden on desktop) -->
+        <MobileNavigation />
 
         <!-- Hero Section - Full Page LandingLogo -->
         <HydraBackground
@@ -66,10 +70,10 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
                 </div>
                 <p class="intro-text">
                     Software engineer by <em>trade</em>,
-                    <br/>
+                    <br />
                     Artist by <em>heart</em>.
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                     Welcome to my corner of the internet.
                 </p>
             </div>
@@ -82,11 +86,12 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
                 <div class="section-label">I code.</div>
                 <h2>Software Engineering</h2>
                 <p>
-                    I've spent the last two decades building software and products
-                    across a variety of industries and technologies.
-                    <br/>
-                    From enterprise systems to creative tooling. No matter the project, I bring care and pragmatism to the table.
-                    <br/>
+                    I've spent the last two decades building software and
+                    products across a variety of industries and technologies.
+                    <br />
+                    From enterprise systems to creative tooling. No matter the project,
+                    I bring care and pragmatism to the table.
+                    <br />
                 </p>
                 <FeaturedContent
                     label="Featured project"
@@ -111,10 +116,11 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
                 <div class="section-label">I art.</div>
                 <h2>Creative Exploration</h2>
                 <p>
-                    Since 2023, I've been carving out space for artistic exploration. What
-                    started as experiments with generative art has grown into a
-                    practice spanning video, pen plotting, and creative coding.
-                    <br/>
+                    Since 2023, I've been carving out space for artistic
+                    exploration. What started as experiments with generative art
+                    has grown into a practice spanning video, pen plotting, and
+                    creative coding.
+                    <br />
                     I document my practice under the media section.
                 </p>
                 <FeaturedContent
@@ -141,10 +147,10 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
                 <h2>Thinking & Sharing</h2>
                 <p>
                     I try to learn something new every day.
-                    <br/>
-                    Whether it's diving deep into a technical challenge or exploring the
-                    intersection of art and code, I try to write about it.
-                    <br/>
+                    <br />
+                    Whether it's diving deep into a technical challenge or exploring
+                    the intersection of art and code, I try to write about it.
+                    <br />
                 </p>
                 <FeaturedContent
                     label="Featured post"
@@ -211,7 +217,7 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
         max-height: 66vh;
         max-height: 66svh;
         padding: 9rem 2rem 9rem 2rem;
-        display: flex;  
+        display: flex;
         background-color: var(--bg-color-transparent);
         flex-direction: column;
         justify-content: center;
@@ -528,7 +534,7 @@ import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.we
 
     @media (max-width: 600px) {
         .hero {
-            padding: 3rem 2rem 6rem 2rem;
+            padding: 6rem 2rem 6rem 2rem;
         }
     }
     /* Responsive */

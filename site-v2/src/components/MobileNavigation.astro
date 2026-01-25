@@ -1,0 +1,310 @@
+---
+import ColorModeToggle from "./ColorModeToggle.astro";
+import D17eIcon from "./icons/D17eIcon.astro";
+
+const pathname = Astro.url.pathname;
+const isHomePage = pathname === "/" || pathname === "";
+const isPostsIndex = pathname.endsWith("posts/") || pathname.endsWith("posts");
+const isBlogIndex = pathname.endsWith("blog/") || pathname.endsWith("blog");
+const isProjectsIndex = pathname.endsWith("projects/") || pathname.endsWith("projects");
+const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
+---
+
+<nav id="mobile-nav" class={isHomePage ? "transparent" : ""}>
+  <!-- Logo on the left -->
+  <a href="/" class="logo-link" aria-label="Home">
+    <D17eIcon />
+  </a>
+
+  <div class="spacer"></div>
+
+  <!-- Color mode toggle -->
+  <ColorModeToggle />
+
+  <!-- Burger menu button -->
+  <button
+    class="burger-button"
+    id="burger-button"
+    aria-label="Open menu"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+  >
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+  </button>
+</nav>
+
+<!-- Fullscreen menu overlay -->
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <div class="menu-content">
+    <a href="/" class={`menu-item ${isHomePage ? "active" : ""}`}>
+      <span class="menu-label">home</span>
+    </a>
+    <a href="/projects" class={`menu-item ${isProjectsIndex ? "active" : ""}`}>
+      <span class="menu-label">projects</span>
+    </a>
+    <a href="/posts" class={`menu-item ${isPostsIndex ? "active" : ""}`}>
+      <span class="menu-label">media</span>
+    </a>
+    <a href="/blog" class={`menu-item ${isBlogIndex ? "active" : ""}`}>
+      <span class="menu-label">blog</span>
+    </a>
+    <a href="/about" class={`menu-item ${isAboutPage ? "active" : ""}`}>
+      <span class="menu-label">about</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    width: calc(100% - 1rem);
+    padding: 0.75rem 0.5rem;
+    background-color: var(--bg-color);
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+
+  nav.transparent {
+    background-color: var(--bg-color-transparent);
+  }
+
+  /* Show mobile nav on mobile and tablet */
+  @media (max-width: 600px), (max-width: 1024px) and (pointer: coarse) {
+    nav {
+      display: flex;
+    }
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color);
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .burger-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    gap: 5px;
+    z-index: 1001;
+    margin-left: 0.5rem;
+  }
+
+  .burger-line {
+    width: 24px;
+    height: 2px;
+    background-color: var(--color);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Burger to X animation when open */
+  .burger-button.open .burger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .burger-button.open .burger-line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .burger-button.open .burger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Fullscreen menu overlay */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
+  }
+
+  .mobile-menu.open .menu-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .menu-item {
+    font-family: "nudica_monobold", serif;
+    font-size: 2rem;
+    text-decoration: none;
+    color: var(--color);
+    padding: 0.5rem 1rem;
+    position: relative;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .menu-item:hover {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  .menu-item.active {
+    color: var(--accent-color);
+  }
+
+  .menu-item.active::before {
+    content: "→";
+    position: absolute;
+    left: -1.5rem;
+    color: var(--accent-color);
+  }
+
+  .menu-label {
+    position: relative;
+  }
+
+  .menu-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+
+  .menu-item:hover::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* PWA mode padding */
+  @media (max-width: 600px) and (display-mode: standalone),
+    (max-width: 1024px) and (pointer: coarse) and (display-mode: standalone) {
+    nav {
+      padding-top: 1.1rem;
+    }
+  }
+
+  /* Class-based PWA mode (applied by JS) */
+  nav.pwa-mode {
+    padding-top: 1.1rem;
+  }
+</style>
+
+<script is:inline>
+  const setupMobileNav = () => {
+    const nav = document.getElementById("mobile-nav");
+    const burgerButton = document.getElementById("burger-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (!burgerButton || !mobileMenu || !nav) return;
+
+    // Detect if running as PWA
+    const isPWA =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone ||
+      document.referrer.includes("android-app://");
+
+    // Check if device is mobile or tablet
+    const isMobileOrTablet =
+      window.innerWidth <= 600 ||
+      (window.innerWidth <= 1024 &&
+        window.matchMedia("(pointer: coarse)").matches);
+
+    // Apply PWA mode padding
+    if (isPWA && isMobileOrTablet) {
+      nav.classList.add("pwa-mode");
+    } else {
+      nav.classList.remove("pwa-mode");
+    }
+
+    // Toggle menu
+    const toggleMenu = () => {
+      const isOpen = burgerButton.classList.contains("open");
+
+      if (isOpen) {
+        burgerButton.classList.remove("open");
+        mobileMenu.classList.remove("open");
+        burgerButton.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      } else {
+        burgerButton.classList.add("open");
+        mobileMenu.classList.add("open");
+        burgerButton.setAttribute("aria-expanded", "true");
+        mobileMenu.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+    };
+
+    // Remove existing listeners (for Astro View Transitions)
+    const newBurgerButton = burgerButton.cloneNode(true);
+    burgerButton.parentNode.replaceChild(newBurgerButton, burgerButton);
+
+    newBurgerButton.addEventListener("click", toggleMenu);
+
+    // Close menu when clicking a link
+    const menuLinks = mobileMenu.querySelectorAll(".menu-item");
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        newBurgerButton.classList.remove("open");
+        mobileMenu.classList.remove("open");
+        newBurgerButton.setAttribute("aria-expanded", "false");
+        mobileMenu.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && mobileMenu.classList.contains("open")) {
+        toggleMenu();
+      }
+    });
+  };
+
+  // Initialize
+  setupMobileNav();
+
+  // For Astro View Transitions
+  document.addEventListener("astro:page-load", setupMobileNav);
+
+  // Handle resize
+  window.addEventListener("resize", setupMobileNav);
+</script>

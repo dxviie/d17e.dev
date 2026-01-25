@@ -1,11 +1,12 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
+import BaseHead from "../components/BaseHead.astro";
 import Markdown from "../components/Markdown.astro";
 import SocialLinks from "../components/SocialLinks.astro";
-import {SITE_TITLE} from '../consts';
+import { SITE_TITLE } from "../consts";
 import Footer from "../components/Footer.astro";
 import CCALogo from "../components/icons/CCALogo.astro";
 import Navigation from "../components/Navigation.astro";
+import MobileNavigation from "../components/MobileNavigation.astro";
 
 const aboutIntro = `
 # Hi!
@@ -58,194 +59,215 @@ This site is built with [Astro](https://astro.build), [Svelte](https://svelte.de
 I am very happy with this stack. Can recommend 💯.
 Source code is available on [GitHub](https://github.com/dxviie/d17e.dev).
 
-### Fonts <span style="font-size: 1rem;">([Atipo Foundry](https://www.atipofoundry.com/))</span>:`
+### Fonts <span style="font-size: 1rem;">([Atipo Foundry](https://www.atipofoundry.com/))</span>:`;
 ---
 
 <!doctype html>
 <html lang="en">
-<head>
-  <BaseHead title={`About | ${SITE_TITLE}`} description="About the developer behind d17e.dev"/>
-  <style>
+  <head>
+    <BaseHead
+      title={`About | ${SITE_TITLE}`}
+      description="About the developer behind d17e.dev"
+    />
+    <style>
       main {
-          width: 90%;
-          max-width: 960px;
-          padding: 2rem 1rem;
-          min-height: calc(100vh - 30rem);
-          /* margin now handled by content-margin class */
+        width: 90%;
+        max-width: 960px;
+        padding: 2rem 1rem;
+        min-height: calc(100vh - 30rem);
+        /* margin now handled by content-margin class */
       }
 
       .page-title {
-          font-family: 'nudica_monobold', serif;
-          margin-bottom: 2rem;
-          border-bottom: 1px solid var(--border-color);
-          padding-bottom: 0.5rem;
+        font-family: "nudica_monobold", serif;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
       }
 
       .avatar-container {
-          position: absolute;
-          display: flex;
-          justify-content: end;
-          width: 100%;
-          max-width: 55rem;;
+        position: absolute;
+        display: flex;
+        justify-content: end;
+        width: 100%;
+        max-width: 55rem;
       }
 
       .about-section {
-          display: inline-block;
-          width: fit-content;
-          font-family: 'nudica_monobold', serif;
-          font-size: x-large;
-          padding: 0.3rem 1rem;
-          margin: 1rem 0 0.5rem;
-          color: var(--bg-color);
-          background-color: var(--color);
+        display: inline-block;
+        width: fit-content;
+        font-family: "nudica_monobold", serif;
+        font-size: x-large;
+        padding: 0.3rem 1rem;
+        margin: 1rem 0 0.5rem;
+        color: var(--bg-color);
+        background-color: var(--color);
       }
 
       section {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
       }
 
       .connect {
-          gap: 2rem;
+        gap: 2rem;
       }
 
       .avatar {
-          width: 12rem;
-          border-radius: 50%;
-          border: 3px solid var(--color);
+        width: 12rem;
+        border-radius: 50%;
+        border: 3px solid var(--color);
       }
-
 
       @media (max-width: 600px) {
-          .avatar-container {
-              max-width: 90vw;
-          }
+        .avatar-container {
+          max-width: 90vw;
+        }
 
-          .avatar {
-              margin-top: -1.5rem;
-              width: 6rem;
-          }
+        .avatar {
+          margin-top: -1.5rem;
+          width: 6rem;
+        }
       }
-  </style>
-</head>
-<body>
-<div class="statusbar"/>
-<Navigation/>
-<main class="content-margin">
-  <h1 class="page-title">About</h1>
-  <div class="avatar-container">
-    <img src="/me_rstr_cmy_round.jpg" class="avatar" alt="my avatar in a circle"/>
-  </div>
-  <article class="about-container">
-    <section class="intro">
-      <Markdown content={aboutIntro}/>
-    </section>
-    <br/>
-    <section class="intro">
-      <span class="about-section">I code.</span>
-      <Markdown content={aboutCode}/>
-    </section>
-    <section class="intro">
-      <span class="about-section">I art.</span>
-      <Markdown content={aboutArt}/>
-    </section>
-    <section class="intro">
-      <span class="about-section">Ideas.</span>
-      <Markdown content={aboutIdeas}/>
-    </section>
-    <hr/>
-    <section class="connect">
-      <Markdown content={aboutConnect}/>
-      <SocialLinks showLinkedIn={true} showGitHub={true} showMastodon={true}/>
-      <a href="https://cca.codes" data-umami-event="about-click-cca">
-        <div class="cca-logo-container">
-          <CCALogo/>
-        </div>
-      </a>
-      <Markdown content={aboutCC}/>
-    </section>
-    <hr/>
-    <section class="site">
-      <Markdown content={aboutSite}/>
-      <ul class="fonts">
-        <li class="nmb">Nudica Mono Bold</li>
-        <li class="nml">Nudica Mono Light</li>
-        <li class="argesta">Argesta Regular</li>
-        <li class="caveat">Caveat - <a href="https://fonts.google.com/specimen/Caveat">(Google Fonts)</a></li>
-      </ul>
-    </section>
-    <hr/>
-    <section class="old-site">
-      <Markdown content="### Previous personal sites"/>
-      <ul class="old-site-list">
-        <li><a href="https://d17edev-site.vercel.app">d17e.dev v1 (2022 - 2024)</a></li>
-        <li><a href="https://d17e.netlify.app">d17e.com (2019 - 2022)</a></li>
-      </ul>
-    </section>
-  </article>
-</main>
-<Footer/>
-</body>
+    </style>
+  </head>
+  <body>
+    <div class="statusbar"></div>
+    <!-- Desktop navigation (hidden on mobile/tablet) -->
+    <Navigation />
+    <!-- Mobile navigation (hidden on desktop) -->
+    <MobileNavigation />
+    <main class="content-margin">
+      <h1 class="page-title">About</h1>
+      <div class="avatar-container">
+        <img
+          src="/me_rstr_cmy_round.jpg"
+          class="avatar"
+          alt="my avatar in a circle"
+        />
+      </div>
+      <article class="about-container">
+        <section class="intro">
+          <Markdown content={aboutIntro} />
+        </section>
+        <br />
+        <section class="intro">
+          <span class="about-section">I code.</span>
+          <Markdown content={aboutCode} />
+        </section>
+        <section class="intro">
+          <span class="about-section">I art.</span>
+          <Markdown content={aboutArt} />
+        </section>
+        <section class="intro">
+          <span class="about-section">Ideas.</span>
+          <Markdown content={aboutIdeas} />
+        </section>
+        <hr />
+        <section class="connect">
+          <Markdown content={aboutConnect} />
+          <SocialLinks
+            showLinkedIn={true}
+            showGitHub={true}
+            showMastodon={true}
+          />
+          <a href="https://cca.codes" data-umami-event="about-click-cca">
+            <div class="cca-logo-container">
+              <CCALogo />
+            </div>
+          </a>
+          <Markdown content={aboutCC} />
+        </section>
+        <hr />
+        <section class="site">
+          <Markdown content={aboutSite} />
+          <ul class="fonts">
+            <li class="nmb">Nudica Mono Bold</li>
+            <li class="nml">Nudica Mono Light</li>
+            <li class="argesta">Argesta Regular</li>
+            <li class="caveat">
+              Caveat - <a href="https://fonts.google.com/specimen/Caveat"
+                >(Google Fonts)</a>
+            </li>
+          </ul>
+        </section>
+        <hr />
+        <section class="old-site">
+          <Markdown content="### Previous personal sites" />
+          <ul class="old-site-list">
+            <li>
+              <a href="https://d17edev-site.vercel.app"
+                >d17e.dev v1 (2022 - 2024)</a>
+            </li>
+            <li>
+              <a href="https://d17e.netlify.app">d17e.com (2019 - 2022)</a>
+            </li>
+          </ul>
+        </section>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
+  .about-container {
+    max-width: 800px;
+    padding: 0 0.5rem;
+  }
+
+  .about-container hr {
+    margin: 2rem 0;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .cca-logo-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 3rem;
+  }
+
+  :global(.d17e-text) {
+    display: inline-block;
+    font-family: "nudica_monolight", serif;
+    color: var(--color);
+  }
+
+  ul {
+    font-size: 1rem;
+  }
+
+  .nmb {
+    font-family: "nudica_monobold", serif;
+  }
+
+  .nml {
+    font-family: "nudica_monolight", serif;
+  }
+
+  .argesta {
+    font-family: "argesta_regular", serif;
+  }
+
+  .caveat {
+    font-family: "caveat", serif;
+  }
+
+  .old-site-list {
+    font-family: "nudica_monolight", serif;
+  }
+
+  .markdown-content h1 {
+    margin-top: 0.5rem !important;
+  }
+
+  @media (max-width: 600px) {
     .about-container {
-        max-width: 800px;
-        padding: 0 .5rem;
+      margin-top: 1rem;
     }
-
-    .about-container hr {
-        margin: 2rem 0;
-        border: 0;
-        border-top: 1px solid var(--border-color);
-    }
-
-    .cca-logo-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 3rem;
-    }
-
-    :global(.d17e-text) {
-        display: inline-block;
-        font-family: 'nudica_monolight', serif;
-        color: var(--color);
-    }
-
-    ul {
-        font-size: 1rem;;
-    }
-
-    .nmb {
-        font-family: 'nudica_monobold', serif;
-    }
-
-    .nml {
-        font-family: 'nudica_monolight', serif;
-    }
-
-    .argesta {
-        font-family: 'argesta_regular', serif;
-    }
-
-    .caveat {
-        font-family: 'caveat', serif;
-    }
-
-    .old-site-list {
-        font-family: 'nudica_monolight', serif;
-    }
-
-    .markdown-content h1 {
-      margin-top: .5rem !important;
-    }
-
-    @media (max-width: 600px) {
-        .about-container {
-            margin-top: 1rem;
-        }
-    }
+  }
 </style>
