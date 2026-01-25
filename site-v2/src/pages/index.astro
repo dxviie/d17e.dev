@@ -6,27 +6,59 @@ import LandingLogo from "../components/LandingLogo.svelte";
 import HydraBackground from "../components/HydraBackground.svelte";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
-import FeaturedContent from "../components/FeaturedContent.astro";
+import FeaturedGrid from "../components/FeaturedGrid.astro";
 import MobileNavigation from "../components/MobileNavigation.astro";
 import { getCollection } from "astro:content";
 
-// Featured content IDs - update these to feature different content
-const FEATURED_PROJECT_SLUG = "rstr";
-const FEATURED_POST_SLUG = "bassline";
-const FEATURED_ARTICLE_SLUG = "how-i-ended-up-building-hydractrl";
+// Featured content slugs - update these to feature different content (up to 3 per section)
+const FEATURED_PROJECT_SLUGS = ["rstr", "genuary"];
+const FEATURED_POST_SLUGS = [
+    "rstr-cmy-pet-plot",
+    "some-more-hydractrl-jamming",
+];
+const FEATURED_ARTICLE_SLUGS = [
+    "how-i-ended-up-building-hydractrl",
+    "creative-coding-amsterdam-plotter-special",
+];
 
-// Fetch featured content from collections
+// Fetch all content from collections
 const projects = await getCollection("projects");
 const posts = await getCollection("posts");
 const articles = await getCollection("articles");
 
-const featuredProject = projects.find(
-    (p) => p.data.slug === FEATURED_PROJECT_SLUG,
-);
-const featuredPost = posts.find((p) => p.data.slug === FEATURED_POST_SLUG);
-const featuredArticle = articles.find(
-    (a) => a.data.slug === FEATURED_ARTICLE_SLUG,
-);
+// Helper to find items by slugs and transform to featured item format
+const featuredProjects = FEATURED_PROJECT_SLUGS.map((slug) =>
+    projects.find((p) => p.data.slug === slug),
+)
+    .filter(Boolean)
+    .map((p) => ({
+        title: p!.data.name,
+        href: `/projects/${p!.data.slug}`,
+        imageUrl: `/assets/${p!.data.cover.id}.webp`,
+        imageAlt: p!.data.cover.title,
+    }));
+
+const featuredPosts = FEATURED_POST_SLUGS.map((slug) =>
+    posts.find((p) => p.data.slug === slug),
+)
+    .filter(Boolean)
+    .map((p) => ({
+        title: p!.data.title,
+        href: `/posts/${p!.data.slug}`,
+        imageUrl: `/assets/${p!.data.cover.id}.webp`,
+        imageAlt: p!.data.cover.title,
+    }));
+
+const featuredArticles = FEATURED_ARTICLE_SLUGS.map((slug) =>
+    articles.find((a) => a.data.slug === slug),
+)
+    .filter(Boolean)
+    .map((a) => ({
+        title: a!.data.title,
+        href: `/blog/${a!.data.slug}`,
+        imageUrl: `/assets/${a!.data.cover.id}.webp`,
+        imageAlt: a!.data.cover.title,
+    }));
 ---
 
 <!doctype html>
@@ -110,13 +142,9 @@ const featuredArticle = articles.find(
                     <br />
                 </p>
                 {
-                    featuredProject && (
-                        <FeaturedContent
-                            title={featuredProject.data.name}
-                            href={`/projects/${featuredProject.data.slug}`}
-                            imageUrl={`/assets/${featuredProject.data.cover.id}.webp`}
-                            imageAlt={featuredProject.data.cover.title}
-                        />
+                    featuredProjects.length > 0 && (
+                        <div class="section-featured-label">Featured projects</div>
+                        <FeaturedGrid items={featuredProjects} />
                     )
                 }
                 <div class="section-links">
@@ -141,13 +169,9 @@ const featuredArticle = articles.find(
                     I document my practice under the media section.
                 </p>
                 {
-                    featuredPost && (
-                        <FeaturedContent
-                            title={featuredPost.data.title}
-                            href={`/posts/${featuredPost.data.slug}`}
-                            imageUrl={`/assets/${featuredPost.data.cover.id}.webp`}
-                            imageAlt={featuredPost.data.cover.title}
-                        />
+                    featuredPosts.length > 0 && (
+                        <div class="section-featured-label">Featured media</div>
+                        <FeaturedGrid items={featuredPosts} />
                     )
                 }
                 <div class="section-links">
@@ -171,13 +195,9 @@ const featuredArticle = articles.find(
                     <br />
                 </p>
                 {
-                    featuredArticle && (
-                        <FeaturedContent
-                            title={featuredArticle.data.title}
-                            href={`/blog/${featuredArticle.data.slug}`}
-                            imageUrl={`/assets/${featuredArticle.data.cover.id}.webp`}
-                            imageAlt={featuredArticle.data.cover.title}
-                        />
+                    featuredArticles.length > 0 && (
+                        <div class="section-featured-label">Featured articles</div>
+                        <FeaturedGrid items={featuredArticles} />
                     )
                 }
                 <div class="section-links">
@@ -278,6 +298,13 @@ const featuredArticle = articles.find(
         margin-bottom: 1rem;
         color: var(--bg-color);
         background-color: var(--color);
+    }
+
+    .section-featured-label {
+        font-family: "nudica_monolight", serif;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--color);
     }
 
     .section h2 {

@@ -1,0 +1,155 @@
+---
+import FeaturedContent from "./FeaturedContent.astro";
+
+interface FeaturedItem {
+    title: string;
+    href: string;
+    imageUrl: string;
+    imageAlt?: string;
+}
+
+interface Props {
+    items: FeaturedItem[];
+}
+
+const { items } = Astro.props;
+
+// Take up to 3 items
+const displayItems = items.slice(0, 3);
+const hasMultiple = displayItems.length > 1;
+---
+
+{
+    displayItems.length === 1 ? (
+        <div class="featured-single">
+            <FeaturedContent
+                title={displayItems[0].title}
+                href={displayItems[0].href}
+                imageUrl={displayItems[0].imageUrl}
+                imageAlt={displayItems[0].imageAlt}
+            />
+        </div>
+    ) : (
+        <div class:list={["featured-grid", { "has-three": displayItems.length === 3 }]}>
+            <div class="featured-main">
+                <FeaturedContent
+                    title={displayItems[0].title}
+                    href={displayItems[0].href}
+                    imageUrl={displayItems[0].imageUrl}
+                    imageAlt={displayItems[0].imageAlt}
+                />
+            </div>
+            <div class="featured-side">
+                {displayItems.slice(1).map((item) => (
+                    <FeaturedContent
+                        title={item.title}
+                        href={item.href}
+                        imageUrl={item.imageUrl}
+                        imageAlt={item.imageAlt}
+                        compact={displayItems.length === 3}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}
+
+<style>
+    .featured-single {
+        margin: 1.5rem 0;
+    }
+
+    .featured-single :global(.featured-card) {
+        margin: 0;
+    }
+
+    .featured-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    /* Limit height on desktop for 3 items */
+    .featured-grid.has-three {
+        height: 320px;
+    }
+
+    .featured-main {
+        display: flex;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .featured-main :global(.featured-card) {
+        margin: 0;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    /* Main item should fill the height when we have 3 items */
+    .featured-grid.has-three .featured-main :global(.featured-media) {
+        aspect-ratio: auto;
+        height: 100%;
+    }
+
+    .featured-side {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .featured-side :global(.featured-card) {
+        margin: 0;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    /* Side items should share the height equally */
+    .featured-grid.has-three .featured-side :global(.featured-card) {
+        flex: 1;
+    }
+
+    .featured-grid.has-three .featured-side :global(.featured-media) {
+        aspect-ratio: auto;
+        height: 100%;
+    }
+
+    /* Two items layout - side column has just one item */
+    .featured-grid:not(.has-three) .featured-side :global(.featured-media) {
+        aspect-ratio: 16 / 9;
+    }
+
+    @media (max-width: 768px) {
+        .featured-grid {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto;
+        }
+
+        .featured-grid.has-three {
+            max-height: none;
+        }
+
+        .featured-main :global(.featured-media) {
+            aspect-ratio: 16 / 9 !important;
+            height: auto !important;
+        }
+
+        .featured-side {
+            flex-direction: row;
+        }
+
+        .featured-side :global(.featured-card) {
+            flex: 1;
+        }
+
+        .featured-grid.has-three .featured-side :global(.featured-media) {
+            aspect-ratio: 1 !important;
+            height: auto !important;
+        }
+    }
+</style>
