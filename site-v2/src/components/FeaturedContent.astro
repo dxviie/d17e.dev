@@ -1,70 +1,60 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
-
 interface FeaturedContentProps {
-    label: string;
     title: string;
-    description: string;
     href: string;
-    linkText?: string;
-    image: ImageMetadata;
-    imageAlt: string;
+    imageUrl: string;
+    imageAlt?: string;
+    compact?: boolean;
 }
 
 const {
-    label,
     title,
-    description,
     href,
-    linkText = "View featured",
-    image,
-    imageAlt,
+    imageUrl,
+    imageAlt = title,
+    compact = false,
 } = Astro.props;
 ---
 
-<article class="featured-card">
-    <a class="featured-media" href={href}>
-        <Image
+<a class:list={["featured-card", { compact }]} href={href}>
+    <div class="featured-media">
+        <img
             class="featured-image"
-            src={image}
-            width={560}
-            height={360}
+            src={imageUrl}
             alt={imageAlt}
-            format="webp"
+            loading="lazy"
         />
-    </a>
-    <div class="featured-body">
-        <div class="featured-label">{label}</div>
-        <h3 class="featured-title">
-            <a href={href}>{title}</a>
-        </h3>
-        <p class="featured-description">{description}</p>
-        <a class="featured-link" href={href}>
-            <span>{linkText}</span>
-        </a>
+        {!compact && (
+            <div class="featured-overlay">
+                <h3 class="featured-title">{title}</h3>
+            </div>
+        )}
     </div>
-</article>
+</a>
 
 <style>
     .featured-card {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-        gap: 1.5rem;
-        align-items: center;
-        padding: 1.5rem;
-        margin: 2rem 0;
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        background-color: var(--bg-color);
+        display: block;
+        margin: 1.5rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .featured-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        opacity: 1;
     }
 
     .featured-media {
-        display: block;
-        border-radius: 8px;
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
         overflow: hidden;
         border: 1px solid var(--border-color);
-        aspect-ratio: 4 / 3;
+        border-radius: 8px;
     }
 
     .featured-image {
@@ -72,65 +62,42 @@ const {
         height: 100%;
         object-fit: cover;
         display: block;
+        transition: transform 0.3s ease;
     }
 
-    .featured-body {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
+    .featured-card:hover .featured-image {
+        transform: scale(1.02);
     }
 
-    .featured-label {
-        font-family: "nudica_monobold", serif;
-        font-size: 0.85rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--accent-color);
+    .featured-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
     }
 
     .featured-title {
         font-family: "nudica_monobold", serif;
-        font-size: 1.4rem;
+        font-size: 1.1rem;
         margin: 0;
-        color: var(--color);
+        color: white;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
 
-    .featured-title a {
-        color: inherit;
-        text-decoration: none;
+    /* Compact mode */
+    .featured-card.compact {
+        margin: 1rem 0;
     }
 
-    .featured-description {
-        font-family: "argesta_regular", serif;
-        font-size: 1rem;
-        line-height: 1.6;
-        margin: 0;
-        color: var(--color);
-        opacity: 0.85;
-    }
-
-    .featured-link {
-        font-family: "nudica_monolight", serif;
-        font-size: 0.95rem;
-        color: var(--accent-color);
-        text-decoration: none;
-        border-bottom: 1px dashed var(--accent-color);
-        padding-bottom: 2px;
-        width: fit-content;
-    }
-
-    .featured-link:hover {
-        border-bottom-style: solid;
+    .featured-card.compact .featured-media {
+        aspect-ratio: 1;
     }
 
     @media (max-width: 768px) {
-        .featured-card {
-            grid-template-columns: 1fr;
-            padding: 1.25rem;
-        }
-
-        .featured-media {
-            width: 100%;
+        .featured-title {
+            font-size: 1rem;
         }
     }
 </style>
