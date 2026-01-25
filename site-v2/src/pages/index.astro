@@ -61,12 +61,12 @@ import SocialLinks from "../components/SocialLinks.astro";
                     </div>
                 </div>
                 <p class="intro-text">
-                    A creative technologist based in Amsterdam, blending <em
-                        >code</em
-                    >, <em>art</em>, and <em>ideas</em>
-                    into digital experiences. With over 20 years in software engineering,
-                    I now split my time between building things that work and making
-                    things that move.
+                    Software engineer by <em>trade</em>,
+                    <br/>
+                    Artist by <em>heart</em>.
+                    <br/>
+                    <br/>
+                    Welcome to my corner of the internet.
                 </p>
             </div>
         </section>
@@ -78,39 +78,15 @@ import SocialLinks from "../components/SocialLinks.astro";
                 <div class="section-label">I code.</div>
                 <h2>Software Engineering</h2>
                 <p>
-                    From enterprise systems to creative tooling — I've spent two
-                    decades turning complex problems into elegant solutions. My
-                    journey has taken me through C++, Java, and into the modern
-                    web with TypeScript, Svelte, and Astro.
+                    I've spent the last two decades building software and products
+                    across a variety of industries and technologies.
+                    <br/>
+                    From enterprise systems to creative tooling.
+                    <br/>
                 </p>
-                <div class="tech-tags">
-                    <span class="tag">TypeScript</span>
-                    <span class="tag">Svelte</span>
-                    <span class="tag">Astro</span>
-                    <span class="tag">React</span>
-                    <span class="tag">SVG</span>
-                    <span class="tag">WebGL</span>
-                </div>
                 <div class="section-links">
-                    <a href="/projects" class="section-cta">
+                    <a href="/projects" class="section-link">
                         <span>View Projects</span>
-                        <span class="arrow">→</span>
-                    </a>
-                    <a
-                        href="https://github.com/dxviie"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="section-link"
-                    >
-                        GitHub
-                    </a>
-                    <a
-                        href="https://www.linkedin.com/in/d16de/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="section-link"
-                    >
-                        LinkedIn
                     </a>
                 </div>
             </div>
@@ -122,38 +98,13 @@ import SocialLinks from "../components/SocialLinks.astro";
                 <div class="section-label">I art.</div>
                 <h2>Creative Exploration</h2>
                 <p>
-                    In 2022, I carved out space for artistic exploration. What
+                    Starting in 2022, I carved out space for artistic exploration. What
                     started as experiments with generative art has grown into a
                     practice spanning video, pen plotting, and creative coding.
-                    Each piece is a conversation between algorithm and
-                    intention.
                 </p>
-                <div class="art-mediums">
-                    <div class="medium">
-                        <span class="medium-icon">◎</span>
-                        <span class="medium-name">Generative Art</span>
-                    </div>
-                    <div class="medium">
-                        <span class="medium-icon">✎</span>
-                        <span class="medium-name">Pen Plotting</span>
-                    </div>
-                    <div class="medium">
-                        <span class="medium-icon">▶</span>
-                        <span class="medium-name">Video</span>
-                    </div>
-                </div>
                 <div class="section-links">
-                    <a href="/posts" class="section-cta">
+                    <a href="/posts" class="section-link">
                         <span>Browse Media</span>
-                        <span class="arrow">→</span>
-                    </a>
-                    <a
-                        href="https://www.instagram.com/d17e.dev/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="section-link"
-                    >
-                        Instagram
                     </a>
                 </div>
             </div>
@@ -165,35 +116,15 @@ import SocialLinks from "../components/SocialLinks.astro";
                 <div class="section-label">Ideas.</div>
                 <h2>Thinking & Sharing</h2>
                 <p>
-                    I believe in learning something new every day. Whether it's
-                    diving deep into a technical challenge or exploring the
-                    intersection of creativity and code — I write about it. My
-                    blog is where ideas take shape and stories find their voice.
+                    I try to learn something new every day.
+                    <br/>
+                    Whether it's diving deep into a technical challenge or exploring the
+                    intersection of art and code, I try to write about it.
+                    <br/>
                 </p>
-                <div class="ideas-focus">
-                    <div class="focus-item">
-                        <span class="focus-label">Educator</span>
-                        <span class="focus-desc"
-                            >Sharing knowledge through writing and workshops</span
-                        >
-                    </div>
-                    <div class="focus-item">
-                        <span class="focus-label">Thinker</span>
-                        <span class="focus-desc"
-                            >Exploring the edges of technology and creativity</span
-                        >
-                    </div>
-                    <div class="focus-item">
-                        <span class="focus-label">Communicator</span>
-                        <span class="focus-desc"
-                            >Making complex ideas accessible</span
-                        >
-                    </div>
-                </div>
                 <div class="section-links">
-                    <a href="/blog" class="section-cta">
+                    <a href="/blog" class="section-link">
                         <span>Read the Blog</span>
-                        <span class="arrow">→</span>
                     </a>
                     <a
                         href="https://buttondown.com/d17e.dev"
@@ -217,12 +148,9 @@ import SocialLinks from "../components/SocialLinks.astro";
                     just want to say hello — I'd love to hear from you.
                 </p>
                 <div class="contact-actions">
-                    <a href="/about" class="contact-cta primary">
-                        <span>About Me</span>
-                    </a>
                     <a
                         href="https://forms.d17e.dev/contact"
-                        class="contact-cta secondary"
+                        class="contact-cta primary"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -250,7 +178,7 @@ import SocialLinks from "../components/SocialLinks.astro";
         max-height: 66vh;
         max-height: 66svh;
         padding: 9rem 2rem 9rem 2rem;
-        display: flex;
+        display: flex;  
         background-color: var(--bg-color-transparent);
         flex-direction: column;
         justify-content: center;
@@ -272,8 +200,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Section Base Styles */
     .section {
-        min-height: 66vh;
-        min-height: 66svh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -318,7 +244,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Introduction Section */
     .intro-section {
-        background-color: var(--bg-color);
     }
 
     .intro-header {
@@ -365,11 +290,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Code Section */
     .code-section {
-        background: linear-gradient(
-            135deg,
-            var(--bg-color) 0%,
-            rgba(var(--accent-rgb), 0.05) 100%
-        );
     }
 
     .tech-tags {
@@ -390,7 +310,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Art Section */
     .art-section {
-        background-color: var(--bg-color);
         position: relative;
     }
 
@@ -401,12 +320,6 @@ import SocialLinks from "../components/SocialLinks.astro";
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            var(--border-color),
-            transparent
-        );
     }
 
     .art-mediums {
@@ -435,11 +348,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Ideas Section */
     .ideas-section {
-        background: linear-gradient(
-            180deg,
-            var(--bg-color) 0%,
-            rgba(var(--accent-rgb), 0.08) 100%
-        );
     }
 
     .ideas-focus {
@@ -519,7 +427,6 @@ import SocialLinks from "../components/SocialLinks.astro";
 
     /* Contact Section */
     .contact-section {
-        background-color: var(--bg-color);
         text-align: center;
         position: relative;
     }
@@ -531,12 +438,6 @@ import SocialLinks from "../components/SocialLinks.astro";
         left: 0;
         right: 0;
         height: 1px;
-        background: linear-gradient(
-            90deg,
-            transparent,
-            var(--border-color),
-            transparent
-        );
     }
 
     .contact-section .section-content {
@@ -618,6 +519,10 @@ import SocialLinks from "../components/SocialLinks.astro";
             font-size: 2.2rem;
         }
 
+        .intro-text {
+            text-align: center;
+        }
+
         .section h2 {
             font-size: 2rem;
         }
@@ -636,7 +541,7 @@ import SocialLinks from "../components/SocialLinks.astro";
 
         .section-links {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .contact-actions {
