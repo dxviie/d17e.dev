@@ -3,7 +3,7 @@ import SunIcon from './icons/SunIcon.astro';
 import MoonIcon from './icons/MoonIcon.astro';
 ---
 
-<button id="theme-toggle" aria-label="Toggle dark mode" class="push-button">
+<button aria-label="Toggle dark mode" class="theme-toggle push-button">
   <div class="icon-container">
     <div class="sun-icon">
       <SunIcon size="20px" color="var(--button-bg-color)"/>
@@ -67,13 +67,19 @@ import MoonIcon from './icons/MoonIcon.astro';
 <script>
   // This function initializes the toggle functionality
   function initThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggles = document.querySelectorAll('.theme-toggle');
     const root = document.documentElement;
 
-    // Apply click event listener to the toggle
-    themeToggle?.addEventListener('click', () => {
-      const isDark = root.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    // Apply click event listener to all toggle buttons
+    themeToggles.forEach((toggle) => {
+      // Remove existing listeners by cloning
+      const newToggle = toggle.cloneNode(true);
+      toggle.parentNode?.replaceChild(newToggle, toggle);
+      
+      newToggle.addEventListener('click', () => {
+        const isDark = root.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
     });
   }
 

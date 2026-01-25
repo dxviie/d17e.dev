@@ -1,20 +1,24 @@
 ---
 import ColorModeToggle from "./ColorModeToggle.astro";
-import D17eIcon from "./icons/D17eIcon.astro";
 
 const pathname = Astro.url.pathname;
 const isHomePage = pathname === "/" || pathname === "";
 const isPostsIndex = pathname.endsWith("posts/") || pathname.endsWith("posts");
 const isBlogIndex = pathname.endsWith("blog/") || pathname.endsWith("blog");
-const isProjectsIndex = pathname.endsWith("projects/") || pathname.endsWith("projects");
+const isProjectsIndex =
+  pathname.endsWith("projects/") || pathname.endsWith("projects");
 const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
 ---
 
-<nav id="mobile-nav" class={isHomePage ? "transparent" : ""}>
-  <!-- Logo on the left -->
-  <a href="/" class="logo-link" aria-label="Home">
-    <D17eIcon />
-  </a>
+<nav id="mobile-nav">
+  <!-- Logo on the left (hidden on home page) -->
+  {
+    !isHomePage && (
+      <a href="/" class="logo-link" aria-label="Home">
+        <img src="/logo/d17e-logo.png" alt="D17E logo" class="logo-image" />
+      </a>
+    )
+  }
 
   <div class="spacer"></div>
 
@@ -65,13 +69,9 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     display: none;
     width: calc(100% - 1rem);
     padding: 0.75rem 0.5rem;
-    background-color: var(--bg-color);
+    background-color: transparent;
     align-items: center;
-    transition: background-color 0.3s ease;
-  }
-
-  nav.transparent {
-    background-color: var(--bg-color-transparent);
+    transition: transform 0.3s ease;
   }
 
   /* Show mobile nav on mobile and tablet */
@@ -88,6 +88,12 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     color: var(--color);
   }
 
+  .logo-image {
+    height: 32px;
+    width: auto;
+    border-radius: 0;
+  }
+
   .spacer {
     flex: 1;
   }
@@ -100,12 +106,14 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     width: 44px;
     height: 44px;
     padding: 0;
-    background: transparent;
+    background-color: var(--bg-color);
     border: none;
+    border-radius: 8px;
     cursor: pointer;
     gap: 5px;
     z-index: 1001;
     margin-left: 0.5rem;
+    transition: background-color 0.3s ease;
   }
 
   .burger-line {
@@ -144,7 +152,9 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
   }
 
   .mobile-menu.open {
@@ -159,7 +169,9 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     gap: 1.5rem;
     transform: translateY(20px);
     opacity: 0;
-    transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
+    transition:
+      transform 0.4s ease 0.1s,
+      opacity 0.4s ease 0.1s;
   }
 
   .mobile-menu.open .menu-content {
@@ -174,7 +186,9 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     color: var(--color);
     padding: 0.5rem 1rem;
     position: relative;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .menu-item:hover {
@@ -205,7 +219,9 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     width: 0;
     height: 2px;
     background-color: var(--accent-color);
-    transition: width 0.3s ease, left 0.3s ease;
+    transition:
+      width 0.3s ease,
+      left 0.3s ease;
   }
 
   .menu-item:hover::after {
@@ -299,11 +315,67 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     });
   };
 
+  const setupMobileNavScroll = () => {
+    const nav = document.getElementById("mobile-nav");
+    const mobileMenu = document.getElementById("mobile-menu");
+    let lastScrollY = window.scrollY;
+    const navHeight = nav?.offsetHeight || 0;
+
+    // Threshold - how many pixels to scroll before hiding/showing the nav
+    const scrollThreshold = 10;
+
+    function handleScroll() {
+      if (!nav) return;
+
+      // Don't hide nav when menu is open
+      if (mobileMenu?.classList.contains("open")) {
+        return;
+      }
+
+      const currentScrollY = window.scrollY;
+      const scrollDifference = currentScrollY - lastScrollY;
+
+      // If we're at the very top, always show the nav
+      if (currentScrollY <= 0) {
+        nav.style.transform = "translateY(0)";
+      }
+      // Scrolling down and past threshold, hide the nav
+      else if (scrollDifference > scrollThreshold) {
+        nav.style.transform = `translateY(-${navHeight}px)`;
+      }
+      // Scrolling up and past threshold, show the nav
+      else if (scrollDifference < -scrollThreshold) {
+        nav.style.transform = "translateY(0)";
+      }
+
+      // Only update lastScrollY if we passed the threshold
+      if (Math.abs(scrollDifference) > scrollThreshold) {
+        lastScrollY = currentScrollY;
+      }
+    }
+
+    // Throttle scroll events for performance
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  };
+
   // Initialize
   setupMobileNav();
+  setupMobileNavScroll();
 
   // For Astro View Transitions
-  document.addEventListener("astro:page-load", setupMobileNav);
+  document.addEventListener("astro:page-load", () => {
+    setupMobileNav();
+    setupMobileNavScroll();
+  });
 
   // Handle resize
   window.addEventListener("resize", setupMobileNav);
