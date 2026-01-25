@@ -6,6 +6,10 @@ import LandingLogo from "../components/LandingLogo.svelte";
 import HydraBackground from "../components/HydraBackground.svelte";
 import Footer from "../components/Footer.astro";
 import SocialLinks from "../components/SocialLinks.astro";
+import FeaturedContent from "../components/FeaturedContent.astro";
+import FeaturedProjectImage from "../assets/046e24a8-8c31-405d-ba43-2c89c00ace91.webp";
+import FeaturedMediaImage from "../assets/5bd94a9f-2ef5-4087-a231-bdf4aa7e2415.webp";
+import FeaturedBlogImage from "../assets/c17e16f0-7607-4a98-ad0a-8f3711dc4987.webp";
 ---
 
 <!doctype html>
@@ -84,6 +88,15 @@ import SocialLinks from "../components/SocialLinks.astro";
                     From enterprise systems to creative tooling. No matter the project, I bring care and pragmatism to the table.
                     <br/>
                 </p>
+                <FeaturedContent
+                    label="Featured project"
+                    title="Plotter tools for computational art"
+                    description="A focused toolkit that blends creative coding with pragmatic product design for artists and studios."
+                    href="/projects"
+                    linkText="Explore the project"
+                    image={FeaturedProjectImage}
+                    imageAlt="Plotter tools project preview"
+                />
                 <div class="section-links">
                     <a href="/projects" class="section-link">
                         <span>View all projects</span>
@@ -104,6 +117,15 @@ import SocialLinks from "../components/SocialLinks.astro";
                     <br/>
                     I document my practice under the media section.
                 </p>
+                <FeaturedContent
+                    label="Featured media"
+                    title="Lines, rhythm, and restraint"
+                    description="A short-form visual study that leans on repetition and subtle motion to explore depth."
+                    href="/posts"
+                    linkText="View the piece"
+                    image={FeaturedMediaImage}
+                    imageAlt="Experimental media still"
+                />
                 <div class="section-links">
                     <a href="/posts" class="section-link">
                         <span>Browse all media</span>
@@ -124,6 +146,15 @@ import SocialLinks from "../components/SocialLinks.astro";
                     intersection of art and code, I try to write about it.
                     <br/>
                 </p>
+                <FeaturedContent
+                    label="Featured post"
+                    title="Designing for patient, human-scale software"
+                    description="Notes on building tools that respect attention, reduce friction, and feel intentional."
+                    href="/blog"
+                    linkText="Read the post"
+                    image={FeaturedBlogImage}
+                    imageAlt="Notebook and pen on a desk"
+                />
                 <div class="section-links">
                     <a href="/blog" class="section-link">
                         <span>Read the blog</span>
