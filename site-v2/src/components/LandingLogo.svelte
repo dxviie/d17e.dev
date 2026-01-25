@@ -220,7 +220,7 @@
             generateNoise(timeOffset);
 
             // Clear and draw base logo
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = "#fdfaff";
             ctx.fillRect(0, 0, width, height);
             ctx.drawImage(baseLogoImg, 0, 0, width, height);
 
@@ -431,7 +431,7 @@
 
 <style>
     .logo-container {
-        background: #ffffff;
+        background: #fdfaff;
     }
 
     svg,

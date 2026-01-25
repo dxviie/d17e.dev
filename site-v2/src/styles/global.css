@@ -39,15 +39,15 @@
     --gray: 96, 115, 159;
     --gray-light: 229, 233, 240;
     --gray-dark: 34, 41, 57;
-    --gray-gradient: rgba(var(--gray-light), 50%), #fff;
+    --gray-gradient: rgba(var(--gray-light), 50%), #fdfaff;
     --box-shadow:
         0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
         0 16px 32px rgba(var(--gray), 33%);
 
     /* Theme variables */
     --color: #1a202c;
-    --bg-color: #fff3fc;
-    --bg-color-transparent: rgba(255, 255, 255, 0.66);
+    --bg-color: rgb(253, 250, 255);
+    --bg-color-transparent: rgba(253, 250, 255, 0.66);
     --button-bg-color: #1a202c;
     --bg-code: #f1f1f1;
     --color-code: #24292e;
@@ -55,10 +55,10 @@
 }
 
 :root.dark {
-    --color: #ffffff;
+    --color: #fdfaff;
     --bg-color: #1c1d20;
     --bg-color-transparent: rgba(28, 29, 32, 0.8);
-    --button-bg-color: #ffffff;
+    --button-bg-color: #fdfaff;
     --accent: var(--accent-magenta);
     --accent-color: var(--accent-magenta-color);
     --accent-rgb: var(--accent-magenta-rgb);

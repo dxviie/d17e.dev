@@ -4,7 +4,7 @@
   "description": "code. art. ideas.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
+  "background_color": "#fdfaff",
   "theme_color": "#000000",
   "icons": [
     {
