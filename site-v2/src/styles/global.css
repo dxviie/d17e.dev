@@ -7,21 +7,24 @@
 :root {
     --accent-cyan: #23d0ff;
     --accent-cyan-color: #00bfe8;
-    --accent-cyan-rgb: 0, 191, 232; /* RGB values for accent-cyan-color */
+    --accent-cyan-rgb: 0, 191, 232;
+    /* RGB values for accent-cyan-color */
     --accent-cyan-light: #6fe4ff;
     --accent-cyan-dark: #009cc1;
     --accent-cyan-darker: #007fa0;
 
     --accent-magenta: #ff3db4;
     --accent-magenta-color: #ff2aa6;
-    --accent-magenta-rgb: 255, 42, 166; /* RGB values for accent-magenta-color */
+    --accent-magenta-rgb: 255, 42, 166;
+    /* RGB values for accent-magenta-color */
     --accent-magenta-light: #ff7ac8;
     --accent-magenta-dark: #e61c93;
     --accent-magenta-darker: #c5147d;
 
     --accent-yellow: #ffcc33;
     --accent-yellow-color: #ffb000;
-    --accent-yellow-rgb: 255, 176, 0; /* RGB values for accent-yellow-color */
+    --accent-yellow-rgb: 255, 176, 0;
+    /* RGB values for accent-yellow-color */
     --accent-yellow-light: #ffe075;
     --accent-yellow-dark: #e09a00;
     --accent-yellow-darker: #c27f00;
@@ -44,7 +47,7 @@
     /* Theme variables */
     --color: #1a202c;
     --bg-color: #ffffff;
-    --bg-color-transparent: rgba(255, 255, 255, 0.8);
+    --bg-color-transparent: rgba(255, 255, 255, 0.66);
     --button-bg-color: #1a202c;
     --bg-code: #f1f1f1;
     --color-code: #24292e;
@@ -58,7 +61,8 @@
     --button-bg-color: #ffffff;
     --accent: var(--accent-magenta);
     --accent-color: var(--accent-magenta-color);
-    --accent-rgb: var(--accent-magenta-rgb); /* RGB values for dark mode accent-color */
+    --accent-rgb: var(--accent-magenta-rgb);
+    /* RGB values for dark mode accent-color */
     --accent-light: var(--accent-magenta-light);
     --accent-dark: var(--accent-magenta-dark);
     --accent-darker: var(--accent-magenta-darker);
@@ -250,7 +254,7 @@ pre {
     background-color: rgba(var(--gray-light), 0.2);
 }
 
-pre > code {
+pre>code {
     all: unset;
 }
 
@@ -280,7 +284,8 @@ hr {
     margin: 3rem auto 0;
 }
 
-@media (max-width: 720px), (max-width: 1024px) {
+@media (max-width: 720px),
+(max-width: 1024px) {
     body {
         font-size: 18px;
         margin-bottom: 4rem;
@@ -292,6 +297,7 @@ hr {
 }
 
 @media (max-width: 600px) {
+
     /* Further adjustments for very small screens */
     .content-margin {
         margin: -1.5rem auto 0 auto;
