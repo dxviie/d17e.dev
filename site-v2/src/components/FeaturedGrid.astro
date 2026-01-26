@@ -10,9 +10,10 @@ interface FeaturedItem {
 
 interface Props {
     items: FeaturedItem[];
+    eager?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, eager = false } = Astro.props;
 
 // Take up to 3 items
 const displayItems = items.slice(0, 3);
@@ -27,6 +28,7 @@ const hasMultiple = displayItems.length > 1;
                 href={displayItems[0].href}
                 imageUrl={displayItems[0].imageUrl}
                 imageAlt={displayItems[0].imageAlt}
+                eager={eager}
             />
         </div>
     ) : (
@@ -37,6 +39,7 @@ const hasMultiple = displayItems.length > 1;
                     href={displayItems[0].href}
                     imageUrl={displayItems[0].imageUrl}
                     imageAlt={displayItems[0].imageAlt}
+                    eager={eager}
                 />
             </div>
             <div class="featured-side">
@@ -47,6 +50,7 @@ const hasMultiple = displayItems.length > 1;
                         imageUrl={item.imageUrl}
                         imageAlt={item.imageAlt}
                         compact={displayItems.length === 3}
+                        eager={eager}
                     />
                 ))}
             </div>
