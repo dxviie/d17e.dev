@@ -149,7 +149,8 @@
     });
 
     async function initCanvas() {
-        const ctx = canvas.getContext("2d");
+        // Use willReadFrequently for better getImageData performance
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
         const width = 1472;
         const height = 448;
 
@@ -198,11 +199,11 @@
             }
         }
 
-        // Create offscreen canvas for compositing
+        // Create offscreen canvas for compositing with willReadFrequently
         const offscreen = document.createElement("canvas");
         offscreen.width = width;
         offscreen.height = height;
-        const offCtx = offscreen.getContext("2d");
+        const offCtx = offscreen.getContext("2d", { willReadFrequently: true });
 
         // Animation parameters
         const effectiveMin = 0.3;
@@ -210,9 +211,21 @@
         const effectiveRange = effectiveMax - effectiveMin;
         const animationDuration = 150000; // 150 seconds
         let startTime = performance.now();
+        
+        // Throttle to ~15fps on mobile for better performance (66ms between frames)
+        const frameInterval = 66;
+        let lastFrameTime = 0;
 
-        function render() {
-            const elapsed = performance.now() - startTime;
+        function render(currentTime) {
+            animationId = requestAnimationFrame(render);
+            
+            // Throttle frame rate
+            if (currentTime - lastFrameTime < frameInterval) {
+                return;
+            }
+            lastFrameTime = currentTime;
+            
+            const elapsed = currentTime - startTime;
             const progress = (elapsed % animationDuration) / animationDuration;
             const timeOffset = progress * effectiveRange * 0.025; // Shift noise over time
 
@@ -250,9 +263,10 @@
                 const imageData = offCtx.getImageData(0, 0, width, height);
                 const data = imageData.data;
 
-                // Apply noise mask
+                // Apply noise mask - process in larger steps for performance
                 for (let y = 0; y < height; y++) {
                     const ny = Math.floor(y / noiseScale);
+                    const rowOffset = y * width;
                     for (let x = 0; x < width; x++) {
                         const nx = Math.floor(x / noiseScale);
                         const noiseVal = noiseField[ny * noiseWidth + nx];
@@ -270,9 +284,8 @@
                         }
 
                         // Set alpha based on range
-                        const idx = (y * width + x) * 4;
                         if (!inRange) {
-                            data[idx + 3] = 0; // Transparent
+                            data[(rowOffset + x) * 4 + 3] = 0; // Transparent
                         }
                     }
                 }
@@ -280,11 +293,9 @@
                 offCtx.putImageData(imageData, 0, 0);
                 ctx.drawImage(offscreen, 0, 0);
             }
-
-            animationId = requestAnimationFrame(render);
         }
 
-        render();
+        requestAnimationFrame(render);
     }
 </script>
 
