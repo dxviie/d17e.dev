@@ -68,6 +68,8 @@ const featuredArticles = FEATURED_ARTICLE_SLUGS.map((slug) =>
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <!-- Preload LCP image (landing logo) - only on landing page -->
+        <link rel="preload" href="/logo/d17e-logo.png" as="image" fetchpriority="high"/>
     </head>
     <body>
         <div class="statusbar"></div>
@@ -107,6 +109,8 @@ const featuredArticles = FEATURED_ARTICLE_SLUGS.map((slug) =>
                         src="/me_rstr_cmy_round_s.webp"
                         class="avatar"
                         alt="David Vandenbogaerde"
+                        width="150"
+                        height="150"
                     />
                     <div class="intro-title">
                         <h1>
