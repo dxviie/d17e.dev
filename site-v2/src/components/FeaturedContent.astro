@@ -24,6 +24,12 @@ const {
             alt={imageAlt}
             loading="lazy"
         />
+        <div class="link-indicator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+            </svg>
+        </div>
         {
             !compact && (
                 <div class="featured-overlay">
@@ -72,6 +78,26 @@ const {
 
     .featured-card:hover .featured-image {
         transform: scale(1.02);
+    }
+
+    .link-indicator {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.35rem;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.7;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .featured-card:hover .link-indicator {
+        opacity: 1;
+        transform: translate(2px, -2px);
     }
 
     .featured-overlay {
