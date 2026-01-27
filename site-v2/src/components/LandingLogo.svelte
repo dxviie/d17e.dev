@@ -1,8 +1,8 @@
 <script>
     // All available images (01 to 13)
-    const allImages = Array.from({ length: 13 }, (_, i) => ({
+    const allImages = Array.from({ length: 7 }, (_, i) => ({
         id: i + 1,
-        url: `/logo/rstr-${String(i + 1).padStart(2, "0")}.png`,
+        url: `/logo/rstr-${String(i + 1).padStart(2, "0")}.webp`,
     }));
 
     // Fisher-Yates shuffle and pick random images
@@ -168,7 +168,7 @@
                 img.src = src;
             });
 
-        const baseLogoImg = await loadImage("/logo/d17e-logo.png");
+        const baseLogoImg = await loadImage("/logo/d17e-logo.webp");
         const overlayImgs = await Promise.all(
             images.map((img) => loadImage(img.url)),
         );
@@ -211,20 +211,20 @@
         const effectiveRange = effectiveMax - effectiveMin;
         const animationDuration = 150000; // 150 seconds
         let startTime = performance.now();
-        
+
         // Throttle to ~15fps on mobile for better performance (66ms between frames)
         const frameInterval = 66;
         let lastFrameTime = 0;
 
         function render(currentTime) {
             animationId = requestAnimationFrame(render);
-            
+
             // Throttle frame rate
             if (currentTime - lastFrameTime < frameInterval) {
                 return;
             }
             lastFrameTime = currentTime;
-            
+
             const elapsed = currentTime - startTime;
             const progress = (elapsed % animationDuration) / animationDuration;
             const timeOffset = progress * effectiveRange * 0.025; // Shift noise over time
@@ -300,12 +300,22 @@
 </script>
 
 <div class="logo-container" aria-label="D17E Logo">
+    <!-- Placeholder image always visible to prevent layout shift -->
+    <img
+        class="logo-placeholder"
+        src="/logo/d17e-logo.webp"
+        width="1472"
+        height="448"
+        alt="D17E Logo"
+        fetchpriority="high"
+    />
     {#if mounted && useCanvas}
         <!-- Canvas version (mobile/touch devices) -->
         <canvas bind:this={canvas} class="logo-canvas"></canvas>
-    {:else}
-        <!-- SVG version with filters (desktop) -->
+    {:else if mounted}
+        <!-- SVG overlays on top with animated noise effect (desktop) -->
         <svg
+            class="logo-svg"
             width="1472"
             height="448"
             viewBox="0 0 1472 448"
@@ -421,7 +431,7 @@
 
             <!-- Render main logo (always fully visible) -->
             <image
-                href="/logo/d17e-logo.png"
+                href="/logo/d17e-logo.webp"
                 width="1472"
                 height="448"
                 fetchpriority="high"
@@ -443,13 +453,29 @@
 <style>
     .logo-container {
         background: #fdfaff;
+        position: relative;
     }
 
-    svg,
-    .logo-canvas {
+    .logo-placeholder {
         max-width: 100%;
         height: auto;
         display: block;
+    }
+
+    .logo-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .logo-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        height: auto;
     }
 
     :global(.landing) {
