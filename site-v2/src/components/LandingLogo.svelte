@@ -454,6 +454,7 @@
     .logo-container {
         background: #fdfaff;
         position: relative;
+        width: 85%;
     }
 
     .logo-placeholder {
