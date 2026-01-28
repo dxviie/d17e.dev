@@ -262,7 +262,7 @@ You can also **[browse by tag](/tags)**
         </div>
         <ul id="posts-grid">
           {
-            posts.map((post) => (
+            posts.map((post, index) => (
               <li>
                 <a href={`/posts/${post.data.slug}/`}>
                   {post.data.cover && (
@@ -275,6 +275,7 @@ You can also **[browse by tag](/tags)**
                         filenameDownload={post.data.cover.filenameDownload}
                         width={800}
                         height={450}
+                        loading={index < 15 ? "eager" : "lazy"}
                       />
 
                       <div class="title-overlay">

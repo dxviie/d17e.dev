@@ -12,6 +12,7 @@ interface MediaAssetProps {
   isHero?: boolean;
   cmsUrl?: string;  // Base CMS URL for media assets
   objectFit?: string; // CSS property for object-fit
+  loading?: "eager" | "lazy"; // Image loading strategy
 }
 
 const {
@@ -23,7 +24,8 @@ const {
   height = 450,
   isHero = false,
   cmsUrl = "https://directus.d17e.dev/assets", // Default CMS URL - replace with your actual CMS URL
-  objectFit = "cover" // Default object-fit value
+  objectFit = "cover", // Default object-fit value
+  loading = "lazy" // Default to lazy loading
 } = Astro.props;
 
 const isVideo = type?.startsWith("video/");
@@ -95,6 +97,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                                 height={height}
                                 alt={alt}
                                 format="webp"
+                                loading={loading}
                                 style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
                         />
                         <div class="link-indicator" title="View original asset"></div>
@@ -107,6 +110,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                                       height={height}
                                       alt={alt}
                                       format="webp"
+                                      loading={loading}
                                       style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
                               />
                 ))
