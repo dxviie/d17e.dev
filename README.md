@@ -8,7 +8,6 @@ Personal website and blog. Find out more in my [blog post about it](https://www.
 - **[Svelte](https://svelte.dev)** - Interactive UI components
 - **[TypeScript](https://www.typescriptlang.org)** - Type-safe development
 - **[Directus](https://directus.io)** - Headless CMS for content management
-- **[Sentry](https://sentry.io)** - Error monitoring and performance tracking
 - **PWA Support** - Progressive Web App capabilities
 
 ## Getting Started
