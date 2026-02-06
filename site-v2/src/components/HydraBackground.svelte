@@ -186,7 +186,7 @@
         bind:this={canvas}
         class="hydra-canvas"
         style:mix-blend-mode={blendMode}
-        style:opacity
+        style:opacity={initialized ? opacity : 0}
         aria-hidden="true"
     ></canvas>
     <div class="hydra-content">
@@ -215,6 +215,7 @@
         /* Promote to GPU layer for smoother compositing */
         will-change: contents;
         transform: translateZ(0);
+        transition: opacity 1s ease;
     }
 
     .hydra-content {

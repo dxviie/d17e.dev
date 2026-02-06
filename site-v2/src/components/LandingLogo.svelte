@@ -299,7 +299,7 @@
     }
 </script>
 
-<div class="logo-container" aria-label="D17E Logo">
+<div class="logo-container" class:loaded={mounted} aria-label="D17E Logo">
     <!-- Placeholder image always visible to prevent layout shift -->
     <img
         class="logo-placeholder"
@@ -454,6 +454,12 @@
     .logo-container {
         background: #fdfaff;
         position: relative;
+        opacity: 0;
+        transition: opacity 0.8s ease;
+    }
+
+    .logo-container.loaded {
+        opacity: 1;
     }
 
     .logo-placeholder {
