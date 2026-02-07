@@ -21,6 +21,69 @@ export type ImageVariant = '400w' | '800w' | '1200w' | '1920w' | 'original';
 export type VideoVariant = '480p' | '720p' | '1080p' | 'original';
 
 /**
+ * Extract file extension from a filename
+ * @param filename - The filename (e.g., "image.jpg" or "video.mp4")
+ * @returns The file extension without the dot (e.g., "jpg", "mp4")
+ */
+export function getFileExtension(filename?: string | null): string {
+  if (!filename) return '';
+  const parts = filename.split('.');
+  return parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+}
+
+/**
+ * Extract file extension from a MIME type
+ * @param mimeType - The MIME type (e.g., "image/png", "video/mp4")
+ * @returns The file extension (e.g., "png", "mp4", "jpg" for image/jpeg)
+ */
+export function getExtensionFromMimeType(mimeType?: string | null): string {
+  if (!mimeType) return '';
+  
+  // Map of MIME types to extensions
+  const mimeToExt: Record<string, string> = {
+    'image/jpeg': 'jpg',
+    'image/jpg': 'jpg',
+    'image/png': 'png',
+    'image/gif': 'gif',
+    'image/webp': 'webp',
+    'image/svg+xml': 'svg',
+    'image/bmp': 'bmp',
+    'image/tiff': 'tiff',
+    'video/mp4': 'mp4',
+    'video/webm': 'webm',
+    'video/quicktime': 'mov',
+    'video/x-msvideo': 'avi',
+    'video/x-matroska': 'mkv',
+  };
+  
+  const ext = mimeToExt[mimeType.toLowerCase()];
+  if (ext) return ext;
+  
+  // Fallback: extract from mime type (e.g., "image/png" -> "png")
+  const parts = mimeType.split('/');
+  return parts.length > 1 ? parts[1].toLowerCase() : '';
+}
+
+/**
+ * Get the original file extension from filename or MIME type
+ * @param filenameDownload - The original filename (e.g., "photo.png")
+ * @param mimeType - The MIME type (e.g., "image/png")
+ * @returns The file extension (e.g., "png")
+ */
+export function getOriginalExtension(filenameDownload?: string | null, mimeType?: string | null): string {
+  // Try filename first
+  const fromFilename = getFileExtension(filenameDownload);
+  if (fromFilename) return fromFilename;
+  
+  // Fall back to MIME type
+  const fromMime = getExtensionFromMimeType(mimeType);
+  if (fromMime) return fromMime;
+  
+  // Last resort default
+  return 'jpg';
+}
+
+/**
  * Get the URL for an image variant
  * @param id - The Directus file ID
  * @param variant - The image variant (400w, 800w, 1200w, 1920w, or original)
@@ -29,7 +92,8 @@ export type VideoVariant = '480p' | '720p' | '1080p' | 'original';
  */
 export function getImageUrl(id: string, variant: ImageVariant = '800w', originalExt?: string): string {
   if (variant === 'original') {
-    const ext = originalExt || 'webp';
+    // For original, we need the actual file extension
+    const ext = originalExt || 'jpg'; // Default to jpg if not provided
     return `${MEDIA_CDN_URL}/images/${id}/original.${ext}`;
   }
   return `${MEDIA_CDN_URL}/images/${id}/${variant}.webp`;
