@@ -1,16 +1,18 @@
 ---
 // MediaAsset.astro
-import { getImageUrl, getVideoUrl, getVideoPosterUrl, getImageSrcset, getOriginalExtension, MEDIA_CDN_URL } from "../utils/mediaUrls";
+import { getImageUrl, getVideoUrl, getVideoPosterUrl, getImageSrcset, getOriginalExtension, getBestImageVariant, MEDIA_CDN_URL } from "../utils/mediaUrls";
 
 interface MediaAssetProps {
   id: string;
   alt?: string;
   type?: string;
   filenameDownload?: string;
-  width?: number;
-  height?: number;
+  width?: number;          // Display width
+  height?: number;         // Display height
+  originalWidth?: number;  // Original source image width (from Directus)
+  originalHeight?: number; // Original source image height (from Directus)
   isHero?: boolean;
-  objectFit?: string; // CSS property for object-fit
+  objectFit?: string;      // CSS property for object-fit
   loading?: "eager" | "lazy"; // Image loading strategy
 }
 
@@ -21,6 +23,8 @@ const {
   filenameDownload,
   width = 800,
   height = 450,
+  originalWidth,
+  originalHeight,
   isHero = false,
   objectFit = "cover", // Default object-fit value
   loading = "lazy" // Default to lazy loading
@@ -32,10 +36,14 @@ const showVideo = isVideo && isHero;
 // Extract original file extension from filenameDownload or MIME type
 const originalExt = getOriginalExtension(filenameDownload, type);
 
-// CDN URLs for images
-const cdnImageUrl = getImageUrl(id, '800w');
-const cdnImageSrcset = getImageSrcset(id);
-const cdnImageUrlLarge = getImageUrl(id, '1920w');
+// CDN URLs for images - use original width to determine available variants
+const cdnImageSrcset = getImageSrcset(id, originalWidth);
+// For hero images, use the best available large variant
+const heroVariant = getBestImageVariant(originalWidth, 1920);
+const cdnImageUrlLarge = getImageUrl(id, heroVariant);
+// For regular images, use the best variant for typical display
+const regularVariant = getBestImageVariant(originalWidth, 800);
+const cdnImageUrl = getImageUrl(id, regularVariant);
 
 // CDN URLs for video sources
 const cdnVideoUrl480p = getVideoUrl(id, '480p');

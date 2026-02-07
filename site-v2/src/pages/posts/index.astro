@@ -273,6 +273,8 @@ You can also **[browse by tag](/tags)**
                         alt={post.data.cover.title || post.data.title}
                         type={post.data.cover.type}
                         filenameDownload={post.data.cover.filenameDownload}
+                        originalWidth={post.data.cover.width}
+                        originalHeight={post.data.cover.height}
                         width={800}
                         height={450}
                         loading={index < 15 ? "eager" : "lazy"}

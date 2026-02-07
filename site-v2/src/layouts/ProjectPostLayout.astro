@@ -23,8 +23,8 @@ const {postData, projectSlug, relatedPostSlugs} = Astro.props;
 const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription} = postData;
 
 const isVideo = cover.type?.startsWith("video/");
-// Use CDN URL for OG image (1200w is optimal for social sharing)
-let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id);
+// Use CDN URL for OG image (best available size up to 1200w)
+let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, cover.width);
 ---
 
 <html lang="en">
@@ -46,6 +46,8 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id);
                       alt={cover.title || title}
                       type={cover.type}
                       filenameDownload={cover.filenameDownload}
+                      originalWidth={cover.width}
+                      originalHeight={cover.height}
                       isHero={true}
               />
               <ProjectPostPrevNextMini

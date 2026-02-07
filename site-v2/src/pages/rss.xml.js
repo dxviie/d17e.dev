@@ -1,6 +1,6 @@
 import {getCollection} from 'astro:content';
 import {marked} from 'marked';
-import { getImageUrl, getVideoUrl } from '../utils/mediaUrls';
+import { getImageUrl, getVideoUrl, getBestImageVariant } from '../utils/mediaUrls';
 
 // Configure marked renderer the same way as in Markdown.astro
 const configureMarked = () => {
@@ -93,8 +93,9 @@ function getRssMediaUrl(cover) {
         // Use 720p for RSS feed - good balance of quality and size
         return getVideoUrl(cover.id, '720p');
     }
-    // Use 1200w for RSS feed images - good for article previews
-    return getImageUrl(cover.id, '1200w');
+    // Use best available size up to 1200w for RSS feed images
+    const variant = getBestImageVariant(cover.width, 1200);
+    return getImageUrl(cover.id, variant);
 }
 
 function getMediaType(cover) {

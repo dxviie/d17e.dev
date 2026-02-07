@@ -5,6 +5,9 @@
     // CDN base URL for media assets
     const MEDIA_CDN_URL = 'https://media.d17e.dev';
     
+    // Available image variant widths
+    const IMAGE_VARIANT_WIDTHS = [400, 800, 1200, 1920];
+    
     // Helper functions to get CDN URLs
     function getImageUrl(id: string, variant: string = '800w'): string {
         return `${MEDIA_CDN_URL}/images/${id}/${variant}.webp`;
@@ -16,6 +19,36 @@
     
     function getVideoPosterUrl(id: string): string {
         return `${MEDIA_CDN_URL}/videos/${id}/poster.webp`;
+    }
+    
+    // Get available variants based on original image width
+    function getAvailableVariants(originalWidth?: number | null): number[] {
+        if (!originalWidth || originalWidth <= 0) {
+            return [400]; // Safe fallback
+        }
+        return IMAGE_VARIANT_WIDTHS.filter(w => w <= originalWidth);
+    }
+    
+    // Build srcset string based on available sizes
+    function buildSrcset(id: string, originalWidth?: number | null): string {
+        const variants = getAvailableVariants(originalWidth);
+        if (variants.length === 0) {
+            return `${getImageUrl(id, '400w')} 400w`;
+        }
+        return variants.map(w => `${getImageUrl(id, `${w}w`)} ${w}w`).join(', ');
+    }
+    
+    // Get the best variant for a target width
+    function getBestVariant(originalWidth?: number | null, targetWidth: number = 800): string {
+        const variants = getAvailableVariants(originalWidth);
+        if (variants.length === 0) return '400w';
+        
+        // Find smallest variant >= targetWidth
+        for (const w of variants) {
+            if (w >= targetWidth) return `${w}w`;
+        }
+        // Return largest available
+        return `${variants[variants.length - 1]}w`;
     }
 
     const { landingPages } = $props<{
@@ -595,8 +628,11 @@
         </a>
       `;
         } else {
-            const imgUrl = getImageUrl(media.cover.id, '800w');
-            const srcset = `${getImageUrl(media.cover.id, '400w')} 400w, ${getImageUrl(media.cover.id, '800w')} 800w, ${getImageUrl(media.cover.id, '1200w')} 1200w`;
+            // Use original width to determine available variants
+            const originalWidth = media.cover.width;
+            const bestVariant = getBestVariant(originalWidth, 800);
+            const imgUrl = getImageUrl(media.cover.id, bestVariant);
+            const srcset = buildSrcset(media.cover.id, originalWidth);
             return `
         <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">

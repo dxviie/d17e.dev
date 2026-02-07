@@ -145,15 +145,67 @@ export function getMediaUrl(
   return getImageUrl(cover.id, imageVariant);
 }
 
+/** 
+ * Available image variant widths in pixels
+ */
+export const IMAGE_VARIANT_WIDTHS = [400, 800, 1200, 1920] as const;
+
+/**
+ * Get available image variants based on original image width
+ * Only returns variants that are smaller than or equal to the original width
+ * @param originalWidth - The original image width in pixels
+ * @returns Array of available variant strings (e.g., ['400w', '800w'])
+ */
+export function getAvailableImageVariants(originalWidth?: number | null): ImageVariant[] {
+  if (!originalWidth || originalWidth <= 0) {
+    // If no width info, assume only smallest size is safe
+    return ['400w'];
+  }
+  
+  return IMAGE_VARIANT_WIDTHS
+    .filter(width => width <= originalWidth)
+    .map(width => `${width}w` as ImageVariant);
+}
+
+/**
+ * Get the best image variant for a given target width
+ * Returns the smallest variant that is >= target, or the largest available if none are bigger
+ * @param originalWidth - The original image width in pixels
+ * @param targetWidth - The desired display width
+ * @returns The best variant to use
+ */
+export function getBestImageVariant(originalWidth?: number | null, targetWidth: number = 800): ImageVariant {
+  const available = getAvailableImageVariants(originalWidth);
+  if (available.length === 0) return '400w';
+  
+  // Find the smallest variant >= targetWidth
+  for (const variant of available) {
+    const variantWidth = parseInt(variant);
+    if (variantWidth >= targetWidth) {
+      return variant;
+    }
+  }
+  
+  // Return the largest available if none are big enough
+  return available[available.length - 1];
+}
+
 /**
  * Generate srcset string for responsive images
+ * Only includes variants that exist (smaller than or equal to original width)
  * @param id - The Directus file ID
- * @param variants - Array of variants to include (default: all sizes)
+ * @param originalWidth - The original image width in pixels (from Directus)
  * @returns srcset string for use in img tags
  */
-export function getImageSrcset(id: string, variants: ImageVariant[] = ['400w', '800w', '1200w', '1920w']): string {
+export function getImageSrcset(id: string, originalWidth?: number | null): string {
+  const variants = getAvailableImageVariants(originalWidth);
+  
+  if (variants.length === 0) {
+    // Fallback to 400w if no variants available
+    return `${getImageUrl(id, '400w')} 400w`;
+  }
+  
   return variants
-    .filter(v => v !== 'original')
     .map(variant => {
       const width = parseInt(variant);
       return `${getImageUrl(id, variant)} ${width}w`;
@@ -163,12 +215,15 @@ export function getImageSrcset(id: string, variants: ImageVariant[] = ['400w', '
 
 /**
  * Get the URL for an OG (Open Graph) image
- * Uses the 1200w variant which is optimal for social sharing
+ * Uses the 1200w variant if available, otherwise the best available size
  * @param id - The Directus file ID
+ * @param originalWidth - The original image width in pixels (from Directus)
  * @returns The full CDN URL for the OG image
  */
-export function getOgImageUrl(id: string): string {
-  return getImageUrl(id, '1200w');
+export function getOgImageUrl(id: string, originalWidth?: number | null): string {
+  // OG images ideally should be 1200px wide, but use best available
+  const variant = getBestImageVariant(originalWidth, 1200);
+  return getImageUrl(id, variant);
 }
 
 /**

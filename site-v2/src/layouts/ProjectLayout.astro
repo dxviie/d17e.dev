@@ -8,7 +8,7 @@ import Markdown from '../components/Markdown.astro';
 import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
-import { getOgImageUrl, getVideoPosterUrl, getImageUrl } from "../utils/mediaUrls";
+import { getOgImageUrl, getVideoPosterUrl, getImageUrl, getBestImageVariant } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'projects'>['data'];
 
@@ -29,8 +29,8 @@ const {
 } = Astro.props;
 
 const isVideo = cover.type?.startsWith("video/");
-// Use CDN URL for OG image (1200w is optimal for social sharing)
-let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id);
+// Use CDN URL for OG image (best available size up to 1200w)
+let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, cover.width);
 
 // Format date display with appropriate detail level
 function formatTimeDetails(start: Date | null, end: Date | null): string {
@@ -91,6 +91,8 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
                       alt={cover.title || name}
                       type={cover.type}
                       filenameDownload={cover.filenameDownload}
+                      originalWidth={cover.width}
+                      originalHeight={cover.height}
                       isHero={true}
                       objectFit="contain"
               />
@@ -144,7 +146,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
                                           {article.cover && (
                                                   <div class="related-thumbnail">
                                                     <img
-                                                            src={getImageUrl(article.cover.id, '400w')}
+                                                            src={getImageUrl(article.cover.id, getBestImageVariant(article.cover.width, 400))}
                                                             alt={article.title}
                                                             loading="lazy"
                                                     />
@@ -180,7 +182,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
                                           {post.cover && (
                                                   <div class="post-card-image">
                                                     <img
-                                                            src={post.cover.type?.startsWith("video/") ? getVideoPosterUrl(post.cover.id) : getImageUrl(post.cover.id, '400w')}
+                                                            src={post.cover.type?.startsWith("video/") ? getVideoPosterUrl(post.cover.id) : getImageUrl(post.cover.id, getBestImageVariant(post.cover.width, 400))}
                                                             alt={post.title}
                                                             loading="lazy"
                                                     />
