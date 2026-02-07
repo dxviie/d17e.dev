@@ -61,26 +61,45 @@ const markedInstance = configureMarked();
 const getRssEntries = async () => {
     const posts = await getCollection('posts');
     const articles = await getCollection('articles');
-    const allItems = [
-        ...posts.map(post => ({
+    
+    // Process posts - ensure marked.parse is awaited in case it returns a Promise
+    const processedPosts = await Promise.all(posts.map(async post => {
+        let content = post.data.description || '';
+        if (post.data.body) {
+            const parsed = markedInstance.parse(post.data.body);
+            // Handle both sync and async marked.parse
+            content = parsed instanceof Promise ? await parsed : parsed;
+        }
+        return {
             ...post.data,
             type: 'posts',
             description: post.data.description || '',
-            content: post.data.body ? markedInstance.parse(post.data.body) : (post.data.description || ''),
+            content,
             title: post.data.title,
             pubDate: post.data.publishDate,
             author: 'David Vandenbogaerde'
-        })),
-        ...articles.map(article => ({
+        };
+    }));
+    
+    // Process articles
+    const processedArticles = await Promise.all(articles.map(async article => {
+        let content = article.data.description || '';
+        if (article.data.body) {
+            const parsed = markedInstance.parse(article.data.body);
+            content = parsed instanceof Promise ? await parsed : parsed;
+        }
+        return {
             ...article.data,
             type: 'blog',
             description: article.data.description || '',
-            content: article.data.body ? markedInstance.parse(article.data.body) : (article.data.description || ''),
+            content,
             title: article.data.title,
             pubDate: article.data.publishDate,
             author: 'David Vandenbogaerde'
-        }))
-    ];
+        };
+    }));
+    
+    const allItems = [...processedPosts, ...processedArticles];
     // Sort by publish date, newest first
     allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
     return allItems;
@@ -158,9 +177,10 @@ export async function GET(context) {
 `;
 
         // Add content:encoded if available
-        if (entry.content) {
-            // Wrap the content in a div to ensure it's valid XML
-            xml += `      <content:encoded><![CDATA[<div>${entry.content}</div>]]></content:encoded>\n`;
+        if (entry.content && typeof entry.content === 'string') {
+            // Use CDATA for HTML content - ensure no ]]> sequences break it
+            const safeContent = entry.content.replace(/\]\]>/g, ']]]]><![CDATA[>');
+            xml += `      <content:encoded><![CDATA[${safeContent}]]></content:encoded>\n`;
         }
 
         // Add author information

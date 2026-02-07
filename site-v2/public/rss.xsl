@@ -105,12 +105,39 @@
                     font-family: 'Nudica Mono Light', monospace;
                     letter-spacing: -0.01em;
                     }
-                    .item-description {
+                    .item-content {
                     margin: 1rem 0;
+                    }
+                    .item-content script.html-content {
+                    display: none;
+                    }
+                    .item-description {
                     font-family: 'argesta_regular', serif;
                     letter-spacing: -0.01em;
                     line-height: 1.7rem;
                     font-size: 1.1rem;
+                    }
+                    .item-description p {
+                    margin: 1rem 0;
+                    }
+                    .item-description a {
+                    color: darkorange;
+                    }
+                    .item-description img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 4px;
+                    margin: 1rem 0;
+                    }
+                    .item-description .hashtag {
+                    display: inline-block;
+                    color: darkorange;
+                    background-color: rgba(255, 140, 0, 0.1);
+                    padding: 0.1rem 0.4rem;
+                    border-radius: 4px;
+                    font-size: 0.9em;
+                    text-decoration: none;
+                    font-family: 'Nudica Mono Light', monospace;
                     }
                     .media-container {
                     position: relative;
@@ -173,6 +200,10 @@
                     background: #292929;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
                     }
+
+                    .item-description .hashtag {
+                    background-color: rgba(255, 140, 0, 0.2);
+                    }
                     }
                 </style>
             </head>
@@ -203,7 +234,7 @@
                                 <xsl:value-of select="pubDate"/>
                                 <xsl:if test="creator">
                                     by
-                                    <xsl:value-of select="creator" disable-output-escaping="yes"/>
+                                    <xsl:value-of select="creator"/>
                                 </xsl:if>
                             </div>
                             <xsl:if test="enclosure">
@@ -230,21 +261,35 @@
                                     </xsl:choose>
                                 </div>
                             </xsl:if>
-                            <div class="item-description">
+                            <div class="item-content">
                                 <xsl:choose>
-                                    <!-- If there's content:encoded, use that -->
                                     <xsl:when test="content:encoded">
-                                        <xsl:value-of select="content:encoded" disable-output-escaping="yes"/>
+                                        <script type="text/html" class="html-content">
+                                            <xsl:value-of select="content:encoded"/>
+                                        </script>
                                     </xsl:when>
-                                    <!-- Otherwise fall back to description -->
                                     <xsl:otherwise>
-                                        <xsl:value-of select="description" disable-output-escaping="yes"/>
+                                        <script type="text/html" class="html-content">
+                                            <xsl:value-of select="description"/>
+                                        </script>
                                     </xsl:otherwise>
                                 </xsl:choose>
+                                <div class="item-description"></div>
                             </div>
                         </article>
                     </xsl:for-each>
                 </main>
+                <script>
+                    // Render HTML content - disable-output-escaping is not supported
+                    // in client-side XSLT by modern browsers, so we use this workaround
+                    document.querySelectorAll('.item-content').forEach(function(container) {
+                        var scriptTag = container.querySelector('script.html-content');
+                        var targetDiv = container.querySelector('.item-description');
+                        if (scriptTag &amp;&amp; targetDiv) {
+                            targetDiv.innerHTML = scriptTag.textContent || scriptTag.innerText || '';
+                        }
+                    });
+                </script>
             </body>
         </html>
     </xsl:template>
