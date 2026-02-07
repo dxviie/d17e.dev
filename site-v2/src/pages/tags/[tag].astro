@@ -8,6 +8,7 @@ import MediaAsset from "../../components/MediaAsset.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import {SITE_TITLE} from '../../consts';
 import {countTagOccurrences, findContentByTag} from '../../utils/tagUtils';
+import { getImageUrl, getVideoPosterUrl, getBestImageVariant } from "../../utils/mediaUrls";
 
 export async function getStaticPaths() {
   // Get all content
@@ -70,7 +71,7 @@ const relatedContent = findContentByTag(tag, projects, articles, posts);
                         {project.data.cover && (
                                 <div class="project-image">
                                   <img
-                                          src={`/assets/${project.data.cover.id}.webp`}
+                                          src={project.data.cover.type?.startsWith("video/") ? getVideoPosterUrl(project.data.cover.id) : getImageUrl(project.data.cover.id, getBestImageVariant(project.data.cover.width, 400))}
                                           alt={project.data.name}
                                           loading="lazy"
                                   />
@@ -98,7 +99,7 @@ const relatedContent = findContentByTag(tag, projects, articles, posts);
                         {article.data.cover && (
                                 <div class="article-image">
                                   <img
-                                          src={`/assets/${article.data.cover.id}.webp`}
+                                          src={article.data.cover.type?.startsWith("video/") ? getVideoPosterUrl(article.data.cover.id) : getImageUrl(article.data.cover.id, getBestImageVariant(article.data.cover.width, 400))}
                                           alt={article.data.title}
                                           loading="lazy"
                                   />
@@ -134,7 +135,7 @@ const relatedContent = findContentByTag(tag, projects, articles, posts);
                             {post.data.cover && (
                                     <div class="post-card-image">
                                       <img
-                                              src={`/assets/${post.data.cover.id}.webp`}
+                                              src={post.data.cover.type?.startsWith("video/") ? getVideoPosterUrl(post.data.cover.id) : getImageUrl(post.data.cover.id, getBestImageVariant(post.data.cover.width, 400))}
                                               alt={post.data.title}
                                               loading="lazy"
                                       />

@@ -21,8 +21,7 @@ const FEATURED_ARTICLE_SLUGS = [
     "creative-coding-amsterdam-plotter-special",
 ];
 
-const IMG_URL_BASE = "https://directus.d17e.dev/assets";
-const IMG_OPTIMIZED_PARAMS = "?width=400&format=webp&quality=80";
+import { getImageUrl, getBestImageVariant } from "../utils/mediaUrls";
 
 // Fetch all content from collections
 const projects = await getCollection("projects");
@@ -37,7 +36,7 @@ const featuredProjects = FEATURED_PROJECT_SLUGS.map((slug) =>
     .map((p) => ({
         title: p!.data.name,
         href: `/projects/${p!.data.slug}`,
-        imageUrl: `${IMG_URL_BASE}/${p!.data.cover.id}${IMG_OPTIMIZED_PARAMS}`,
+        imageUrl: getImageUrl(p!.data.cover.id, getBestImageVariant(p!.data.cover.width, 400)),
         imageAlt: p!.data.cover.title,
     }));
 
@@ -48,7 +47,7 @@ const featuredPosts = FEATURED_POST_SLUGS.map((slug) =>
     .map((p) => ({
         title: p!.data.title,
         href: `/posts/${p!.data.slug}`,
-        imageUrl: `${IMG_URL_BASE}/${p!.data.cover.id}${IMG_OPTIMIZED_PARAMS}`,
+        imageUrl: getImageUrl(p!.data.cover.id, getBestImageVariant(p!.data.cover.width, 400)),
         imageAlt: p!.data.cover.title,
     }));
 
@@ -59,7 +58,7 @@ const featuredArticles = FEATURED_ARTICLE_SLUGS.map((slug) =>
     .map((a) => ({
         title: a!.data.title,
         href: `/blog/${a!.data.slug}`,
-        imageUrl: `${IMG_URL_BASE}/${a!.data.cover.id}${IMG_OPTIMIZED_PARAMS}`,
+        imageUrl: getImageUrl(a!.data.cover.id, getBestImageVariant(a!.data.cover.width, 400)),
         imageAlt: a!.data.cover.title,
     }));
 ---

@@ -1,5 +1,6 @@
 import {getCollection} from 'astro:content';
 import {marked} from 'marked';
+import { getImageUrl, getVideoUrl, getBestImageVariant } from '../utils/mediaUrls';
 
 // Configure marked renderer the same way as in Markdown.astro
 const configureMarked = () => {
@@ -85,13 +86,16 @@ const getRssEntries = async () => {
     return allItems;
 }
 
-function getMediaUrl(cover) {
+function getRssMediaUrl(cover) {
     if (!cover || !cover.id) return '';
 
     if (cover.type && cover.type.startsWith('video')) {
-        return `https://directus.d17e.dev/assets/${cover.id}.mp4`;
+        // Use 720p for RSS feed - good balance of quality and size
+        return getVideoUrl(cover.id, '720p');
     }
-    return `https://d17e.dev/assets/${cover.id}.webp`;
+    // Use best available size up to 1200w for RSS feed images
+    const variant = getBestImageVariant(cover.width, 1200);
+    return getImageUrl(cover.id, variant);
 }
 
 function getMediaType(cover) {
@@ -165,8 +169,8 @@ export async function GET(context) {
         }
 
         // Add media enclosure if available
-        if (entry.cover && getMediaUrl(entry.cover)) {
-            xml += `      <enclosure url="${getMediaUrl(entry.cover)}" length="${entry.cover.filesize || 0}" type="${getMediaType(entry.cover)}"/>\n`;
+        if (entry.cover && getRssMediaUrl(entry.cover)) {
+            xml += `      <enclosure url="${getRssMediaUrl(entry.cover)}" length="${entry.cover.filesize || 0}" type="${getMediaType(entry.cover)}"/>\n`;
         }
 
         xml += `    </item>\n`;
