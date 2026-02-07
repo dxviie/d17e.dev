@@ -586,9 +586,7 @@
                 data-title="${mediaAlt}"
                 alt="${mediaAlt}"
               >
-                  <!-- Local source first for faster loading if available -->
-                  <source src="/assets/${media.cover.id}.mp4" type="video/mp4">
-                  <!-- CDN fallback sources -->
+                  <!-- CDN video sources - responsive by screen size -->
                   <source src="${videoUrl720p}" type="video/mp4" media="(min-width: 600px)">
                   <source src="${videoUrl480p}" type="video/mp4">
                 </video>

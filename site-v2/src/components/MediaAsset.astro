@@ -1,7 +1,6 @@
 ---
 // MediaAsset.astro
-import {Image} from "astro:assets";
-import { getImageUrl, getVideoUrl, getVideoPosterUrl, MEDIA_CDN_URL } from "../utils/mediaUrls";
+import { getImageUrl, getVideoUrl, getVideoPosterUrl, getImageSrcset, MEDIA_CDN_URL } from "../utils/mediaUrls";
 
 interface MediaAssetProps {
   id: string;
@@ -30,32 +29,13 @@ const {
 const isVideo = type?.startsWith("video/");
 const showVideo = isVideo && isHero;
 
-// Determine file extension and prepare image/video sources
-let imageUrl;
-let videoSrc;
+// CDN URLs for images
+const cdnImageUrl = getImageUrl(id, '800w');
+const cdnImageSrcset = getImageSrcset(id);
+const cdnImageUrlLarge = getImageUrl(id, '1920w');
 
-if (isVideo) {
-  // For videos, import the thumbnail image
-  try {
-    const thumbnailModule = await import(`../../public/assets/${id}.webp`);
-    imageUrl = thumbnailModule.default;
-  } catch (error) {
-    console.error(`Error importing thumbnail for ${id} with extension webp`);
-  }
-  // Always set up the video source for hover/touch functionality
-  videoSrc = `/assets/${id}.mp4`;
-} else {
-  // For images, we rely on our content syncer adding webps for each image
-  let ext = "webp";
-  try {
-    const imageModule = await import(`../assets/${id}.${ext}`);
-    imageUrl = imageModule.default;
-  } catch (error) {
-    console.error(`Error importing image for ${id}: with extension ${ext}`);
-  }
-}
-
-// CDN fallback URLs for video sources
+// CDN URLs for video sources
+const cdnVideoUrl480p = getVideoUrl(id, '480p');
 const cdnVideoUrl720p = getVideoUrl(id, '720p');
 const cdnVideoUrl1080p = getVideoUrl(id, '1080p');
 const cdnVideoPosterUrl = getVideoPosterUrl(id);
@@ -71,7 +51,7 @@ const cdnOriginalUrl = isVideo
           <div class="video-container">
             <video
                     class={`astro-media ${isHero ? 'hero-media' : ''}`}
-                    poster={imageUrl?.src || cdnVideoPosterUrl}
+                    poster={cdnVideoPosterUrl}
                     width={width}
                     height={height}
                     preload="metadata"
@@ -81,11 +61,10 @@ const cdnOriginalUrl = isVideo
                     playsinline
                     data-has-audio="checking"
             >
-              <!-- Local source first for faster loading if available -->
-              <source src={`/assets/${id}.mp4`} type={type}>
-              <!-- CDN fallback sources -->
+              <!-- CDN video sources - responsive by screen size -->
               <source src={cdnVideoUrl1080p} type="video/mp4" media="(min-width: 1024px)">
-              <source src={cdnVideoUrl720p} type="video/mp4">
+              <source src={cdnVideoUrl720p} type="video/mp4" media="(min-width: 600px)">
+              <source src={cdnVideoUrl480p} type="video/mp4">
               Your browser does not support the video tag.
             </video>
             <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute" style="display: none;">
@@ -95,38 +74,51 @@ const cdnOriginalUrl = isVideo
           </div>
   ) : (
           <div class="media-wrapper">
-            {imageUrl && (
-              (isHero ? (<a href={cdnOriginalUrl} target="_blank" rel="noopener noreferrer" class="asset-link">
-                        <Image
-                                class={`astro-media ${isHero ? 'hero-media' : ''}`}
-                                src={imageUrl}
+            {!isVideo && isHero && (
+                      <a href={cdnOriginalUrl} target="_blank" rel="noopener noreferrer" class="asset-link">
+                        <img
+                                class={`astro-media hero-media`}
+                                src={cdnImageUrlLarge}
+                                srcset={cdnImageSrcset}
+                                sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, (max-width: 1440px) 1200px, 1920px"
                                 width={width}
                                 height={height}
                                 alt={alt}
-                                format="webp"
                                 loading={loading}
-                                style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                                style={`object-fit: ${objectFit}; object-position: center;`}
                         />
                         <div class="link-indicator" title="View original asset"></div>
-                      </a>)
-                : (
-                              <Image
-                                      class={`astro-media ${isHero ? 'hero-media' : ''}`}
-                                      src={imageUrl}
+                      </a>
+            )}
+            {!isVideo && !isHero && (
+                              <img
+                                      class="astro-media"
+                                      src={cdnImageUrl}
+                                      srcset={cdnImageSrcset}
+                                      sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, 1200px"
                                       width={width}
                                       height={height}
                                       alt={alt}
-                                      format="webp"
                                       loading={loading}
-                                      style={`object-fit: ${objectFit}; object-position: center;${isHero ? '' : ' transform: scale(1.1);'}`}
+                                      style={`object-fit: ${objectFit}; object-position: center; transform: scale(1.1);`}
                               />
-                ))
+            )}
+            {isVideo && !isHero && (
+                    <img
+                            class="astro-media video-poster"
+                            src={cdnVideoPosterUrl}
+                            width={width}
+                            height={height}
+                            alt={alt}
+                            loading={loading}
+                            style={`object-fit: ${objectFit}; object-position: center; transform: scale(1.1);`}
+                    />
             )}
             {isVideo && !isHero && (
                     <div class="video-hover-container">
                       <video
                               class="atro-media hover-video"
-                              poster={imageUrl?.src || cdnVideoPosterUrl}
+                              poster={cdnVideoPosterUrl}
                               width={width}
                               height={height}
                               preload="none"
@@ -134,8 +126,8 @@ const cdnOriginalUrl = isVideo
                               muted
                               playsinline
                       >
-                        <source src={videoSrc} type={type}>
-                        <source src={cdnVideoUrl720p} type="video/mp4">
+                        <source src={cdnVideoUrl720p} type="video/mp4" media="(min-width: 600px)">
+                        <source src={cdnVideoUrl480p} type="video/mp4">
                       </video>
                       <div class="play-indicator"></div>
                     </div>
