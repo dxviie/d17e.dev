@@ -1,6 +1,7 @@
 ---
 // MediaAsset.astro
 import {Image} from "astro:assets";
+import { getImageUrl, getVideoUrl, getVideoPosterUrl, MEDIA_CDN_URL } from "../utils/mediaUrls";
 
 interface MediaAssetProps {
   id: string;
@@ -10,7 +11,6 @@ interface MediaAssetProps {
   width?: number;
   height?: number;
   isHero?: boolean;
-  cmsUrl?: string;  // Base CMS URL for media assets
   objectFit?: string; // CSS property for object-fit
   loading?: "eager" | "lazy"; // Image loading strategy
 }
@@ -23,7 +23,6 @@ const {
   width = 800,
   height = 450,
   isHero = false,
-  cmsUrl = "https://directus.d17e.dev/assets", // Default CMS URL - replace with your actual CMS URL
   objectFit = "cover", // Default object-fit value
   loading = "lazy" // Default to lazy loading
 } = Astro.props;
@@ -56,8 +55,15 @@ if (isVideo) {
   }
 }
 
-// Format the CMS URL for the video
-const cmsVideoUrl = `${cmsUrl}/${id}`;
+// CDN fallback URLs for video sources
+const cdnVideoUrl720p = getVideoUrl(id, '720p');
+const cdnVideoUrl1080p = getVideoUrl(id, '1080p');
+const cdnVideoPosterUrl = getVideoPosterUrl(id);
+
+// CDN URL for original asset link
+const cdnOriginalUrl = isVideo 
+  ? `${MEDIA_CDN_URL}/videos/${id}/original.mp4`
+  : `${MEDIA_CDN_URL}/images/${id}/original.webp`;
 ---
 
 <figure class="media-asset" data-is-video={isVideo.toString()} data-id={id} data-hero={isHero.toString()}>
@@ -65,7 +71,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
           <div class="video-container">
             <video
                     class={`astro-media ${isHero ? 'hero-media' : ''}`}
-                    poster={imageUrl?.src}
+                    poster={imageUrl?.src || cdnVideoPosterUrl}
                     width={width}
                     height={height}
                     preload="metadata"
@@ -77,8 +83,9 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
             >
               <!-- Local source first for faster loading if available -->
               <source src={`/assets/${id}.mp4`} type={type}>
-              <!-- CMS fallback source -->
-              <source src={cmsVideoUrl} type={type}>
+              <!-- CDN fallback sources -->
+              <source src={cdnVideoUrl1080p} type="video/mp4" media="(min-width: 1024px)">
+              <source src={cdnVideoUrl720p} type="video/mp4">
               Your browser does not support the video tag.
             </video>
             <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute" style="display: none;">
@@ -89,7 +96,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
   ) : (
           <div class="media-wrapper">
             {imageUrl && (
-              (isHero ? (<a href={`https://directus.d17e.dev/assets/${id}`} target="_blank" rel="noopener noreferrer" class="asset-link">
+              (isHero ? (<a href={cdnOriginalUrl} target="_blank" rel="noopener noreferrer" class="asset-link">
                         <Image
                                 class={`astro-media ${isHero ? 'hero-media' : ''}`}
                                 src={imageUrl}
@@ -119,7 +126,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                     <div class="video-hover-container">
                       <video
                               class="atro-media hover-video"
-                              poster={imageUrl?.src}
+                              poster={imageUrl?.src || cdnVideoPosterUrl}
                               width={width}
                               height={height}
                               preload="none"
@@ -128,7 +135,7 @@ const cmsVideoUrl = `${cmsUrl}/${id}`;
                               playsinline
                       >
                         <source src={videoSrc} type={type}>
-                        <source src={cmsVideoUrl} type={type}>
+                        <source src={cdnVideoUrl720p} type="video/mp4">
                       </video>
                       <div class="play-indicator"></div>
                     </div>

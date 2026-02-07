@@ -8,6 +8,7 @@ import Markdown from "../../components/Markdown.astro";
 import FindMeOn from "../../components/FindMeOn.astro";
 import BaseBallCard from "../../components/BaseBallCard.astro";
 import CompactProjectCard from "../../components/CompactProjectCard.astro";
+import { getImageUrl, getVideoPosterUrl } from "../../utils/mediaUrls";
 
 const projects = (await getCollection("projects")).sort((a, b) => {
     const aIsActive = a.data.endDate === null;
@@ -224,7 +225,9 @@ You can also **[browse by tag](/tags)**
                             <CompactProjectCard
                                 name={project.data.name}
                                 imageUrl={
-                                    "/assets/" + project.data.cover.id + ".webp"
+                                    project.data.cover.type?.startsWith("video/") 
+                                        ? getVideoPosterUrl(project.data.cover.id)
+                                        : getImageUrl(project.data.cover.id, '400w')
                                 }
                                 description={project.data.description}
                                 startDate={project.data.startDate}

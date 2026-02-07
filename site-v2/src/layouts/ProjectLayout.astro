@@ -8,6 +8,7 @@ import Markdown from '../components/Markdown.astro';
 import MediaAsset from '../components/MediaAsset.astro';
 import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
+import { getOgImageUrl, getVideoPosterUrl, getImageUrl } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'projects'>['data'];
 
@@ -27,7 +28,9 @@ const {
   relatedArticles = []
 } = Astro.props;
 
-let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
+const isVideo = cover.type?.startsWith("video/");
+// Use CDN URL for OG image (1200w is optimal for social sharing)
+let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id);
 
 // Format date display with appropriate detail level
 function formatTimeDetails(start: Date | null, end: Date | null): string {
@@ -141,7 +144,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
                                           {article.cover && (
                                                   <div class="related-thumbnail">
                                                     <img
-                                                            src={`/assets/${article.cover.id}.webp`}
+                                                            src={getImageUrl(article.cover.id, '400w')}
                                                             alt={article.title}
                                                             loading="lazy"
                                                     />
@@ -177,7 +180,7 @@ const simplifiedDateDisplay = formatTimeDetails(startDate, endDate);
                                           {post.cover && (
                                                   <div class="post-card-image">
                                                     <img
-                                                            src={`/assets/${post.cover.id}.webp`}
+                                                            src={post.cover.type?.startsWith("video/") ? getVideoPosterUrl(post.cover.id) : getImageUrl(post.cover.id, '400w')}
                                                             alt={post.title}
                                                             loading="lazy"
                                                     />

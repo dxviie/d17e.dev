@@ -12,12 +12,15 @@ import FindMeOn from "../components/FindMeOn.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
 import ShareOn from "../components/ShareOn.astro";
+import { getOgImageUrl, getVideoPosterUrl } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'posts'>['data'];
 
 const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription, status} = Astro.props;
 
-let imageUrl = `https://d17e.dev/assets/${cover.id}.webp`;
+const isVideo = cover.type?.startsWith("video/");
+// Use CDN URL for OG image (1200w is optimal for social sharing)
+let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id);
 ---
 
 <html lang="en">
