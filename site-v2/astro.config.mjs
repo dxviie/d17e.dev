@@ -38,18 +38,6 @@ const baseIntegrations = [
             navigateFallback: null,
             runtimeCaching: [
                 {
-                    // Cache only public/assets which contains web-optimized images
-                    urlPattern: /^https:\/\/d17e\.dev\/assets\/.*/i,
-                    handler: 'CacheFirst',
-                    options: {
-                        cacheName: 'optimized-assets-cache',
-                        expiration: {
-                            maxEntries: 100,
-                            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-                        }
-                    }
-                },
-                {
                     // Cache UI elements like icons
                     urlPattern: /^https:\/\/d17e\.dev\/icons\/.*/i,
                     handler: 'CacheFirst',

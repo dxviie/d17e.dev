@@ -5,7 +5,7 @@ mkdir -p public/icons
 
 # Generate different sized icons from the source image
 # Assuming ffmpeg is installed
-SOURCE_IMAGE="public/avatar_me_vera_square.png"
+SOURCE_IMAGE="public/me_rstr_cmy_square_edge.jpg"
 
 if [ ! -f "$SOURCE_IMAGE" ]; then
   echo "Source image not found: $SOURCE_IMAGE"
