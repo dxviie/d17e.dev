@@ -10,7 +10,7 @@ export const MEDIA_CDN_URL = import.meta.env.BUNNY_CDN_URL || 'https://media.d17
 
 /**
  * Image variant sizes available on the CDN
- * Variants larger than the original width are skipped during upload
+ * A variant is only available when the original is strictly larger than the variant width
  */
 export type ImageVariant = '400w' | '800w' | '1200w' | '1920w' | 'original';
 
@@ -147,13 +147,13 @@ export function getMediaUrl(
 
 /**
  * Available video variant heights in pixels
- * Variants larger than the original height are skipped during upload
+ * A variant is only available when the original is strictly larger than the variant height
  */
 export const VIDEO_VARIANT_HEIGHTS = [1080, 720, 480] as const;
 
 /**
  * Get available video variants based on original video height
- * Only returns variants that are smaller than or equal to the original height
+ * Only returns variants when the original is strictly larger than the variant height
  * @param originalHeight - The original video height in pixels
  * @returns Array of available variant strings (e.g. ['720p', '480p'])
  */
@@ -162,7 +162,7 @@ export function getAvailableVideoVariants(originalHeight?: number | null): Video
     return [];
   }
   return VIDEO_VARIANT_HEIGHTS
-    .filter((h) => h <= originalHeight)
+    .filter((h) => h < originalHeight)
     .map((h) => `${h}p` as VideoVariant);
 }
 
@@ -173,32 +173,31 @@ export const IMAGE_VARIANT_WIDTHS = [400, 800, 1200, 1920] as const;
 
 /**
  * Get available image variants based on original image width
- * Only returns variants that are smaller than or equal to the original width
+ * Only returns variants when the original is strictly larger than the variant width
  * @param originalWidth - The original image width in pixels
  * @returns Array of available variant strings (e.g., ['400w', '800w'])
  */
 export function getAvailableImageVariants(originalWidth?: number | null): ImageVariant[] {
   if (!originalWidth || originalWidth <= 0) {
-    // If no width info, assume only smallest size is safe
-    return ['400w'];
+    return [];
   }
   
   return IMAGE_VARIANT_WIDTHS
-    .filter(width => width <= originalWidth)
-    .map(width => `${width}w` as ImageVariant);
+    .filter((width) => width < originalWidth)
+    .map((width) => `${width}w` as ImageVariant);
 }
 
 /**
  * Get the best image variant for a given target width
- * Returns the smallest variant that is >= target, or the largest available if none are bigger
+ * Returns the smallest variant that is >= target, or the largest available, or 'original' if none exist
  * @param originalWidth - The original image width in pixels
  * @param targetWidth - The desired display width
  * @returns The best variant to use
  */
 export function getBestImageVariant(originalWidth?: number | null, targetWidth: number = 800): ImageVariant {
   const available = getAvailableImageVariants(originalWidth);
-  if (available.length === 0) return '400w';
-  
+  if (available.length === 0) return 'original';
+
   // Find the smallest variant >= targetWidth
   for (const variant of available) {
     const variantWidth = parseInt(variant);
@@ -206,28 +205,29 @@ export function getBestImageVariant(originalWidth?: number | null, targetWidth: 
       return variant;
     }
   }
-  
+
   // Return the largest available if none are big enough
   return available[available.length - 1];
 }
 
 /**
  * Generate srcset string for responsive images
- * Only includes variants that exist (smaller than or equal to original width)
+ * Only includes variants that exist (original strictly larger than variant width)
  * @param id - The Directus file ID
  * @param originalWidth - The original image width in pixels (from Directus)
+ * @param originalExt - Original file extension (for fallback when no variants exist)
  * @returns srcset string for use in img tags
  */
-export function getImageSrcset(id: string, originalWidth?: number | null): string {
+export function getImageSrcset(id: string, originalWidth?: number | null, originalExt?: string): string {
   const variants = getAvailableImageVariants(originalWidth);
-  
+
   if (variants.length === 0) {
-    // Fallback to 400w if no variants available
-    return `${getImageUrl(id, '400w')} 400w`;
+    const w = originalWidth && originalWidth > 0 ? originalWidth : 400;
+    return `${getImageUrl(id, 'original', originalExt)} ${w}w`;
   }
-  
+
   return variants
-    .map(variant => {
+    .map((variant) => {
       const width = parseInt(variant);
       return `${getImageUrl(id, variant)} ${width}w`;
     })
@@ -236,29 +236,36 @@ export function getImageSrcset(id: string, originalWidth?: number | null): strin
 
 /**
  * Get the URL for an OG (Open Graph) image
- * Uses the 1200w variant if available, otherwise the best available size
+ * Uses the 1200w variant if available, otherwise the best available size or original
  * @param id - The Directus file ID
  * @param originalWidth - The original image width in pixels (from Directus)
+ * @param originalExt - Original file extension (when variant is 'original')
  * @returns The full CDN URL for the OG image
  */
-export function getOgImageUrl(id: string, originalWidth?: number | null): string {
-  // OG images ideally should be 1200px wide, but use best available
+export function getOgImageUrl(id: string, originalWidth?: number | null, originalExt?: string): string {
   const variant = getBestImageVariant(originalWidth, 1200);
-  return getImageUrl(id, variant);
+  return getImageUrl(id, variant, variant === 'original' ? originalExt : undefined);
 }
 
 /**
  * Get the thumbnail URL for a media item (image or video)
- * @param cover - The cover object with id and type
+ * @param cover - The cover object with id, type, and optional width/filenameDownload for images
  * @returns The full CDN URL for the thumbnail
  */
-export function getThumbnailUrl(cover: { id: string; type?: string }): string {
+export function getThumbnailUrl(cover: {
+  id: string;
+  type?: string;
+  width?: number | null;
+  filenameDownload?: string | null;
+}): string {
   if (!cover || !cover.id) return '';
-  
+
   const isVideo = cover.type?.startsWith('video/');
-  
+
   if (isVideo) {
     return getVideoPosterUrl(cover.id);
   }
-  return getImageUrl(cover.id, '400w');
+  const variant = getBestImageVariant(cover.width, 400);
+  const ext = getOriginalExtension(cover.filenameDownload, cover.type);
+  return getImageUrl(cover.id, variant, variant === 'original' ? ext : undefined);
 }

@@ -1,55 +1,7 @@
 <script lang="ts">
     import type { BentoContent } from "$root/src/components/bento/BentoBoxer.ts";
     import BentoBoxGrid from "$root/src/components/bento/BentoBoxGrid.svelte";
-
-    // CDN base URL for media assets
-    const MEDIA_CDN_URL = 'https://media.d17e.dev';
-    
-    // Available image variant widths
-    const IMAGE_VARIANT_WIDTHS = [400, 800, 1200, 1920];
-    
-    // Helper functions to get CDN URLs
-    function getImageUrl(id: string, variant: string = '800w'): string {
-        return `${MEDIA_CDN_URL}/images/${id}/${variant}.webp`;
-    }
-    
-    function getVideoUrl(id: string, variant: string = '720p'): string {
-        return `${MEDIA_CDN_URL}/videos/${id}/${variant}.mp4`;
-    }
-    
-    function getVideoPosterUrl(id: string): string {
-        return `${MEDIA_CDN_URL}/videos/${id}/poster.webp`;
-    }
-    
-    // Get available variants based on original image width
-    function getAvailableVariants(originalWidth?: number | null): number[] {
-        if (!originalWidth || originalWidth <= 0) {
-            return [400]; // Safe fallback
-        }
-        return IMAGE_VARIANT_WIDTHS.filter(w => w <= originalWidth);
-    }
-    
-    // Build srcset string based on available sizes
-    function buildSrcset(id: string, originalWidth?: number | null): string {
-        const variants = getAvailableVariants(originalWidth);
-        if (variants.length === 0) {
-            return `${getImageUrl(id, '400w')} 400w`;
-        }
-        return variants.map(w => `${getImageUrl(id, `${w}w`)} ${w}w`).join(', ');
-    }
-    
-    // Get the best variant for a target width
-    function getBestVariant(originalWidth?: number | null, targetWidth: number = 800): string {
-        const variants = getAvailableVariants(originalWidth);
-        if (variants.length === 0) return '400w';
-        
-        // Find smallest variant >= targetWidth
-        for (const w of variants) {
-            if (w >= targetWidth) return `${w}w`;
-        }
-        // Return largest available
-        return `${variants[variants.length - 1]}w`;
-    }
+    import { getImageUrl, getImageSrcset, getBestImageVariant, getOriginalExtension, getAvailableVideoVariants, getVideoUrl, getVideoPosterUrl } from "$root/src/utils/mediaUrls";
 
     const { landingPages } = $props<{
         landingPages: any[];
@@ -601,8 +553,15 @@
 
         if (isVideo) {
             const posterUrl = getVideoPosterUrl(media.cover.id);
-            const videoUrl720p = getVideoUrl(media.cover.id, '720p');
-            const videoUrl480p = getVideoUrl(media.cover.id, '480p');
+            const availableVideoVariants = getAvailableVideoVariants(media.cover.height);
+            const videoOriginalExt = getOriginalExtension(media.cover.filenameDownload, media.cover.type);
+            const videoUrlOriginal = getVideoUrl(media.cover.id, 'original', videoOriginalExt);
+            const videoSources = [
+                ...(availableVideoVariants.includes('1080p') ? [`<source src="${getVideoUrl(media.cover.id, '1080p')}" type="video/mp4" media="(min-width: 1024px)">`] : []),
+                ...(availableVideoVariants.includes('720p') ? [`<source src="${getVideoUrl(media.cover.id, '720p')}" type="video/mp4" media="(min-width: 600px)">`] : []),
+                ...(availableVideoVariants.includes('480p') ? [`<source src="${getVideoUrl(media.cover.id, '480p')}" type="video/mp4">`] : []),
+                `<source src="${videoUrlOriginal}" type="${media.cover.type || 'video/mp4'}">`
+            ].join('\n                  ');
             return `
         <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
           <div class="featured-post ${mediaClass}">
@@ -619,20 +578,19 @@
                 data-title="${mediaAlt}"
                 alt="${mediaAlt}"
               >
-                  <!-- CDN video sources - responsive by screen size -->
-                  <source src="${videoUrl720p}" type="video/mp4" media="(min-width: 600px)">
-                  <source src="${videoUrl480p}" type="video/mp4">
+                  ${videoSources}
                 </video>
             </div>
           </div>
         </a>
       `;
         } else {
-            // Use original width to determine available variants
+            // Use original width to determine available variants (original must be > variant width)
             const originalWidth = media.cover.width;
-            const bestVariant = getBestVariant(originalWidth, 800);
-            const imgUrl = getImageUrl(media.cover.id, bestVariant);
-            const srcset = buildSrcset(media.cover.id, originalWidth);
+            const originalExt = getOriginalExtension(media.cover.filenameDownload, media.cover.type);
+            const bestVariant = getBestImageVariant(originalWidth, 800);
+            const imgUrl = getImageUrl(media.cover.id, bestVariant, bestVariant === 'original' ? originalExt : undefined);
+            const srcset = getImageSrcset(media.cover.id, originalWidth, originalExt);
             return `
         <a href="/posts/${media.slug}?from-lp=true" class="post-link" data-umami-event="lp-click-media" data-umami-event-slug="${media.slug}" aria-label="${mediaAlt}">
         <div class="featured-post ${mediaClass}">

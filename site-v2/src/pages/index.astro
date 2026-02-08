@@ -21,7 +21,7 @@ const FEATURED_ARTICLE_SLUGS = [
     "creative-coding-amsterdam-plotter-special",
 ];
 
-import { getImageUrl, getBestImageVariant } from "../utils/mediaUrls";
+import { getThumbnailUrl } from "../utils/mediaUrls";
 
 // Fetch all content from collections
 const projects = await getCollection("projects");
@@ -36,7 +36,7 @@ const featuredProjects = FEATURED_PROJECT_SLUGS.map((slug) =>
     .map((p) => ({
         title: p!.data.name,
         href: `/projects/${p!.data.slug}`,
-        imageUrl: getImageUrl(p!.data.cover.id, getBestImageVariant(p!.data.cover.width, 400)),
+        imageUrl: getThumbnailUrl(p!.data.cover),
         imageAlt: p!.data.cover.title,
     }));
 
@@ -47,7 +47,7 @@ const featuredPosts = FEATURED_POST_SLUGS.map((slug) =>
     .map((p) => ({
         title: p!.data.title,
         href: `/posts/${p!.data.slug}`,
-        imageUrl: getImageUrl(p!.data.cover.id, getBestImageVariant(p!.data.cover.width, 400)),
+        imageUrl: getThumbnailUrl(p!.data.cover),
         imageAlt: p!.data.cover.title,
     }));
 
@@ -58,7 +58,7 @@ const featuredArticles = FEATURED_ARTICLE_SLUGS.map((slug) =>
     .map((a) => ({
         title: a!.data.title,
         href: `/blog/${a!.data.slug}`,
-        imageUrl: getImageUrl(a!.data.cover.id, getBestImageVariant(a!.data.cover.width, 400)),
+        imageUrl: getThumbnailUrl(a!.data.cover),
         imageAlt: a!.data.cover.title,
     }));
 ---

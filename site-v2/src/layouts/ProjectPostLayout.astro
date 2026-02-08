@@ -11,7 +11,7 @@ import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import ProjectPostPrevNextMini from "../components/ProjectPostPrevNextMini.astro";
 import ShareOn from "../components/ShareOn.astro";
-import { getOgImageUrl, getVideoPosterUrl } from "../utils/mediaUrls";
+import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
 
 type Props = {
   postData: CollectionEntry<'posts'>['data'];
@@ -24,7 +24,7 @@ const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription
 
 const isVideo = cover.type?.startsWith("video/");
 // Use CDN URL for OG image (best available size up to 1200w)
-let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, cover.width);
+let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, cover.width, getOriginalExtension(cover.filenameDownload, cover.type));
 ---
 
 <html lang="en">

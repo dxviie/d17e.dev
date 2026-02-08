@@ -36,14 +36,14 @@ const showVideo = isVideo && isHero;
 // Extract original file extension from filenameDownload or MIME type
 const originalExt = getOriginalExtension(filenameDownload, type);
 
-// CDN URLs for images - use original width to determine available variants
-const cdnImageSrcset = getImageSrcset(id, originalWidth);
+// CDN URLs for images - use original width to determine available variants (original must be > variant)
+const cdnImageSrcset = getImageSrcset(id, originalWidth, originalExt);
 // For hero images, use the best available large variant
 const heroVariant = getBestImageVariant(originalWidth, 1920);
-const cdnImageUrlLarge = getImageUrl(id, heroVariant);
+const cdnImageUrlLarge = getImageUrl(id, heroVariant, heroVariant === 'original' ? originalExt : undefined);
 // For regular images, use the best variant for typical display
 const regularVariant = getBestImageVariant(originalWidth, 800);
-const cdnImageUrl = getImageUrl(id, regularVariant);
+const cdnImageUrl = getImageUrl(id, regularVariant, regularVariant === 'original' ? originalExt : undefined);
 
 // CDN URLs for video: only use variants that exist (≤ original height); original always exists as fallback
 const availableVideoVariants = getAvailableVideoVariants(originalHeight);

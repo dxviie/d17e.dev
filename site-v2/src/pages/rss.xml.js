@@ -113,9 +113,10 @@ function getRssMediaUrl(cover) {
         const originalExt = getOriginalExtension(cover.filenameDownload, cover.type) || 'mp4';
         return getVideoUrl(cover.id, 'original', originalExt);
     }
-    // Use best available size up to 1200w for RSS feed images
+    // Use best available size up to 1200w for RSS feed images (variant only if original > variant width)
     const variant = getBestImageVariant(cover.width, 1200);
-    return getImageUrl(cover.id, variant);
+    const ext = getOriginalExtension(cover.filenameDownload, cover.type);
+    return getImageUrl(cover.id, variant, variant === 'original' ? ext : undefined);
 }
 
 function getMediaType(cover) {
