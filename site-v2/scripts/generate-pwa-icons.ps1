@@ -11,7 +11,7 @@ if (-not (Test-Path $IconsDir)) {
 }
 
 # Source image path
-$SourceImage = Join-Path $PublicDir "me_rstr_cmy_square_edge.jpg"
+$SourceImage = Join-Path $PublicDir "me_rstr_cmy_square.jpg"
 
 if (-not (Test-Path $SourceImage)) {
     Write-Host "Source image not found: $SourceImage" -ForegroundColor Red
