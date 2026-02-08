@@ -47,6 +47,7 @@
     /* Theme variables */
     --color: #1a202c;
     --bg-color: #fdfaff;
+    --bg-color-rgb: 253, 250, 255;
     --bg-color-transparent: rgba(253, 250, 255, 0.66);
     --button-bg-color: #1a202c;
     --bg-code: #f1f1f1;
@@ -57,6 +58,7 @@
 :root.dark {
     --color: #fdfaff;
     --bg-color: #1c1d20;
+    --bg-color-rgb: 28, 29, 32;
     --bg-color-transparent: rgba(28, 29, 32, 0.8);
     --button-bg-color: #fdfaff;
     --accent: var(--accent-magenta);
@@ -141,14 +143,17 @@ main {
     flex-grow: 1;
 }
 
+/* iOS PWA status bar blur: fixed overlay above viewport with backdrop blur
+   so content scrolling behind the status bar is blurred. See:
+   https://muffinman.io/blog/pwa-ios-status-bar-blur/ */
 .statusbar {
     position: fixed;
     left: 0;
     right: 0;
-    top: -66px;
-    height: 66px;
+    top: -80px;
+    height: 80px;
     overflow: hidden;
-    z-index: 99;
+    z-index: 100;
 }
 
 .statusbar::before {
@@ -160,7 +165,7 @@ main {
     height: 150%;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    background-color: rgb(var(--bg-color) / 0.6);
+    background-color: rgba(var(--bg-color-rgb), 0.6);
 }
 
 h1,
