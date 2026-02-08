@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /_astro/
+Disallow: /offline
 
 Sitemap: https://d17e.dev/sitemap.xml
