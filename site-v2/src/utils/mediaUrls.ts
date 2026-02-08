@@ -145,6 +145,27 @@ export function getMediaUrl(
   return getImageUrl(cover.id, imageVariant);
 }
 
+/**
+ * Available video variant heights in pixels
+ * Variants larger than the original height are skipped during upload
+ */
+export const VIDEO_VARIANT_HEIGHTS = [1080, 720, 480] as const;
+
+/**
+ * Get available video variants based on original video height
+ * Only returns variants that are smaller than or equal to the original height
+ * @param originalHeight - The original video height in pixels
+ * @returns Array of available variant strings (e.g. ['720p', '480p'])
+ */
+export function getAvailableVideoVariants(originalHeight?: number | null): VideoVariant[] {
+  if (!originalHeight || originalHeight <= 0) {
+    return [];
+  }
+  return VIDEO_VARIANT_HEIGHTS
+    .filter((h) => h <= originalHeight)
+    .map((h) => `${h}p` as VideoVariant);
+}
+
 /** 
  * Available image variant widths in pixels
  */

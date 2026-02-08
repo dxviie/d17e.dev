@@ -1,6 +1,6 @@
 ---
 // MediaAsset.astro
-import { getImageUrl, getVideoUrl, getVideoPosterUrl, getImageSrcset, getOriginalExtension, getBestImageVariant, MEDIA_CDN_URL } from "../utils/mediaUrls";
+import { getImageUrl, getVideoUrl, getVideoPosterUrl, getImageSrcset, getOriginalExtension, getBestImageVariant, getAvailableVideoVariants, MEDIA_CDN_URL } from "../utils/mediaUrls";
 
 interface MediaAssetProps {
   id: string;
@@ -45,10 +45,9 @@ const cdnImageUrlLarge = getImageUrl(id, heroVariant);
 const regularVariant = getBestImageVariant(originalWidth, 800);
 const cdnImageUrl = getImageUrl(id, regularVariant);
 
-// CDN URLs for video sources
-const cdnVideoUrl480p = getVideoUrl(id, '480p');
-const cdnVideoUrl720p = getVideoUrl(id, '720p');
-const cdnVideoUrl1080p = getVideoUrl(id, '1080p');
+// CDN URLs for video: only use variants that exist (≤ original height); original always exists as fallback
+const availableVideoVariants = getAvailableVideoVariants(originalHeight);
+const cdnVideoUrlOriginal = getVideoUrl(id, 'original', originalExt);
 const cdnVideoPosterUrl = getVideoPosterUrl(id);
 
 // CDN URL for original asset link (uses actual file extension)
@@ -72,10 +71,11 @@ const cdnOriginalUrl = isVideo
                     playsinline
                     data-has-audio="checking"
             >
-              <!-- CDN video sources - responsive by screen size -->
-              <source src={cdnVideoUrl1080p} type="video/mp4" media="(min-width: 1024px)">
-              <source src={cdnVideoUrl720p} type="video/mp4" media="(min-width: 600px)">
-              <source src={cdnVideoUrl480p} type="video/mp4">
+              <!-- CDN video sources: only variants that exist (≤ original height), then original as fallback -->
+              {availableVideoVariants.includes('1080p') && <source src={getVideoUrl(id, '1080p')} type="video/mp4" media="(min-width: 1024px)" />}
+              {availableVideoVariants.includes('720p') && <source src={getVideoUrl(id, '720p')} type="video/mp4" media="(min-width: 600px)" />}
+              {availableVideoVariants.includes('480p') && <source src={getVideoUrl(id, '480p')} type="video/mp4" />}
+              <source src={cdnVideoUrlOriginal} type={type || 'video/mp4'} />
               Your browser does not support the video tag.
             </video>
             <button class="mute-toggle" aria-label="Toggle audio" title="Toggle mute" style="display: none;">
@@ -137,8 +137,9 @@ const cdnOriginalUrl = isVideo
                               muted
                               playsinline
                       >
-                        <source src={cdnVideoUrl720p} type="video/mp4" media="(min-width: 600px)">
-                        <source src={cdnVideoUrl480p} type="video/mp4">
+                        {availableVideoVariants.includes('720p') && <source src={getVideoUrl(id, '720p')} type="video/mp4" media="(min-width: 600px)" />}
+                        {availableVideoVariants.includes('480p') && <source src={getVideoUrl(id, '480p')} type="video/mp4" />}
+                        <source src={cdnVideoUrlOriginal} type={type || 'video/mp4'} />
                       </video>
                       <div class="play-indicator"></div>
                     </div>
