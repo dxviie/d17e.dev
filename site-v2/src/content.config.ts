@@ -301,6 +301,11 @@ const art = defineCollection({
     title: z.string(),
     slug: z.string(),
     description: z.string().nullable().optional(),
+    width: z.number().nullable().optional(),
+    height: z.number().nullable().optional(),
+    paper: z.string().nullable().optional(),
+    pens: z.string().nullable().optional(),
+    inks: z.string().nullable().optional(),
     cover: z.object({
       id: z.string(),
       title: z.string(),

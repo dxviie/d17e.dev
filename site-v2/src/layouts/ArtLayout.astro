@@ -11,7 +11,14 @@ import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils
 
 type Props = CollectionEntry<'art'>['data'];
 
-const { slug, title, publishDate, dateUpdated, cover } = Astro.props;
+const { slug, title, publishDate, dateUpdated, cover, width, height, paper, pens, inks } = Astro.props;
+
+const legendParts = [
+  width != null && height != null ? `${width} × ${height} cm` : width != null ? `${width} cm` : height != null ? `${height} cm` : null,
+  paper ? `Paper: ${paper}` : null,
+  pens ? `Pens: ${pens}` : null,
+  inks ? `Inks: ${inks}` : null,
+].filter(Boolean);
 
 const isVideo = cover?.type?.startsWith("video/");
 let imageUrl = cover
@@ -45,6 +52,11 @@ let imageUrl = cover
           isHero={true}
           objectFit="contain"
         />
+        {legendParts.length > 0 && (
+          <div class="art-legend">
+            {legendParts.join(" · ")}
+          </div>
+        )}
       </div>
     )}
 
@@ -81,6 +93,13 @@ let imageUrl = cover
   .hero-media {
     width: 100%;
     margin-bottom: 0;
+  }
+
+  .art-legend {
+    font-family: 'nudica_monolight', serif;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    opacity: 0.85;
   }
 
   .art-content {
