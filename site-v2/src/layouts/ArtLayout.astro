@@ -1,0 +1,149 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ClientRouter } from 'astro:transitions';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import MediaAsset from '../components/MediaAsset.astro';
+import FindMeOn from "../components/FindMeOn.astro";
+import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
+
+type Props = CollectionEntry<'art'>['data'];
+
+const { slug, title, publishDate, dateUpdated, cover } = Astro.props;
+
+const isVideo = cover?.type?.startsWith("video/");
+let imageUrl = cover
+  ? isVideo
+    ? getVideoPosterUrl(cover.id)
+    : getOgImageUrl(cover.id, cover.width, getOriginalExtension(cover.filenameDownload, cover.type))
+  : undefined;
+---
+
+<html lang="en">
+<head>
+  <BaseHead title={title} description="" image={imageUrl} />
+  <ClientRouter />
+</head>
+
+<body>
+<div class="statusbar"/>
+<Header/>
+<main class="content-margin">
+  <article class="art-container">
+    {cover && (
+      <div class="hero-media">
+        <MediaAsset
+          id={cover.id}
+          title={cover.title}
+          alt={cover.title || title}
+          type={cover.type}
+          filenameDownload={cover.filenameDownload}
+          originalWidth={cover.width}
+          originalHeight={cover.height}
+          isHero={true}
+          objectFit="contain"
+        />
+      </div>
+    )}
+
+    <div class="art-content">
+      <div class="title-section">
+        <span class="date">
+          {publishDate && <FormattedDate date={publishDate} />}
+          {dateUpdated && (
+            <span class="last-updated">
+              · Last updated: <FormattedDate date={dateUpdated} />
+            </span>
+          )}
+        </span>
+        <h1>{title}</h1>
+      </div>
+
+      <slot />
+    </div>
+  </article>
+</main>
+<FindMeOn/>
+<Footer/>
+</body>
+</html>
+
+<style>
+  main {
+    width: 90%;
+    max-width: 960px;
+    padding: 2rem 1rem;
+    min-height: calc(100vh - 30rem);
+  }
+
+  .hero-media {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .art-content {
+    color: var(--color);
+  }
+
+  .title-section {
+    margin-bottom: 2rem;
+  }
+
+  .title-section h1 {
+    font-family: 'nudica_monobold', serif;
+    margin: 0.5rem 0;
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .date {
+    font-family: 'nudica_monolight', serif;
+    background-color: var(--color);
+    color: var(--bg-color);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .last-updated {
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  article.art-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  @media (min-width: 1200px) {
+    main {
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-media {
+      max-width: 700px;
+    }
+
+    .art-content {
+      max-width: 700px;
+    }
+
+    article {
+      justify-content: center;
+      flex-direction: row !important;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .title-section h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
