@@ -62,10 +62,15 @@
         };
     });
 
-    // Initialize Hydra when canvas is available
+    // Initialize Hydra when canvas is available, deferring on mobile
     $effect(() => {
         if (canvas && container && mounted && !initialized) {
-            initHydra();
+            const isMobile = window.matchMedia("(max-width: 767px)").matches;
+            if (isMobile && "requestIdleCallback" in window) {
+                requestIdleCallback(() => initHydra(), { timeout: 3000 });
+            } else {
+                initHydra();
+            }
         }
     });
 
@@ -199,9 +204,6 @@
         position: relative;
         width: 100%;
         overflow: hidden;
-        /* Tell browser this content can be skipped when off-screen */
-        content-visibility: auto;
-        contain-intrinsic-size: auto 100vh;
     }
 
     .hydra-canvas {
