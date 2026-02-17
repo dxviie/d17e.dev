@@ -296,6 +296,15 @@ let isComingFromBentoPage = false;
             }, autoHideDelay);
         }
 
+        function hideNav() {
+            if (!nav) return;
+            if (hideTimer) {
+                clearTimeout(hideTimer);
+                hideTimer = null;
+            }
+            nav.style.transform = `translateY(-${navHeight}px)`;
+        }
+
         function handleScroll() {
             if (!nav || !isDesktop) return;
 
@@ -304,13 +313,17 @@ let isComingFromBentoPage = false;
 
             if (isArtPage) {
                 if (currentScrollY <= 0) {
-                    nav.style.transform = `translateY(-${navHeight}px)`;
+                    hideNav();
+                } else if (scrollDifference > 10) {
+                    hideNav();
                 } else if (scrollDifference < -10) {
                     showNav();
                 }
             } else {
                 if (currentScrollY <= 0) {
                     showNav();
+                } else if (scrollDifference > 10) {
+                    hideNav();
                 } else if (scrollDifference < -10) {
                     showNav();
                 }
