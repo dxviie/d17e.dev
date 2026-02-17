@@ -5,13 +5,15 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import Markdown from '../components/Markdown.astro';
 import MediaAsset from '../components/MediaAsset.astro';
+import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'art'>['data'];
 
-const { slug, title, publishDate, dateUpdated, cover, width, height, paper, pens, inks } = Astro.props;
+const { slug, title, publishDate, dateUpdated, cover, description, width, height, paper, pens, inks } = Astro.props;
 
 const legendParts = [
   width != null && height != null ? `${width} × ${height} cm` : width != null ? `${width} cm` : height != null ? `${height} cm` : null,
@@ -72,6 +74,8 @@ let imageUrl = cover
         </span>
         <h1>{title}</h1>
       </div>
+
+      {description && <Markdown content={description} />}
 
       <slot />
     </div>
