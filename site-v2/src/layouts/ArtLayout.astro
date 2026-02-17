@@ -1,22 +1,44 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { ClientRouter } from 'astro:transitions';
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Markdown from '../components/Markdown.astro';
-import MediaAsset from '../components/MediaAsset.astro';
-import '../styles/markdown.css';
+import type { CollectionEntry } from "astro:content";
+import { ClientRouter } from "astro:transitions";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Markdown from "../components/Markdown.astro";
+import MediaAsset from "../components/MediaAsset.astro";
+import "../styles/markdown.css";
 import FindMeOn from "../components/FindMeOn.astro";
-import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
+import {
+  getOgImageUrl,
+  getVideoPosterUrl,
+  getOriginalExtension,
+} from "../utils/mediaUrls";
 
-type Props = CollectionEntry<'art'>['data'];
+type Props = CollectionEntry<"art">["data"];
 
-const { slug, title, publishDate, dateUpdated, cover, description, width, height, paper, pens, inks } = Astro.props;
+const {
+  slug,
+  title,
+  publishDate,
+  dateUpdated,
+  cover,
+  description,
+  width,
+  height,
+  paper,
+  pens,
+  inks,
+} = Astro.props;
 
 const legendParts = [
-  width != null && height != null ? `${width} × ${height} cm` : width != null ? `${width} cm` : height != null ? `${height} cm` : null,
+  width != null && height != null
+    ? `${width} × ${height} cm`
+    : width != null
+      ? `${width} cm`
+      : height != null
+        ? `${height} cm`
+        : null,
   paper ? `Paper: ${paper}` : null,
   pens ? `Pens: ${pens}` : null,
   inks ? `Inks: ${inks}` : null,
@@ -26,64 +48,69 @@ const isVideo = cover?.type?.startsWith("video/");
 let imageUrl = cover
   ? isVideo
     ? getVideoPosterUrl(cover.id)
-    : getOgImageUrl(cover.id, cover.width, getOriginalExtension(cover.filenameDownload, cover.type))
+    : getOgImageUrl(
+        cover.id,
+        cover.width,
+        getOriginalExtension(cover.filenameDownload, cover.type),
+      )
   : undefined;
 ---
 
 <html lang="en">
-<head>
-  <BaseHead title={title} description="" image={imageUrl} />
-  <ClientRouter />
-</head>
+  <head>
+    <BaseHead title={title} description="" image={imageUrl} />
+    <ClientRouter />
+  </head>
 
-<body>
-<div class="statusbar"/>
-<Header/>
-<main class="content-margin">
-  <article class="art-container">
-    {cover && (
-      <div class="hero-media">
-        <MediaAsset
-          id={cover.id}
-          title={cover.title}
-          alt={cover.title || title}
-          type={cover.type}
-          filenameDownload={cover.filenameDownload}
-          originalWidth={cover.width}
-          originalHeight={cover.height}
-          isHero={true}
-          objectFit="contain"
-        />
-        {legendParts.length > 0 && (
-          <div class="art-legend">
-            {legendParts.join(" · ")}
-          </div>
-        )}
-      </div>
-    )}
+  <body>
+    <div class="statusbar"></div>
+    <Header />
+    <main class="content-margin">
+      <article class="art-container">
+        {
+          cover && (
+            <div class="hero-media">
+              <MediaAsset
+                id={cover.id}
+                title={cover.title}
+                alt={cover.title || title}
+                type={cover.type}
+                filenameDownload={cover.filenameDownload}
+                originalWidth={cover.width}
+                originalHeight={cover.height}
+                isHero={true}
+                objectFit="contain"
+              />
+              {legendParts.length > 0 && (
+                <div class="art-legend">{legendParts.join(" · ")}</div>
+              )}
+            </div>
+          )
+        }
 
-    <div class="art-content">
-      <div class="title-section">
-        <span class="date">
-          {publishDate && <FormattedDate date={publishDate} />}
-          {dateUpdated && (
-            <span class="last-updated">
-              · Last updated: <FormattedDate date={dateUpdated} />
+        <div class="art-content">
+          <div class="title-section">
+            <span class="date">
+              {publishDate && <FormattedDate date={publishDate} />}
+              {
+                dateUpdated && (
+                  <span class="last-updated">
+                    · Last updated: <FormattedDate date={dateUpdated} />
+                  </span>
+                )
+              }
             </span>
-          )}
-        </span>
-        <h1>{title}</h1>
-      </div>
+            <h1>{title}</h1>
+          </div>
 
-      {description && <Markdown content={description} />}
+          {description && <Markdown content={description} />}
 
-      <slot />
-    </div>
-  </article>
-</main>
-<FindMeOn/>
-<Footer/>
-</body>
+          <slot />
+        </div>
+      </article>
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
@@ -100,7 +127,7 @@ let imageUrl = cover
   }
 
   .art-legend {
-    font-family: 'nudica_monolight', serif;
+    font-family: "nudica_monolight", serif;
     font-size: 0.9rem;
     margin-top: 0.75rem;
     opacity: 0.85;
@@ -115,14 +142,14 @@ let imageUrl = cover
   }
 
   .title-section h1 {
-    font-family: 'nudica_monobold', serif;
+    font-family: "nudica_monobold", serif;
     margin: 0.5rem 0;
     font-size: 2.5rem;
     line-height: 1.2;
   }
 
   .date {
-    font-family: 'nudica_monolight', serif;
+    font-family: "nudica_monolight", serif;
     background-color: var(--color);
     color: var(--bg-color);
     padding: 0.2rem 0.5rem;
