@@ -204,6 +204,7 @@
         position: relative;
         width: 100%;
         overflow: hidden;
+        isolation: isolate;
     }
 
     .hydra-canvas {
