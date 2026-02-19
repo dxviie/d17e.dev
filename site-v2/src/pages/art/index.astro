@@ -129,7 +129,7 @@ const artItems = (await getCollection("art")).sort(
                 <h2 class="art-title">{item.data.title}</h2>
                 {item.data.publishDate && (
                   <span class="art-date">
-                    <FormattedDate date={item.data.publishDate} />
+                    <FormattedDate date={item.data.publishDate} format="MMM YYYY" />
                   </span>
                 )}
               </a>

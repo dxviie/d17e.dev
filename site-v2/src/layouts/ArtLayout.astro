@@ -137,11 +137,11 @@ let imageUrl = cover
           <div class="art-meta">
             <div class="title-section">
               <span class="date">
-                {publishDate && <FormattedDate date={publishDate} />}
+                {publishDate && <FormattedDate date={publishDate} format="MMM YYYY" />}
                 {
                   dateUpdated && (
                     <span class="last-updated">
-                      · Last updated: <FormattedDate date={dateUpdated} />
+                      · Last updated: <FormattedDate date={dateUpdated} format="MMM YYYY" />
                     </span>
                   )
                 }
