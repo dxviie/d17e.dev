@@ -7,6 +7,7 @@ import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Markdown from "../components/Markdown.astro";
 import MediaAsset from "../components/MediaAsset.astro";
+import DraftIndicator from "../components/DraftIndicator.astro";
 import "../styles/markdown.css";
 import {
   getOgImageUrl,
@@ -19,6 +20,7 @@ type Props = CollectionEntry<"art">["data"];
 
 const {
   slug,
+  status,
   title,
   publishDate,
   dateUpdated,
@@ -78,6 +80,7 @@ let imageUrl = cover
     <Header />
     <main class="content-margin art-main">
       <article class="art-container">
+        <DraftIndicator status={status} />
         {
           mediaItems.length > 0 && (
             <div class="art-viewer">
@@ -221,6 +224,7 @@ let imageUrl = cover
   .art-container {
     display: flex;
     flex-direction: column;
+    position: relative;
     gap: 2rem;
     max-width: 1600px;
     width: 100%;

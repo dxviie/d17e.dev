@@ -276,8 +276,15 @@ const art = defineCollection({
       await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
       console.debug('Logged in');
 
+      const filter = isDev ? {} : {
+        status: {
+          _eq: 'published'
+        }
+      };
+
       let artItems = await directus.request(readItems('Art', {
         fields: ['*', 'cover.*', 'gallery.directus_files_id.*'],
+        filter,
         limit: -1
       })) || [];
       artItems = artItems.map(a => {
@@ -295,6 +302,7 @@ const art = defineCollection({
   },
   schema: z.object({
     id: z.string(),
+    status: z.string(),
     dateCreated: z.coerce.date().optional(),
     dateUpdated: z.coerce.date().optional(),
     publishDate: z.coerce.date().optional(),
