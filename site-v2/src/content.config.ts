@@ -269,6 +269,72 @@ const projects = defineCollection({
   }),
 });
 
+const art = defineCollection({
+  // @ts-ignore
+  loader: async () => {
+    try {
+      await directus.login(getSecret('DIRECTUS_LOGIN') || '', getSecret('DIRECTUS_PASS') || '');
+      console.debug('Logged in');
+
+      const filter = isDev ? {} : {
+        status: {
+          _eq: 'published'
+        }
+      };
+
+      let artItems = await directus.request(readItems('Art', {
+        fields: ['*', 'cover.*', 'gallery.directus_files_id.*'],
+        filter,
+        limit: -1
+      })) || [];
+      artItems = artItems.map(a => {
+        const gallery = Array.isArray(a.gallery)
+          ? a.gallery.map((g: { directus_files_id?: object }) => g.directus_files_id).filter(Boolean)
+          : [];
+        return {...a, id: a.uuid ?? a.id, gallery};
+      });
+      console.debug('Loaded Art:', artItems.length);
+      return artItems;
+    } catch (error) {
+      console.error('Directus error:', error);
+      return [];
+    }
+  },
+  schema: z.object({
+    id: z.string(),
+    status: z.string(),
+    dateCreated: z.coerce.date().optional(),
+    dateUpdated: z.coerce.date().optional(),
+    publishDate: z.coerce.date().optional(),
+    title: z.string(),
+    slug: z.string(),
+    description: z.string().nullable().optional(),
+    width: z.number().nullable().optional(),
+    height: z.number().nullable().optional(),
+    paper: z.string().nullable().optional(),
+    pens: z.string().nullable().optional(),
+    inks: z.string().nullable().optional(),
+    cover: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable().optional(),
+      filenameDownload: z.string().nullable().optional(),
+      type: z.string(),
+      width: z.number().nullable().optional(),
+      height: z.number().nullable().optional(),
+    }).optional(),
+    gallery: z.array(z.object({
+      id: z.string(),
+      title: z.string().nullable().optional(),
+      description: z.string().nullable().optional(),
+      filenameDownload: z.string().nullable().optional(),
+      type: z.string(),
+      width: z.number().nullable().optional(),
+      height: z.number().nullable().optional(),
+    })).optional(),
+  }),
+});
+
 const landingPages = defineCollection({
   // @ts-ignore
   loader: async () => {
@@ -463,5 +529,6 @@ export const collections = {
   posts,
   articles,
   projects,
+  art,
   landingPages,
 };

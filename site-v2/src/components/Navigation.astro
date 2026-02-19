@@ -277,55 +277,97 @@ let isComingFromBentoPage = false;
         const nav = document.getElementById("main-nav");
         let lastScrollY = window.scrollY;
         const navHeight = nav?.offsetHeight || 0;
+        const isArtPage = document.body.dataset.artPage === "true";
+        const autoHideDelay = 3330; // 3.33 seconds
+        let hideTimer = null;
+        const mouseTopThreshold = 80;
 
-        // Threshold - how many pixels to scroll before hiding/showing the nav
-        const scrollThreshold = 10;
+        // Skip scroll handling for mobile and iPad touch devices (bottom nav)
+        const isDesktop = window.innerWidth > 600 &&
+            !(window.innerWidth <= 1024 && window.matchMedia("(pointer: coarse)").matches);
+
+        function showNav() {
+            if (!nav) return;
+            nav.style.transform = "translateY(0)";
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+                nav.style.transform = `translateY(-${navHeight}px)`;
+                hideTimer = null;
+            }, autoHideDelay);
+        }
+
+        function hideNav() {
+            if (!nav) return;
+            if (hideTimer) {
+                clearTimeout(hideTimer);
+                hideTimer = null;
+            }
+            nav.style.transform = `translateY(-${navHeight}px)`;
+        }
 
         function handleScroll() {
-            if (!nav) return;
-
-            // Skip scroll handling for mobile and iPad touch devices (bottom nav)
-            if (
-                window.innerWidth <= 600 ||
-                (window.innerWidth <= 1024 &&
-                    window.matchMedia("(pointer: coarse)").matches)
-            ) {
-                return;
-            }
+            if (!nav || !isDesktop) return;
 
             const currentScrollY = window.scrollY;
             const scrollDifference = currentScrollY - lastScrollY;
 
-            // If we're at the very top, always show the nav
-            if (currentScrollY <= 0) {
-                nav.style.transform = "translateY(0)";
-            }
-            // Scrolling down and past threshold, hide the nav
-            else if (scrollDifference > scrollThreshold) {
-                nav.style.transform = `translateY(-${navHeight}px)`;
-            }
-            // Scrolling up and past threshold, show the nav
-            else if (scrollDifference < -scrollThreshold) {
-                nav.style.transform = "translateY(0)";
+            if (isArtPage) {
+                if (currentScrollY <= 0) {
+                    hideNav();
+                } else if (scrollDifference > 10) {
+                    hideNav();
+                } else if (scrollDifference < -10) {
+                    showNav();
+                }
+            } else {
+                if (currentScrollY <= 0) {
+                    showNav();
+                } else if (scrollDifference > 10) {
+                    hideNav();
+                } else if (scrollDifference < -10) {
+                    showNav();
+                }
             }
 
-            // Only update lastScrollY if we passed the threshold
-            if (Math.abs(scrollDifference) > scrollThreshold) {
+            if (Math.abs(scrollDifference) > 10) {
                 lastScrollY = currentScrollY;
             }
         }
 
-        // Throttle scroll events for performance
-        let ticking = false;
+        function handleMouseMove(e) {
+            if (!nav || !isDesktop) return;
+            if (e.clientY < mouseTopThreshold) {
+                showNav();
+            }
+        }
+
+        // Throttle mouse handler
+        let mouseThrottle = false;
+        function throttledMouseMove(e) {
+            if (mouseThrottle) return;
+            mouseThrottle = true;
+            handleMouseMove(e);
+            setTimeout(() => { mouseThrottle = false; }, 100);
+        }
+
+        // Initial state: on art pages hide nav, else show and start timer
+        if (isArtPage && nav) {
+            nav.style.transform = `translateY(-${navHeight}px)`;
+        } else if (nav && isDesktop) {
+            showNav();
+        }
+
+        let scrollTicking = false;
         window.addEventListener("scroll", () => {
-            if (!ticking) {
+            if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
                     handleScroll();
-                    ticking = false;
+                    scrollTicking = false;
                 });
-                ticking = true;
+                scrollTicking = true;
             }
         });
+        document.addEventListener("mousemove", throttledMouseMove);
     };
 
     // Initialize on page load

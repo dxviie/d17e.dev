@@ -336,14 +336,32 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
     const mobileMenu = document.getElementById("mobile-menu");
     let lastScrollY = window.scrollY;
     const navHeight = nav?.offsetHeight || 0;
+    const isArtPage = document.body.dataset.artPage === "true";
+    const autoHideDelay = 3330; // 3.33 seconds
+    let hideTimer = null;
 
-    // Threshold - how many pixels to scroll before hiding/showing the nav
-    const scrollThreshold = 10;
+    function showNav() {
+      if (!nav) return;
+      nav.style.transform = "translateY(0)";
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        nav.style.transform = `translateY(-${navHeight}px)`;
+        hideTimer = null;
+      }, autoHideDelay);
+    }
+
+    function hideNav() {
+      if (!nav) return;
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+      nav.style.transform = `translateY(-${navHeight}px)`;
+    }
 
     function handleScroll() {
       if (!nav) return;
 
-      // Don't hide nav when menu is open
       if (mobileMenu?.classList.contains("open")) {
         return;
       }
@@ -351,34 +369,43 @@ const isAboutPage = pathname.endsWith("about/") || pathname.endsWith("about");
       const currentScrollY = window.scrollY;
       const scrollDifference = currentScrollY - lastScrollY;
 
-      // If we're at the very top, always show the nav
-      if (currentScrollY <= 0) {
-        nav.style.transform = "translateY(0)";
-      }
-      // Scrolling down and past threshold, hide the nav
-      else if (scrollDifference > scrollThreshold) {
-        nav.style.transform = `translateY(-${navHeight}px)`;
-      }
-      // Scrolling up and past threshold, show the nav
-      else if (scrollDifference < -scrollThreshold) {
-        nav.style.transform = "translateY(0)";
+      if (isArtPage) {
+        if (currentScrollY <= 0) {
+          hideNav();
+        } else if (scrollDifference > 10) {
+          hideNav();
+        } else if (scrollDifference < -10) {
+          showNav();
+        }
+      } else {
+        if (currentScrollY <= 0) {
+          showNav();
+        } else if (scrollDifference > 10) {
+          hideNav();
+        } else if (scrollDifference < -10) {
+          showNav();
+        }
       }
 
-      // Only update lastScrollY if we passed the threshold
-      if (Math.abs(scrollDifference) > scrollThreshold) {
+      if (Math.abs(scrollDifference) > 10) {
         lastScrollY = currentScrollY;
       }
     }
 
-    // Throttle scroll events for performance
-    let ticking = false;
+    if (isArtPage && nav) {
+      nav.style.transform = `translateY(-${navHeight}px)`;
+    } else if (nav) {
+      showNav();
+    }
+
+    let scrollTicking = false;
     window.addEventListener("scroll", () => {
-      if (!ticking) {
+      if (!scrollTicking) {
         window.requestAnimationFrame(() => {
           handleScroll();
-          ticking = false;
+          scrollTicking = false;
         });
-        ticking = true;
+        scrollTicking = true;
       }
     });
   };
