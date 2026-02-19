@@ -18,10 +18,10 @@
     "@astrojs/svelte": "^7.2.5",
     "@directus/sdk": "^18.0.3",
     "@vite-pwa/astro": "^1.2.0",
-    "astro": "^5.17.1",
+    "astro": "^5.17.3",
     "hydra-synth": "^1.4.0",
     "marked": "^15.0.12",
-    "svelte": "^5.49.2",
+    "svelte": "^5.53.0",
     "typescript": "^5.9.3"
   }
 }
