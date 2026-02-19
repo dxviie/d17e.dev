@@ -8,519 +8,576 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Markdown from "../components/Markdown.astro";
 import MediaAsset from "../components/MediaAsset.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
+import RulerIcon from "../components/icons/RulerIcon.astro";
+import PaperIcon from "../components/icons/PaperIcon.astro";
+import PenIcon from "../components/icons/PenIcon.astro";
+import InkIcon from "../components/icons/InkIcon.astro";
 import "../styles/markdown.css";
 import {
-  getOgImageUrl,
-  getVideoPosterUrl,
-  getOriginalExtension,
-  getImageUrl,
+    getOgImageUrl,
+    getVideoPosterUrl,
+    getOriginalExtension,
+    getImageUrl,
 } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<"art">["data"];
 
 const {
-  slug,
-  status,
-  title,
-  publishDate,
-  dateUpdated,
-  cover,
-  description,
-  width,
-  height,
-  paper,
-  pens,
-  inks,
-  gallery,
+    slug,
+    status,
+    title,
+    publishDate,
+    dateUpdated,
+    cover,
+    description,
+    width,
+    height,
+    paper,
+    pens,
+    inks,
+    gallery,
 } = Astro.props;
 
 // Cover first, then gallery items
 const mediaItems = cover ? [cover, ...(gallery || [])] : [...(gallery || [])];
 
-const legendItems = [
-  width != null && height != null
-    ? `${width} × ${height} cm`
-    : width != null
-      ? `${width} cm`
-      : height != null
-        ? `${height} cm`
-        : null,
-  paper ? `Paper: ${paper}` : null,
-  pens ? `Pens: ${pens}` : null,
-  inks ? `Inks: ${inks}` : null,
-].filter(Boolean);
+function cmToIn(cm: number): string {
+    return (cm / 2.54).toFixed(1);
+}
+
+const sizeLabel = (() => {
+    if (width != null && height != null)
+        return `${width} × ${height} cm (${cmToIn(width)} × ${cmToIn(height)} in)`;
+    if (width != null) return `${width} cm (${cmToIn(width)} in)`;
+    if (height != null) return `${height} cm (${cmToIn(height)} in)`;
+    return null;
+})();
+
+type LegendItem = { icon: "ruler" | "paper" | "pen" | "ink"; text: string };
+
+const legendItems: LegendItem[] = [
+    ...(sizeLabel ? [{ icon: "ruler" as const, text: sizeLabel }] : []),
+    ...(paper ? [{ icon: "paper" as const, text: paper }] : []),
+    ...(pens ? [{ icon: "pen" as const, text: pens }] : []),
+    ...(inks ? [{ icon: "ink" as const, text: inks }] : []),
+];
 
 function getThumbUrl(item: { id: string; type?: string }) {
-  if (!item?.id) return "";
-  return item.type?.startsWith("video/")
-    ? getVideoPosterUrl(item.id)
-    : getImageUrl(item.id, "400w");
+    if (!item?.id) return "";
+    return item.type?.startsWith("video/")
+        ? getVideoPosterUrl(item.id)
+        : getImageUrl(item.id, "400w");
 }
 
 const isVideo = cover?.type?.startsWith("video/");
 let imageUrl = cover
-  ? isVideo
-    ? getVideoPosterUrl(cover.id)
-    : getOgImageUrl(
-        cover.id,
-        cover.width,
-        getOriginalExtension(cover.filenameDownload, cover.type),
-      )
-  : undefined;
+    ? isVideo
+        ? getVideoPosterUrl(cover.id)
+        : getOgImageUrl(
+              cover.id,
+              cover.width,
+              getOriginalExtension(cover.filenameDownload, cover.type),
+          )
+    : undefined;
 ---
 
 <html lang="en">
-  <head>
-    <BaseHead title={title} description="" image={imageUrl} />
-    <ClientRouter />
-  </head>
+    <head>
+        <BaseHead title={title} description="" image={imageUrl} />
+        <ClientRouter />
+    </head>
 
-  <body class="art-page" data-art-page="true">
-    <div class="statusbar"></div>
-    <Header />
-    <main class="content-margin art-main">
-      <article class="art-container">
-        <DraftIndicator status={status} />
-        {
-          mediaItems.length > 0 && (
-            <div class="art-viewer">
-              <div class="art-slides">
-                {mediaItems.map((item, i) => (
-                  <div
-                    class="art-slide"
-                    data-index={i}
-                    data-active={i === 0 ? "true" : "false"}
-                  >
-                    <MediaAsset
-                      id={item.id}
-                      title={item.title}
-                      alt={item.title || title}
-                      type={item.type}
-                      filenameDownload={item.filenameDownload}
-                      originalWidth={item.width}
-                      originalHeight={item.height}
-                      isHero={true}
-                      objectFit="contain"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )
-        }
-
-        {
-          mediaItems.length > 1 && (
-            <div class="gallery-thumbs gallery-thumbs-mobile" role="tablist">
-              {mediaItems.map((item, i) => (
-                <button
-                  type="button"
-                  class="gallery-thumb"
-                  data-index={i}
-                  aria-pressed={i === 0 ? "true" : "false"}
-                  aria-label={`View image ${i + 1}`}
-                >
-                  <img
-                    src={getThumbUrl(item)}
-                    alt=""
-                    width={64}
-                    height={64}
-                    loading="lazy"
-                  />
-                </button>
-              ))}
-            </div>
-          )
-        }
-
-        <aside class="art-sidebar">
-          <div class="art-meta">
-            <div class="title-section">
-              <span class="date">
-                {publishDate && <FormattedDate date={publishDate} format="MMM YYYY" />}
+    <body class="art-page" data-art-page="true">
+        <div class="statusbar"></div>
+        <Header />
+        <main class="content-margin art-main">
+            <article class="art-container">
+                <DraftIndicator status={status} />
                 {
-                  dateUpdated && (
-                    <span class="last-updated">
-                      · Last updated: <FormattedDate date={dateUpdated} format="MMM YYYY" />
-                    </span>
-                  )
+                    mediaItems.length > 0 && (
+                        <div class="art-viewer">
+                            <div class="art-slides">
+                                {mediaItems.map((item, i) => (
+                                    <div
+                                        class="art-slide"
+                                        data-index={i}
+                                        data-active={i === 0 ? "true" : "false"}
+                                    >
+                                        <MediaAsset
+                                            id={item.id}
+                                            title={item.title}
+                                            alt={item.title || title}
+                                            type={item.type}
+                                            filenameDownload={
+                                                item.filenameDownload
+                                            }
+                                            originalWidth={item.width}
+                                            originalHeight={item.height}
+                                            isHero={true}
+                                            objectFit="contain"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )
                 }
-              </span>
-              <h1>{title}</h1>
-            </div>
 
-            {
-              description && (
-                <div class="art-description">
-                  <Markdown content={description} />
-                </div>
-              )
-            }
+                {
+                    mediaItems.length > 1 && (
+                        <div
+                            class="gallery-thumbs gallery-thumbs-mobile"
+                            role="tablist"
+                        >
+                            {mediaItems.map((item, i) => (
+                                <button
+                                    type="button"
+                                    class="gallery-thumb"
+                                    data-index={i}
+                                    aria-pressed={i === 0 ? "true" : "false"}
+                                    aria-label={`View image ${i + 1}`}
+                                >
+                                    <img
+                                        src={getThumbUrl(item)}
+                                        alt=""
+                                        width={64}
+                                        height={64}
+                                        loading="lazy"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )
+                }
 
-            {
-              legendItems.length > 0 && (
-                <ul class="art-legend">
-                  {legendItems.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              )
-            }
+                <aside class="art-sidebar">
+                    <div class="art-meta">
+                        <div class="title-section">
+                            <span class="date">
+                                {
+                                    publishDate && (
+                                        <FormattedDate
+                                            date={publishDate}
+                                            format="MMM YYYY"
+                                        />
+                                    )
+                                }
+                                {
+                                    dateUpdated && (
+                                        <span class="last-updated">
+                                            · Last updated:{" "}
+                                            <FormattedDate
+                                                date={dateUpdated}
+                                                format="MMM YYYY"
+                                            />
+                                        </span>
+                                    )
+                                }
+                            </span>
+                            <h1>{title}</h1>
+                        </div>
 
-            {
-              mediaItems.length > 1 && (
-                <div
-                  class="gallery-thumbs gallery-thumbs-desktop"
-                  role="tablist"
-                >
-                  {mediaItems.map((item, i) => (
-                    <button
-                      type="button"
-                      class="gallery-thumb"
-                      data-index={i}
-                      aria-pressed={i === 0 ? "true" : "false"}
-                      aria-label={`View image ${i + 1}`}
-                    >
-                      <img
-                        src={getThumbUrl(item)}
-                        alt=""
-                        width={64}
-                        height={64}
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )
-            }
-          </div>
+                        {
+                            description && (
+                                <div class="art-description">
+                                    <Markdown content={description} />
+                                </div>
+                            )
+                        }
 
-          <slot />
-        </aside>
-      </article>
-    </main>
-    <Footer />
-  </body>
+                        {
+                            legendItems.length > 0 && (
+                                <ul class="art-legend">
+                                    {legendItems.map((item) => (
+                                        <li class="art-legend-item">
+                                            <span class="art-legend-icon">
+                                                {item.icon === "ruler" && (
+                                                    <RulerIcon size="0.9em" />
+                                                )}
+                                                {item.icon === "paper" && (
+                                                    <PaperIcon size="0.9em" />
+                                                )}
+                                                {item.icon === "pen" && (
+                                                    <PenIcon size="0.9em" />
+                                                )}
+                                                {item.icon === "ink" && (
+                                                    <InkIcon size="0.9em" />
+                                                )}
+                                            </span>
+                                            <span>{item.text}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )
+                        }
+
+                        {
+                            mediaItems.length > 1 && (
+                                <div
+                                    class="gallery-thumbs gallery-thumbs-desktop"
+                                    role="tablist"
+                                >
+                                    {mediaItems.map((item, i) => (
+                                        <button
+                                            type="button"
+                                            class="gallery-thumb"
+                                            data-index={i}
+                                            aria-pressed={
+                                                i === 0 ? "true" : "false"
+                                            }
+                                            aria-label={`View image ${i + 1}`}
+                                        >
+                                            <img
+                                                src={getThumbUrl(item)}
+                                                alt=""
+                                                width={64}
+                                                height={64}
+                                                loading="lazy"
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    <slot />
+                </aside>
+            </article>
+        </main>
+        <Footer />
+    </body>
 </html>
 
 <style>
-  main {
-    margin-bottom: 3.33rem;
-  }
-
-  body.art-page {
-    overflow-x: hidden;
-  }
-
-  .art-main {
-    width: 100%;
-    max-width: none;
-    padding: 2rem 1rem;
-    min-height: calc(100vh - 30rem);
-    overflow-x: hidden;
-    box-sizing: border-box;
-  }
-
-  .art-container {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    gap: 2rem;
-    max-width: 1600px;
-    width: 100%;
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-
-  .art-viewer {
-    flex: 1;
-    min-width: 0;
-    min-height: 320px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-
-  .art-slides {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    aspect-ratio: 4/3;
-    max-height: min(70vh, 900px);
-    overflow: hidden;
-    flex-shrink: 0;
-    box-sizing: border-box;
-  }
-
-  .art-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .art-slide[data-active="true"] {
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 1;
-  }
-
-  .art-slide :global(.media-asset) {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .art-slide :global(.media-asset figure),
-  .art-slide :global(.media-asset .media-wrapper),
-  .art-slide :global(.media-asset .video-container),
-  .art-slide :global(.media-asset .asset-link) {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .art-slide :global(.media-asset img),
-  .art-slide :global(.media-asset video) {
-    width: 100%;
-    height: 100%;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    object-fit: contain !important;
-    object-position: center !important;
-  }
-
-  .art-sidebar {
-    color: var(--color);
-    opacity: 0.9;
-  }
-
-  .art-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-
-  .title-section {
-    margin-bottom: 0;
-  }
-
-  .title-section h1 {
-    font-family: "nudica_monobold", serif;
-    margin: 0.5rem 0 0;
-    font-size: 1.75rem;
-    line-height: 1.2;
-  }
-
-  .date {
-    font-family: "nudica_monolight", serif;
-    background-color: var(--color);
-    color: var(--bg-color);
-    padding: 0.2rem 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  .last-updated {
-    font-style: italic;
-    font-size: 0.8rem;
-  }
-
-  .art-description {
-    font-size: 0.95rem;
-  }
-
-  .art-description :global(.markdown-content) {
-    font-size: inherit;
-  }
-
-  .art-legend {
-    font-family: "nudica_monolight", serif;
-    font-size: 0.9rem;
-    margin: 0;
-    padding-left: 1.25rem;
-    list-style: disc;
-    opacity: 0.9;
-  }
-
-  .art-legend li {
-    margin-bottom: 0.25rem;
-  }
-
-  .gallery-thumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  .gallery-thumbs-mobile {
-    display: flex;
-  }
-
-  .gallery-thumbs-desktop {
-    display: none;
-  }
-
-  .gallery-thumb {
-    width: 64px;
-    height: 64px;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    background: rgba(var(--gray-light), 0.1);
-    cursor: pointer;
-    overflow: hidden;
-    transition:
-      border-color 0.2s,
-      opacity 0.2s;
-  }
-
-  img {
-    border-radius: 0;
-  }
-
-  .gallery-thumb:hover {
-    opacity: 0.9;
-  }
-
-  .gallery-thumb[aria-pressed="true"] {
-    border-color: var(--color);
-  }
-
-  .gallery-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  @media (min-width: 900px) {
-    .gallery-thumbs-mobile {
-      display: none;
+    main {
+        margin-bottom: 3.33rem;
     }
 
-    .gallery-thumbs-desktop {
-      display: flex;
+    body.art-page {
+        overflow-x: hidden;
+    }
+
+    .art-main {
+        width: 100%;
+        max-width: none;
+        padding: 2rem 1rem;
+        min-height: calc(100vh - 30rem);
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     .art-container {
-      flex-direction: row;
-      gap: 2rem;
-      align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        gap: 2rem;
+        max-width: 1600px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
     }
 
     .art-viewer {
-      flex: 1;
-      min-width: 0;
-      position: sticky;
-      top: 6rem;
-      height: 90vh;
+        flex: 1;
+        min-width: 0;
+        min-height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+
+    .art-slides {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 4/3;
+        max-height: min(70vh, 900px);
+        overflow: hidden;
+        flex-shrink: 0;
+        box-sizing: border-box;
+    }
+
+    .art-slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .art-slide[data-active="true"] {
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+    }
+
+    .art-slide :global(.media-asset) {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .art-slide :global(.media-asset figure),
+    .art-slide :global(.media-asset .media-wrapper),
+    .art-slide :global(.media-asset .video-container),
+    .art-slide :global(.media-asset .asset-link) {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .art-slide :global(.media-asset img),
+    .art-slide :global(.media-asset video) {
+        width: 100%;
+        height: 100%;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: contain !important;
+        object-position: center !important;
     }
 
     .art-sidebar {
-      width: 360px;
-      flex-shrink: 0;
-      font-size: 0.95rem;
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+        color: var(--color);
+        opacity: 0.9;
     }
 
-    .art-slides {
-      aspect-ratio: auto;
-      height: 100%;
-      max-height: 90vh;
-    }
-  }
-
-  @media (max-width: 720px), (max-width: 1024px) {
-    .art-main {
-      padding: 1em;
-    }
-  }
-
-  @media (max-width: 899px) {
-    .art-viewer {
-      padding: 0.5em;
-      min-height: 0;
+    .art-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
     }
 
-    .art-slides {
-      aspect-ratio: 3/4;
-      max-height: none;
-      min-height: min(70vh, 100vw);
-      width: 100%;
+    .title-section {
+        margin-bottom: 0;
     }
-  }
 
-  @media (max-width: 768px) {
     .title-section h1 {
-      font-size: 1.5rem;
+        font-family: "nudica_monobold", serif;
+        margin: 0.5rem 0 0;
+        font-size: 1.75rem;
+        line-height: 1.2;
     }
-  }
+
+    .date {
+        font-family: "nudica_monolight", serif;
+        background-color: var(--color);
+        color: var(--bg-color);
+        padding: 0.2rem 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .last-updated {
+        font-style: italic;
+        font-size: 0.8rem;
+    }
+
+    .art-description {
+        font-size: 0.95rem;
+    }
+
+    .art-description :global(.markdown-content) {
+        font-size: inherit;
+    }
+
+    .art-legend {
+        font-family: "nudica_monolight", serif;
+        font-size: 0.9rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        opacity: 0.9;
+    }
+
+    .art-legend-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.45em;
+        margin-bottom: 0.35rem;
+    }
+
+    .art-legend-icon {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+        margin-top: 0.33em;
+    }
+
+    .gallery-thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .gallery-thumbs-mobile {
+        display: flex;
+    }
+
+    .gallery-thumbs-desktop {
+        display: none;
+    }
+
+    .gallery-thumb {
+        width: 64px;
+        height: 64px;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        background: rgba(var(--gray-light), 0.1);
+        cursor: pointer;
+        overflow: hidden;
+        transition:
+            border-color 0.2s,
+            opacity 0.2s;
+    }
+
+    img {
+        border-radius: 0;
+    }
+
+    .gallery-thumb:hover {
+        opacity: 0.9;
+    }
+
+    .gallery-thumb[aria-pressed="true"] {
+        border-color: var(--color);
+    }
+
+    .gallery-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    @media (min-width: 900px) {
+        .gallery-thumbs-mobile {
+            display: none;
+        }
+
+        .gallery-thumbs-desktop {
+            display: flex;
+        }
+
+        .art-container {
+            flex-direction: row;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .art-viewer {
+            flex: 1;
+            min-width: 0;
+            position: sticky;
+            top: 6rem;
+            height: 90vh;
+        }
+
+        .art-sidebar {
+            width: 360px;
+            flex-shrink: 0;
+            font-size: 0.95rem;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .art-slides {
+            aspect-ratio: auto;
+            height: 100%;
+            max-height: 90vh;
+        }
+    }
+
+    @media (max-width: 720px), (max-width: 1024px) {
+        .art-main {
+            padding: 1em;
+        }
+    }
+
+    @media (max-width: 899px) {
+        .art-viewer {
+            padding: 0.5em;
+            min-height: 0;
+        }
+
+        .art-slides {
+            aspect-ratio: 3/4;
+            max-height: none;
+            min-height: min(70vh, 100vw);
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .title-section h1 {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const slides = document.querySelectorAll(".art-slide");
-    const thumbs = document.querySelectorAll(".gallery-thumb");
+    document.addEventListener("DOMContentLoaded", () => {
+        const slides = document.querySelectorAll(".art-slide");
+        const thumbs = document.querySelectorAll(".gallery-thumb");
 
-    if (slides.length === 0 || thumbs.length === 0) return;
+        if (slides.length === 0 || thumbs.length === 0) return;
 
-    thumbs.forEach((thumb) => {
-      thumb.addEventListener("click", () => {
-        const index = thumb.getAttribute("data-index");
-        if (index == null) return;
+        thumbs.forEach((thumb) => {
+            thumb.addEventListener("click", () => {
+                const index = thumb.getAttribute("data-index");
+                if (index == null) return;
 
-        slides.forEach((s) => s.setAttribute("data-active", "false"));
-        thumbs.forEach((t) => t.setAttribute("aria-pressed", "false"));
+                slides.forEach((s) => s.setAttribute("data-active", "false"));
+                thumbs.forEach((t) => t.setAttribute("aria-pressed", "false"));
 
-        const slide = document.querySelector(
-          `.art-slide[data-index="${index}"]`,
-        );
-        if (slide) slide.setAttribute("data-active", "true");
-        thumb.setAttribute("aria-pressed", "true");
-      });
+                const slide = document.querySelector(
+                    `.art-slide[data-index="${index}"]`,
+                );
+                if (slide) slide.setAttribute("data-active", "true");
+                thumb.setAttribute("aria-pressed", "true");
+            });
+        });
     });
-  });
 
-  document.addEventListener("astro:page-load", () => {
-    const slides = document.querySelectorAll(".art-slide");
-    const thumbs = document.querySelectorAll(".gallery-thumb");
+    document.addEventListener("astro:page-load", () => {
+        const slides = document.querySelectorAll(".art-slide");
+        const thumbs = document.querySelectorAll(".gallery-thumb");
 
-    if (slides.length === 0 || thumbs.length === 0) return;
+        if (slides.length === 0 || thumbs.length === 0) return;
 
-    thumbs.forEach((thumb) => {
-      thumb.addEventListener("click", () => {
-        const index = thumb.getAttribute("data-index");
-        if (index == null) return;
+        thumbs.forEach((thumb) => {
+            thumb.addEventListener("click", () => {
+                const index = thumb.getAttribute("data-index");
+                if (index == null) return;
 
-        slides.forEach((s) => s.setAttribute("data-active", "false"));
-        thumbs.forEach((t) => t.setAttribute("aria-pressed", "false"));
+                slides.forEach((s) => s.setAttribute("data-active", "false"));
+                thumbs.forEach((t) => t.setAttribute("aria-pressed", "false"));
 
-        const slide = document.querySelector(
-          `.art-slide[data-index="${index}"]`,
-        );
-        if (slide) slide.setAttribute("data-active", "true");
-        thumb.setAttribute("aria-pressed", "true");
-      });
+                const slide = document.querySelector(
+                    `.art-slide[data-index="${index}"]`,
+                );
+                if (slide) slide.setAttribute("data-active", "true");
+                thumb.setAttribute("aria-pressed", "true");
+            });
+        });
     });
-  });
 </script>
