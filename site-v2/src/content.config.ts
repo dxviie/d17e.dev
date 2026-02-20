@@ -25,11 +25,16 @@ const posts = defineCollection({
       };
 
       let posts = await directus.request(readItems('Posts', {
-        fields: ['*', 'cover.*'],
+        fields: ['*', 'cover.*', 'gallery.directus_files_id.*'],
         filter,
         limit: -1
       })) || [{id: '1'}];
-      posts = posts.map(p => ({...p, id: p.uuid}));
+      posts = posts.map(p => {
+        const gallery = Array.isArray(p.gallery)
+          ? p.gallery.map((g: { directus_files_id?: object }) => g.directus_files_id).filter(Boolean)
+          : [];
+        return {...p, id: p.uuid, gallery};
+      });
       console.debug('Loaded Posts: ', posts.length);
       return posts;
     } catch (error) {
@@ -57,6 +62,15 @@ const posts = defineCollection({
       width: z.number().nullable().optional(),
       height: z.number().nullable().optional(),
     }),
+    gallery: z.array(z.object({
+      id: z.string(),
+      title: z.string().nullable().optional(),
+      description: z.string().nullable().optional(),
+      filenameDownload: z.string().nullable().optional(),
+      type: z.string(),
+      width: z.number().nullable().optional(),
+      height: z.number().nullable().optional(),
+    })).optional(),
   }),
 });
 

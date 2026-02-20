@@ -12,15 +12,26 @@ import FindMeOn from "../components/FindMeOn.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
 import ShareOn from "../components/ShareOn.astro";
-import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
+import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension, getImageUrl } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'posts'>['data'];
 
-const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription, status} = Astro.props;
+const {slug, title, publishDate, dateUpdated, cover, body, link, linkDescription, status, gallery} = Astro.props;
+
+// Cover first, then gallery items
+const mediaItems = cover ? [cover, ...(gallery || [])] : [...(gallery || [])];
+const hasGallery = mediaItems.length > 1;
 
 const isVideo = cover.type?.startsWith("video/");
 // Use CDN URL for OG image (best available size up to 1200w)
 let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, cover.width, getOriginalExtension(cover.filenameDownload, cover.type));
+
+function getThumbUrl(item: { id: string; type?: string }) {
+    if (!item?.id) return "";
+    return item.type?.startsWith("video/")
+        ? getVideoPosterUrl(item.id)
+        : getImageUrl(item.id, "400w");
+}
 ---
 
 <html lang="en">
@@ -37,19 +48,65 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
     <DraftIndicator status={status}/>
     {cover && (
             <div class="hero-media">
-              <MediaAsset
-                      id={cover.id}
-                      title={cover.title}
-                      alt={cover.title || title}
-                      type={cover.type}
-                      filenameDownload={cover.filenameDownload}
-                      originalWidth={cover.width}
-                      originalHeight={cover.height}
-                      isHero={true}
-                      objectFit="contain"
-              />
+              {hasGallery ? (
+                <div class="post-slides">
+                  {mediaItems.map((item, i) => (
+                    <div
+                      class="post-slide"
+                      data-index={i}
+                      data-active={i === 0 ? "true" : "false"}
+                    >
+                      <MediaAsset
+                        id={item.id}
+                        title={item.title}
+                        alt={item.title || title}
+                        type={item.type}
+                        filenameDownload={item.filenameDownload}
+                        originalWidth={item.width}
+                        originalHeight={item.height}
+                        isHero={true}
+                        objectFit="contain"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <MediaAsset
+                        id={cover.id}
+                        title={cover.title}
+                        alt={cover.title || title}
+                        type={cover.type}
+                        filenameDownload={cover.filenameDownload}
+                        originalWidth={cover.width}
+                        originalHeight={cover.height}
+                        isHero={true}
+                        objectFit="contain"
+                />
+              )}
               <PostPrevNextMini currentSlug={slug}/>
             </div>
+    )}
+
+    {hasGallery && (
+      <div class="gallery-thumbs gallery-thumbs-mobile" role="tablist">
+        {mediaItems.map((item, i) => (
+          <button
+            type="button"
+            class="gallery-thumb"
+            data-index={i}
+            aria-pressed={i === 0 ? "true" : "false"}
+            aria-label={`View image ${i + 1}`}
+          >
+            <img
+              src={getThumbUrl(item)}
+              alt=""
+              width={64}
+              height={64}
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
     )}
 
     <div class="post-content">
@@ -74,6 +131,28 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
                 🔗
                 <a href={link} target="_blank" rel="noopener noreferrer">{linkDescription || link}</a>
               </span>
+      )}
+
+      {hasGallery && (
+        <div class="gallery-thumbs gallery-thumbs-desktop" role="tablist">
+          {mediaItems.map((item, i) => (
+            <button
+              type="button"
+              class="gallery-thumb"
+              data-index={i}
+              aria-pressed={i === 0 ? "true" : "false"}
+              aria-label={`View image ${i + 1}`}
+            >
+              <img
+                src={getThumbUrl(item)}
+                alt=""
+                width={64}
+                height={64}
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
       )}
 
       <ShareOn title={title} description={linkDescription || ''} />
@@ -103,6 +182,9 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
 
     .post-content {
         color: var(--color);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .title-section {
@@ -165,6 +247,72 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
         position: relative;
     }
 
+    /* Gallery slides — use grid stack so the tallest slide drives container height */
+    .post-slides {
+        display: grid;
+        width: 100%;
+    }
+
+    .post-slide {
+        grid-area: 1 / 1;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+    }
+
+    .post-slide[data-active="true"] {
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+    }
+
+    /* Gallery thumbs */
+    .gallery-thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .gallery-thumbs-mobile {
+        display: flex;
+    }
+
+    .gallery-thumbs-desktop {
+        display: none;
+    }
+
+    .gallery-thumb {
+        width: 64px;
+        height: 64px;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        background: rgba(var(--gray-light), 0.1);
+        cursor: pointer;
+        overflow: hidden;
+        transition:
+            border-color 0.2s,
+            opacity 0.2s;
+    }
+
+    .gallery-thumb:hover {
+        opacity: 0.9;
+    }
+
+    .gallery-thumb[aria-pressed="true"] {
+        border-color: var(--color);
+    }
+
+    .gallery-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 0;
+    }
+
     @media (min-width: 1200px) {
         main {
             max-width: 90vw;
@@ -191,6 +339,15 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
             flex-direction: row !important;
             gap: 2rem;
         }
+
+        .gallery-thumbs-mobile {
+            display: none;
+        }
+
+        .gallery-thumbs-desktop {
+            display: flex;
+        }
+
     }
 </style>
 
@@ -205,4 +362,28 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
       });
     });
   });
+
+  function initGallery() {
+    const slides = document.querySelectorAll('.post-slide');
+    const thumbs = document.querySelectorAll('.gallery-thumb');
+
+    if (slides.length === 0 || thumbs.length === 0) return;
+
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const index = thumb.getAttribute('data-index');
+        if (index == null) return;
+
+        slides.forEach((s) => s.setAttribute('data-active', 'false'));
+        thumbs.forEach((t) => t.setAttribute('aria-pressed', 'false'));
+
+        const slide = document.querySelector(`.post-slide[data-index="${index}"]`);
+        if (slide) slide.setAttribute('data-active', 'true');
+        thumb.setAttribute('aria-pressed', 'true');
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initGallery);
+  document.addEventListener('astro:page-load', initGallery);
 </script>
