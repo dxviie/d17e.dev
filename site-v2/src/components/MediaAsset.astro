@@ -14,6 +14,7 @@ interface MediaAssetProps {
   isHero?: boolean;
   objectFit?: string;      // CSS property for object-fit
   loading?: "eager" | "lazy"; // Image loading strategy
+  blurhash?: string;       // Blurhash string for placeholder preview
 }
 
 const {
@@ -27,7 +28,8 @@ const {
   originalHeight,
   isHero = false,
   objectFit = "cover", // Default object-fit value
-  loading = "lazy" // Default to lazy loading
+  loading = "lazy", // Default to lazy loading
+  blurhash,
 } = Astro.props;
 
 const isVideo = type?.startsWith("video/");
@@ -87,6 +89,7 @@ const cdnOriginalUrl = isVideo
           <div class="media-wrapper">
             {!isVideo && isHero && (
                       <a href={cdnOriginalUrl} target="_blank" rel="noopener noreferrer" class="asset-link">
+                        {blurhash && <canvas class="blurhash-canvas" data-blurhash={blurhash} aria-hidden="true" />}
                         <img
                                 class={`astro-media hero-media`}
                                 src={cdnImageUrlLarge}
@@ -102,17 +105,20 @@ const cdnOriginalUrl = isVideo
                       </a>
             )}
             {!isVideo && !isHero && (
-                              <img
-                                      class="astro-media"
-                                      src={cdnImageUrl}
-                                      srcset={cdnImageSrcset}
-                                      sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, 1200px"
-                                      width={width}
-                                      height={height}
-                                      alt={alt}
-                                      loading={loading}
-                                      style={`object-fit: ${objectFit}; object-position: center; transform: scale(1.1);`}
-                              />
+                      <Fragment>
+                        {blurhash && <canvas class="blurhash-canvas" data-blurhash={blurhash} aria-hidden="true" />}
+                        <img
+                                class="astro-media"
+                                src={cdnImageUrl}
+                                srcset={cdnImageSrcset}
+                                sizes="(max-width: 600px) 400px, (max-width: 1024px) 800px, 1200px"
+                                width={width}
+                                height={height}
+                                alt={alt}
+                                loading={loading}
+                                style={`object-fit: ${objectFit}; object-position: center; transform: scale(1.1);`}
+                        />
+                      </Fragment>
             )}
             {isVideo && !isHero && (
                     <img
@@ -341,10 +347,74 @@ const cdnOriginalUrl = isVideo
         color: #666;
         text-align: center;
     }
+
+    .blurhash-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        z-index: 1;
+        transition: opacity 0.4s ease;
+        image-rendering: auto;
+        background: #e0e0e0;
+    }
+
+    .blurhash-canvas.loaded {
+        opacity: 0;
+        pointer-events: none;
+    }
 </style>
 
 <script>
+  import { decode } from 'blurhash';
+
+  function renderBlurhashes() {
+    document.querySelectorAll<HTMLCanvasElement>('canvas.blurhash-canvas').forEach(canvas => {
+      if (canvas.hasAttribute('data-blurhash-rendered')) return;
+      const hash = canvas.dataset.blurhash;
+      if (!hash) return;
+
+      const W = 32;
+      const H = 32;
+
+      // Setting width/height resets the canvas coordinate space and context
+      canvas.width = W;
+      canvas.height = H;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      try {
+        console.debug('[blurhash] decoding:', hash);
+        const pixels = decode(hash, W, H);
+        const imageData = ctx.createImageData(W, H);
+        imageData.data.set(pixels);
+        ctx.putImageData(imageData, 0, 0);
+        canvas.setAttribute('data-blurhash-rendered', 'true');
+
+        // Fade out once the sibling image loads
+        const wrapper = canvas.closest('.asset-link, .media-wrapper');
+        const img = wrapper?.querySelector<HTMLImageElement>('img');
+        if (img) {
+          const hide = () => canvas.classList.add('loaded');
+          if (img.complete && img.naturalWidth > 0) {
+            hide();
+          } else {
+            img.addEventListener('load', hide, { once: true });
+          }
+        }
+      } catch (e) {
+        console.error('[blurhash] decode failed for hash:', hash, e);
+      }
+    });
+  }
+
+  // Run immediately — ES modules are deferred, so DOM is ready by the time this executes
+  renderBlurhashes();
+
   document.addEventListener('astro:page-load', () => {
+    renderBlurhashes();
     setupVideoHovers();
     playHeroVideos();
     setupAssetLinks();
@@ -438,13 +508,6 @@ const cdnOriginalUrl = isVideo
       setupMuteToggles();
     }, 100);
   }
-
-  // Also run on initial page load
-  document.addEventListener('DOMContentLoaded', () => {
-    setupVideoHovers();
-    playHeroVideos();
-    setupAssetLinks();
-  });
 
   function setupAssetLinks() {
     // Handle clicks on videos to toggle controls rather than follow the link

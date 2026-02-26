@@ -123,6 +123,7 @@ const artItems = (await getCollection("art")).sort(
                       width={400}
                       height={400}
                       loading={index < 12 ? "eager" : "lazy"}
+                      blurhash={item.data.cover.blurhash}
                     />
                   </div>
                 )}
