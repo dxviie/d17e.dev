@@ -49,7 +49,6 @@ const posts = defineCollection({
         return { ...p, id: p.uuid, gallery };
       });
       console.debug("Loaded Posts: ", posts.length);
-      posts.forEach((p) => console.log("BB", p.cover.blurhash));
       return posts;
     } catch (error) {
       console.error("Directus error:", error);
