@@ -49,6 +49,7 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
                       originalWidth={cover.width}
                       originalHeight={cover.height}
                       isHero={true}
+                      blurhash={cover.blurhash}
               />
               <ProjectPostPrevNextMini
                       currentSlug={slug}
