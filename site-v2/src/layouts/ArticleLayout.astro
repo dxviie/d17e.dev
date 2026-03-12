@@ -10,12 +10,13 @@ import '../styles/markdown.css';
 import FindMeOn from "../components/FindMeOn.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
 import ShareOn from "../components/ShareOn.astro";
+import LikeButton from "../components/LikeButton.svelte";
 import {estimateReadingTime, formatReadingTime} from "../utils/readingTime";
 import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'articles'>['data'];
 
-const {title, publishDate, dateUpdated, cover, body, description, status} = Astro.props;
+const {slug, title, publishDate, dateUpdated, cover, body, description, status} = Astro.props;
 
 const isVideo = cover.type?.startsWith("video/");
 // Use CDN URL for OG image (best available size up to 1200w)
@@ -75,7 +76,12 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
       {/* Parse Markdown content */}
       <Markdown content={body}/>
 
-      <ShareOn title={title} description={description || ''}/>
+      <div class="like-section" data-slug={slug}>
+        <LikeButton type="articles" id={slug} showHint={true} client:only="svelte" />
+      </div>
+      <div class="share-section">
+        <ShareOn title={title} description={description || ''}/>
+      </div>
     </div>
   </article>
 
@@ -146,6 +152,25 @@ let imageUrl = isVideo ? getVideoPosterUrl(cover.id) : getOgImageUrl(cover.id, c
     .description p {
         font-family: 'nudica_monolight', serif;
         margin: 0;
+    }
+
+    .like-section {
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        justify-content: center;
+        min-height: 2.5rem;
+    }
+
+    .share-section {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .share-section :global(.share-on-component) {
+        margin-left: 0;
+        margin-right: 0;
     }
 
     article.article-container {

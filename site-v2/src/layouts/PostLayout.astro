@@ -12,6 +12,7 @@ import FindMeOn from "../components/FindMeOn.astro";
 import PostPrevNextMini from "../components/PostPrevNextMini.astro";
 import DraftIndicator from "../components/DraftIndicator.astro";
 import ShareOn from "../components/ShareOn.astro";
+import LikeButton from "../components/LikeButton.svelte";
 import { getOgImageUrl, getVideoPosterUrl, getOriginalExtension, getImageUrl } from "../utils/mediaUrls";
 
 type Props = CollectionEntry<'posts'>['data'];
@@ -157,7 +158,12 @@ function getThumbUrl(item: { id: string; type?: string }) {
         </div>
       )}
 
-      <ShareOn title={title} description={linkDescription || ''} />
+      <div class="like-section" data-slug={slug}>
+        <LikeButton type="posts" id={slug} showHint={true} client:only="svelte" />
+      </div>
+      <div class="post-actions">
+        <ShareOn title={title} description={linkDescription || ''} />
+      </div>
     </div>
   </article>
 
@@ -230,6 +236,24 @@ function getThumbUrl(item: { id: string; type?: string }) {
 
     .link-section a:hover {
         text-decoration: underline;
+    }
+
+    .like-section {
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 2.5rem; /* Prevent layout shift when LikeButton (client:only) mounts */
+    }
+
+    .post-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
     }
 
     @media (max-width: 768px) {
