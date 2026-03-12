@@ -18,10 +18,10 @@ const posts = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      await directus.login(
-        getSecret("DIRECTUS_LOGIN") || "",
-        getSecret("DIRECTUS_PASS") || "",
-      );
+      await directus.login({
+        email: getSecret("DIRECTUS_LOGIN") || "",
+        password: getSecret("DIRECTUS_PASS") || "",
+      });
       console.debug("Logged in");
       // In development mode, fetch all posts regardless of status
       // In production mode, only fetch published posts
@@ -97,10 +97,10 @@ const articles = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      await directus.login(
-        getSecret("DIRECTUS_LOGIN") || "",
-        getSecret("DIRECTUS_PASS") || "",
-      );
+      await directus.login({
+        email: getSecret("DIRECTUS_LOGIN") || "",
+        password: getSecret("DIRECTUS_PASS") || "",
+      });
       console.debug("Logged in");
       // In development mode, fetch all articles regardless of status
       // In production mode, only fetch published articles
@@ -154,10 +154,10 @@ const projects = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      await directus.login(
-        getSecret("DIRECTUS_LOGIN") || "",
-        getSecret("DIRECTUS_PASS") || "",
-      );
+      await directus.login({
+        email: getSecret("DIRECTUS_LOGIN") || "",
+        password: getSecret("DIRECTUS_PASS") || "",
+      });
       console.debug("Logged in");
 
       // First fetch the projects with their main data
@@ -366,10 +366,10 @@ const art = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      await directus.login(
-        getSecret("DIRECTUS_LOGIN") || "",
-        getSecret("DIRECTUS_PASS") || "",
-      );
+      await directus.login({
+        email: getSecret("DIRECTUS_LOGIN") || "",
+        password: getSecret("DIRECTUS_PASS") || "",
+      });
       console.debug("Logged in");
 
       const filter = isDev
@@ -450,10 +450,10 @@ const landingPages = defineCollection({
   // @ts-ignore
   loader: async () => {
     try {
-      await directus.login(
-        getSecret("DIRECTUS_LOGIN") || "",
-        getSecret("DIRECTUS_PASS") || "",
-      );
+      await directus.login({
+        email: getSecret("DIRECTUS_LOGIN") || "",
+        password: getSecret("DIRECTUS_PASS") || "",
+      });
       console.debug("Logged in");
 
       // Get landing page data with related posts and articles
