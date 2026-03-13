@@ -30,7 +30,14 @@ import SocialLinks from "./SocialLinks.astro";
         background-color: var(--color);
         cursor: pointer;
     }
+
+    @media (max-width: 768px) {
+        .find-me-on-wrapper {
+            display: none;
+        }
+    }
 </style>
+<div class="find-me-on-wrapper">
 <div class="find-me-on">
   Find me on:
 </div>
@@ -50,4 +57,5 @@ import SocialLinks from "./SocialLinks.astro";
     </div>
   </form>
   <a href="https://forms.d17e.dev/contact">Contact</a>
+</div>
 </div>
